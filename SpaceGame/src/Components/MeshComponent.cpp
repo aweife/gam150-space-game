@@ -3,7 +3,7 @@
 
 MeshComponent::MeshComponent()
 {
-	_name = "MeshComponent";
+	_name = "class MeshComponent";				//Do not change this otherwise remove component wont work
 	_category = SYS_GRAPHICS;
 	_bitfieldIndex = 1;				//Temporary
 }
