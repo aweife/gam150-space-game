@@ -1,11 +1,11 @@
 #include "PhysicsSystem.h"
 #include <AEVec2.h>
-namespace Physics
-{
-	/*
-	float Movement::Default()
-	{
 
-	}
-	*/
+
+
+float Velocity::VelocityComputation(float deltatime, float xPos, float yPos)
+{
+	// v = (change of distance)/ delatime
+
 }
+

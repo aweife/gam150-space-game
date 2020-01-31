@@ -1,45 +1,55 @@
 #pragma once
 
-namespace Physics
+/*
+// Collision 
+class Collider
 {
-	/*
-	// Collision 
-	class Collider
+
+};
+
+class Gravity
+{
+protected:
+	float force; 
+	// other common things here 
+
+
+	// pseudo gravity 
+	
+	// orbital gravity 
+
+};
+
+class PseudoGravity:public Gravity
+{
+
+};
+
+class OrbitalGravity :public Gravity
+{
+
+};
+*/
+
+// Velocity - can use vector 2 
+class Velocity
+{
+	struct 
 	{
-
-	};
-
-	class Gravity
-	{
-	protected:
-		float force; 
-		// other common things here 
+		float x; 
+		float y;
+	}Vector2D;
 
 
-		// pseudo gravity 
-		
-		// orbital gravity 
+	float deltatime; 
+	float distance;
+public: 
+	//Velocity() : deltatime{ deltatime }, distance{distance};
+	// Using default destructor
 
-	};
-
-	class PseudoGravity:public Gravity
-	{
-
-	};
-
-	class OrbitalGravity :public Gravity
-	{
-
-	};
+	// To compute velocity
+	float VelocityComputation(float deltatime, float xPos, float yPos);
 
 
-	// Velocity - can use vector 2 
-	class Movement
-	{
-		AEVec2 velocity;
-	public: 
-		float Default();
-		float 
-	};
-	*/
-}
+
+};
