@@ -23,6 +23,7 @@
     <ProjectGuid>{A2D1977C-904C-49D4-8EEF-6CA5E89DCA8F}</ProjectGuid>
     <RootNamespace>SpaceGame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SpaceGame</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -151,7 +152,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)dep\AE\Include;$(ProjectDir)dep\FMOD\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)dep\AE\Lib\$(Platform);$(ProjectDir)dep\FMOD\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -162,11 +163,34 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="src\Components\Component.cpp" />
+    <ClCompile Include="src\Components\MeshComponent.cpp" />
+    <ClCompile Include="src\GameObjects\GameObject.cpp" />
+    <ClCompile Include="src\GameObjects\GameObject_Custom.cpp" />
+    <ClCompile Include="src\GameObjects\UiElement.cpp" />
+    <ClCompile Include="src\Global.cpp" />
+    <ClCompile Include="src\Levels\Level1.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Systems\Core.cpp" />
+    <ClCompile Include="src\Systems\GameObjectManager.cpp" />
+    <ClCompile Include="src\Systems\GraphicsSystem.cpp" />
+    <ClCompile Include="src\Systems\MemoryPool.cpp" />
+    <ClCompile Include="src\Tools\Console.cpp" />
+    <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="src\Components\Component.h" />
+    <ClInclude Include="src\Components\MeshComponent.h" />
+    <ClInclude Include="src\GameObjects\GameObject.h" />
+    <ClInclude Include="src\GameObjects\GameObject_Custom.h" />
+    <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\Levels\Level1.h" />
+    <ClInclude Include="src\Systems\Core.h" />
+    <ClInclude Include="src\Systems\GameObjectManager.h" />
+    <ClInclude Include="src\Systems\GraphicSystem.h" />
+    <ClInclude Include="src\Systems\MemoryPool.h" />
+    <ClInclude Include="src\Tools\Console.h" />
+    <ClInclude Include="src\Tools\Editor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
