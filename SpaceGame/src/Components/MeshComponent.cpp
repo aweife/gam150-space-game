@@ -1,11 +1,19 @@
 #include "MeshComponent.h"
 
+#include "../Tools/Console.h"
 
 MeshComponent::MeshComponent()
 {
 	_name = "class MeshComponent";				//Do not change this otherwise remove component wont work
 	_category = SYS_GRAPHICS;
 	_bitfieldIndex = 1;				//Temporary
+	_mesh = nullptr;
+}
+
+MeshComponent::~MeshComponent()
+{
+	delete _mesh;
+	Console_Cout("MeshComponent Destructor");
 }
 
 void MeshComponent::InitComponent()

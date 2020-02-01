@@ -21,7 +21,11 @@
 //Console variables
 
 
-
+/******************************************************************************/
+/*!
+  \brief	Initalise Editor, move the windows to a comfortable debug position
+*/
+/******************************************************************************/
 void Editor_Init()
 {
 	HWND gameWindow = AESysGetWindowHandle();
@@ -33,7 +37,7 @@ void Editor_Init()
 
 	//Reposition game window to top right corner
 	int xnew = desktopRect.right - (applicationRect.right - applicationRect.left);
-	int ynew = -0;//desktopRect.bottom - (applicationRect.bottom - applicationRect.top);
+	int ynew = 60;//desktopRect.bottom - (applicationRect.bottom - applicationRect.top);	//Offset to see visual studio taskbar
 	SetWindowPos(gameWindow, HWND_NOTOPMOST, xnew, ynew, 0, 0, SWP_FRAMECHANGED | SWP_DRAWFRAME | SWP_NOSIZE);
 	
 }

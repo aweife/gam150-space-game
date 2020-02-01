@@ -6,10 +6,13 @@
 
 class MeshComponent :public Component
 {
+
+
 public:
 	AEGfxVertexList* _mesh;
 
 	MeshComponent();
+	virtual ~MeshComponent();
 	void GenerateMesh_Tri();
 	virtual void InitComponent();
 };

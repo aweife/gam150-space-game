@@ -1,6 +1,7 @@
 #include "Component.h"
 
-void Component::InitComponent()
+#include "../Tools/Console.h"				//REMOVE AFTER TESTING
+Component::~Component()
 {
-
+	Console_Cout("Component Destructor");	//REMOVE AFTER TESTING
 }

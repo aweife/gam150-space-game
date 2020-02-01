@@ -1,39 +1,59 @@
+/*********************************************************************************
+* \file			Main.cpp
+* \author		Ang Wei Feng, Chong Jin Kiat, Chong Jun Yi, Farzaana Binte Roslan
+* \version		1.0
+* \date			18/01/2019
+* \par			MAIN
+* \note			Course: GAM150
+* \brief		Entry point for Game executable "End Of Space" by Moon Base
+				- Initalise Window, Console, hardware
+				- Game State Loop, Game loop 
+				- Program Cleanup
+
+* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 // ---------------------------------------------------------------------------
 // Includes
-#include <crtdbg.h>        // For Memory Leak
-#include "AEEngine.h"
-#include "Global.h"
-#include "Tools/Editor.h"
-#include "Tools/Console.h"
-#include "Levels/Level1.h"
-#include "Systems/Core.h"				//Core System Controller
+#include <crtdbg.h>						// For Memory Leak
+#include "AEEngine.h"					// AlphaEngine
+#include "Global.h"						// Global variables 
+#include "Tools/Editor.h"				// Editor for gameplay
+#include "Tools/Console.h"				// Debug logger
+#include "Levels/Level1.h"				// REMOVE AFTER TESTING
+#include "Systems/Core.h"				// Overall System Controller
 
 // ---------------------------------------------------------------------------
 // Libraries
 //#pragma comment (lib, "Alpha_Engine.lib")
 // ---------------------------------------------------------------------------
-// Main
 
+/******************************************************************************/
+/*!
+  \brief	Entry point for Game executable "End Of Space" 
+*/
+/******************************************************************************/
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	///////////////////////
+	// -----------------------------------------------------------------------
 	// Variable declaration
 
 	int gGameRunning = 1;
 	int gDebugEditor = 0;
 
 	// Variable declaration end
-	///////////////////////////
+	// -----------------------------------------------------------------------
 
 #if _DEBUG
-	gDebugEditor = 1;
+	gDebugEditor = 1; //Set Console to active while in debug mode
 #endif
 
-	/////////////////
+	// -----------------------------------------------------------------------
 	// Initialization
 
 	// Using custom window procedure
@@ -58,11 +78,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//AEGameStateMgrInit();
 
 	// Initialization end
-	/////////////////////
+	// -----------------------------------------------------------------------
 
 
 	//TODO: Implement GSM
 
+	// -----------------------------------------------------------------------
 	// Game Loop
 	while (gGameRunning)
 	{
@@ -84,18 +105,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				gGameRunning = 0;
 			continue;
 		}
-		///////////////////
+		// -----------------------------------------------------------------------
 		// Game loop update
 		Editor_Update();
 		Core_Update();
 		Level1_Update();
 		// Game loop update end
-		///////////////////////
+		// -----------------------------------------------------------------------
 
-		//////////////////
+		// -----------------------------------------------------------------------
 		// Game loop draw
 		// Game loop draw end
-		/////////////////////
+		// -----------------------------------------------------------------------
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
@@ -103,10 +124,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 			gGameRunning = 0;
 	}
+	// -----------------------------------------------------------------------
 
 	Console_CleanUp();
 	Core_Unload();			// free all core system
-	
+	//Console_CleanUp();
 	AESysExit();			// free the system
 }
 

@@ -17,7 +17,7 @@ public:
 	sysCategory		_category;		//Name of GameObject
 	short			_bitfieldIndex;
 
-	void InitComponent();
+	virtual ~Component();	//virtual destructor to ensure our subclasses are correctly deallocated
 };
 
 #endif // !COMPONENT_H
