@@ -72,6 +72,12 @@
     <ClCompile Include="src\GameObjects\GameObject_Custom.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\Components\SpriteComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\SpriteManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Tools\Editor.h">
@@ -109,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="src\GameObjects\GameObject_Custom.h">
       <Filter>Source Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\SpriteComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\SpriteManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

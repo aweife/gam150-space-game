@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="src\Components\Component.cpp" />
     <ClCompile Include="src\Components\MeshComponent.cpp" />
+    <ClCompile Include="src\Components\SpriteComponent.cpp" />
     <ClCompile Include="src\GameObjects\GameObject.cpp" />
     <ClCompile Include="src\GameObjects\GameObject_Custom.cpp" />
     <ClCompile Include="src\GameObjects\UiElement.cpp" />
@@ -175,12 +176,14 @@
     <ClCompile Include="src\Systems\GameObjectManager.cpp" />
     <ClCompile Include="src\Systems\GraphicsSystem.cpp" />
     <ClCompile Include="src\Systems\MemoryPool.cpp" />
+    <ClCompile Include="src\Systems\SpriteManager.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\MeshComponent.h" />
+    <ClInclude Include="src\Components\SpriteComponent.h" />
     <ClInclude Include="src\GameObjects\GameObject.h" />
     <ClInclude Include="src\GameObjects\GameObject_Custom.h" />
     <ClInclude Include="src\Global.h" />
@@ -189,6 +192,7 @@
     <ClInclude Include="src\Systems\GameObjectManager.h" />
     <ClInclude Include="src\Systems\GraphicSystem.h" />
     <ClInclude Include="src\Systems\MemoryPool.h" />
+    <ClInclude Include="src\Systems\SpriteManager.h" />
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
   </ItemGroup>
