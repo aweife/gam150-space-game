@@ -91,35 +91,41 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\Component.cpp" />
-    <ClCompile Include="src\Components\MeshComponent.cpp" />
+    <ClCompile Include="src\Components\ComponentStorage.cpp" />
+    <ClCompile Include="src\Components\ComponentStorage_Generic.cpp" />
     <ClCompile Include="src\Components\SpriteComponent.cpp" />
-    <ClCompile Include="src\Entity\GameObject.cpp" />
-    <ClCompile Include="src\Entity\GameObject_Custom.cpp" />
+    <ClCompile Include="src\Entity\EntityManager.cpp" />
+    <ClCompile Include="src\Entity\Entity_Blueprint.cpp" />
     <ClCompile Include="src\Entity\UiElement.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Systems\ComponentManager.cpp" />
     <ClCompile Include="src\Systems\Core.cpp" />
-    <ClCompile Include="src\Systems\GameObjectManager.cpp" />
     <ClCompile Include="src\Systems\GraphicsSystem.cpp" />
     <ClCompile Include="src\Systems\MemoryPool.cpp" />
+    <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\SpriteManager.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Component.h" />
-    <ClInclude Include="src\Components\MeshComponent.h" />
+    <ClInclude Include="src\Components\ComponentStorage.h" />
+    <ClInclude Include="src\Components\ComponentStorage_Generic.h" />
     <ClInclude Include="src\Components\SpriteComponent.h" />
-    <ClInclude Include="src\Entity\GameObject.h" />
-    <ClInclude Include="src\Entity\GameObject_Custom.h" />
+    <ClInclude Include="src\Entity\EntityManager.h" />
+    <ClInclude Include="src\Entity\Entity_Blueprint.h" />
     <ClInclude Include="src\Global.h" />
+    <ClInclude Include="src\Global_ECS.h" />
     <ClInclude Include="src\Levels\Level1.h" />
+    <ClInclude Include="src\Systems\ComponentManager.h" />
     <ClInclude Include="src\Systems\Core.h" />
-    <ClInclude Include="src\Systems\GameObjectManager.h" />
     <ClInclude Include="src\Systems\GraphicSystem.h" />
     <ClInclude Include="src\Systems\MemoryPool.h" />
+    <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\SpriteManager.h" />
+    <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
   </ItemGroup>

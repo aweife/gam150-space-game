@@ -14,7 +14,7 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "AEEngine.h"
+#include "AEEngine.h"   //Time
 #include "Console.h"		
 #include <Windows.h>	//Most console api - HANDLE, 
 #include <iostream>		//cout Text
@@ -151,12 +151,25 @@ void Console_Cout(const std::string s, int num)
 /******************************************************************************/
 void Console_CoutDetailed(const char* s, const int line, const char* function, const char* file, int number)
 {
-	f64 time = AEGetTime(&time) - Global::gStartTime;
+	f64 time = AEGetTime(&time) - gStartTime;
 
 	std::cout << "-------------------------------" << std::endl;
 	std::cout << "Line: " << line << " Function: " << function << " File: "<< file << " Time: " << time << std::endl;
 	std::cout << s << " "<< number << std::endl;
 	std::cout << "-------------------------------" << std::endl;
+}
+
+/******************************************************************************/
+/*!
+  \brief	Cout Newline
+*/
+/******************************************************************************/
+void Console_Newline(int repeat)
+{
+	while (repeat > 0) {
+		std::cout << std::endl;
+		--repeat;
+	}
 }
 
 /******************************************************************************/

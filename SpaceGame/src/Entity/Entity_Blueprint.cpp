@@ -1,4 +1,3 @@
-#include "GameObject_Custom.h"
-#include <string>
+#include "Entity_Blueprint.h"
 
 //To seperate core engine code from custom game design behaviours

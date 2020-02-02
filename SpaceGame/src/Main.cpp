@@ -68,7 +68,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #endif
 
 	Core_Init();						// Init all systems
-	Global::Global_Init();				// Get start time of game program
+	Global_Init();				// Get start time of game program
 
 
 	// reset the system modules
@@ -95,9 +95,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		//TODO : Need to tidy this up next time
 		if (AEInputCheckTriggered(AEVK_P)) {
-			Global::TogglePause();
+			TogglePause();
 		}
-		else if (Global::gGamePause)
+		else if (gGamePause)
 		{
 			AESysFrameEnd();
 			// check if forcing the application to quit

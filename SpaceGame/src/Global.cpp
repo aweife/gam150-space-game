@@ -17,36 +17,33 @@
 #include "Tools/Console.h"
 #include "AEEngine.h"			//Time
 
-namespace Global 
-{
-	bool gGamePause;				// GameStatePaused
-	double gStartTime;				// Time when game was launched
+bool gGamePause;				// GameStatePaused
+double gStartTime;				// Time when game was launched
 
 /******************************************************************************/
 /*!
   \brief	Get data when game starts
 */
 /******************************************************************************/
-	void Global_Init()
-	{
-		AEGetTime(&Global::gStartTime);
-	}
+void Global_Init()
+{
+	AEGetTime(&gStartTime);
+}
 
 /******************************************************************************/
 /*!
   \brief	Pause or unpause the game .... may need to move to gamestate??
 */
 /******************************************************************************/
-	void TogglePause()
+void TogglePause()
+{
+	if (gGamePause) 
 	{
-		if (gGamePause) 
-		{
-			Console_CoutDetailed("Game is Unpaused", -1, " ");
-		}
-		else
-		{
-			Console_CoutDetailed("Game is Paused", -1, " ");
-		}
-		gGamePause = !gGamePause;
+		Console_CoutDetailed("Game is Unpaused", -1, " ");
 	}
+	else
+	{
+		Console_CoutDetailed("Game is Paused", -1, " ");
+	}
+	gGamePause = !gGamePause;
 }

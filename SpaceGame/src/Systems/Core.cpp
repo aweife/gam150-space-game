@@ -1,5 +1,5 @@
 /*********************************************************************************
-* \file			Global.cpp
+* \file			Core.cpp
 * \author		Chong Jun Yi
 * \version		1.0
 * \date			30/01/2019
@@ -15,40 +15,45 @@
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #include "Core.h"
-#include "GameObjectManager.h"
+#include "System.h"
+#include "../Entity/EntityManager.h"
+#include "ComponentManager.h"
+#include "SpriteManager.h"
 
-#include "../Components/MeshComponent.h"
-
+#include "../Components/SpriteComponent.h"
 void Core_Init()
 {
 	//Create all the systems and manager instances
-	//MemoryPool::GetInstance();				// Dont use this!
-	GameObjectManager::GetInstance();
+	EntityManager::GetInstance().Init();
+	ComponentManager::GetInstance().Init();
+	SpriteManager::GetInstance().Init();
 
-	GameObject& a = GameObjectManager::GetInstance().CreateGameObject("Hello");
-	GameObjectManager::GetInstance().CreateGameObject("World");
-	GameObjectManager::GetInstance().CreateGameObject("Hello");
-	GameObjectManager::GetInstance().GenerateGameObjectList();
+	ENTITYID number0 = EntityManager::GetInstance().CreateEntity("Hello");								//Entity 0
+	EntityManager::GetInstance().CreateEntity("World");			//Entity 1
+	EntityManager::GetInstance().GenerateEntityList();
 
-	GameObjectManager::GetInstance().GenerateGameObjectList();
-	GameObjectManager::GetInstance().AddComponent<MeshComponent>(a);
-	GameObjectManager::GetInstance().AddComponent<MeshComponent>(a);
-	GameObjectManager::GetInstance().GenerateComponentList(a._id);
-	GameObjectManager::GetInstance().RemoveComponent<MeshComponent>(a);
-	GameObjectManager::GetInstance().GenerateComponentList(a._id);
+	EntityManager::GetInstance().DestroyEntity(number0);
+	EntityManager::GetInstance().GenerateEntityList();
+
+	ComponentManager::GetInstance().GenerateComponentCollection();
+	ComponentManager::GetInstance().AddComponent<SpriteComponent>(1, new SpriteComponent(1));
+	ComponentManager::GetInstance().RemoveComponent<SpriteComponent>(1);
+	ComponentManager::GetInstance().AddComponent<SpriteComponent>(1, new SpriteComponent(1));
 }
-
 
 void Core_Update()
 {
 	//Update ECS systems in order
 
+	//Change this to input-update-render sequence
+	SpriteManager::GetInstance().Update();
 	
 }
 
 void Core_Unload()
 {
-	GameObjectManager::DestroyInstance();
-	//MemoryPool::DestroyInstance();				// Dont use this!
+	SpriteManager::DestroyInstance();
+	ComponentManager::DestroyInstance();
+	EntityManager::DestroyInstance();
 }
 

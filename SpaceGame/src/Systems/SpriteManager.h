@@ -1,22 +1,24 @@
 #pragma once
-
-#include <vector>
+#include "System.h"
+#include "ComponentManager.h"
+#include "../Components/ComponentStorage.h"
 #include "../Components/SpriteComponent.h"
 
-class SpriteManager
+class SpriteManager: public System<SpriteManager>
 {
 private:
-
-	// Private constructor
-	SpriteManager();
-
+	
 	// List of component
-	std::vector<SpriteComponent> spriteComponentList;
-
+	std::shared_ptr<ComponentStorage<SpriteComponent>> spriteComponentList;
+protected:
+	
 public:
+	// constructor
+	SpriteManager();					//somehow cannot be accessed by system if placed anywhere else
 
 	// Manager methods
-	void RegisterComponent(SpriteComponent& sprite);
-	void UpdateComponents();
+	virtual void Init();								//Signature, assign componentStorages
+	virtual void Update();								//Draw sprite on screen ect
+
 };
 

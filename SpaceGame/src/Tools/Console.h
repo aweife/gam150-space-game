@@ -16,6 +16,8 @@ void Console_Cout(const char* s, int num);
 void Console_Cout(const std::string s, int num);
 void Console_CoutDetailed(const char* s, const int line, const char* function, const char* file = " ", int number = 0);
 
+void Console_Newline(int repeat = 1);
+
 COORD Console_GetCursorPos();
 void Console_SetCursorPos(short x, short y);
 void Console_SetCursorPos(COORD c);
