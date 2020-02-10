@@ -1,15 +1,14 @@
 #pragma once
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#include <Windows.h>
+//Gameplay Global Variables
+extern bool gGamePause;
+extern double gStartTime;
 
-namespace Global 
+void Global_Init();
+void TogglePause();
+
+struct Vector2D
 {
-	extern bool gGamePause;
-	extern double gStartTime;
-
-	void Global_Init();
-	void TogglePause();
-}
-
-
-#endif
+	float x;
+	float y;
+};

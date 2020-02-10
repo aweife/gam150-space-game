@@ -14,15 +14,20 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "AEEngine.h"
+#include "AEEngine.h"   //Time
 #include "Console.h"		
 #include <Windows.h>	//Most console api - HANDLE, 
 #include <iostream>		//cout Text
-#include "../Global.h"
+#include "../Global.h"  
 
 static HANDLE sConsoleOutHandle = 0x00;			//Handle for console screen
 COORD sConsoleSize;								//The size of console screen
 
+/******************************************************************************/
+/*!
+  \brief	Initalise Console Window
+*/
+/******************************************************************************/
 void Console_Init()
 {
 	// Main buffer in normal mode, Backbuffer in double buffering
@@ -58,26 +63,30 @@ void Console_Init()
 //------------------------------------------------------------
 
 	// Set the console size
-	Console_SetSize(150, 50); //Load Screen buffer based on size
+	Console_SetSize(150, 40); //Load Screen buffer based on size
 
 	// Set the console at top left corner
-	Console_SetWindowPos(0, 0);
+	Console_SetWindowPos(0, 60);
 	// Place the console on top of game window
 	//BringWindowToTop(GetConsoleWindow());
 }
 
-//------------------------------------------------------------
-//	Move the console window to coord (x, y)
-//------------------------------------------------------------
+/******************************************************************************/
+/*!
+  \brief	Move the console window to coord (x, y)
+*/
+/******************************************************************************/
 void Console_SetWindowPos(int x, int y)
 {
 	SetWindowPos(GetConsoleWindow(), HWND_TOP, x, y, 0, 0, SWP_FRAMECHANGED | SWP_DRAWFRAME | SWP_NOSIZE);
 }
 
-//------------------------------------------------------------
-//	Resize the console to user specifed size
-//  If monitor size contraint, resize to maximum possible size
-//------------------------------------------------------------
+/******************************************************************************/
+/*!
+  \brief	Resize the console to user specifed size
+  \note		If monitor size has contraint, resize to maximum possible size
+*/
+/******************************************************************************/
 void Console_SetSize(short x, short y)
 {
 	// Check if user defined size exceed laptop screen
@@ -100,9 +109,11 @@ void Console_SetSize(short x, short y)
 	sConsoleSize = consoleSize;	//Update the current console size
 }
 
-//------------------------------------------------------------
-//	Cout text
-//------------------------------------------------------------
+/******************************************************************************/
+/*!
+  \brief	Display text using Cout functions
+*/
+/******************************************************************************/
 void Console_Cout(short x, short y, const char* s)
 {
 	Console_SetCursorPos(x, y);
@@ -124,14 +135,23 @@ void Console_Cout(const char* s, int num)
 	std::cout << s << " " << num << std::endl;
 }
 
-//------------------------------------------------------------
-//	Sample: Console_CoutDetailed("HELLO WORLD", __LINE__, __FUNCTION__);
-//	OR:		Console_CoutDetailed("HELLO WORLD", 123 ,__LINE__, __FUNCTION__, __FILE__);
-// file and number is a default parameter
-//------------------------------------------------------------
+void Console_Cout(const std::string s, int num)
+{
+	std::cout << s << " " << num << std::endl;
+}
+
+
+/******************************************************************************/
+/*!
+  \brief	Display detail information
+  \note		Sample: Console_CoutDetailed("HELLO WORLD", __LINE__, __FUNCTION__);
+            Console_CoutDetailed("HELLO WORLD", 123 ,__LINE__, __FUNCTION__, __FILE__);
+			file and number is a default parameter
+*/
+/******************************************************************************/
 void Console_CoutDetailed(const char* s, const int line, const char* function, const char* file, int number)
 {
-	f64 time = AEGetTime(&time) - Global::gStartTime;
+	f64 time = AEGetTime(&time) - gStartTime;
 
 	std::cout << "-------------------------------" << std::endl;
 	std::cout << "Line: " << line << " Function: " << function << " File: "<< file << " Time: " << time << std::endl;
@@ -139,9 +159,24 @@ void Console_CoutDetailed(const char* s, const int line, const char* function, c
 	std::cout << "-------------------------------" << std::endl;
 }
 
-//------------------------------------------------------------
-//	Get the coordinate of console cursor
-//------------------------------------------------------------
+/******************************************************************************/
+/*!
+  \brief	Cout Newline
+*/
+/******************************************************************************/
+void Console_Newline(int repeat)
+{
+	while (repeat > 0) {
+		std::cout << std::endl;
+		--repeat;
+	}
+}
+
+/******************************************************************************/
+/*!
+  \brief	Get the coordinate of console cursor
+*/
+/******************************************************************************/
 COORD Console_GetCursorPos()
 {
 	CONSOLE_SCREEN_BUFFER_INFO  screenBufferInfo;
@@ -150,24 +185,34 @@ COORD Console_GetCursorPos()
 	return screenBufferInfo.dwCursorPosition;	//Return the current cursor location
 }
 
-//------------------------------------------------------------
-//	Set the coordinate of console cursor
-//------------------------------------------------------------
+/******************************************************************************/
+/*!
+  \brief	Set the coordinate of console cursor
+*/
+/******************************************************************************/
 void Console_SetCursorPos(short x, short y)
 {
 	COORD pos = { x, y };
 	SetConsoleCursorPosition(sConsoleOutHandle, pos);
 }
 
+/******************************************************************************/
+/*!
+  \brief	Set the coordinate of console cursor
+*/
+/******************************************************************************/
 void Console_SetCursorPos(COORD c)
 {
 	SetConsoleCursorPosition(sConsoleOutHandle, c);
 }
 
-//------------------------------------------------------------
-//	Clear a square area in the console window
-//  Will not overflow to next line if exceed width
-//------------------------------------------------------------
+
+/******************************************************************************/
+/*!
+  \brief	Clear a square area in the console window
+			Will not overflow to next line if exceed width
+*/
+/******************************************************************************/
 void Console_ClearArea(short topX, short topY, short width, short height)
 {
 	COORD topLeft = {topX, topY};	//Starting coordinate to Clear
@@ -186,10 +231,11 @@ void Console_ClearArea(short topX, short topY, short width, short height)
 	}
 	Console_SetCursorPos(oldPos);				//Restore current cursor location
 }
-
-//------------------------------------------------------------
-//	Clear the entire console window
-//------------------------------------------------------------
+/******************************************************************************/
+/*!
+  \brief	Clear the entire console window
+*/
+/******************************************************************************/
 void Console_ClearAll()
 {
 	
@@ -206,6 +252,11 @@ void Console_ClearAll()
 		cellCount, firstCell, &writtenCells);
 }
 
+/******************************************************************************/
+/*!
+  \brief	Clean up when exit executable
+*/
+/******************************************************************************/
 void Console_CleanUp()
 {
 	//Console_FreeRenderBuffer();

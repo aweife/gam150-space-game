@@ -25,8 +25,23 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{c7aea6dd-17f9-4ff8-8c32-ad00b968d389}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObjects">
+    <Filter Include="Source Files\Entity">
       <UniqueIdentifier>{4b88409f-16a8-46dc-8aaa-393d0476c4c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{061d9757-739f-42ca-b562-41e92ef3fdd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{cdea16c2-7b5d-4c01-90ca-9bb898da80f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Systems">
+      <UniqueIdentifier>{5cd666fe-92af-4847-a5b8-4840aa5dbe27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Levels">
+      <UniqueIdentifier>{390c468c-3aac-4e98-be8c-f4f194d68147}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{b747ef63-109d-490a-8d1d-d2502c5f2390}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,21 +60,6 @@
     <ClCompile Include="src\Systems\GraphicsSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\Components\MeshComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObjects\GameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObjects\UiElement.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\GameObjectManager.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Global.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Systems\Core.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -69,46 +69,109 @@
     <ClCompile Include="src\Systems\MemoryPool.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObjects\GameObject_Custom.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="src\Entity\UiElement.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\SpriteComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\SpriteManager.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\PhysicsSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity\Entity_Blueprint.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity\EntityManager.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Global.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\ComponentManager.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\ComponentStorage.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\ComponentStorage_Generic.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity\Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\TransformComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\TransformManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Tools\Editor.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tools\Console.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Levels\Level1.h">
-      <Filter>Source Files\Levels</Filter>
-    </ClInclude>
     <ClInclude Include="src\Global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Systems\GraphicSystem.h">
-      <Filter>Source Files\Systems</Filter>
+    <ClInclude Include="src\Components\Component.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\Systems\GameObjectManager.h">
-      <Filter>Source Files\Systems</Filter>
+    <ClInclude Include="src\Components\SpriteComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObjects\GameObject.h">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClInclude Include="src\Systems\SpriteManager.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Levels\Level1.h">
+      <Filter>Header Files\Levels</Filter>
     </ClInclude>
     <ClInclude Include="src\Systems\Core.h">
-      <Filter>Source Files\Systems</Filter>
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Components\MeshComponent.h">
-      <Filter>Source Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Components\Component.h">
-      <Filter>Source Files\Components</Filter>
+    <ClInclude Include="src\Systems\GraphicSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Systems\MemoryPool.h">
-      <Filter>Source Files\Systems</Filter>
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObjects\GameObject_Custom.h">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClInclude Include="src\Tools\Console.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Tools\Editor.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\PhysicsSystem.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entity\Entity_Blueprint.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Global_ECS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entity\EntityManager.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\System.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\ComponentManager.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\ComponentStorage.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\ComponentStorage_Generic.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entity\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\TransformComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\TransformManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
