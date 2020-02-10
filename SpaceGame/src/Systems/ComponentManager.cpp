@@ -1,6 +1,7 @@
 #include "ComponentManager.h"
 #include <typeinfo>							 //  typeid
 #include "../Components/SpriteComponent.h"
+#include "../Components/TransformComponent.h"
 #include "../Entity/EntityManager.h"
 
 #include "../Tools/Console.h"
@@ -8,6 +9,7 @@ void ComponentManager::Init()
 {
 	//Register all the components here
 	RegisterComponentCollection<SpriteComponent>(ID_SpriteComponent);
+	RegisterComponentCollection<TransformComponent>(ID_TransformComponent);
 }
 
 template<typename T>
@@ -74,6 +76,7 @@ void ComponentManager::AddComponent(ENTITYID entity, T* component)
 }
 //Explicit template
 template void ComponentManager::AddComponent<SpriteComponent>(ENTITYID, SpriteComponent*);
+template void ComponentManager::AddComponent<TransformComponent>(ENTITYID, TransformComponent*);
 
 template<typename T>
 void ComponentManager::RemoveComponent(ENTITYID entity)
@@ -85,6 +88,7 @@ void ComponentManager::RemoveComponent(ENTITYID entity)
 }
 //Explicit template
 template void ComponentManager::RemoveComponent<SpriteComponent>(ENTITYID);
+
 
 template<typename T>
 T* ComponentManager::GetComponent(ENTITYID entity)

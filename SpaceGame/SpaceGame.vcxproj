@@ -94,6 +94,8 @@
     <ClCompile Include="src\Components\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\ComponentStorage_Generic.cpp" />
     <ClCompile Include="src\Components\SpriteComponent.cpp" />
+    <ClCompile Include="src\Components\TransformComponent.cpp" />
+    <ClCompile Include="src\Entity\Entity.cpp" />
     <ClCompile Include="src\Entity\EntityManager.cpp" />
     <ClCompile Include="src\Entity\Entity_Blueprint.cpp" />
     <ClCompile Include="src\Entity\UiElement.cpp" />
@@ -106,6 +108,7 @@
     <ClCompile Include="src\Systems\MemoryPool.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\SpriteManager.cpp" />
+    <ClCompile Include="src\Systems\TransformManager.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
@@ -114,6 +117,8 @@
     <ClInclude Include="src\Components\ComponentStorage.h" />
     <ClInclude Include="src\Components\ComponentStorage_Generic.h" />
     <ClInclude Include="src\Components\SpriteComponent.h" />
+    <ClInclude Include="src\Components\TransformComponent.h" />
+    <ClInclude Include="src\Entity\Entity.h" />
     <ClInclude Include="src\Entity\EntityManager.h" />
     <ClInclude Include="src\Entity\Entity_Blueprint.h" />
     <ClInclude Include="src\Global.h" />
@@ -126,6 +131,7 @@
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\SpriteManager.h" />
     <ClInclude Include="src\Systems\System.h" />
+    <ClInclude Include="src\Systems\TransformManager.h" />
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
   </ItemGroup>

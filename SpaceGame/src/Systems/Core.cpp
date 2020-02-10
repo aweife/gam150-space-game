@@ -21,6 +21,7 @@
 #include "SpriteManager.h"
 
 #include "../Components/SpriteComponent.h"
+#include "../Components/TransformComponent.h"
 void Core_Init()
 {
 	//Create all the systems and manager instances
@@ -39,6 +40,9 @@ void Core_Init()
 	ComponentManager::GetInstance().AddComponent<SpriteComponent>(1, new SpriteComponent(1));
 	ComponentManager::GetInstance().RemoveComponent<SpriteComponent>(1);
 	ComponentManager::GetInstance().AddComponent<SpriteComponent>(1, new SpriteComponent(1));
+
+	// Add transform
+	ComponentManager::GetInstance().AddComponent<TransformComponent>(1, new TransformComponent(1));
 }
 
 void Core_Update()

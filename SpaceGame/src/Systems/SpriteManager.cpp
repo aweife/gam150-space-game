@@ -15,6 +15,7 @@
 #include "SpriteManager.h"
 #include "AEEngine.h"
 #include "../Global_ECS.h"
+#include "../Components/TransformComponent.h"
 
 
 SpriteManager::SpriteManager()
@@ -42,7 +43,11 @@ void SpriteManager::Update()
 		//Put this into a rendering system
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 		//Rendering system -- but uses transform component
-		AEGfxSetPosition(0, 0);							// Set position for object 1 
+
+		TransformComponent* trans = ComponentManager::GetInstance().GetComponent<TransformComponent>(i.first);
+
+
+		AEGfxSetPosition(trans->position.x, trans->position.y);						// Set position for object 1 
 
 		//These can remain in sprite manager
 		AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);		// No tint  
