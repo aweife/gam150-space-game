@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 /*
 // Collision
 class Collider
@@ -31,22 +33,53 @@ class OrbitalGravity :public Gravity
 };
 */
 
-// Velocity - can use vector 2 
-class Velocity
+/**************************************************************************/
+/*!
+	This is the struct for the AABB collision detection
+	*/
+/**************************************************************************/
+struct AABB
 {
-	struct
-	{
-		float x;
-		float y;
-	}Vector2D;
+	//AEVec2	c; // center
+	//float  r[2]; // holds half width and half height
+
+	Vector2D	min;
+	Vector2D	max;
+};
 
 
-	float deltatime;
-	float distance;
-public:
-	// Velocity() : deltatime{ deltatime }, distance{distance};
-	// Using default destructor
+class RigidBodyComponent : public Component
+{
+	float _velocity;
+	float _acceleration;
+	// float _mass;
 
-	// To compute velocity
-	float VelocityComputation(float deltatime, float xPos, float yPos);
+public: 
+	// Constructor
+	RigidBodyComponent();
+
+	// Destructor
+	~RigidBodyComponent();
+
+	// Getters 
+	float getVelocity();
+	float getAcceleration();
+};
+
+class CollisionComponent : public Component
+{
+
+public: 
+	// Constructor
+	CollisionComponent();
+
+	// Destructor
+	~CollisionComponent();
+
+	// Checking for Collision (AABB)
+	bool checkforCollisionAABB(const AABB & obj1, const Vector2D & vel1,
+		                       const AABB & obj2, const Vector2D & vel2);
+
+	// Checking for Collision (Circle)
+	bool checkforCollisionCircle();
 };

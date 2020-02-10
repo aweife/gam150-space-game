@@ -14,11 +14,179 @@
 **********************************************************************************/
 #include "PhysicsSystem.h"
 #include <AEVec2.h>
+#include "../Components/Component.h"
+#include "../Global.h"
+#include "AEEngine.h"
+#include "Math.h"
+
+/*********************************************************************************
+*
+*  RIGIDBODY COMPONENT FUNCTIONS
+*
+**********************************************************************************/
+// Constructor
+RigidBodyComponent::RigidBodyComponent()
+{
+
+}
+
+// Destructor
+RigidBodyComponent::~RigidBodyComponent()
+{
+
+}
+
+// Getters 
+float RigidBodyComponent::getVelocity()
+{
+	return _velocity;
+}
+
+float RigidBodyComponent::getAcceleration()
+{
+	return _acceleration;
+}
 
 
-//float Velocity::VelocityComputation(float deltatime, float xPos, float yPos)
-//{
-//	// v = (change of distance)/ delatime
-//
-//}
+/*********************************************************************************
+*
+*  COLLISION COMPONENT FUNCTIONS
+*
+**********************************************************************************/
 
+// Constructor
+CollisionComponent::CollisionComponent()
+{
+
+}
+
+// Destructor
+CollisionComponent::~CollisionComponent()
+{
+
+}
+
+// Checking for Collision (AABB)
+bool CollisionComponent::checkforCollisionAABB(const AABB & obj1, const Vector2D & vel1, 
+	                                           const AABB & obj2, const Vector2D & vel2)
+{
+	// To check for collision detection between static rectangles, if the check returns no overlap, continue
+	if ((obj1.max.x < obj2.min.x || obj1.min.x > obj2.max.x || 
+		obj1.max.y < obj2.min.y || obj1.min.y > obj2.max.y) == false)
+	{
+		return true;
+	}
+
+	// Initialise variables and calculate the new velocity
+	float tFirst = 0; 
+	float tLast = g_dt;
+	float newVelocity_x = vel2.x - vel1.x;
+	float newVelocity_y = vel2.y - vel1.y;
+	float dFirst_x = obj1.min.x - obj2.max.x;
+	float dLast_x = obj1.max.x - obj2.min.x;
+	float dFirst_y = obj1.min.y - obj2.max.y;
+	float dLast_y = obj1.max.y - obj2.min.y;
+
+	// Working with one-dimention (x-axis)
+	if (newVelocity_x < 0)
+	{
+		// Case 1 
+		if (obj1.max.x > obj2.min.x)
+		{
+			return false;
+		}
+
+		// Case 4 
+		if (obj1.max.x < obj2.min.x)
+		{
+			tFirst = max(dFirst_x / newVelocity_x, tFirst);
+		}
+
+		if (obj1.min.x < obj2.max.x)
+		{
+			tLast = min(dLast_x / newVelocity_x, tLast);
+		}
+	}
+
+	if (newVelocity_x > 0)
+	{
+		// Case 2 
+		if (obj1.min.x > obj2.max.x)
+		{
+			tFirst = max(dFirst_x / newVelocity_x, tFirst);
+		}
+
+		if (obj1.max.x > obj2.min.x)
+		{
+			tLast = min(dLast_x / newVelocity_x, tLast);
+		}
+
+		// Case 3 
+		if (obj1.max.x < obj2.min.x)
+		{
+			return false;
+		}
+	}
+
+	// Case 5
+	if (tFirst > tLast)
+	{
+		return false;
+	}
+
+	// Working with one-dimention (x-axis)
+	if (newVelocity_y < 0)
+	{
+		// Case 1 
+		if (obj1.max.y > obj2.min.y)
+		{
+			return false;
+		}
+
+		// Case 4 
+		if (obj1.max.y < obj2.min.y)
+		{
+			tFirst = max(dFirst_y / newVelocity_y, tFirst);
+		}
+
+		if (obj1.min.y < obj2.max.y)
+		{
+			tLast = min(dLast_y / newVelocity_y, tLast);
+		}
+	}
+
+	if (newVelocity_y > 0)
+	{
+		// Case 2 
+		if (obj1.min.y > obj2.max.y)
+		{
+			tFirst = max(dFirst_y / newVelocity_y, tFirst);
+		}
+
+		if (obj1.max.y > obj2.min.y)
+		{
+			tLast = min(dLast_y / newVelocity_y, tLast);
+		}
+
+		// Case 3 
+		if (obj1.max.y < obj2.min.y)
+		{
+			return false;
+		}
+	}
+
+	// Case 5
+	if (tFirst > tLast)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+// Checking for Collision (Circle)
+bool CollisionComponent::checkforCollisionCircle()
+{
+	
+
+}
