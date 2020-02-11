@@ -1,40 +1,77 @@
 #pragma once
-#include <queue>								// FIFO storage for entity
-#include <string>								// human-readable name for entity	
-#include <array>								// storage for name 
-#include <vector>								// vector storage for entity_List
-#include "../Global_ECS.h"						// ECS typedefs
-#include "../Systems/System.h"
 
-class EntityManager: public System<EntityManager>
+#include "../Global_ECS.h"
+#include <queue>
+#include <array>
+
+class EntityManager
 {
-private:	
-	ENTITYID _activeEntityCount;
-	std::vector<ENTITYID> _activeEntity_List;						//ENTITYID used by game
-	std::queue<ENTITYID> _inactiveEntity_List;						//Recycled ENTITYID that can be used
-
-	std::array<std::string, ENTITY_MAX> _activeEntity_NameList;		//A array of names for quick access vis ENTITYID
-	std::array<SIGNATURE, ENTITY_MAX> _activeEntity_SignatureList;	//A array of entity signature for quick access via ENTITYID
-
-	
 public:
+	// Constructor
+	// Initialise a queue of inactive/available entities with unique id
 	EntityManager();
-	virtual void Init();
-	ENTITYID CreateEntity(std::string name = "Unnamed Entity");
-	void DestroyEntity(ENTITYID entity);
 
-	SIGNATURE GetEntitySignature(ENTITYID entity) const;
-	void SetEntitySignature(ENTITYID entity, SIGNATURE key);
+	// Requests an entity - this removes the entity from the front of the queue
+	Entity CreateEntity();
 
-	void GenerateEntityList() const;
+	// Return an entity to the back of the queue
+	void DestroyEntity(Entity entity);
 
-	//// Component related funcitons
-	//template<class AnyComp> void AddComponent();
-	//template<class AnyComp> void RemoveComponent();
+	// Assign a signature to an entity
+	void SetSignature(Entity entity, Signature signature);
+
+	// Returns the signature of an entity
+	Signature GetSignature(Entity entity);
+
+private:
+	// We use queue because it is FIFO
+
+	// Queue of available entities
+	std::queue<Entity> _availableEntities;
+
+	// Number of active entities
+	unsigned int _activeEntityCount;
+
+	// Simple array of signatures
+	std::array<Signature, MAX_ENTITIES> _signatures;
 };
 
-
-// Some links about template
-	//https://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file
-	//https://isocpp.org/wiki/faq/templates#templates-defn-vs-decl
-//Example:GameObjectManager.AddComponent<MeshComponent>(GameObject);
+//#include <queue>								// FIFO storage for entity
+//#include <string>								// human-readable name for entity	
+//#include <array>								// storage for name 
+//#include <vector>								// vector storage for entity_List
+//#include "../Global_ECS.h"						// ECS typedefs
+//#include "../Systems/System.h"
+//
+//class EntityManager: public System<EntityManager>
+//{
+//private:	
+//	ENTITYID _activeEntityCount;
+//	std::vector<ENTITYID> _activeEntity_List;						//ENTITYID used by game
+//	std::queue<ENTITYID> _inactiveEntity_List;						//Recycled ENTITYID that can be used
+//
+//	std::array<std::string, ENTITY_MAX> _activeEntity_NameList;		//A array of names for quick access vis ENTITYID
+//	std::array<SIGNATURE, ENTITY_MAX> _activeEntity_SignatureList;	//A array of entity signature for quick access via ENTITYID
+//
+//	
+//public:
+//	EntityManager();
+//	virtual void Init();
+//	ENTITYID CreateEntity(std::string name = "Unnamed Entity");
+//	void DestroyEntity(ENTITYID entity);
+//
+//	SIGNATURE GetEntitySignature(ENTITYID entity) const;
+//	void SetEntitySignature(ENTITYID entity, SIGNATURE key);
+//
+//	void GenerateEntityList() const;
+//
+//	//// Component related funcitons
+//	//template<class AnyComp> void AddComponent();
+//	//template<class AnyComp> void RemoveComponent();
+//};
+//
+//
+//// Some links about template
+//	//https://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file
+//	//https://isocpp.org/wiki/faq/templates#templates-defn-vs-decl
+////Example:GameObjectManager.AddComponent<MeshComponent>(GameObject);

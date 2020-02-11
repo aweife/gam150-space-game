@@ -57,9 +57,6 @@
     <ClCompile Include="src\Levels\Level1.cpp">
       <Filter>Source Files\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="src\Systems\Core.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="src\Components\Component.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -99,7 +96,13 @@
     <ClCompile Include="src\Managers\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Managers\SystemManager,h.cpp">
+    <ClCompile Include="src\Managers\SystemManager.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ECS\Core.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math\Vec2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -115,9 +118,6 @@
     </ClInclude>
     <ClInclude Include="src\Levels\Level1.h">
       <Filter>Header Files\Levels</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\Core.h">
-      <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\Console.h">
       <Filter>Header Files\Tools</Filter>
@@ -154,6 +154,15 @@
     </ClInclude>
     <ClInclude Include="src\Systems\SpriteSystem.h">
       <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ECS\Core.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math\Vec2.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
