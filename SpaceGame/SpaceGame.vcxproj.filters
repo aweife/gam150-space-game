@@ -57,17 +57,11 @@
     <ClCompile Include="src\Levels\Level1.cpp">
       <Filter>Source Files\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="src\Systems\GraphicsSystem.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="src\Systems\Core.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Components\Component.cpp">
       <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\MemoryPool.cpp">
-      <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Entity\UiElement.cpp">
       <Filter>Source Files\Entity</Filter>
@@ -75,29 +69,38 @@
     <ClCompile Include="src\Components\SpriteComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="src\Systems\SpriteManager.cpp">
-      <Filter>Source Files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="src\Systems\PhysicsSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Entity\Entity_Blueprint.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\Entity\EntityManager.cpp">
-      <Filter>Source Files\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="src\Global.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\ComponentManager.cpp">
-      <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\Components\ComponentStorage.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Components\ComponentStorage_Generic.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\EntityManager.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\ComponentManager.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NotInUse\MemoryPool.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Systems\SpriteSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\SystemManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Managers\SystemManager,h.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,19 +113,10 @@
     <ClInclude Include="src\Components\SpriteComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\Systems\SpriteManager.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
     <ClInclude Include="src\Levels\Level1.h">
       <Filter>Header Files\Levels</Filter>
     </ClInclude>
     <ClInclude Include="src\Systems\Core.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\GraphicSystem.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\MemoryPool.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Tools\Console.h">
@@ -140,13 +134,7 @@
     <ClInclude Include="src\Global_ECS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entity\EntityManager.h">
-      <Filter>Header Files\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="src\Systems\System.h">
-      <Filter>Header Files\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Systems\ComponentManager.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\Components\ComponentStorage.h">
@@ -154,6 +142,18 @@
     </ClInclude>
     <ClInclude Include="src\Components\ComponentStorage_Generic.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\EntityManager.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Managers\ComponentManager.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NotInUse\MemoryPool.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Systems\SpriteSystem.h">
+      <Filter>Header Files\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
