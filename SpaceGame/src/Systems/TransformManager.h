@@ -1,8 +1,8 @@
 #pragma once
-
+#include "../Systems/System.h"
 #include "../Components/TransformComponent.h"
 
-namespace TransformManager
+class TransformManager :public System<TransformManager>
 {
-	void Reset(TransformComponent trans);
-}
+	//void Reset(TransformComponent trans);
+};

@@ -14,10 +14,17 @@
 **********************************************************************************/
 #include "PhysicsSystem.h"
 #include <AEVec2.h>
-#include "../Components/Component.h"
-#include "../Global.h"
-#include "AEEngine.h"
 #include "Math.h"
+
+/*********************************************************************************
+*
+*  GLOBAL VARIABLES (FOR EULER'S METHOD <TEST>)
+*
+**********************************************************************************/
+float thrust = 100.0f; 
+float displacement = 50.0f;
+float _velocity = 30.0f;
+float _mass = 30.0f;
 
 /*********************************************************************************
 *
@@ -25,27 +32,93 @@
 *
 **********************************************************************************/
 // Constructor
-RigidBodyComponent::RigidBodyComponent()
+RigidBodyComponent::RigidBodyComponent() : mass{ 30.0f }, inertia{ 10.0f }, 
+										   inertiaInverse{5.0f}, position{ 0.0f, 0.0f },
+										   velocity{0.0f, 0.0f}, angularVelocity{0.0f, 0.0f}
 {
 
 }
 
-// Destructor
-RigidBodyComponent::~RigidBodyComponent()
-{
-
-}
+// Using default destructor
 
 // Getters 
-float RigidBodyComponent::getVelocity()
+float RigidBodyComponent::getMass()
 {
-	return _velocity;
+	return mass;
 }
 
-float RigidBodyComponent::getAcceleration()
+float RigidBodyComponent::getInertia()
 {
-	return _acceleration;
+	return inertia;
 }
+
+float RigidBodyComponent::getInertiaInverse()
+{
+	return inertiaInverse;
+}
+
+Vector2D RigidBodyComponent::getPosition()
+{
+	return position;
+}
+
+Vector2D RigidBodyComponent::getVelocity()
+{
+	return velocity;
+}
+
+Vector2D RigidBodyComponent::getAngularVelocity()
+{
+	return angularVelocity;
+}
+
+// Initialise rigidbody
+void RigidBodyComponent::Initialize(RigidBodyComponent body)
+{
+	// Set initial position
+	body.position.x = 0.0f;
+	body.position.y = 0.0f;
+
+	// Set initial velocity 
+	body.velocity.x = 0.0f;
+	body.velocity.y = 0.0f; 
+
+	// Set angular velocity
+	body.angularVelocity.x = 0.0f;
+	body.angularVelocity.y = 0.0f;
+}
+
+// Update the Rigidbody accordingly
+void RigidBodyComponent::Update()
+{
+	// Euler's method (tested using global variables)
+	float force;				// total force
+	float acceleration;			// acceleration of the ship
+	float newVelocity;			// new velocity at the time t + dt
+	float newDisplacement;		// new displacement at the time t + dt
+
+	// Calculate total force 
+	force = (thrust - (displacement * _velocity));
+
+	// Calculate the acceleration 
+	acceleration = force / _mass;
+
+	// Calculate the new velocity at time t + dt 
+	// V is the velocity at time t
+	newVelocity = _velocity + acceleration * g_dt;
+
+	// Calculate the new displacement at time t + dt
+	newDisplacement = displacement + newVelocity * g_dt;
+
+	// Updating the old velocity
+	_velocity = newVelocity;
+	displacement = newDisplacement;
+
+	// Trying a physics method other than euler's method
+
+
+}
+
 
 
 /*********************************************************************************
@@ -187,6 +260,6 @@ bool CollisionComponent::checkforCollisionAABB(const AABB & obj1, const Vector2D
 // Checking for Collision (Circle)
 bool CollisionComponent::checkforCollisionCircle()
 {
-	
+	return false;
 
 }

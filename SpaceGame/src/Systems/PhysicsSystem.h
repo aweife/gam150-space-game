@@ -1,6 +1,7 @@
 #pragma once
 
-
+#include "../Global.h"
+#include "../Components/Component.h"
 
 /*
 // Collision
@@ -38,6 +39,7 @@ class OrbitalGravity :public Gravity
 	This is the struct for the AABB collision detection
 	*/
 /**************************************************************************/
+
 struct AABB
 {
 	//AEVec2	c; // center
@@ -47,23 +49,33 @@ struct AABB
 	Vector2D	max;
 };
 
-
 class RigidBodyComponent : public Component
 {
-	float _velocity;
-	float _acceleration;
-	// float _mass;
+	float mass;                              // Mass of the ship
+	float inertia;                           // Inertia
+	float inertiaInverse;                    // Inverse Inertia
+	Vector2D position;						 // Position of the spaceship
+	Vector2D velocity;                       // Velocity of the ship
+	Vector2D angularVelocity;                // Angular Velocity of the ship (not sure if needed)
+	
 
 public: 
 	// Constructor
 	RigidBodyComponent();
 
 	// Destructor
-	~RigidBodyComponent();
+	~RigidBodyComponent() = default;
 
 	// Getters 
-	float getVelocity();
-	float getAcceleration();
+	float getMass();
+	float getInertia();
+	float getInertiaInverse();
+	Vector2D getPosition();
+	Vector2D getVelocity();
+	Vector2D getAngularVelocity();
+
+	void Initialize(RigidBodyComponent body);
+	void Update();
 };
 
 class CollisionComponent : public Component
