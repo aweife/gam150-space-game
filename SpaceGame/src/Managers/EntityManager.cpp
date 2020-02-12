@@ -1,5 +1,6 @@
 #include "EntityManager.h"
-#include "../Systems/ComponentManager.h"
+#include "ComponentManager.h"
+#include "AEEngine.h"
 
 #include "../Tools/Console.h"				//REMOVE AFTER TESTING
 
@@ -8,42 +9,38 @@ EntityManager::EntityManager()
 	_activeEntityCount = 0;
 }
 
-void EntityManager::Init()
+ENTITY EntityManager::CreateEntity(const char* name)
 {
-}
+	AE_ASSERT(_activeEntityCount < MAX_ENTITIES && "Too many entities");
 
-ENTITYID EntityManager::CreateEntity(std::string name)
-{
-	AE_ASSERT(_activeEntityCount < ENTITY_MAX && "Too many entities");
-
-	ENTITYID id = _activeEntityCount; //Assign an ID based on nth exisiting entity
+	ENTITY id = _activeEntityCount; //Assign an ID based on nth exisiting entity
 
 	//Recycle an ENTITY ID, First in First out
-	if (!_inactiveEntity_List.empty())
-	{
-		id = _inactiveEntity_List.front();
-		_inactiveEntity_List.pop();
-	}
+	//if (!_inactiveEntity_List.empty())
+	//{
+	//	id = _inactiveEntity_List.front();
+	//	_inactiveEntity_List.pop();
+	//}
 	//'Creating' the new entity 
-	_activeEntity_List.push_back(id);		//Add the new entity to active vector
-	_activeEntity_NameList[id] = name;		//Store name in a accessable array
+	_availableEntities.push(id);		//Add the new entity to active vector
+	//_activeEntity_NameList[id] = name;		//Store name in a accessable array
 	++_activeEntityCount;					//Increament number of exisiting entity
 
 	return id;
 }
 
-void EntityManager::DestroyEntity(ENTITYID entity)
+void EntityManager::DestroyEntity(ENTITY entity)
 {
-	AE_ASSERT(entity < ENTITY_MAX && "Entity out of range.");
+	AE_ASSERT(entity < MAX_ENTITIES && "Entity out of range.");
 
 	// Reset the component signature since entity will be destroyed
-	_activeEntity_SignatureList[entity].reset();
+	_signatures[entity].reset();
 
 	// Put the destroyed ID into inactive queue to be recycled
-	_inactiveEntity_List.push(entity);
+	//_inactiveEntity_List.push(entity);
 
 	// Remove from active vector
-	for (auto i = _activeEntity_List.begin(); i != _activeEntity_List.end(); ++i)
+	for (auto i = _availableEntities.begin(); i != _activeEntity_List.end(); ++i)
 	{
 		if (*i == entity)
 		{
@@ -57,14 +54,14 @@ void EntityManager::DestroyEntity(ENTITYID entity)
 	ComponentManager::GetInstance().EntityDestroyed(entity);
 }
 
-SIGNATURE EntityManager::GetEntitySignature(ENTITYID entity) const
+SIGNATURE EntityManager::GetEntitySignature(ENTITY entity) const
 {
 	AE_ASSERT(entity < ENTITY_MAX && "Entity out of range.");
 
 	return _activeEntity_SignatureList[entity];		//Informs what components the entity contain
 }
 
-void EntityManager::SetEntitySignature(ENTITYID entity, SIGNATURE key)
+void EntityManager::SetEntitySignature(ENTITY entity, SIGNATURE key)
 {
 	AE_ASSERT(entity < ENTITY_MAX && "Entity out of range.");
 

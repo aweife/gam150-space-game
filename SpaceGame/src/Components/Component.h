@@ -1,27 +1,19 @@
 #pragma once
 
-#include <string>
 #include "../Global_ECS.h"
-
-enum sysCategory {
-	SYS_NULL = 0,
-	SYS_AI = 1, 
-	SYS_GRAPHICS, 
-	SYS_PHYSICS
-};
 
 //Components should only store data... but using class for now incase need functions
 class Component
 {
 public:
-	std::string			_name;			//Name of Component
-	sysCategory			_category;		//Which system category - unused for now
-	COMPONENTID			_componentID;	//Enum of Component 
-	ENTITYID			_entityParent;	//Which enitity this component belongs to
+	const char*			_name				= "";						// Name of Component
+	SYSCATEGORY			_category			= SYS_NULL;					// Which system category - unused for now
+	ComponentType		_componentID		= ID_NullComponent;			// Enum of Component 
+	ENTITY				_entityParent		= 0;						// Which enitity this component belongs to
 
-	Component();
-	virtual ~Component();	//virtual destructor to ensure our subclasses are correctly deallocated
+	Component() = default;												
+	virtual ~Component() = default;										//virtual destructor to ensure our subclasses are correctly deallocated
 
-	virtual void Init();
+	virtual void Init() = 0;											//Pure Virtual
 };
 

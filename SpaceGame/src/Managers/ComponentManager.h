@@ -1,31 +1,29 @@
 #pragma once
 
-#include "System.h"
-#include "../Components/ComponentStorage.h"
+#include "../Components/ComponentStorage.h"		//Storage used to contain all components of same kind
 #include <unordered_map>						//unordered map
 #include <memory>								//unique pointer
-#include <string>								//to match typeid
 
-class ComponentManager : public System<ComponentManager>
+class ComponentManager
 {
 private:
 
 	std::unordered_map																	//A library of all components in game
-		<std::string, std::shared_ptr<ComponentStorage_Generic>> componentCollection;
+		<const char*, std::shared_ptr<ComponentStorage_Generic>> componentCollection;
 
 	std::unordered_map																	//Map a Component class type to Component Enum...
-		<std::string, COMPONENTID> componentClassToEnum;								//Useful for changing signature bitset
+		<const char*, ComponentType> componentClassToEnum;								//Useful for changing signature bitset
 
 	template<typename T>
-	void RegisterComponentCollection(COMPONENTID id);									//Register each components into a library
+	void RegisterComponentCollection(ComponentType id);									//Register each components into a library
 
-	void AddOrRemoveEntitySignature(COMPONENTID id, int set, ENTITYID entity);
+	//void AddOrRemoveEntitySignature(ComponentType id, int set, ENTITY entity);
 
 public:
 	virtual void Init();																//Register all components to use into a library
 
 	template<typename T>
-	COMPONENTID GetComponentID();
+	COMPONENTID GetComponentType();
 
 	void GenerateComponentCollection() const;											//Debug feature
 
@@ -33,14 +31,14 @@ public:
 	std::shared_ptr<ComponentStorage<T>> GetComponentStorage();
 
 	template<typename T>
-	void AddComponent(ENTITYID entity, T* component);
+	void AddComponent(ENTITY entity, T* component);
 
 	template<typename T>
-	void RemoveComponent(ENTITYID entity);
+	void RemoveComponent(ENTITY entity);
 
 	template<typename T>
-	T* GetComponent(ENTITYID entity);
+	T* GetComponent(ENTITY entity);
 
-	void EntityDestroyed(ENTITYID entity);
+	void EntityDestroyed(ENTITY entity);
 };
 

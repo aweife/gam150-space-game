@@ -12,28 +12,28 @@ public:
 	EntityManager();
 
 	// Requests an entity - this removes the entity from the front of the queue
-	Entity CreateEntity();
+	ENTITY CreateEntity(const char* name = "");
 
 	// Return an entity to the back of the queue
-	void DestroyEntity(Entity entity);
+	void DestroyEntity(ENTITY entity);
 
 	// Assign a signature to an entity
-	void SetSignature(Entity entity, Signature signature);
+	void SetSignature(ENTITY entity, SIGNATURE signature);
 
 	// Returns the signature of an entity
-	Signature GetSignature(Entity entity);
+	SIGNATURE GetSignature(ENTITY entity);
 
 private:
 	// We use queue because it is FIFO
 
 	// Queue of available entities
-	std::queue<Entity> _availableEntities;
+	std::queue<ENTITY> _availableEntities;
 
 	// Number of active entities
 	unsigned int _activeEntityCount;
 
 	// Simple array of signatures
-	std::array<Signature, MAX_ENTITIES> _signatures;
+	std::array<SIGNATURE, MAX_ENTITIES> _signatures;
 };
 
 //#include <queue>								// FIFO storage for entity

@@ -2,7 +2,7 @@
 
 #include "../Math/Vec2.h"
 
-struct Transform
+struct cTransform
 {
 	Vec2 position;
 	float rotation;

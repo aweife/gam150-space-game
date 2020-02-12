@@ -15,17 +15,17 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "SpriteComponent.h"
+#include "cSprite.h"
 
 #include "../Tools/Console.h"	//remove after testing
 #include "../Global_ECS.h"
 
-SpriteComponent::SpriteComponent(ENTITYID parent)
+cSprite::cSprite(ENTITY parent)
 {
 	//Common Component variables
 	_name = "class SpriteComponent";				//Do not change this otherwise remove component wont work
-	_category = SYS_GRAPHICS;
-	_componentID = ID_SpriteComponent;				
+	//_category = SYS_GRAPHICS;
+	_componentID = ID_SpriteComponent;
 	_entityParent = parent;
 
 	//Component Specific variables
@@ -35,13 +35,13 @@ SpriteComponent::SpriteComponent(ENTITYID parent)
 	Init();
 }
 
-SpriteComponent::~SpriteComponent()
+cSprite::~cSprite()
 {
 	AEGfxMeshFree(_mesh);		//2 memory leaks
 	Console_Cout("SpriteComponent Destructor");
 }
 
-void SpriteComponent::Init()
+void cSprite::Init()
 {
 	Console_Cout("SpriteComponent Init");
 

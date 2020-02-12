@@ -18,13 +18,13 @@ public:
 
 	// Sets the unique signature for this system
 	template<typename T>
-	void SetSignature(Signature signature);
+	void SetSignature(SIGNATURE signature);
 
 	// Erase an entity from all systems' entitiesList
-	void DestroyEntity(Entity entity);
+	void DestroyEntity(ENTITY entity);
 
 	// Notify all systems an entity changed signature (add/remove component)
-	void UpdateEntitySignature(Entity entity, Signature signature);
+	void UpdateEntitySignature(ENTITY entity, SIGNATURE signature);
 
 private:
 	// Map stores elements in pairs: A key value and a mapped value
@@ -33,7 +33,7 @@ private:
 	// We use unordered map because it uses a hash table, which is O(1) speed
 
 	// Map from string to a signature
-	std::unordered_map<const char*, Signature> _Signatures;
+	std::unordered_map<const char*, SIGNATURE> _Signatures;
 
 	// Map from string to a system pointer
 	std::unordered_map<const char*, std::shared_ptr<System>> _Systems;

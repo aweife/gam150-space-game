@@ -1,40 +1,41 @@
-#include "ComponentManager.h"
-#include <typeinfo>							 //  typeid
-#include "../Components/SpriteComponent.h"
-#include "../Entity/EntityManager.h"
+#include "ComponentManager.h"					// Self Header
+#include <typeinfo>								// typeid
+#include "../Components/ComponentList.h"
+#include "EntityManager.h"
+#include "../Global_ECS.h"
 
 #include "../Tools/Console.h"
 void ComponentManager::Init()
 {
 	//Register all the components here
-	RegisterComponentCollection<SpriteComponent>(ID_SpriteComponent);
+	RegisterComponentCollection<cSprite>(ID_SpriteComponent);
 }
 
 template<typename T>
-void ComponentManager::RegisterComponentCollection(COMPONENTID id)
+void ComponentManager::RegisterComponentCollection(ComponentType id)
 {
-	std::string componentTypeName = typeid(T).name();
+	const char* componentTypeName = typeid(T).name();
 	if (componentCollection.find(componentTypeName) != componentCollection.end()) return;	//Component already registered and have storage 
 
 	//Create a new storage of components for that specific component type
 	//To be shared by all relevant systems
-	componentCollection.insert({ componentTypeName, std::make_shared<ComponentStorage<T>>()});
+	componentCollection.insert({componentTypeName, std::make_shared<ComponentStorage<T>>()});
 
 	//Create relevant mapping from typename to enum
-	componentClassToEnum.insert({ componentTypeName, id });
+	componentClassToEnum.insert({componentTypeName, id });
 }
 
-void ComponentManager::AddOrRemoveEntitySignature(COMPONENTID id, int set, ENTITYID entity)
-{
-	SIGNATURE s = EntityManager::GetInstance().GetEntitySignature(entity);
-	s.set(id, set);
-	EntityManager::GetInstance().SetEntitySignature(entity, s);
-}
+//void ComponentManager::AddOrRemoveEntitySignature(ComponentType id, int set, ENTITY entity)
+//{
+//	SIGNATURE s = EntityManager.GetEntitySignature(entity);
+//	s.set(id, set);
+//	EntityManager.SetEntitySignature(entity, s);
+//}
 
 template<typename T>
-COMPONENTID ComponentManager::GetComponentID()
+COMPONENTID ComponentManager::GetComponentType()
 {
-	std::string componentTypeName = typeid(T).name();
+	const char* componentTypeName = typeid(T).name();
 
 	AE_ASSERT(componentCollection.find(componentTypeName) != componentCollection.end()); //Component is not registered yet
 
@@ -64,36 +65,34 @@ std::shared_ptr<ComponentStorage<T>> ComponentManager::GetComponentStorage()
 
 
 template<typename T>
-void ComponentManager::AddComponent(ENTITYID entity, T* component)
+void ComponentManager::AddComponent(ENTITY entity, T* component)
 {
 	// Find the relevant component storage from collection, then insert the component into the storage
 	//Component storage is shared pointer... component will be passed to unique pointer
 	GetComponentStorage<T>()->RegisterComponent(entity, component);
 
-	AddOrRemoveEntitySignature(GetComponentID<T>(), 1, entity);
 }
 //Explicit template
-template void ComponentManager::AddComponent<SpriteComponent>(ENTITYID, SpriteComponent*);
+template void ComponentManager::AddComponent<cSprite>(ENTITY, cSprite*);
 
 template<typename T>
-void ComponentManager::RemoveComponent(ENTITYID entity)
+void ComponentManager::RemoveComponent(ENTITY entity)
 {
 	// Remove a component from the array for an entity
 	GetComponentStorage<T>()->UnregisterComponent(entity);
 
-	AddOrRemoveEntitySignature(GetComponentID<T>(), 0, entity);
 }
 //Explicit template
-template void ComponentManager::RemoveComponent<SpriteComponent>(ENTITYID);
+template void ComponentManager::RemoveComponent<cSprite>(ENTITY);
 
 template<typename T>
-T* ComponentManager::GetComponent(ENTITYID entity)
+T* ComponentManager::GetComponent(ENTITY entity)
 {
 	return GetComponentStorage<T>()->RetrieveComponent(entity);
 }
-template SpriteComponent* ComponentManager::GetComponent(ENTITYID entity);
+template cSprite* ComponentManager::GetComponent(ENTITY entity);
 
-void ComponentManager::EntityDestroyed(ENTITYID entity)
+void ComponentManager::EntityDestroyed(ENTITY entity)
 {
 	{
 		// Check within each component storage if there was component for destroyed entity
