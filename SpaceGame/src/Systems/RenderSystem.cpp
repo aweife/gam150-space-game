@@ -13,14 +13,17 @@ void RenderSystem::Update()
 		//auto const& transform = 
 		//auto const& mesh =
 
-		//AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+		//AEGfxSetBlendMode(AE_GFX_BM_BLEND)
+
+		//AEGfxSetRenderMode(AE_GFX_RM_T);
 
 		//AEGfxSetPosition(transform.);
 
-		//AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);		// No tint  
-
 		//AEGfxTextureSet(NULL, 0, 0);					// No texture for object 1
 
+		//AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);		// No tint  
+
+		//AEGfxSetTransparency(1.0f)
 
 		//Draw System
 		// Drawing the mesh (list of triangles)
