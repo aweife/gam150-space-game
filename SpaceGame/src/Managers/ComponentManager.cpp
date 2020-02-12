@@ -31,16 +31,6 @@ void ComponentManager::RegisterComponentCollection(ComponentType id)
 //	EntityManager.SetEntitySignature(entity, s);
 //}
 
-template<typename T>
-COMPONENTID ComponentManager::GetComponentType()
-{
-	const char* componentTypeName = typeid(T).name();
-
-	AE_ASSERT(componentCollection.find(componentTypeName) != componentCollection.end()); //Component is not registered yet
-
-	// Return component ID for creating signatures
-	return componentClassToEnum[componentTypeName];
-}
 
 void ComponentManager::GenerateComponentCollection() const
 {
@@ -51,44 +41,6 @@ void ComponentManager::GenerateComponentCollection() const
 	}
 	Console_Newline();
 }
-
-template<typename T>
-std::shared_ptr<ComponentStorage<T>> ComponentManager::GetComponentStorage()
-{
-	const char* componentTypeName = typeid(T).name();
-
-	AE_ASSERT(componentCollection.find(componentTypeName) != componentCollection.end()); //Component is not registered yet
-
-	return std::static_pointer_cast<ComponentStorage<T>>(componentCollection[componentTypeName]);
-}
-
-template<typename T>
-void ComponentManager::AddComponent(ENTITY entity, T* component)
-{
-	// Find the relevant component storage from collection, then insert the component into the storage
-	//Component storage is shared pointer... component will be passed to unique pointer
-	GetComponentStorage<T>()->RegisterComponent(entity, component);
-
-}
-//Explicit template
-//template void ComponentManager::AddComponent<cSprite>(ENTITY, cSprite*);
-
-template<typename T>
-void ComponentManager::RemoveComponent(ENTITY entity)
-{
-	// Remove a component from the array for an entity
-	GetComponentStorage<T>()->UnregisterComponent(entity);
-
-}
-//Explicit template
-//template void ComponentManager::RemoveComponent<cSprite>(ENTITY);
-
-template<typename T>
-T* ComponentManager::GetComponent(ENTITY entity)
-{
-	return GetComponentStorage<T>()->RetrieveComponent(entity);
-}
-//template cSprite* ComponentManager::GetComponent(ENTITY entity);
 
 void ComponentManager::EntityDestroyed(ENTITY entity)
 {
