@@ -8,6 +8,14 @@ void SystemManager::Init()
 	RegisterSystem<RenderSystem>();
 }
 
+void SystemManager::Update()
+{
+	for (auto const& system : _systemMap)
+	{
+		system.second->Update();
+	}
+}
+
 template<typename T>
 std::shared_ptr<T> SystemManager::RegisterSystem()
 {

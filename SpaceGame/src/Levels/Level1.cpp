@@ -28,7 +28,7 @@ void Level1_Load()
 {
 	player = coreInstance.CreateEntity();
 	coreInstance.AddComponent<cTransform>(player, new cTransform);
-	coreInstance.AddComponent<cSprite>(player, new cSprite(player));
+	coreInstance.AddComponent<cSprite>(player, new cSprite(player,"res/PlanetTexture.png"));
 }
 
 // ----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ void Level1_Initialize()
 // ----------------------------------------------------------------------------
 void Level1_Update()
 {
-	
+	coreInstance.Core_Update();
 }
 
 // ----------------------------------------------------------------------------

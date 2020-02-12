@@ -54,6 +54,8 @@ cSprite::cSprite(ENTITY parent, const char* texture)
 cSprite::~cSprite()
 {
 	AEGfxMeshFree(mesh);		//2 memory leaks if not done
+	if (texture)
+		AEGfxTextureUnload(texture);
 	Console_Cout("SpriteComponent Destructor");
 }
 
@@ -66,14 +68,13 @@ void cSprite::Init()
 
 	// This shape has 2 triangles
 	AEGfxTriAdd(
-		-30.0f, -30.0f, 0x00FF00FF, 0.0f, 1.0f,
-		30.0f, -30.0f, 0x00FFFF00, 1.0f, 1.0f,
-		-30.0f, 30.0f, 0x0000FFFF, 0.0f, 0.0f);
-
+		-0.5f, -0.5f, 0xFFFF0000, 0.0f, 1.0f,
+		0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
 	AEGfxTriAdd(
-		30.0f, -30.0f, 0x00FFFFFF, 1.0f, 1.0f,
-		30.0f, 30.0f, 0x00FFFFFF, 1.0f, 0.0f,
-		-30.0f, 30.0f, 0x00FFFFFF, 0.0f, 0.0f);
+		0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
+		0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
 
 	// Saving the mesh (list of triangles) in _mesh
 	mesh = AEGfxMeshEnd();

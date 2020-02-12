@@ -28,6 +28,12 @@ void Core::Core_Init()
 	coreSystemManager->Init();
 }
 
+void Core::Core_Update()
+{
+	// Update systems
+	coreSystemManager->Update();
+}
+
 ENTITY Core::CreateEntity()
 {
 	return coreEntityManager->CreateEntity();
