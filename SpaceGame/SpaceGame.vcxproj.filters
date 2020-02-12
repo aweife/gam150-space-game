@@ -41,4 +41,7 @@
     <ClInclude Include="src\Managers\SystemManager.h" />
     <ClInclude Include="src\Systems\System.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\machinegun.png" />
+  </ItemGroup>
 </Project>

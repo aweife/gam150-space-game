@@ -34,6 +34,12 @@ void Core::Core_Update()
 	coreSystemManager->Update();
 }
 
+void Core::Core_Render()
+{
+	// Update systems
+	coreSystemManager->Render();
+}
+
 ENTITY Core::CreateEntity()
 {
 	return coreEntityManager->CreateEntity();

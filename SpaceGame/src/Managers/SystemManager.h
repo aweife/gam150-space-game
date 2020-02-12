@@ -14,6 +14,7 @@ public:
 	// We can create a pointer to the registered system and return it to core.
 
 	void Update();
+	void Render();
 
 	// Returns a shared pointer to this system
 	template<typename T>

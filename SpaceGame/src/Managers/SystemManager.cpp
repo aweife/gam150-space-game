@@ -16,6 +16,14 @@ void SystemManager::Update()
 	}
 }
 
+void SystemManager::Render()
+{
+	for (auto const& system : _systemMap)
+	{
+		system.second->Render();
+	}
+}
+
 template<typename T>
 std::shared_ptr<T> SystemManager::RegisterSystem()
 {

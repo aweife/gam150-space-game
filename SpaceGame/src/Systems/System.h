@@ -10,7 +10,11 @@ public:
 	// Also for the convienent insert() and erase() functionality
 	std::set<ENTITY> entitiesList;
 
+	virtual void Init() = 0;
+
 	virtual void Update() = 0;
+
+	virtual void Render() = 0;
 };
 
 

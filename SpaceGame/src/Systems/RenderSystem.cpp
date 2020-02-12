@@ -7,13 +7,15 @@
 #include "../Components/cSprite.h"
 #include "../Components/cTransform.h"
 
-extern Core coreInstance;
-
 void RenderSystem::Init()
 {
 }
 
 void RenderSystem::Update()
+{
+}
+
+void RenderSystem::Render()
 {
 	cTransform* transform;
 	cSprite* sprite;
@@ -21,8 +23,8 @@ void RenderSystem::Update()
 	// Update all entities that has the components we want
 	for (auto const& entity : entitiesList)
 	{
-		transform = coreInstance.GetComponent<cTransform>(entity);
-		sprite = coreInstance.GetComponent<cSprite>(entity);
+		transform = Core::Get().GetComponent<cTransform>(entity);
+		sprite = Core::Get().GetComponent<cSprite>(entity);
 
 		// Set transform
 		AEMtx33 trans, rot, scale;

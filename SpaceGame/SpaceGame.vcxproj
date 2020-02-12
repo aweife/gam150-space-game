@@ -130,6 +130,9 @@
     <ClInclude Include="src\Tools\Editor.h" />
     <ClInclude Include="src\Math\Vec2.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\machinegun.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
