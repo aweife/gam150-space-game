@@ -83,6 +83,6 @@ void cSprite::Init()
 
 void cSprite::LoadTexture(const char* pathName)
 {
-	texture = AEGfxTextureLoad("res/PlanetTexture.png");
+	texture = AEGfxTextureLoad(pathName);
 	AE_ASSERT_MESG(texture, "Failed to create texture!");
 }

@@ -27,6 +27,7 @@ ENTITY player;
 void Level1_Load()
 {
 	player = coreInstance.CreateEntity();
+	coreInstance.AddComponent<cTransform>(player, new cTransform);
 	coreInstance.AddComponent<cSprite>(player, new cSprite(player));
 }
 
