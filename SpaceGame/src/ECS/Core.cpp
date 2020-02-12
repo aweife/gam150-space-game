@@ -14,7 +14,7 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "Core.h"
+#include "Core.h"			//Self Header
 
 void Core::Core_Init()
 {
@@ -29,13 +29,13 @@ ENTITY Core::CreateEntity()
 	return coreEntityManager->CreateEntity();
 }
 
-void Core::DestroyEntity(ENTITY entity)
+void Core::EntityDestroyed(ENTITY entity)
 {
-	coreEntityManager->DestroyEntity(entity);
+	coreEntityManager->EntityDestroyed(entity);
 
 	coreComponentManager->EntityDestroyed(entity);
 
-	//coreSystemManager->EntityDestroyed(entity); //Will we need this
+	coreSystemManager->EntityDestroyed(entity); //Will we need this
 }
 
 template<typename T>
@@ -90,23 +90,5 @@ template<typename T>
 void Core::SetSystemSignature(SIGNATURE signature)
 {
 	coreSystemManager->SetSignature<T>(signature);
-}
-
-
-
-void Core_Update()
-{
-	//Update ECS systems in order
-
-	//Change this to input-update-render sequence
-	//SpriteManager::GetInstance().Update();
-	
-}
-
-void Core_Unload()
-{
-	/*SpriteManager::DestroyInstance();
-	ComponentManager::DestroyInstance();
-	EntityManager::DestroyInstance();*/
 }
 

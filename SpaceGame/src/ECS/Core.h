@@ -17,7 +17,7 @@ public:
 
 	//ENTITY
 	ENTITY CreateEntity();
-	void DestroyEntity(ENTITY entity);
+	void EntityDestroyed(ENTITY entity);
 
 	//COMPONENT
 	template<typename T>

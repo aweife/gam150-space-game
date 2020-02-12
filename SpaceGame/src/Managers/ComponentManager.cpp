@@ -1,8 +1,5 @@
 #include "ComponentManager.h"					// Self Header
 #include <typeinfo>								// typeid
-#include "../Components/ComponentList.h"
-#include "EntityManager.h"
-#include "../Global_ECS.h"
 
 #include "../Tools/Console.h"
 void ComponentManager::Init()
@@ -15,7 +12,8 @@ template<typename T>
 void ComponentManager::RegisterComponentCollection(ComponentType id)
 {
 	const char* componentTypeName = typeid(T).name();
-	if (componentCollection.find(componentTypeName) != componentCollection.end()) return;	//Component already registered and have storage 
+	//Component already registered and in storage 
+	if (componentCollection.find(componentTypeName) != componentCollection.end()) return;	
 
 	//Create a new storage of components for that specific component type
 	//To be shared by all relevant systems
@@ -56,14 +54,12 @@ void ComponentManager::GenerateComponentCollection() const
 template<typename T>
 std::shared_ptr<ComponentStorage<T>> ComponentManager::GetComponentStorage()
 {
-	std::string componentTypeName = typeid(T).name();
+	const char* componentTypeName = typeid(T).name();
 
 	AE_ASSERT(componentCollection.find(componentTypeName) != componentCollection.end()); //Component is not registered yet
 
 	return std::static_pointer_cast<ComponentStorage<T>>(componentCollection[componentTypeName]);
 }
-//Explicit template
-template void ComponentManager::AddComponent<cSprite>(ENTITY, cSprite*);
 
 template<typename T>
 void ComponentManager::AddComponent(ENTITY entity, T* component)

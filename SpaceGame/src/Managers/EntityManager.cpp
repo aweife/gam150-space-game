@@ -22,7 +22,7 @@ ENTITY EntityManager::CreateEntity(const char* name)
 	return entity;
 }
 
-void EntityManager::DestroyEntity(ENTITY entity)
+void EntityManager::EntityDestroyed(ENTITY entity)
 {
 	// Assert if given entity is invalid
 	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");

@@ -36,14 +36,13 @@ void SystemManager::SetSignature(SIGNATURE signature)
 	_signaturesMap.insert({ systemName, signature });
 }
 
-void SystemManager::DestroyEntity(ENTITY entity)
+void SystemManager::EntityDestroyed(ENTITY entity)
 {
 	// Erase an entity from all system lists
 	for (auto const& pair : _systemMap)
 	{
 		// The first of the pair is the system name
 		// The second of the pair is the shared pointer to the system
-		auto const& system = pair.second;
 		pair.second->entitiesList.erase(entity);
 	}
 }

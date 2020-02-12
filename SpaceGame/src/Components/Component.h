@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Global_ECS.h"
+#include "../Global_ECS.h"	//typedef allias
 
 //Components should only store data... but using class for now incase need functions
 class Component

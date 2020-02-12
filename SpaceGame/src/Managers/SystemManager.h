@@ -22,7 +22,7 @@ public:
 	void SetSignature(SIGNATURE signature);
 
 	// Erase an entity from all systems' entitiesList
-	void DestroyEntity(ENTITY entity);
+	void EntityDestroyed(ENTITY entity);
 
 	// Notify all systems an entity changed signature (add/remove component)
 	void UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature);
