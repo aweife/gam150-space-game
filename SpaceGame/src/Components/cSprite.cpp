@@ -1,4 +1,4 @@
-/*********************************************************************************
+/******************************************************************************
 * \file			cSprite.cpp
 * \author		Chong Jun Yi, Ang Wei Feng
 * \version		1.1
@@ -14,29 +14,46 @@
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
-**********************************************************************************/
+******************************************************************************/
 #include "cSprite.h"			//Self Header
-
 #include "../Tools/Console.h"	//remove after testing
 
 cSprite::cSprite(ENTITY parent)
 {
 	//Common Component variables
 	_name = "class SpriteComponent";				//Do not change this otherwise remove component wont work
-	//_category = SYS_GRAPHICS;						//not sure why have warning here
+	//_categor = SYS_GRAPHICS;						//not sure why have warning here
 	_componentID = ID_SpriteComponent;	
 	_entityParent = parent;
 
 	//Component Specific variables
-	_mesh = nullptr;
+	mesh = nullptr;
 
 	//Create mesh
 	Init();
 }
 
+cSprite::cSprite(ENTITY parent, const char* texture)
+{
+	//Common Component variables
+	_name = "class SpriteComponent";	//Do not change this otherwise remove component wont work
+	//_categor = SYS_GRAPHICS;			//not sure why have warning here
+	_componentID = ID_SpriteComponent;
+	_entityParent = parent;
+
+	//Component Specific variables
+	mesh = nullptr;
+
+	//Create mesh
+	Init();
+
+	// Load texture
+	LoadTexture(texture);
+}
+
 cSprite::~cSprite()
 {
-	AEGfxMeshFree(_mesh);		//2 memory leaks if not done
+	AEGfxMeshFree(mesh);		//2 memory leaks if not done
 	Console_Cout("SpriteComponent Destructor");
 }
 
@@ -59,7 +76,13 @@ void cSprite::Init()
 		-30.0f, 30.0f, 0x00FFFFFF, 0.0f, 0.0f);
 
 	// Saving the mesh (list of triangles) in _mesh
-	_mesh = AEGfxMeshEnd();
+	mesh = AEGfxMeshEnd();
 
-	AE_ASSERT_MESG(_mesh, "Failed to create mesh!");
+	AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+}
+
+void cSprite::LoadTexture(const char* pathName)
+{
+	texture = AEGfxTextureLoad("res/PlanetTexture.png");
+	AE_ASSERT_MESG(texture, "Failed to create texture!");
 }

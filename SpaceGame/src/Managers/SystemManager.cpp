@@ -1,5 +1,12 @@
 #include "SystemManager.h"
 #include "AEEngine.h"
+#include "../Systems/RenderSystem.h"
+
+void SystemManager::Init()
+{
+	// Register systems
+	RegisterSystem<RenderSystem>();
+}
 
 template<typename T>
 std::shared_ptr<T> SystemManager::RegisterSystem()

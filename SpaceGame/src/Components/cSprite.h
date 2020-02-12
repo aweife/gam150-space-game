@@ -3,13 +3,17 @@
 #include "AEEngine.h"					//reference to AEGfxVertexList
 #include "Component.h"					//Base Class
 
-struct cSprite :public Component
+class cSprite :public Component
 {
 public:
-	AEGfxVertexList* _mesh;
+	AEGfxVertexList* mesh;
 
-	cSprite(ENTITY parent);		// Constructor with parameter
-	virtual ~cSprite();			// Virtual Destructor
+	AEGfxTexture* texture;
 
-	virtual void Init();
+	cSprite(ENTITY parent);							// Constructor with parameter
+	cSprite(ENTITY parent, const char* texture);	// To be changeds
+	~cSprite();										// Virtual Destructor
+
+	void Init();
+	void LoadTexture(const char* pathName);
 };

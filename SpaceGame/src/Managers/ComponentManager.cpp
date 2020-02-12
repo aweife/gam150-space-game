@@ -5,6 +5,7 @@
 void ComponentManager::Init()
 {
 	//Register all the components here
+	RegisterComponentCollection<cTransform>(ID_TransformComponent);
 	RegisterComponentCollection<cSprite>(ID_SpriteComponent);
 }
 
@@ -70,7 +71,7 @@ void ComponentManager::AddComponent(ENTITY entity, T* component)
 
 }
 //Explicit template
-template void ComponentManager::AddComponent<cSprite>(ENTITY, cSprite*);
+//template void ComponentManager::AddComponent<cSprite>(ENTITY, cSprite*);
 
 template<typename T>
 void ComponentManager::RemoveComponent(ENTITY entity)
@@ -80,14 +81,14 @@ void ComponentManager::RemoveComponent(ENTITY entity)
 
 }
 //Explicit template
-template void ComponentManager::RemoveComponent<cSprite>(ENTITY);
+//template void ComponentManager::RemoveComponent<cSprite>(ENTITY);
 
 template<typename T>
 T* ComponentManager::GetComponent(ENTITY entity)
 {
 	return GetComponentStorage<T>()->RetrieveComponent(entity);
 }
-template cSprite* ComponentManager::GetComponent(ENTITY entity);
+//template cSprite* ComponentManager::GetComponent(ENTITY entity);
 
 void ComponentManager::EntityDestroyed(ENTITY entity)
 {

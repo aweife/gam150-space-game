@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../Math/Vec2.h"
+#include "AEEngine.h"
 
 struct cTransform
 {
-	Vec2 position;
+	AEVec2 position;
 	float rotation;
-	Vec2 scale;
+	AEVec2 scale;
 };

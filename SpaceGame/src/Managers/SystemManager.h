@@ -8,6 +8,7 @@
 class SystemManager
 {
 public:
+	void Init();
 	// Shared pointers use reference counting - it is active as long as there
 	// is at least one referencing it
 	// We can create a pointer to the registered system and return it to core.
