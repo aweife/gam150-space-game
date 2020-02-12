@@ -97,7 +97,6 @@
     <ClCompile Include="src\Levels\Level1.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Managers\ComponentManager.cpp" />
-    <ClCompile Include="src\Managers\SystemManager.h" />
     <ClCompile Include="src\Managers\SystemManager.cpp" />
     <ClCompile Include="src\ECS\Core.cpp" />
     <ClCompile Include="src\Math\Vec2.cpp" />
@@ -121,6 +120,7 @@
     <ClInclude Include="src\Levels\Level1.h" />
     <ClInclude Include="src\Managers\ComponentManager.h" />
     <ClInclude Include="src\ECS\Core.h" />
+    <ClInclude Include="src\Managers\SystemManager.h" />
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
