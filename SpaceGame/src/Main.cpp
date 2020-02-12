@@ -22,8 +22,10 @@
 #include "Tools/Editor.h"				// Editor for gameplay
 #include "Tools/Console.h"				// Debug logger
 #include "Levels/Level1.h"				// REMOVE AFTER TESTING
-#include "Systems/Core.h"				// Overall System Controller
+#include "ECS/Core.h"
 
+
+Core coreInstance;
 // ---------------------------------------------------------------------------
 // Libraries
 //#pragma comment (lib, "Alpha_Engine.lib")
@@ -67,9 +69,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Editor_Init();	
 #endif
 
-	Core_Init();						// Init all systems
 	Global_Init();				// Get start time of game program
-
+	coreInstance.Core_Init();
 
 	// reset the system modules
 	AESysReset();
@@ -84,6 +85,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	//TODO: Implement GSM
 
 	// -----------------------------------------------------------------------
+	Level1_Load();
 	// Game Loop
 	while (gGameRunning)
 	{
@@ -108,7 +110,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// -----------------------------------------------------------------------
 		// Game loop update
 		Editor_Update();
-		Core_Update();
+
 		Level1_Update();
 		// Game loop update end
 		// -----------------------------------------------------------------------
@@ -127,7 +129,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// -----------------------------------------------------------------------
 
 	Console_CleanUp();
-	Core_Unload();			// free all core system
+	//Core_Unload();			// free all core system
 	//Console_CleanUp();
 	AESysExit();			// free the system
 }
