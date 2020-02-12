@@ -3,7 +3,7 @@
 #include "../Components/SpriteComponent.h"
 #include "../Components/TransformComponent.h"
 #include "../Entity/EntityManager.h"
-
+#include "../Global_ECS.h"
 #include "../Tools/Console.h"
 void ComponentManager::Init()
 {
@@ -88,7 +88,7 @@ void ComponentManager::RemoveComponent(ENTITYID entity)
 }
 //Explicit template
 template void ComponentManager::RemoveComponent<SpriteComponent>(ENTITYID);
-
+template void ComponentManager::RemoveComponent<TransformComponent>(ENTITYID);
 
 template<typename T>
 T* ComponentManager::GetComponent(ENTITYID entity)
@@ -96,6 +96,7 @@ T* ComponentManager::GetComponent(ENTITYID entity)
 	return GetComponentStorage<T>()->RetrieveComponent(entity);
 }
 template SpriteComponent* ComponentManager::GetComponent(ENTITYID entity);
+template TransformComponent* ComponentManager::GetComponent(ENTITYID entity);
 
 void ComponentManager::EntityDestroyed(ENTITYID entity)
 {

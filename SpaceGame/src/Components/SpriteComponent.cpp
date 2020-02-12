@@ -2,7 +2,7 @@
 * \file			SpriteComponent.cpp
 * \author		Chong Jun Yi, Ang Wei Feng
 * \version		1.1
-* \date			2/01/2019
+* \date			2/01/2020
 * \par			Component 
 * \note			Course: GAM150
 * \brief		Component for a 2D sprite
@@ -11,7 +11,7 @@
 				- Tint and Color
 				- Transparency
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/

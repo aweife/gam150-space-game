@@ -2,14 +2,14 @@
 * \file			Editor.cpp
 * \author		Chong Jun Yi
 * \version		1.0
-* \date			25/01/2019
+* \date			25/01/2020
 * \par			Level Game State
 * \note			Course: GAM150
 * \brief		Level 1 Game State
 				-
 				-
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/

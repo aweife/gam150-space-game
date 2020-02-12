@@ -2,7 +2,7 @@
 * \file			Core.cpp
 * \author		Chong Jun Yi
 * \version		1.0
-* \date			30/01/2019
+* \date			30/01/2020
 * \par			Engine Code
 * \note			Course: GAM150
 * \brief		The overall manager for all system in ECS architecture
@@ -10,7 +10,7 @@
 				- Control flow of system during frame update
 				- Clean up all system and manager
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
@@ -30,19 +30,18 @@ void Core_Init()
 	SpriteManager::GetInstance().Init();
 
 	ENTITYID number0 = EntityManager::GetInstance().CreateEntity("Hello");								//Entity 0
-	EntityManager::GetInstance().CreateEntity("World");			//Entity 1
 	EntityManager::GetInstance().GenerateEntityList();
 
-	EntityManager::GetInstance().DestroyEntity(number0);
-	EntityManager::GetInstance().GenerateEntityList();
-
+	/*EntityManager::GetInstance().DestroyEntity(number0);
+	EntityManager::GetInstance().GenerateEntityList();*/
+	//ComponentManager::GetInstance().RemoveComponent<SpriteComponent>(1);
+	
+	ComponentManager::GetInstance().AddComponent<SpriteComponent>(0, new SpriteComponent(1));
+	ComponentManager::GetInstance().AddComponent<TransformComponent>(0, new TransformComponent(1));
 	ComponentManager::GetInstance().GenerateComponentCollection();
-	ComponentManager::GetInstance().AddComponent<SpriteComponent>(1, new SpriteComponent(1));
-	ComponentManager::GetInstance().RemoveComponent<SpriteComponent>(1);
-	ComponentManager::GetInstance().AddComponent<SpriteComponent>(1, new SpriteComponent(1));
 
 	// Add transform
-	ComponentManager::GetInstance().AddComponent<TransformComponent>(1, new TransformComponent(1));
+	
 }
 
 void Core_Update()
@@ -51,6 +50,11 @@ void Core_Update()
 
 	//Change this to input-update-render sequence
 	SpriteManager::GetInstance().Update();
+
+	TransformComponent* thisTransform = ComponentManager::GetInstance().GetComponent<TransformComponent>(0);
+	thisTransform->position.x += 2;
+
+	// UPDATE PHYSICS HERE
 	
 }
 

@@ -1,6 +1,7 @@
 #include "ComponentStorage.h"
 #include "AEEngine.h"
 #include "SpriteComponent.h"
+#include "../Components/TransformComponent.h"
 
 template<typename T>
 void ComponentStorage<T>::RegisterComponent(ENTITYID entity, T* component)
@@ -10,7 +11,7 @@ void ComponentStorage<T>::RegisterComponent(ENTITYID entity, T* component)
 	componentMap.insert({ entity, std::unique_ptr<T>{component} });
 }
 template void ComponentStorage<SpriteComponent>::RegisterComponent(ENTITYID entity, SpriteComponent* component);
-
+template void ComponentStorage<TransformComponent>::RegisterComponent(ENTITYID entity, TransformComponent* component);
 
 template<typename T>
 void ComponentStorage<T>::UnregisterComponent(ENTITYID entity)
@@ -20,7 +21,7 @@ void ComponentStorage<T>::UnregisterComponent(ENTITYID entity)
 	componentMap.erase(entity);
 }
 template void ComponentStorage<SpriteComponent>::UnregisterComponent(ENTITYID entity);
-
+template void ComponentStorage<TransformComponent>::UnregisterComponent(ENTITYID entity);
 
 template<typename T>
 T* ComponentStorage<T>::RetrieveComponent(ENTITYID entity)
@@ -34,6 +35,7 @@ T* ComponentStorage<T>::RetrieveComponent(ENTITYID entity)
 	return nullptr;
 }
 template SpriteComponent* ComponentStorage<SpriteComponent>::RetrieveComponent(ENTITYID entity);
+template TransformComponent* ComponentStorage<TransformComponent>::RetrieveComponent(ENTITYID entity);
 
 
 template<typename T>
@@ -46,3 +48,4 @@ void ComponentStorage<T>::EntityDestroyed(ENTITYID entity)
 	}
 }
 template void ComponentStorage<SpriteComponent>::EntityDestroyed(ENTITYID entity);
+template void ComponentStorage<TransformComponent>::EntityDestroyed(ENTITYID entity);

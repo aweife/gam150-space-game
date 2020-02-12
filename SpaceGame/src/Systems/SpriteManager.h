@@ -19,6 +19,6 @@ public:
 	// Manager methods
 	virtual void Init();								//Signature, assign componentStorages
 	virtual void Update();								//Draw sprite on screen ect
-
+	virtual void Render(AEGfxTexture* texture);
 };
 

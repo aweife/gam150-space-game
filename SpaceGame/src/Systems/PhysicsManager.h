@@ -1,67 +1,24 @@
 #pragma once
-#include <vector>
-#include "../GameObjects/GameObject.h"
 
+#include "System.h"
+#include "ComponentManager.h"
+#include "../Components/ComponentStorage.h"
+#include "../Components/SpriteComponent.h"
 
-class PhysicsManager
+class PhysicsManager : public System<PhysicsManager>
 {
 private:
-	/* Here will be the instance stored. */
-	static PhysicsManager* instance;
-	std::vector<GameObject> gObjList;
-	short gObjCount;
 
-	/* Private constructor to prevent instancing. */
-	PhysicsManager();
+	// List of component
+	std::shared_ptr<ComponentStorage<SpriteComponent>> spriteComponentList;
+protected:
 
 public:
-	float VelocityInit();
-	float VelocityUpdate();
+	// constructor
+	PhysicsManager();					//somehow cannot be accessed by system if placed anywhere else
 
-	//Store objs and update objects
-	bool CollisionDetectionAABB();
-};
-
-
-/*
-// Collision 
-class Collider
-{
+	// Manager methods
+	virtual void Init();								// Signature, assign componentStorages
+	virtual void Update();								// Update physics on screen ect
 
 };
-
-class Gravity
-{
-protected:
-	float force; 
-	// other common things here 
-
-
-	// pseudo gravity 
-	
-	// orbital gravity 
-
-};
-
-class PseudoGravity:public Gravity
-{
-
-};
-
-class OrbitalGravity :public Gravity
-{
-
-};
-*/
-
-// Velocity - can use vector 2 
-//class Velocity
-//{
-//	
-//public: 
-//
-//	 
-//
-//
-//
-//};
