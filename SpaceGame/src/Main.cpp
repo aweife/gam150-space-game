@@ -23,7 +23,7 @@
 #include "Tools/Console.h"				// Debug logger
 #include "Levels/Level1.h"				// REMOVE AFTER TESTING
 #include "ECS/Core.h"
-
+#include "Managers/GameStateManager.h"
 
 Core coreInstance;
 // ---------------------------------------------------------------------------
@@ -83,48 +83,73 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 
 	//TODO: Implement GSM
-
 	// -----------------------------------------------------------------------
-	Level1_Load();
+	GSM_Init(GS_LEVEL1);
+
 	// Game Loop
-	while (gGameRunning)
+	while (currentState != GS_QUIT)
 	{
-		// Informing the system about the loop's start
-		AESysFrameStart();
-
-		// Handling Input
-		AEInputUpdate();
-
-		//TODO : Need to tidy this up next time
-		if (AEInputCheckTriggered(AEVK_P)) {
-			TogglePause();
-		}
-		else if (gGamePause)
+		if (currentState != GS_RESTART)
 		{
-			AESysFrameEnd();
+			GSM_Update();
+			fpLoad();
+		}
+		else
+		{
+			nextState = previousState;
+			currentState = previousState;
+		}
+		fpInit();								//INITALISE data for current game state
+		while (nextState == currentState)
+		{
+			// Informing the system about the loop's start
+			AESysFrameStart();
+
+			// Handling Input
+			AEInputUpdate();
+
+			//TODO : Need to tidy this up next time
+			if (AEInputCheckTriggered(AEVK_P)) {
+				TogglePause();
+			}
+			else if (gGamePause)
+			{
+				AESysFrameEnd();
+				// check if forcing the application to quit
+				if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
+					gGameRunning = 0;
+				continue;
+			}
+			// -----------------------------------------------------------------------
+			// Game loop update
+			Editor_Update();
+
+			Level1_Update();
+
+			// Game loop update end
+			// -----------------------------------------------------------------------
+
+			// -----------------------------------------------------------------------
+			// Game loop draw
+			// Game loop draw end
+			// -----------------------------------------------------------------------
+			// Informing the system about the loop's end
+
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
+			{
 				gGameRunning = 0;
-			continue;
+			}
+			AESysFrameEnd();
 		}
-		// -----------------------------------------------------------------------
-		// Game loop update
-		Editor_Update();
+		fpFree();
 
-		Level1_Update();
-		// Game loop update end
-		// -----------------------------------------------------------------------
-
-		// -----------------------------------------------------------------------
-		// Game loop draw
-		// Game loop draw end
-		// -----------------------------------------------------------------------
-		// Informing the system about the loop's end
-		AESysFrameEnd();
-
-		// check if forcing the application to quit
-		if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-			gGameRunning = 0;
+		if (nextState != GS_RESTART)
+		{
+			fpUnload();
+		}
+		previousState = currentState;
+		currentState = nextState;
 	}
 	// -----------------------------------------------------------------------
 

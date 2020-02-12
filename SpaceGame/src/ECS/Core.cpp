@@ -15,6 +15,7 @@
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #include "Core.h"			//Self Header
+#include "Factory.h"
 
 void Core::Core_Init()
 {
@@ -22,6 +23,8 @@ void Core::Core_Init()
 	coreComponentManager = std::make_unique<ComponentManager>();
 	coreEntityManager = std::make_unique<EntityManager>();
 	coreSystemManager = std::make_unique<SystemManager>();
+
+	Factory::CreateCamera();
 }
 
 ENTITY Core::CreateEntity()

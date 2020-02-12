@@ -19,7 +19,7 @@ void RenderSystem::Update()
 
 	//	AEGfxSetRenderMode(AE_GFX_RM_T);
 
-	//	AEGfxSetPosition(transform.);
+	//	AEGfxSetPosition(transform.x);
 
 	//	AEGfxTextureSet(NULL, 0, 0);					// No texture for object 1
 

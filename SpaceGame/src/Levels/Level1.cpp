@@ -19,6 +19,7 @@
 #include "../ECS/Core.h"
 extern Core coreInstance;
 ENTITY player;
+
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -35,7 +36,7 @@ void Level1_Load()
 // It should be called once before the start of the level
 // It resets data like counters to inital values…
 // ----------------------------------------------------------------------------
-void Level1_Initialize()
+void Level1_Init()
 {
 
 }

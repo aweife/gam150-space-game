@@ -14,7 +14,7 @@ void Level1_Load();
 // It should be called once before the start of the level
 // It resets data like counters to inital values…
 // ----------------------------------------------------------------------------
-void Level1_Initialize();
+void Level1_Init();
 
 // ----------------------------------------------------------------------------
 // This function updates the data within Level1

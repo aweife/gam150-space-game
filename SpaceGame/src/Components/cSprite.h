@@ -6,10 +6,13 @@
 struct cSprite :public Component
 {
 public:
+	//Data
 	AEGfxVertexList* _mesh;
 
+	//Functions
 	cSprite(ENTITY parent);		// Constructor with parameter
 	virtual ~cSprite();			// Virtual Destructor
 
-	virtual void Init();
+	void Init() override;
 };
+

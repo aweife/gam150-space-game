@@ -16,6 +16,9 @@
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
+    <ClCompile Include="src\Managers\GameStateManager.cpp" />
+    <ClCompile Include="src\ECS\Factory.cpp" />
+    <ClCompile Include="src\Components\cCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Component.h" />
@@ -39,5 +42,8 @@
     <ClInclude Include="src\Components\ComponentList.h" />
     <ClInclude Include="src\Managers\SystemManager.h" />
     <ClInclude Include="src\Systems\System.h" />
+    <ClInclude Include="src\Managers\GameStateManager.h" />
+    <ClInclude Include="src\ECS\Factory.h" />
+    <ClInclude Include="src\Components\cCamera.h" />
   </ItemGroup>
 </Project>
