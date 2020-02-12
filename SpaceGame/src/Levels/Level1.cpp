@@ -16,6 +16,9 @@
 #include "Level1.h"
 #include "../Tools/Console.h"
 
+#include "../ECS/Core.h"
+extern Core coreInstance;
+ENTITY player;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -23,6 +26,8 @@
 // ----------------------------------------------------------------------------
 void Level1_Load()
 {
+	player = coreInstance.CreateEntity();
+	coreInstance.AddComponent<cSprite>(player, new cSprite(player));
 }
 
 // ----------------------------------------------------------------------------

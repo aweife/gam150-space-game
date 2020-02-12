@@ -22,7 +22,10 @@
 #include "Tools/Editor.h"				// Editor for gameplay
 #include "Tools/Console.h"				// Debug logger
 #include "Levels/Level1.h"				// REMOVE AFTER TESTING
+#include "ECS/Core.h"
 
+
+Core coreInstance;
 // ---------------------------------------------------------------------------
 // Libraries
 //#pragma comment (lib, "Alpha_Engine.lib")
@@ -67,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #endif
 
 	Global_Init();				// Get start time of game program
-
+	coreInstance.Core_Init();
 
 	// reset the system modules
 	AESysReset();

@@ -24,7 +24,16 @@ public:
 	void RegisterComponent();
 
 	template<typename T>
-	void AddComponent(ENTITY entity, T component);
+	void AddComponent(ENTITY entity, T* component)
+	{
+		coreComponentManager->AddComponent<T>(entity, component);
+
+		auto signature = coreEntityManager->GetSignature(entity);
+		signature.set(coreComponentManager->GetComponentType<T>(), true);
+		coreEntityManager->SetSignature(entity, signature);
+
+		coreSystemManager->UpdateEntitySignature(entity, signature);
+	}
 
 	template<typename T>
 	void RemoveComponent(ENTITY entity);
@@ -42,4 +51,3 @@ public:
 	void SetSystemSignature(SIGNATURE signature);
 };
 
-static Core coreInstance;
