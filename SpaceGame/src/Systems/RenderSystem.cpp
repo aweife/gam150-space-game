@@ -57,7 +57,7 @@ void RenderSystem::Render()
 		AEGfxSetTransform(transform->transform.m);
 
 		// Position texture
-		AEGfxTextureSet(sprite->texture, 0.0f, 0.0f);
+		AEGfxTextureSet(sprite->_texture, 0.0f, 0.0f);
 
 		// No tint
 		AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -65,6 +65,6 @@ void RenderSystem::Render()
 		AEGfxSetTransparency(1.0f);
 
 		//Draw
-		AEGfxMeshDraw(sprite->mesh, AE_GFX_MDM_TRIANGLES);
+		AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);
 	}
 }

@@ -27,7 +27,7 @@ cSprite::cSprite(ENTITY parent)
 	_entityParent = parent;
 
 	//Component Specific variables
-	mesh = nullptr;
+	_mesh = nullptr;
 
 	//Create mesh
 	Init();
@@ -42,7 +42,7 @@ cSprite::cSprite(ENTITY parent, const char* texture)
 	_entityParent = parent;
 
 	//Component Specific variables
-	mesh = nullptr;
+	_mesh = nullptr;
 
 	//Create mesh
 	Init();
@@ -53,9 +53,9 @@ cSprite::cSprite(ENTITY parent, const char* texture)
 
 cSprite::~cSprite()
 {
-	AEGfxMeshFree(mesh);		//2 memory leaks if not done
-	if (texture)
-		AEGfxTextureUnload(texture);
+	AEGfxMeshFree(_mesh);		//2 memory leaks if not done
+	if (_texture)
+		AEGfxTextureUnload(_texture);
 	Console_Cout("SpriteComponent Destructor");
 }
 
@@ -77,13 +77,13 @@ void cSprite::Init()
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
 
 	// Saving the mesh (list of triangles) in _mesh
-	mesh = AEGfxMeshEnd();
+	_mesh = AEGfxMeshEnd();
 
-	AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+	AE_ASSERT_MESG(_mesh, "Failed to create mesh!");
 }
 
 void cSprite::LoadTexture(const char* pathName)
 {
-	texture = AEGfxTextureLoad(pathName);
-	AE_ASSERT_MESG(texture, "Failed to create texture!");
+	_texture = AEGfxTextureLoad(pathName);
+	AE_ASSERT_MESG(_texture, "Failed to create texture!");
 }

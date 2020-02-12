@@ -122,13 +122,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// -----------------------------------------------------------------------
 		// Game loop update
 		Editor_Update();
-		Level1_Update();
+		fpUpdate();
 		// Game loop update end
 		// -----------------------------------------------------------------------
 
 		// -----------------------------------------------------------------------
 		// Game loop draw
-		Level1_Draw();
+		fpDraw();
 		// Game loop draw end
 		// -----------------------------------------------------------------------
 		// Informing the system about the loop's end

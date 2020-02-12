@@ -9,7 +9,7 @@ public:
 	//Data
 	AEGfxVertexList* _mesh;
 
-	AEGfxTexture* texture;
+	AEGfxTexture* _texture;
 
 	cSprite(ENTITY parent);							// Constructor with parameter
 	cSprite(ENTITY parent, const char* texture);	// To be changeds
