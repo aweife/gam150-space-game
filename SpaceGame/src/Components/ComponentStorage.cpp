@@ -1,5 +1,4 @@
 #include "ComponentStorage.h"	//Self Header
-#include "ComponentList.h"		//Header to all types of component used in game
 
 /******************************************************************************/
 /*!

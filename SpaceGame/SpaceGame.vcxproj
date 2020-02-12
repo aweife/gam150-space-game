@@ -106,7 +106,6 @@
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
-    <ClCompile Include="src\Systems\SpriteSystem.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
@@ -127,7 +126,6 @@
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
-    <ClInclude Include="src\Systems\SpriteSystem.h" />
     <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />

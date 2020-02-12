@@ -4,8 +4,8 @@
 #include "Component.h"			//Access to component base class
 #include <unordered_map>
 #include <memory>
-
-#include "ComponentStorage_Generic.h"
+#include "ComponentList.h" //Header to all types of component used in game
+#include "ComponentStorage_Generic.h" //Base class
 
 template<typename T>
 class ComponentStorage:public ComponentStorage_Generic
@@ -18,15 +18,14 @@ private:
 	unsigned int currSize;												// Current numbe of valid components in the array.
 public:
 	//Data
-	std::array<std::unique_ptr<T>, MAX_ENTITIES> componentArray;			//A list of components based on entity
+	std::array<std::unique_ptr<T>, MAX_ENTITIES> componentArray;		//A list of components based on entity
 
 	//Functions
 	void RegisterComponent(ENTITY entity, T* component);				//Adds a component to its component storage, tagged to its entity
 
 	void UnregisterComponent(ENTITY entity);							//Remove a component from its respective component storage
-
+	
 	T* RetrieveComponent(ENTITY entity);								//Return a pointer to the component that belongs to an entity
 
 	void EntityDestroyed(ENTITY entity) override;						//All Component Storage must react when a entity is destroyed
 };
-//NOT SURE IF CAN TEMPLATE SPECIFICATION HERE??

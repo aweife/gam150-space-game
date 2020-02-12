@@ -35,61 +35,61 @@ void Core::DestroyEntity(ENTITY entity)
 
 	coreComponentManager->EntityDestroyed(entity);
 
-	coreSystemManager->EntityDestroyed(entity);
+	//coreSystemManager->EntityDestroyed(entity); //Will we need this
 }
 
 template<typename T>
 void Core::RegisterComponent()
 {
-	mComponentManager->RegisterComponent<T>();
+	coreComponentManager->AddComponent<T>();
 }
 
 template<typename T>
 void Core::AddComponent(ENTITY entity, T component)
 {
-	mComponentManager->AddComponent<T>(entity, component);
+	coreComponentManager->AddComponent<T>(entity, component);
 
-	auto signature = mEntityManager->GetSignature(entity);
-	signature.set(mComponentManager->GetComponentType<T>(), true);
-	mEntityManager->SetSignature(entity, signature);
+	auto signature = coreEntityManager->GetSignature(entity);
+	signature.set(coreComponentManager->GetComponentType<T>(), true);
+	coreEntityManager->SetSignature(entity, signature);
 
-	mSystemManager->EntitySignatureChanged(entity, signature);
+	coreSystemManager->UpdateEntitySignature(entity, signature);
 }
 
 template<typename T>
 void Core::RemoveComponent(ENTITY entity)
 {
-	mComponentManager->RemoveComponent<T>(entity);
+	coreComponentManager->RemoveComponent<T>(entity);
 
-	auto signature = mEntityManager->GetSignature(entity);
-	signature.set(mComponentManager->GetComponentType<T>(), false);
-	mEntityManager->SetSignature(entity, signature);
+	auto signature = coreEntityManager->GetSignature(entity);
+	signature.set(coreComponentManager->GetComponentType<T>(), false);
+	coreEntityManager->SetSignature(entity, signature);
 
-	mSystemManager->EntitySignatureChanged(entity, signature);
+	coreSystemManager->UpdateEntitySignature(entity, signature);
 }
 
 template<typename T>
 T& Core::GetComponent(ENTITY entity)
 {
-	return mComponentManager->GetComponent<T>(entity);
+	return coreComponentManager->GetComponent<T>(entity);
 }
 
 template<typename T>
 ComponentType Core::GetComponentType()
 {
-	return mComponentManager->GetComponentType<T>();
+	return coreComponentManager->GetComponentType<T>();
 }
 
 template<typename T>
 std::shared_ptr<T> Core::RegisterSystem()
 {
-	return mSystemManager->RegisterSystem<T>();
+	return coreSystemManager->RegisterSystem<T>();
 }
 
 template<typename T>
 void Core::SetSystemSignature(SIGNATURE signature)
 {
-	mSystemManager->SetSignature<T>(signature);
+	coreSystemManager->SetSignature<T>(signature);
 }
 
 

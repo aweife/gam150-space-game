@@ -62,7 +62,8 @@ std::shared_ptr<ComponentStorage<T>> ComponentManager::GetComponentStorage()
 
 	return std::static_pointer_cast<ComponentStorage<T>>(componentCollection[componentTypeName]);
 }
-
+//Explicit template
+template void ComponentManager::AddComponent<cSprite>(ENTITY, cSprite*);
 
 template<typename T>
 void ComponentManager::AddComponent(ENTITY entity, T* component)

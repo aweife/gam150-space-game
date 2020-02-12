@@ -22,7 +22,7 @@ typedef unsigned int ENTITY;					// ID for each entity, components will be tagge
 const ENTITY MAX_ENTITIES = 1000;				// Maximum number of entity in game
 
 //COMPONENT
-typedef unsigned short ComponentType;					// ID for component
+typedef unsigned short ComponentType;			// ID for component
 const ComponentType MAX_COMPONENTS = 32;		// Maximum number of components that can be added to a entity
 
 //ENTITY-COMPONENT

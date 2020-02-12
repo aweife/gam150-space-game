@@ -4,8 +4,6 @@
 #include "../Managers/EntityManager.h"
 #include "../Managers/SystemManager.h"
 
-static Core coreInstance;
-
 class Core
 {
 private:
@@ -14,8 +12,6 @@ private:
 	std::unique_ptr<SystemManager> coreSystemManager;
 
 public:
-	Core(const System&) = delete;				//Make sure Core cannot be shallow copy
-	Core& operator=(const System) = delete;		//Make sure no 2 Core exisits
 
 	void Core_Init();
 
@@ -46,5 +42,4 @@ public:
 	void SetSystemSignature(SIGNATURE signature);
 };
 
-
-
+static Core coreInstance;

@@ -23,7 +23,7 @@ std::shared_ptr<T> SystemManager::RegisterSystem()
 }
 
 template<typename T>
-void SystemManager::SetSignature(Signature signature)
+void SystemManager::SetSignature(SIGNATURE signature)
 {
 	// Get name of the system
 	const char* systemName = typeid(T).name();
@@ -33,10 +33,10 @@ void SystemManager::SetSignature(Signature signature)
 		"Using system before registering.");
 
 	// Insert into signature map as a pair: key value -- mapped value
-	_signatureMap.insert({ systemName, signature });
+	_signaturesMap.insert({ systemName, signature });
 }
 
-void SystemManager::DestroyEntity(Entity entity)
+void SystemManager::DestroyEntity(ENTITY entity)
 {
 	// Erase an entity from all system lists
 	for (auto const& pair : _systemMap)
@@ -48,7 +48,7 @@ void SystemManager::DestroyEntity(Entity entity)
 	}
 }
 
-void SystemManager::UpdateEntitySignature(Entity entity, Signature entitySignature)
+void SystemManager::UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature)
 {
 	for (auto const& pair : _systemMap)
 	{
@@ -56,7 +56,7 @@ void SystemManager::UpdateEntitySignature(Entity entity, Signature entitySignatu
 		// The second of the pair is the shared pointer to the system
 		auto const& name = pair.first;
 		auto const& system = pair.second;
-		auto const& systemSignature = _signatureMap[name];
+		auto const& systemSignature = _signaturesMap[name];
 
 		// Do bitwise comparison of the signatures
 		// The & operator returns a result for us to compare against

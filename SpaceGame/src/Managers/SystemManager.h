@@ -34,7 +34,7 @@ private:
 	// We use unordered map because it uses a hash table, which is O(1) speed
 
 	// Map from string to a signature
-	std::unordered_map<const char*, SIGNATURE> _Signatures;
+	std::unordered_map<const char*, SIGNATURE> _signaturesMap;
 
 	// Map from string to a system pointer
 	std::unordered_map<const char*, std::shared_ptr<System>> _systemMap;

@@ -1,27 +1,28 @@
 #include "EntityManager.h"
 #include "AEEngine.h"
 
-EntityManager::EntityManager()
+EntityManager::EntityManager() : _activeEntityCount{ 0 }
 {
 	// Add to the queue with all possible ids
-	for (Entity entity = 0; entity < MAX_ENTITIES; ++entity)
+	for (ENTITY entity = 0; entity < MAX_ENTITIES; ++entity)
 		_availableEntities.push(entity);
 }
 
-Entity EntityManager::CreateEntity()
+ENTITY EntityManager::CreateEntity(const char* name)
 {
 	// Assert if we reached the cap
 	AE_ASSERT(_activeEntityCount < MAX_ENTITIES && "Too many entities created.");
 
 	// Take from the front of the queue
-	Entity entity = _availableEntities.front();
+	ENTITY entity = _availableEntities.front();
+	name = "";
 	_availableEntities.pop();
 	++_activeEntityCount;
 
 	return entity;
 }
 
-void EntityManager::DestroyEntity(Entity entity)
+void EntityManager::DestroyEntity(ENTITY entity)
 {
 	// Assert if given entity is invalid
 	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");
@@ -34,7 +35,7 @@ void EntityManager::DestroyEntity(Entity entity)
 	--_activeEntityCount;
 }
 
-void EntityManager::SetEntitySignature(ENTITY entity, SIGNATURE key)
+void EntityManager::SetSignature(ENTITY entity, SIGNATURE key)
 {
 	// Assert if given entity is invalid
 	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");
@@ -43,7 +44,7 @@ void EntityManager::SetEntitySignature(ENTITY entity, SIGNATURE key)
 	_signatures[entity] = key;
 }
 
-Signature EntityManager::GetSignature(Entity entity)
+SIGNATURE EntityManager::GetSignature(ENTITY entity)
 {
 	// Assert if given entity is invalid
 	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");
