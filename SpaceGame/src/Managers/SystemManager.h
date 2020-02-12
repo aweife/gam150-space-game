@@ -17,6 +17,7 @@ public:
 	std::shared_ptr<T> RegisterSystem();
 
 	// Sets the unique signature for this system
+	// The template is needed to get the name of the system
 	template<typename T>
 	void SetSignature(SIGNATURE signature);
 
@@ -24,7 +25,7 @@ public:
 	void DestroyEntity(ENTITY entity);
 
 	// Notify all systems an entity changed signature (add/remove component)
-	void UpdateEntitySignature(ENTITY entity, SIGNATURE signature);
+	void UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature);
 
 private:
 	// Map stores elements in pairs: A key value and a mapped value
@@ -36,5 +37,5 @@ private:
 	std::unordered_map<const char*, SIGNATURE> _Signatures;
 
 	// Map from string to a system pointer
-	std::unordered_map<const char*, std::shared_ptr<System>> _Systems;
+	std::unordered_map<const char*, std::shared_ptr<System>> _systemMap;
 };

@@ -1,113 +1,52 @@
 #include "EntityManager.h"
-#include "ComponentManager.h"
 #include "AEEngine.h"
 
-#include "../Tools/Console.h"				//REMOVE AFTER TESTING
-
-EntityManager::EntityManager() 
+EntityManager::EntityManager()
 {
-	_activeEntityCount = 0;
+	// Add to the queue with all possible ids
+	for (Entity entity = 0; entity < MAX_ENTITIES; ++entity)
+		_availableEntities.push(entity);
 }
 
-ENTITY EntityManager::CreateEntity(const char* name)
+Entity EntityManager::CreateEntity()
 {
-	AE_ASSERT(_activeEntityCount < MAX_ENTITIES && "Too many entities");
+	// Assert if we reached the cap
+	AE_ASSERT(_activeEntityCount < MAX_ENTITIES && "Too many entities created.");
 
-	ENTITY id = _activeEntityCount; //Assign an ID based on nth exisiting entity
+	// Take from the front of the queue
+	Entity entity = _availableEntities.front();
+	_availableEntities.pop();
+	++_activeEntityCount;
 
-	//Recycle an ENTITY ID, First in First out
-	//if (!_inactiveEntity_List.empty())
-	//{
-	//	id = _inactiveEntity_List.front();
-	//	_inactiveEntity_List.pop();
-	//}
-	//'Creating' the new entity 
-	_availableEntities.push(id);		//Add the new entity to active vector
-	//_activeEntity_NameList[id] = name;		//Store name in a accessable array
-	++_activeEntityCount;					//Increament number of exisiting entity
-
-	return id;
+	return entity;
 }
 
-void EntityManager::DestroyEntity(ENTITY entity)
+void EntityManager::DestroyEntity(Entity entity)
 {
-	AE_ASSERT(entity < MAX_ENTITIES && "Entity out of range.");
+	// Assert if given entity is invalid
+	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");
 
-	// Reset the component signature since entity will be destroyed
+	// Reset signature of entity
 	_signatures[entity].reset();
 
-	// Put the destroyed ID into inactive queue to be recycled
-	//_inactiveEntity_List.push(entity);
-
-	// Remove from active vector
-	for (auto i = _availableEntities.begin(); i != _activeEntity_List.end(); ++i)
-	{
-		if (*i == entity)
-		{
-			_activeEntity_List.erase(i);
-			break;
-		}
-	}
-	--_activeEntityCount;					//Decreament number of exisiting entity
-
-	//Remove all components in that entity
-	ComponentManager::GetInstance().EntityDestroyed(entity);
-}
-
-SIGNATURE EntityManager::GetEntitySignature(ENTITY entity) const
-{
-	AE_ASSERT(entity < ENTITY_MAX && "Entity out of range.");
-
-	return _activeEntity_SignatureList[entity];		//Informs what components the entity contain
+	// Add to the back of the queue
+	_availableEntities.push(entity);
+	--_activeEntityCount;
 }
 
 void EntityManager::SetEntitySignature(ENTITY entity, SIGNATURE key)
 {
-	AE_ASSERT(entity < ENTITY_MAX && "Entity out of range.");
+	// Assert if given entity is invalid
+	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");
 
-	_activeEntity_SignatureList[entity] = key;		//Add or remove components the entity contain
+	// Save this entity's signature to our array
+	_signatures[entity] = key;
 }
 
-void EntityManager::GenerateEntityList() const
+Signature EntityManager::GetSignature(Entity entity)
 {
-	if (_activeEntity_List.empty()) return;
+	// Assert if given entity is invalid
+	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");
 
-	Console_Cout("---Generating Entity List---");
-	for (auto i : _activeEntity_List)
-	{
-		Console_Cout(_activeEntity_NameList[i], i);		//Format: Name EntityID
-	}
-	Console_Newline();
+	return _signatures[entity];
 }
-
-
-
-
-
-
-
-
-
-//template<class AnyComp>
-//void GameObject::AddComponent()
-//{
-//	Component* newComponent = new AnyComp();	
-//	componentList.push_back(std::unique_ptr<Component>{newComponent});
-//}
-////explict template instances
-//template void GameObject::AddComponent<MeshComponent>();
-//
-//template<class AnyComp>
-//void GameObject::RemoveComponent()
-//{
-//	for (auto i = componentList.begin(); i != componentList.end(); ++i)
-//	{
-//		if ((*i)->_name.compare(typeid(AnyComp).name()) == 0)
-//		{
-//			componentList.erase(i);
-//			break;
-//		}
-//	}
-//}
-////explict template instances
-//template void GameObject::RemoveComponent<MeshComponent>();

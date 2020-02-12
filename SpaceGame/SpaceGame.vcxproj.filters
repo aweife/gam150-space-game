@@ -98,6 +98,8 @@
     </ClCompile>
     <ClCompile Include="src\Components\cSprite.cpp">
       <Filter>Source Files\Components</Filter>
+    <ClCompile Include="src\Systems\RenderSystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +151,6 @@
     <ClInclude Include="src\ECS\Core.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\Components\Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Math\Vec2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -160,6 +159,8 @@
     </ClInclude>
     <ClInclude Include="src\Components\cTransform.h">
       <Filter>Header Files\Components</Filter>
+    <ClInclude Include="src\Systems\RenderSystem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
