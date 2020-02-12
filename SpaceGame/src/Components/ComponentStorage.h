@@ -2,10 +2,11 @@
 
 #include "../Global_ECS.h"		//typedef alias for Entity
 #include "Component.h"			//Access to component base class
-#include <unordered_map>
-#include <memory>
-#include "ComponentList.h" //Header to all types of component used in game
+#include <unordered_map>		//storage type
+#include <array>				//storage type
+#include <memory>				//unique_ptr
 #include "ComponentStorage_Generic.h" //Base class
+#include "ComponentList.h"		//Header to all types of component used in game
 
 template<typename T>
 class ComponentStorage:public ComponentStorage_Generic
@@ -22,10 +23,7 @@ public:
 
 	//Functions
 	void RegisterComponent(ENTITY entity, T* component);				//Adds a component to its component storage, tagged to its entity
-
 	void UnregisterComponent(ENTITY entity);							//Remove a component from its respective component storage
-	
 	T* RetrieveComponent(ENTITY entity);								//Return a pointer to the component that belongs to an entity
-
 	void EntityDestroyed(ENTITY entity) override;						//All Component Storage must react when a entity is destroyed
 };

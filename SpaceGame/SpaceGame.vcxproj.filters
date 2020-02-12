@@ -4,8 +4,6 @@
     <ClCompile Include="src\Components\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\Managers\EntityManager.cpp" />
-    <ClCompile Include="src\Entity\Entity_Blueprint.cpp" />
-    <ClCompile Include="src\Entity\UiElement.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -28,7 +26,6 @@
     <ClInclude Include="src\Components\cTransform.h" />
     <ClInclude Include="src\Components\Transform.h" />
     <ClInclude Include="src\Managers\EntityManager.h" />
-    <ClInclude Include="src\Entity\Entity_Blueprint.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Global_ECS.h" />
     <ClInclude Include="src\Levels\Level1.h" />
@@ -41,5 +38,6 @@
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
     <ClInclude Include="src\Math\Vec2.h" />
+    <ClInclude Include="src\Components\ComponentList.h" />
   </ItemGroup>
 </Project>

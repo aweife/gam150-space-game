@@ -93,8 +93,6 @@
     <ClCompile Include="src\Components\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\Managers\EntityManager.cpp" />
-    <ClCompile Include="src\Entity\Entity_Blueprint.cpp" />
-    <ClCompile Include="src\Entity\UiElement.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -111,13 +109,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Component.h" />
+    <ClInclude Include="src\Components\ComponentList.h" />
     <ClInclude Include="src\Components\ComponentStorage.h" />
     <ClInclude Include="src\Components\ComponentStorage_Generic.h" />
     <ClInclude Include="src\Components\cSprite.h" />
     <ClInclude Include="src\Components\cTransform.h" />
     <ClInclude Include="src\Components\Transform.h" />
     <ClInclude Include="src\Managers\EntityManager.h" />
-    <ClInclude Include="src\Entity\Entity_Blueprint.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Global_ECS.h" />
     <ClInclude Include="src\Levels\Level1.h" />

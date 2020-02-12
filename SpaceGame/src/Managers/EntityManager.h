@@ -15,7 +15,7 @@ public:
 	ENTITY CreateEntity(const char* name = "");
 
 	// Return an entity to the back of the queue
-	void DestroyEntity(ENTITY entity);
+	void EntityDestroyed(ENTITY entity);
 
 	// Assign a signature to an entity
 	void SetSignature(ENTITY entity, SIGNATURE signature);
@@ -58,7 +58,7 @@ private:
 //	EntityManager();
 //	virtual void Init();
 //	ENTITYID CreateEntity(std::string name = "Unnamed Entity");
-//	void DestroyEntity(ENTITYID entity);
+//	void EntityDestroyed(ENTITYID entity);
 //
 //	SIGNATURE GetEntitySignature(ENTITYID entity) const;
 //	void SetEntitySignature(ENTITYID entity, SIGNATURE key);
