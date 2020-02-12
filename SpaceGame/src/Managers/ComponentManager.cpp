@@ -5,6 +5,7 @@
 void ComponentManager::Init()
 {
 	//Register all the components here
+	RegisterComponentCollection<cTransform>(ID_TransformComponent);
 	RegisterComponentCollection<cSprite>(ID_SpriteComponent);
 }
 

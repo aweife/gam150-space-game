@@ -94,6 +94,7 @@
     <ClCompile Include="src\Components\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\ECS\Factory.cpp" />
+    <ClCompile Include="src\Components\cTransform.cpp" />
     <ClCompile Include="src\Managers\EntityManager.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
@@ -134,6 +135,9 @@
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
     <ClInclude Include="src\Math\Vec2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\machinegun.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,9 +15,8 @@
 **********************************************************************************/
 #include "Level1.h"
 #include "../Tools/Console.h"
-
 #include "../ECS/Core.h"
-extern Core coreInstance;
+
 ENTITY player;
 
 // ----------------------------------------------------------------------------
@@ -27,8 +26,9 @@ ENTITY player;
 // ----------------------------------------------------------------------------
 void Level1_Load()
 {
-	player = coreInstance.CreateEntity();
-	coreInstance.AddComponent<cSprite>(player, new cSprite(player));
+	player = Core::Get().CreateEntity();
+	Core::Get().AddComponent<cTransform>(player, new cTransform);
+	Core::Get().AddComponent<cSprite>(player, new cSprite(player,"res/machinegun.png"));
 }
 
 // ----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ void Level1_Init()
 // ----------------------------------------------------------------------------
 void Level1_Update()
 {
-	
+	Core::Get().Core_Update();
 }
 
 // ----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ void Level1_Update()
 // ----------------------------------------------------------------------------
 void Level1_Draw()
 {
-
+	Core::Get().Core_Render();
 }
 // ----------------------------------------------------------------------------
 // This function cleans up the game state for Level1

@@ -25,7 +25,6 @@
 #include "ECS/Core.h"
 #include "Managers/GameStateManager.h"
 
-Core coreInstance;
 // ---------------------------------------------------------------------------
 // Libraries
 //#pragma comment (lib, "Alpha_Engine.lib")
@@ -70,7 +69,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #endif
 
 	Global_Init();				// Get start time of game program
-	coreInstance.Core_Init();
+	Core::Get().Core_Init();
 
 	// reset the system modules
 	AESysReset();
@@ -108,32 +107,32 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			// Handling Input
 			AEInputUpdate();
 
-			//TODO : Need to tidy this up next time
-			if (AEInputCheckTriggered(AEVK_P)) {
-				TogglePause();
-			}
-			else if (gGamePause)
-			{
-				AESysFrameEnd();
-				// check if forcing the application to quit
-				if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-					gGameRunning = 0;
-				continue;
-			}
-			// -----------------------------------------------------------------------
-			// Game loop update
-			Editor_Update();
+		//TODO : Need to tidy this up next time
+		if (AEInputCheckTriggered(AEVK_P)) {
+			TogglePause();
+		}
+		else if (gGamePause)
+		{
+			AESysFrameEnd();
+			// check if forcing the application to quit
+			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
+				gGameRunning = 0;
+			continue;
+		}
+		// -----------------------------------------------------------------------
+		// Game loop update
+		Editor_Update();
+		Level1_Update();
+		// Game loop update end
+		// -----------------------------------------------------------------------
 
-			Level1_Update();
-
-			// Game loop update end
-			// -----------------------------------------------------------------------
-
-			// -----------------------------------------------------------------------
-			// Game loop draw
-			// Game loop draw end
-			// -----------------------------------------------------------------------
-			// Informing the system about the loop's end
+		// -----------------------------------------------------------------------
+		// Game loop draw
+		Level1_Draw();
+		// Game loop draw end
+		// -----------------------------------------------------------------------
+		// Informing the system about the loop's end
+		AESysFrameEnd();
 
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())

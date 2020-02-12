@@ -19,6 +19,7 @@
     <ClCompile Include="src\Managers\GameStateManager.cpp" />
     <ClCompile Include="src\ECS\Factory.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
+    <ClCompile Include="src\Components\cTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Component.h" />
@@ -45,5 +46,8 @@
     <ClInclude Include="src\Managers\GameStateManager.h" />
     <ClInclude Include="src\ECS\Factory.h" />
     <ClInclude Include="src\Components\cCamera.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\machinegun.png" />
   </ItemGroup>
 </Project>
