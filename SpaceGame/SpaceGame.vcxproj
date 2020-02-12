@@ -90,6 +90,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="src\Components\Component.cpp" />
     <ClCompile Include="src\Components\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\ComponentStorage_Generic.cpp" />
@@ -113,6 +115,8 @@
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\ComponentStorage.h" />
     <ClInclude Include="src\Components\ComponentStorage_Generic.h" />

@@ -63,13 +63,6 @@ void SpriteManager::Update()
 	
 }
 
-void SpriteManager::Render(AEGfxTexture* texture)
-{
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-	AEGfxTextureSet(texture, 0, 0);
-	AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);
-	AEGfxSetTransparency(1.0f);
-}
+
 
 
