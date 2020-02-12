@@ -14,6 +14,7 @@ private:
 public:
 
 	void Core_Init();
+	void Core_Update();
 
 	//ENTITY
 	ENTITY CreateEntity();

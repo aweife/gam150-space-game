@@ -28,7 +28,8 @@ void Level1_Load()
 {
 	player = coreInstance.CreateEntity();
 	coreInstance.AddComponent<cTransform>(player, new cTransform);
-	coreInstance.AddComponent<cSprite>(player, new cSprite(player));
+	coreInstance.AddComponent<cSprite>(player, new cSprite(player, "res/machinegun.png"));
+	coreInstance.AddComponent<cRigidBody>(player, new cRigidBody);
 }
 
 // ----------------------------------------------------------------------------
@@ -47,7 +48,8 @@ void Level1_Initialize()
 // ----------------------------------------------------------------------------
 void Level1_Update()
 {
-	
+	coreInstance.Core_Update();
+	// Test code for physics 
 }
 
 // ----------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 #include "../Global.h"
 #include "../Components/Component.h"
 #include "System.h"
-#include "../Components/RigidBodyComponent.h"
+#include "../Components/cRigidBody.h"
 
 /**************************************************************************/
 /*!
@@ -23,7 +23,7 @@ struct AABB
 class PhysicsSystem : public System
 {
 public: 
-	void Init(RigidBodyComponent body);
+	void Init(cRigidBody body);
 
 	void Update();
 };

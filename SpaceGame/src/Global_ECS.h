@@ -32,7 +32,9 @@ enum COMPONENTID								//ID for each component, to be used to organise systems 
 {
 	ID_NullComponent = 0,
 	ID_TransformComponent = 1,
-	ID_SpriteComponent = 2
+	ID_SpriteComponent = 2, 
+	ID_RigidBodyComponent = 3, 
+	ID_CollisionComponent = 4,
 };					
 
 enum SYSCATEGORY {

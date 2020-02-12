@@ -13,6 +13,8 @@ public:
 	// is at least one referencing it
 	// We can create a pointer to the registered system and return it to core.
 
+	void Update();
+
 	// Returns a shared pointer to this system
 	template<typename T>
 	std::shared_ptr<T> RegisterSystem();

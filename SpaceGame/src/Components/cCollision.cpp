@@ -1,5 +1,5 @@
 /*********************************************************************************
-* \file			CollisionComponent.cpp
+* \file			cCollision.cpp
 * \author		Farzaana Binte Roslan
 * \version		1.0
 * \date			31/01/2020
@@ -12,8 +12,7 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "CollisionComponent.h"
-#include "../SpaceGame/src/Systems/PhysicsSystem.h"
+#include "cCollision.h"
 #include <AEVec2.h>
 #include "Math.h"
 
@@ -25,8 +24,8 @@
 **********************************************************************************/
 
 // Checking for Collision (AABB)
-bool CollisionComponent::checkforCollisionAABB(const AABB& obj1, const Vector2D& vel1,
-	const AABB& obj2, const Vector2D& vel2)
+bool cCollision::checkforCollisionAABB(const AABB& obj1, const AEVec2& vel1,
+	const AABB& obj2, const AEVec2& vel2)
 {
 	// To check for collision detection between static rectangles, if the check returns no overlap, continue
 	if ((obj1.max.x < obj2.min.x || obj1.min.x > obj2.max.x ||
@@ -149,7 +148,7 @@ bool CollisionComponent::checkforCollisionAABB(const AABB& obj1, const Vector2D&
 //
 //}
 
-void CollisionComponent::Update()
+void cCollision::Update()
 {
 
 }

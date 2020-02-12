@@ -12,10 +12,9 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "RigidBodyComponent.h"
+#include "cRigidBody.h"
 #include <AEVec2.h>
 #include "Math.h"
-#include "../SpaceGame/src/Global.h"
 
 
 /*********************************************************************************
@@ -24,9 +23,9 @@
 *
 **********************************************************************************/
 // Constructor
-RigidBodyComponent::RigidBodyComponent() : mass{ 30.0f }, inertia{ 10.0f },
-inertiaInverse{ 5.0f }, position{ 0.0f, 0.0f },
-velocity{ 0.0f, 0.0f }, angularVelocity{ 0.0f, 0.0f }
+cRigidBody::cRigidBody() : mass{ 30.0f }, inertia{ 10.0f },
+						   inertiaInverse{ 5.0f }, position{ 0.0f, 0.0f },
+						   velocity{ 1.0f, 1.0f }, angularVelocity{ 0.0f, 0.0f }
 {
 
 }

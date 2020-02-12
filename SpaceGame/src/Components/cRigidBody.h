@@ -2,8 +2,9 @@
 
 #include "AEEngine.h"
 
-struct RigidBodyComponent
+class cRigidBody
 {
+public:
 	float mass;                              // Mass of the ship
 	float inertia;                           // Inertia
 	float inertiaInverse;                    // Inverse Inertia
@@ -12,8 +13,8 @@ struct RigidBodyComponent
 	AEVec2 angularVelocity;					 // Angular Velocity of the ship (not sure if needed)
 
 	// Constructor
-	RigidBodyComponent();
+	cRigidBody();
 
 	// Destructor
-	~RigidBodyComponent() = default;
+	~cRigidBody() = default;
 };

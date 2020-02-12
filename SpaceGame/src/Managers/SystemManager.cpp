@@ -1,11 +1,21 @@
 #include "SystemManager.h"
 #include "AEEngine.h"
 #include "../Systems/RenderSystem.h"
+#include "../Systems/PhysicsSystem.h"
 
 void SystemManager::Init()
 {
 	// Register systems
 	RegisterSystem<RenderSystem>();
+	RegisterSystem<PhysicsSystem>();
+}
+
+void SystemManager::Update()
+{
+	for (auto const& system : _systemMap)
+	{
+		system.second->Update();
+	}
 }
 
 template<typename T>

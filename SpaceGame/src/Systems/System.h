@@ -9,6 +9,8 @@ public:
 	// Using a set instead of a list because every element in a set is unique
 	// Also for the convienent insert() and erase() functionality
 	std::set<ENTITY> entitiesList;
+
+	virtual void Update() = 0;
 };
 
 
