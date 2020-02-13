@@ -9,3 +9,4 @@
 #include "cCamera.h"
 #include "cPathFinding.h"
 #include "cAI.h"
+#include "cSpaceShip.h"

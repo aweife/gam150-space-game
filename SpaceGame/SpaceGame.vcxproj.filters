@@ -23,6 +23,9 @@
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
     <ClCompile Include="src\Systems\PathFindingSystem.cpp" />
     <ClCompile Include="src\Systems\AISystem.cpp" />
+    <ClCompile Include="src\Input\Input.cpp" />
+    <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
+    <ClCompile Include="src\Components\cSpaceShip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Component.h" />
@@ -53,6 +56,9 @@
     <ClInclude Include="src\Systems\PathFindingSystem.h" />
     <ClInclude Include="src\Systems\AISystem.h" />
     <ClInclude Include="src\Components\cAI.h" />
+    <ClInclude Include="src\Input\Input.h" />
+    <ClInclude Include="src\Systems\SpaceShipLogicSystem.h" />
+    <ClInclude Include="src\Components\cSpaceShip.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cRigidBody.h" />
@@ -62,5 +68,6 @@
   <ItemGroup>
     <Image Include="res\PlanetTexture.png" />
     <Image Include="res\machinegun.png" />
+    <Image Include="res\Planet2.png" />
   </ItemGroup>
 </Project>

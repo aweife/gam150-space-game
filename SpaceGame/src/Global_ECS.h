@@ -38,6 +38,7 @@ enum COMPONENTID								//ID for each component, to be used to organise systems 
 	ID_CameraComponent,
 	ID_PathFindingComponent,
 	ID_AIComponent,
+	ID_SpaceShip,
 };					
 
 enum SYSCATEGORY {

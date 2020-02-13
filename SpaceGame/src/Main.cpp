@@ -23,6 +23,7 @@
 #include "Tools/Console.h"				// Debug logger
 #include "ECS/Core.h"
 #include "Managers/GameStateManager.h"
+#include "Input/Input.h"
 
 // ---------------------------------------------------------------------------
 // Libraries
@@ -98,6 +99,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			currentState = previousState;
 		}
 		fpInit();								//INITALISE data for current game state
+		inputInit();
 		while (nextState == currentState)
 		{
 			// Informing the system about the loop's start
@@ -105,6 +107,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 			// Handling Input
 			AEInputUpdate();
+			inputUpdate();
 
 			//TODO : Need to tidy this up next time
 			if (AEInputCheckTriggered(AEVK_P)) {

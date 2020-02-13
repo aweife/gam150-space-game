@@ -9,6 +9,7 @@ void SystemManager::Init()
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<PathFindingSystem>();
 	RegisterSystem<AISystem>();
+	RegisterSystem<SpaceShipLogicSystem>();
 
 	for (auto const& system : _systemMap)
 	{

@@ -91,6 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\cCamera.cpp" />
+    <ClCompile Include="src\Components\cSpaceShip.cpp" />
     <ClCompile Include="src\ECS\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\ECS\Factory.cpp" />
@@ -98,6 +99,7 @@
     <ClCompile Include="src\ECS\EntityManager.cpp" />
     <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Global.cpp" />
+    <ClCompile Include="src\Input\Input.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\ECS\ComponentManager.cpp" />
@@ -110,6 +112,7 @@
     <ClCompile Include="src\Systems\PathFindingSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
+    <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
@@ -120,6 +123,7 @@
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\ComponentList.h" />
     <ClInclude Include="src\Components\cPathFinding.h" />
+    <ClInclude Include="src\Components\cSpaceShip.h" />
     <ClInclude Include="src\ECS\ComponentStorage.h" />
     <ClInclude Include="src\ECS\ComponentStorage_Generic.h" />
     <ClInclude Include="src\Components\cSprite.h" />
@@ -130,6 +134,7 @@
     <ClInclude Include="src\ECS\EntityManager.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Global_ECS.h" />
+    <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\Levels\Level1.h" />
     <ClInclude Include="src\ECS\ComponentManager.h" />
     <ClInclude Include="src\ECS\Core.h" />
@@ -141,6 +146,7 @@
     <ClInclude Include="src\Systems\PathFindingSystem.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
+    <ClInclude Include="src\Systems\SpaceShipLogicSystem.h" />
     <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Systems\SystemList.h" />
     <ClInclude Include="src\Tools\Console.h" />
@@ -148,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\machinegun.png" />
+    <Image Include="res\Planet2.png" />
     <Image Include="res\PlanetTexture.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -7,3 +7,4 @@
 #include "CollisionSystem.h"
 #include "PathFindingSystem.h"
 #include "AISystem.h"
+#include "SpaceShipLogicSystem.h"

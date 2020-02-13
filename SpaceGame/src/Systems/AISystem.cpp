@@ -17,14 +17,14 @@ bool shouldUpdate = false;
 void AISystem::Update()
 {
 	timer += g_dt;
-	if (timer > 1.0f)
+	if (timer > 0.75f)
 	{
 		timer = 0.0f;
 		shouldUpdate = true;
 	}
 
 	if (!shouldUpdate)
-		return; 
+		return;
 
 	cTransform* trans;
 	cRigidBody* rb;
@@ -53,16 +53,20 @@ void AISystem::Update()
 		if (distanceToPlayer < ai->minDistance)
 		{
 			path->currentState = PATH_FLEE;
-			rb->velocity = targetRb->velocity;
+			if (rb->velocity < targetRb->velocity)
+				rb->velocity += 30.0f;
 		}
 		else if (distanceToPlayer > ai->maxDistance)
 		{
 			path->currentState = PATH_SEEK;
-			rb->velocity = targetRb->velocity;
+			if (rb->velocity < targetRb->velocity)
+				rb->velocity += 30.0f;
 		}
 		else
 		{
-			printf("ATTACKING PLAYER");
+			if (rb->velocity > targetRb->velocity/2.0f)
+				rb->velocity -= 15.0f;
+			printf("ATTACKING PLAYER\n");
 		}
 
 		/*if can - move - away - from - player

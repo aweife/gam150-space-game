@@ -13,6 +13,7 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cCamera>(ID_CameraComponent);
 	RegisterComponentCollection<cPathFinding>(ID_PathFindingComponent);
 	RegisterComponentCollection<cAI>(ID_AIComponent);
+	RegisterComponentCollection<cSpaceShip>(ID_SpaceShip);
 }
 
 template<typename T>
