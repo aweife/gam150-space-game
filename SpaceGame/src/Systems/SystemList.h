@@ -5,3 +5,5 @@
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
 #include "CollisionSystem.h"
+#include "PathFindingSystem.h"
+#include "AISystem.h"

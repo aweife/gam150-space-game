@@ -21,6 +21,8 @@
     <ClCompile Include="src\ECS\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
+    <ClCompile Include="src\Systems\PathFindingSystem.cpp" />
+    <ClCompile Include="src\Systems\AISystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Component.h" />
@@ -47,6 +49,10 @@
     <ClInclude Include="src\ECS\ComponentStorage.h" />
     <ClInclude Include="src\ECS\ComponentStorage_Generic.h" />
     <ClInclude Include="src\Systems\SystemList.h" />
+    <ClInclude Include="src\Components\cPathFinding.h" />
+    <ClInclude Include="src\Systems\PathFindingSystem.h" />
+    <ClInclude Include="src\Systems\AISystem.h" />
+    <ClInclude Include="src\Components\cAI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cRigidBody.h" />

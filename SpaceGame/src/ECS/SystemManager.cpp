@@ -7,7 +7,8 @@ void SystemManager::Init()
 	RegisterSystem<RenderSystem>();
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
-
+	RegisterSystem<PathFindingSystem>();
+	RegisterSystem<AISystem>();
 
 	for (auto const& system : _systemMap)
 	{

@@ -199,12 +199,10 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			if (checkforCollisionAABB(collider->boundingBox, rigidbody->velocity, collider2->boundingBox, rigidbody2->velocity) == true)
+			if (checkforCollisionAABB(collider->boundingBox, rigidbody->velocityVector, collider2->boundingBox, rigidbody2->velocityVector) == true)
 			{
-				rigidbody->velocity.x = 0.0f;
-				rigidbody->velocity.y = 0.0f;
-				rigidbody2->velocity.x = 0.0f;
-				rigidbody2->velocity.y = 0.0f;
+				rigidbody->velocity = 10.0f;
+				rigidbody2->velocity = 10.0f;
 			}
 		}
 	}

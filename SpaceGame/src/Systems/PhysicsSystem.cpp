@@ -83,14 +83,16 @@ void PhysicsSystem::Update()
 
 		// Calculate the new displacement at time t + dt
 		newDisplacement = displacement + newVelocity * g_dt;
-		printf("%f\n", g_dt);
 
 		// Updating the old velocity
 		_velocity = newVelocity;
 		displacement = newDisplacement;
 
-		transform->position.x += rigidbody->velocity.x;
-		transform->position.y += rigidbody->velocity.y;
+		if(!(rigidbody->velocityVector.x < FLT_EPSILON && rigidbody->velocityVector.x > -FLT_EPSILON &&
+			rigidbody->velocityVector.y < FLT_EPSILON && rigidbody->velocityVector.y > -FLT_EPSILON))
+			AEVec2Normalize(&rigidbody->velocityVector, &rigidbody->velocityVector);
+		transform->position.x += rigidbody->velocityVector.x * rigidbody->velocity * g_dt;
+		transform->position.y += rigidbody->velocityVector.y * rigidbody->velocity * g_dt;
 	}
 }
 

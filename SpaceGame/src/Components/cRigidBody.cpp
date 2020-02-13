@@ -22,7 +22,7 @@
 // Constructor
 cRigidBody::cRigidBody() : mass{ 30.0f }, inertia{ 10.0f },
 						   inertiaInverse{ 5.0f }, position{ 0.0f, 0.0f },
-						   velocity{ 2.0f, 0.0f }, angularVelocity{ 0.0f, 0.0f }
+						   velocityVector{ 2.0f, 0.0f }, angularVelocity{ 0.0f, 0.0f }
 {
 
 }

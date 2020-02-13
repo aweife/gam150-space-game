@@ -7,3 +7,5 @@
 #include "cRigidBody.h"
 #include "cCollision.h"
 #include "cCamera.h"
+#include "cPathFinding.h"
+#include "cAI.h"

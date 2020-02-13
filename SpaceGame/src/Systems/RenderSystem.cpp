@@ -8,8 +8,8 @@ void RenderSystem::Init()
 {
 	// Sets the system signature for this system
 	SIGNATURE signature;
-	signature.set(Core::Get().GetComponentType<cTransform>(), true);
-	signature.set(Core::Get().GetComponentType<cSprite>(), true);
+	signature.set(Core::Get().GetComponentType<cTransform>());
+	signature.set(Core::Get().GetComponentType<cSprite>());
 	Core::Get().SetSystemSignature<RenderSystem>(signature);
 }
 
