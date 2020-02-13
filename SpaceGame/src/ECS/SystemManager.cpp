@@ -1,7 +1,5 @@
 #include "SystemManager.h"
-#include "../Systems/RenderSystem.h"
-#include "../Systems/PhysicsSystem.h"
-#include "../Systems/CollisionSystem.h"
+#include "../Systems/SystemList.h"
 
 void SystemManager::Init()
 {

@@ -1,3 +1,4 @@
+#pragma once
 /*********************************************************************************
 * \file			PhysicsSystem.h
 * \author		Farzaana Binte Roslan
@@ -12,10 +13,7 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#pragma once
-
 #include "System.h"
-#include "../Components/cRigidBody.h"
 
 class PhysicsSystem : public System
 {

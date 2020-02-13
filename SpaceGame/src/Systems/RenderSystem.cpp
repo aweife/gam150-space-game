@@ -1,8 +1,7 @@
 #include "RenderSystem.h"
 #include "AEEngine.h"
 #include "../ECS/Core.h"
-#include "../Components/cTransform.h"
-#include "../Components/cSprite.h"
+#include "../Components/ComponentList.h"
 
 
 void RenderSystem::Init()

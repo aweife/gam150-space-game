@@ -1,8 +1,7 @@
 #include "ComponentManager.h"					// Self Header
 #include <typeinfo>								// typeid
-
-#include "../Tools/Console.h"
 #include "../Components/ComponentList.h"
+#include "../Tools/Console.h"
 
 void ComponentManager::Init()
 {

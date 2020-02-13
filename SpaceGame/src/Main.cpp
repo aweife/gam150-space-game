@@ -21,7 +21,6 @@
 #include "Global.h"						// Global variables 
 #include "Tools/Editor.h"				// Editor for gameplay
 #include "Tools/Console.h"				// Debug logger
-#include "Levels/Level1.h"				// REMOVE AFTER TESTING
 #include "ECS/Core.h"
 #include "Managers/GameStateManager.h"
 

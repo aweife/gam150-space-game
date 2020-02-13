@@ -13,9 +13,6 @@
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #include "cRigidBody.h"
-#include <AEVec2.h>
-#include "Math.h"
-
 
 /*********************************************************************************
 *

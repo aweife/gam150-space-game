@@ -20,7 +20,6 @@
     <ClCompile Include="src\ECS\SystemManager.cpp" />
     <ClCompile Include="src\ECS\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cRigidBody.cpp" />
-    <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +46,7 @@
     <ClInclude Include="src\ECS\SystemManager.h" />
     <ClInclude Include="src\ECS\ComponentStorage.h" />
     <ClInclude Include="src\ECS\ComponentStorage_Generic.h" />
+    <ClInclude Include="src\Systems\SystemList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cRigidBody.h" />
