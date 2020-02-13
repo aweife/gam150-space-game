@@ -8,11 +8,11 @@ class cSprite :public Component
 public:
 	//Data
 	AEGfxVertexList* _mesh;
-
 	AEGfxTexture* _texture;
+	unsigned int _layer; /*0 to 5...see render system*/
 
-	cSprite(ENTITY parent);							// Constructor with parameter
-	cSprite(ENTITY parent, const char* texture);	// To be changeds
+
+	cSprite(ENTITY parent, const char* texture, unsigned int layer = 0);	// Constructor with parameter
 	~cSprite();										// Virtual Destructor
 
 	void Init();

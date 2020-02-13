@@ -291,7 +291,7 @@ AE_API u8 AEInputCheckReleased	(u8 key);
 \fn         void AEInputGetCursorPosition(s32 *pX, 
                                           s32 *pY)
 
-\brief      Get the current position of the cursor, 
+\brief      Get the current _position of the cursor, 
             in screen coordinates.
 
 \param      [out] pX
@@ -311,7 +311,7 @@ AE_API void AEInputGetCursorPosition(s32 *pX, s32 *pY);
 \fn         void AEInputGetCursorPositionDelta(s32 *pDeltaX, 
                                                s32 *pDeltaY)
 
-\brief      Get the change in position of the cursor since the last
+\brief      Get the change in _position of the cursor since the last
             update, in screen coordinates.
 
 \param      [out] pDeltaX

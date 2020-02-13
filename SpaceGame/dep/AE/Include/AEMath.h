@@ -380,7 +380,7 @@ AE_API s32		AEInRange	(f32 x, f32 x0, f32 x1);
             Pointer to AEVec2 containing the positon of the point.
 
 \param      [in] pCtr
-            Pointer to AEVec2 containing the position of 
+            Pointer to AEVec2 containing the _position of 
             the center of the circle
 
 \param      [in] radius
@@ -416,10 +416,10 @@ AE_API f32 AECalcDistPointToCircle		(AEVec2* pPos, AEVec2* pCtr, f32 radius);
             i.e. the sides of the rect are parallel to the axis.
 
 \param      [in] pPos
-            Pointer to AEVec2 containing the position of the point.
+            Pointer to AEVec2 containing the _position of the point.
 
 \param      [in] pRect
-            Pointer to AEVec2 containing the position of 
+            Pointer to AEVec2 containing the _position of 
             the center of the rect.
 
 \param      [in] sizeX
@@ -452,7 +452,7 @@ AE_API f32 AECalcDistPointToRect		(AEVec2* pPos, AEVec2* pRect, f32 sizeX, f32 s
             the point to the line segment.
 
 \param      [in] pPos
-            Pointer to AEVec2 containing the position of the point.
+            Pointer to AEVec2 containing the _position of the point.
 
 \param      [in] pLine0
             Pointer to AEVec2 containing the start of the 
@@ -487,7 +487,7 @@ AE_API f32 AECalcDistPointToLineSeg		(AEVec2* pPos, AEVec2* pLine0, AEVec2* pLin
             Currently returns -1.0f.
 
 \param      [in] pPos
-            Pointer to AEVec2 containing the position of the point.
+            Pointer to AEVec2 containing the _position of the point.
 
 \param      [in] pVtx
             Pointer to an array of AEVec2 containing the vertices 
@@ -663,7 +663,7 @@ AE_API f32 AECalcDistCircleToConvexPoly	(AEVec2* pPos, AEVec2* pVtx, u32 vtxNum)
 \warning    Radius of circle should be a non-negative value.
 
 \param      [in] pPos
-            Pointer to AEVec2 containing the position of the point.
+            Pointer to AEVec2 containing the _position of the point.
 
 \param      [in] pCtr
             Pointer to AEVec2 containing the center of the circle.
@@ -698,7 +698,7 @@ AE_API s32 AETestPointToCircle			(AEVec2* pPos, AEVec2* pCtr, f32 radius);
             i.e. the sides of the rect are parallel to the axis.
 
 \param      [in] pPos
-            Pointer to AEVec2 containing the position of the point.
+            Pointer to AEVec2 containing the _position of the point.
 
 \param      [in] pRect
             Pointer to AEVec2 containing the center of the rect.
@@ -880,7 +880,7 @@ AE_API f32 AEStaticPointToStaticLineSegment(AEVec2 *pPos, AELineSegment2 *pLine)
 \brief      Calculate the collision between a moving point with
             a line.
 
-\details    Given the start position (pStart) and end position (pEnd) 
+\details    Given the start _position (pStart) and end _position (pEnd) 
             of a moving point and a line (pLine), calculate the time 
             and point of intersection.
 
@@ -917,7 +917,7 @@ AE_API f32 AEAnimatedPointToStaticLineSegment(AEVec2 *pStart, AEVec2 *pEnd, AELi
 \brief      Calculate the collision between a moving circle with
             a line.
 
-\details    Given the start position (pStart) and end position (pEnd) 
+\details    Given the start _position (pStart) and end _position (pEnd) 
             of a moving circle of size (radius) and a line (pLine), 
             calculate the time and point of intersection.
 
@@ -959,7 +959,7 @@ AE_API f32 AEAnimatedCircleToStaticLineSegment(AEVec2 *pStart, AEVec2 *pEnd, f32
 \brief      Calculate the collision between a moving point with
             a line and the reflected path of the point.
 
-\details    Given the start position (pStart) and end position (pEnd) 
+\details    Given the start _position (pStart) and end _position (pEnd) 
             of a moving point and a line (pLine), calculate the time,
             point of intersection and reflected path. 
 
@@ -1001,7 +1001,7 @@ AE_API f32 AEReflectAnimatedPointOnStaticLineSegment(AEVec2 *pStart, AEVec2 *pEn
 \brief      Calculate the collision between a moving circle with
             a line and the reflected path of the circle.
 
-\details    Given the start position (pStart) and end position (pEnd) 
+\details    Given the start _position (pStart) and end _position (pEnd) 
             of a moving circle of size (radius) and a line (pLine), 
             calculate the time, point of intersection and reflected
             path.
@@ -1048,7 +1048,7 @@ AE_API f32 AEReflectAnimatedCircleOnStaticLineSegment(AEVec2 *pStart, AEVec2 *pE
 \brief      Calculate the collision between a moving point with
             a circle.
 
-\details    Given the start position (pStart) and end position (pEnd) 
+\details    Given the start _position (pStart) and end _position (pEnd) 
             of a moving point and the center of a circle (pCtr) of
             size (radius), calculate the time and point of 
             intersection.
@@ -1090,7 +1090,7 @@ AE_API f32 AEAnimatedPointToStaticCircle(AEVec2 *pStart, AEVec2 *pEnd, AEVec2 *p
 \brief      Calculate the collision between a moving point with
             a circle and the reflected path of the point.
 
-\details    Given the start position (pStart) and end position (pEnd) 
+\details    Given the start _position (pStart) and end _position (pEnd) 
             of a moving point and the center of a circle (pCtr) of
             size (radius), calculate the time, point of intersection
             and reflected path.
@@ -1136,7 +1136,7 @@ AE_API f32 AEReflectAnimatedPointOnStaticCircle(AEVec2 *pStart, AEVec2 *pEnd, AE
 \brief      Calculate the collision between a moving circle with
             a static circle.
 
-\details    Given the start position (pCtr0s) and end position 
+\details    Given the start _position (pCtr0s) and end _position 
             (pCtr0e) of moving circle0 of size (radius0) and the 
             center of static circle1 (pCtr1) of size (radius1), 
             calculate the time and point of intersection.
@@ -1182,7 +1182,7 @@ AE_API f32 AEAnimatedCircleToStaticCircle(AEVec2 *pCtr0s, AEVec2 *pCtr0e, f32 ra
 \brief      Calculate the collision between a moving circle with
             a static circle and the reflected path of moving circle.
 
-\details    Given the start position (pCtr0s) and end position 
+\details    Given the start _position (pCtr0s) and end _position 
             (pCtr0e) of moving circle0 of size (radius0) and the 
             center of static circle1 (pCtr1) of size (radius1), 
             calculate the time, point of intersection and reflected

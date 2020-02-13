@@ -387,7 +387,7 @@ AE_API void 		AEMtx33ScaleApply		(AEMtx33* pResult, AEMtx33* pMtx, f32 x, f32 y)
 \fn         void AEMtx33Rot(AEMtx33* pResult, 
                             f32 angle)
 
-\brief      Set pResult to the rotation matrix of angle in radians
+\brief      Set pResult to the _rotation matrix of angle in radians
             rotating counter-clockwise.
 
 \param      [out] pResult
@@ -407,7 +407,7 @@ AE_API void 		AEMtx33Rot				(AEMtx33* pResult, f32 angle);
 \fn         void AEMtx33RotDeg(AEMtx33* pResult, 
                                f32 angle)
 
-\brief      Set pResult to the rotation matrix of angle in degrees
+\brief      Set pResult to the _rotation matrix of angle in degrees
             rotating counter-clockwise.
 
 \param      [out] pResult

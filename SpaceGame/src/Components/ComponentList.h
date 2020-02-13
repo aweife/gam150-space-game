@@ -1,4 +1,6 @@
 // A collection of all headers for components in game
 #include "cSprite.h"
 #include "cTransform.h"
+#include "cRigidBody.h"
+#include "cCollision.h"
 #include "cCamera.h"

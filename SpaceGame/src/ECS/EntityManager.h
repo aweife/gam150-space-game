@@ -3,10 +3,12 @@
 #include "../Global_ECS.h"
 #include <queue>
 #include <array>
-
+#include <map>
 class EntityManager
 {
 public:
+	std::map<ENTITY, const char*> _entitiesNameSet;
+
 	// Constructor
 	// Initialise a queue of inactive/available entities with unique id
 	EntityManager();

@@ -174,7 +174,7 @@ AE_API void	AEVec2Normalize			(AEVec2* pResult, AEVec2* pVec0);
             Pointer to AEVec2 for input.
 
 \param      [in] s
-            Value to scale with.
+            Value to _scale with.
 
 \retval     void
             No return.
@@ -203,7 +203,7 @@ AE_API void	AEVec2Scale				(AEVec2* pResult, AEVec2* pVec0, f32 s);
             Pointer to AEVec2 for input.
 
 \param      [in] s
-            Value to scale with.
+            Value to _scale with.
 
 \retval     void
             No return.
@@ -232,7 +232,7 @@ AE_API void	AEVec2ScaleAdd			(AEVec2* pResult, AEVec2* pVec0, AEVec2* pVec1, f32
             Pointer to AEVec2 for input.
 
 \param      [in] s
-            Value to scale with.
+            Value to _scale with.
 
 \retval     void
             No return.

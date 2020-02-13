@@ -2,14 +2,14 @@
 * \file			Global.cpp
 * \author		Ang Wei Feng, Chong Jin Kiat, Chong Jun Yi, Farzaana Binte Roslan
 * \version		1.0
-* \date			18/01/2019
+* \date			18/01/2020
 * \par			Data storage Code
 * \note			Course: GAM150
 * \brief		Stores global variables about the game
 				- Game Start Time (Time when exe was lauched)
 				-
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
@@ -19,6 +19,8 @@
 
 bool gGamePause;				// GameStatePaused
 double gStartTime;				// Time when game was launched
+float g_dt;
+float g_appTime;
 
 /******************************************************************************/
 /*!

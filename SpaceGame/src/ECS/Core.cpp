@@ -17,6 +17,8 @@
 #include "Core.h"			//Self Header
 #include "Factory.h"
 
+#include "../Managers/CameraManager.h"
+#include "../Tools/Console.h"
 void Core::Core_Init()
 {
 	//Create the 3 main manager instances
@@ -27,8 +29,6 @@ void Core::Core_Init()
 	// Register components and systems
 	coreComponentManager->Init();
 	coreSystemManager->Init();
-
-	//Factory::CreateCamera();
 }
 
 void Core::Core_Update()
@@ -40,12 +40,13 @@ void Core::Core_Update()
 void Core::Core_Render()
 {
 	// Update systems
+	CameraManager::Update();
 	coreSystemManager->Render();
 }
 
-ENTITY Core::CreateEntity()
+ENTITY Core::CreateEntity(const char* name)
 {
-	return coreEntityManager->CreateEntity();
+	return coreEntityManager->CreateEntity(name);
 }
 
 void Core::EntityDestroyed(ENTITY entity)
@@ -57,5 +58,13 @@ void Core::EntityDestroyed(ENTITY entity)
 	coreSystemManager->EntityDestroyed(entity); //Will we need this
 }
 
-
+//Purely used for debuging
+void Core::GenerateWorldState()
+{
+	Console_Cout("---Generating World State---");
+	
+	Console_Newline();
+	
+	
+}
 

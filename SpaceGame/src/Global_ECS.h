@@ -31,11 +31,11 @@ typedef std::bitset<MAX_COMPONENTS> SIGNATURE;	//A collections of bits to repres
 enum COMPONENTID								//ID for each component, to be used to organise systems and map an entity
 {
 	ID_NullComponent = 0,
-	ID_TransformComponent,
-	ID_SpriteComponent,
-
-
-	ID_CameraComponent
+	ID_TransformComponent = 1,
+	ID_SpriteComponent = 2, 
+	ID_RigidBodyComponent = 3, 
+	ID_CollisionComponent = 4,
+	ID_CameraComponent = 5
 };					
 
 enum SYSCATEGORY {

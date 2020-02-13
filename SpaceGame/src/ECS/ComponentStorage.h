@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../Global_ECS.h"		//typedef alias for Entity
-#include "Component.h"			//Access to component base class
-#include <unordered_map>		//storage type
-#include <array>				//storage type
-#include <memory>				//unique_ptr
-#include "ComponentStorage_Generic.h" //Base class
-#include "ComponentList.h"		//Header to all types of component used in game
+#include "../Global_ECS.h"				//typedef alias for Entity
+#include "../Components/Component.h"	//Access to component base class
+#include <unordered_map>				//storage type
+#include <array>						//storage type
+#include <memory>						//unique_ptr
+#include "ComponentStorage_Generic.h"	//Base class
+#include "../Components/Component.h"	//Header to all types of component used in game
+#include "AEEngine.h"
 
 template<typename T>
 class ComponentStorage :public ComponentStorage_Generic
@@ -32,6 +33,9 @@ public:
 
 		//Register the component into storage
 		componentArray[currSize] = std::unique_ptr<T>{ component };
+
+		// Increment count
+		++currSize;
 	}
 
 	void UnregisterComponent(ENTITY entity)							//Remove a component from its respective component storage
@@ -52,6 +56,9 @@ public:
 		//Remove deleted component 
 		entityToIndexMap.erase(entity);
 		indexToEntityMap.erase(backComponentIndex);
+
+		// Decrement count
+		--currSize;
 	}
 	T* RetrieveComponent(ENTITY entity)								//Return a pointer to the component that belongs to an entity
 	{

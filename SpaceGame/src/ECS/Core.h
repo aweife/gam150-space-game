@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include "../Managers/ComponentManager.h"
-#include "../Managers/EntityManager.h"
-#include "../Managers/SystemManager.h"
+#include "ComponentManager.h"
+#include "EntityManager.h"
+#include "SystemManager.h"
 
 class Core
 {
@@ -23,7 +23,7 @@ public:
 	void Core_Render();
 
 	// ENTITY
-	ENTITY CreateEntity();
+	ENTITY CreateEntity(const char* name = "");
 	void EntityDestroyed(ENTITY entity);
 
 	// COMPONENT
@@ -83,6 +83,7 @@ public:
 		coreSystemManager->SetSignature<T>(signature);
 	}
 
+	void GenerateWorldState();
 private:
 	// Singleton pattern
 	Core() {}                    // Constructor. The {} brackets are needed here

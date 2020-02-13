@@ -1,24 +1,27 @@
 /*********************************************************************************
 * \file			Editor.cpp
-* \author		Chong Jun Yi
+* \author		Chong Jun Yi, Ang Wei Feng, Chong Jin Kiat, Farzaana Binte Roslan
 * \version		1.0
-* \date			25/01/2019
+* \date			25/01/2020
 * \par			Level Game State
 * \note			Course: GAM150
 * \brief		Level 1 Game State
 				-
 				-
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #include "Level1.h"
 #include "../Tools/Console.h"
 #include "../ECS/Core.h"
+#include "../Components/ComponentList.h"
+#include "../ECS/Factory.h"
 
 ENTITY player;
-
+ENTITY planet;
+ENTITY planet2;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -26,9 +29,29 @@ ENTITY player;
 // ----------------------------------------------------------------------------
 void Level1_Load()
 {
-	player = Core::Get().CreateEntity();
-	Core::Get().AddComponent<cTransform>(player, new cTransform);
-	Core::Get().AddComponent<cSprite>(player, new cSprite(player,"res/machinegun.png"));
+	//Create Player
+	player = Factory::CreatePlayer(2);
+
+	// Create camera
+	Factory::CreateCamera(player, 2);
+
+	// Planet to test for collision
+	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
+	Factory::CreatePlanet2(3, 200.0f, 179.0f, 200.0f, 200.0f);
+	Factory::CreatePlanet4(3, 700.0f, -300.0f, 300.0f, 300.0f);
+	Factory::CreatePlanet2(5, -30.0f, -200.0f, 30.0f, 30.0f);
+
+	Factory::CreatePlanet3(4, 400.0f, 400.0f, 230.0f, 230.0f);
+	Factory::CreatePlanet3(4, 630.0f, -40.0f, 60.0f, 60.0f);
+	Factory::CreatePlanet3(4, -300.0f, -400.0f, 300.0f, 300.0f);
+	Factory::CreatePlanet3(4, 1000.0f, 240.0f, 100.0f, 100.0f);
+
+	Factory::CreatePlanet1(3, -400.0f, 200.0f, 100.0f, 100.0f );
+	Factory::CreatePlanet4(5, 730.0f, 30.0f, 80.0f, 80.0f);
+	Factory::CreatePlanet1(5, -820.0f, -100.0f, 200.0f, 200.0f);
+	Factory::CreatePlanet1(5, 1300.0f, -90.0f, 100.0f, 100.0f);
+
+	Factory::CreateBackground();
 }
 
 // ----------------------------------------------------------------------------
@@ -38,6 +61,8 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
+	Core::Get().GetComponent<cTransform>(player)->_scale.x = 50.0f;
+	Core::Get().GetComponent<cTransform>(player)->_scale.y = 50.0f;
 
 }
 

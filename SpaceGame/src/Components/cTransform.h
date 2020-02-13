@@ -5,10 +5,11 @@
 class cTransform
 {
 public:
-	AEMtx33 transform;
-	AEVec2 position;
-	float rotation;
-	AEVec2 scale;
-
+	AEMtx33 _transform;
+	AEVec2 _position;
+	float _rotation;
+	AEVec2 _scale;
+	
 	cTransform();
+	cTransform(AEVec2 _position, float _rotation, AEVec2 _scale);
 };

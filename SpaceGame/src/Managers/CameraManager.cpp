@@ -1,53 +1,93 @@
 #include "CameraManager.h"
-#include "../Components/cTransform.h"
-#include "../Components/cCamera.h"
+
 #include "AEGraphics.h"
 #include "../ECS/Core.h"
+#include "../Global.h"			//g_dt
+#include "../Math/Math.h"
 
-void CameraManager::AssignNewCam(ENTITY currCamera)
+
+namespace CameraManager
 {
-	AE_ASSERT(_cameraCount < _cameraMaxCount && "Too many camera created.");
+	unsigned int _cameraCount = 0;
+	const unsigned int _cameraMaxCount = 4;
+	ENTITY _currCamera = 0;
+	ENTITY _sideCamera[3];
 
-	if (_currCamera != 0) //if there is an existing camera
-	{
-		//Inactive cameras to switch perspective
-		_sideCamera[_cameraCount] = _currCamera;
-	}
-	_currCamera = currCamera;
-	++_cameraCount;
-}
+	cTransform* currCameraTransform;
+	cCamera* currCameraComp;
 
-bool CameraManager::SwitchCam(ENTITY existingCamEntity)
-{
-	for (unsigned int i = 0; i < _cameraCount; ++i)
+	void AssignNewCam(ENTITY currCamera)
 	{
-		if (existingCamEntity == _sideCamera[i])
+		AE_ASSERT(_cameraCount < _cameraMaxCount && "Too many camera created.");
+
+		if (_currCamera != 0) //if there is an existing camera
 		{
-			//Switch the camera
-			ENTITY tempEntity = _currCamera;
-			_currCamera = _sideCamera[i];
-			_sideCamera[i] = tempEntity;
-
-			return true; //success
+			//Inactive cameras to switch perspective
+			//_sideCamera[_cameraCount] = _currCamera;
 		}
+		_currCamera = currCamera;
+		currCameraTransform = Core::Get().GetComponent<cTransform>(_currCamera);
+		currCameraComp = Core::Get().GetComponent<cCamera>(_currCamera);
+		++_cameraCount;
+
 	}
-	return false;
-}
 
-void CameraManager::Update()
-{
-	cTransform* currCameraTransform = Core::Get().GetComponent<cTransform>(_currCamera);
-	cCamera* currCameraComp = Core::Get().GetComponent<cCamera>(_currCamera);
+	bool SwitchCam(ENTITY existingCamEntity)
+	{
+		for (unsigned int i = 0; i < _cameraCount; ++i)
+		{
+			if (existingCamEntity == _sideCamera[i])
+			{
+				//Switch the camera
+				ENTITY tempEntity = _currCamera;
+				_currCamera = _sideCamera[i];
+				_sideCamera[i] = tempEntity;
 
-	AEGfxGetCamPosition(&currCameraTransform->position.x, &currCameraTransform->position.y);
-}
+				return true; //success
+			}
+		}
+		return false;
+	}
 
-void CameraManager::SmoothFollow()
-{
+	void Update()
+	{
+		if (_currCamera == 0) return;
+		SmoothFollow();
+		AEGfxSetCamPosition(currCameraTransform->_position.x, currCameraTransform->_position.y);
+	}
 
-}
+	void SmoothFollow()
+	{
+		float boundingX = AEGfxGetWinMaxX() * 2 / 6;
+		float boundingY = AEGfxGetWinMaxY() * 3 / 6;
 
-void CameraManager::CameraShake()
-{
+		
 
+		if (abs(currCameraComp->_followTarget->_position.x - currCameraTransform->_position.x) > boundingX)
+		{
+			/*currCameraTransform->_position.x = 
+				MBMath_Smoothstep(currCameraTransform->_position.x, currCameraComp->_followTarget->_position.x, currCameraComp->_followSpeed * g_dt);*/
+			/*currCameraTransform->_position.x =
+				MBMath_Lerp(currCameraTransform->_position.x, currCameraComp->_followTarget->_position.x, currCameraComp->_followSpeed * g_dt);*/
+			
+			currCameraTransform->_position.x = MBMath_SmoothDamp(currCameraTransform->_position.x, 
+				currCameraComp->_followTarget->_position.x, &(currCameraComp->_camVelocity), 0.3, 100, g_dt);
+
+			printf("%f\n", currCameraTransform->_position.x);
+		}
+		if (abs(currCameraComp->_followTarget->_position.y - currCameraTransform->_position.y) > boundingY)
+		{
+			/*currCameraTransform->_position.y = 
+				MBMath_Smoothstep(currCameraTransform->_position.y, currCameraComp->_followTarget->_position.y, currCameraComp->_followSpeed * g_dt);*/
+			/*currCameraTransform->_position.y =
+				MBMath_Lerp(currCameraTransform->_position.y, currCameraComp->_followTarget->_position.y, currCameraComp->_followSpeed * g_dt);*/
+
+		}
+		
+	}
+
+	void CameraShake()
+	{
+
+	}
 }

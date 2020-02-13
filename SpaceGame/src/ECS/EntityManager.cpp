@@ -4,7 +4,7 @@
 EntityManager::EntityManager() : _activeEntityCount{ 0 }
 {
 	// Add to the queue with all possible ids
-	for (ENTITY entity = 0; entity < MAX_ENTITIES; ++entity)
+	for (ENTITY entity = 1; entity < MAX_ENTITIES; ++entity)
 		_availableEntities.push(entity);
 }
 
@@ -15,7 +15,8 @@ ENTITY EntityManager::CreateEntity(const char* name)
 
 	// Take from the front of the queue
 	ENTITY entity = _availableEntities.front();
-	name = "";
+	//_entitiesNameSet.insert(std::pair<)
+	//_entitiesNames[entity] = name;
 	_availableEntities.pop();
 	++_activeEntityCount;
 

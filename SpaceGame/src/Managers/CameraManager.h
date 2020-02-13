@@ -1,14 +1,12 @@
 #pragma once
 #include "../Global_ECS.h"
+#include "../Components/cTransform.h"
+#include "../Components/cCamera.h"
 
-class CameraManager
+namespace CameraManager
 {
-private:
-	unsigned int _cameraCount = 0;
-	const unsigned int _cameraMaxCount = 4;
-	ENTITY _currCamera = 0;
-	ENTITY _sideCamera[3];
-public:
+
+
 	void AssignNewCam(ENTITY currCamera);
 	bool SwitchCam(ENTITY existingCamEntity);
 

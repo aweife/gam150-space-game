@@ -91,21 +91,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\cCamera.cpp" />
-    <ClCompile Include="src\Components\ComponentStorage.cpp" />
+    <ClCompile Include="src\ECS\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\ECS\Factory.cpp" />
     <ClCompile Include="src\Components\cTransform.cpp" />
+    <ClCompile Include="src\ECS\EntityManager.cpp" />
+    <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Managers\CameraManager.cpp" />
-    <ClCompile Include="src\Managers\EntityManager.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Managers\ComponentManager.cpp" />
+    <ClCompile Include="src\ECS\ComponentManager.cpp" />
     <ClCompile Include="src\Managers\GameStateManager.cpp" />
-    <ClCompile Include="src\Managers\SystemManager.cpp" />
+    <ClCompile Include="src\ECS\SystemManager.cpp" />
     <ClCompile Include="src\ECS\Core.cpp" />
-    <ClCompile Include="src\Math\Vec2.cpp" />
+    <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
+    <ClCompile Include="src\Systems\CollisionSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
@@ -113,33 +115,36 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cCamera.h" />
+    <ClInclude Include="src\Components\cCollision.h" />
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\ComponentList.h" />
-    <ClInclude Include="src\Components\ComponentStorage.h" />
-    <ClInclude Include="src\Components\ComponentStorage_Generic.h" />
+    <ClInclude Include="src\ECS\ComponentStorage.h" />
+    <ClInclude Include="src\ECS\ComponentStorage_Generic.h" />
     <ClInclude Include="src\Components\cSprite.h" />
     <ClInclude Include="src\Components\cTransform.h" />
+    <ClInclude Include="src\Components\cRigidBody.h" />
     <ClInclude Include="src\Components\Transform.h" />
     <ClInclude Include="src\ECS\Factory.h" />
+    <ClInclude Include="src\ECS\EntityManager.h" />
     <ClInclude Include="src\Managers\CameraManager.h" />
-    <ClInclude Include="src\Managers\EntityManager.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Global_ECS.h" />
     <ClInclude Include="src\Levels\Level1.h" />
-    <ClInclude Include="src\Managers\ComponentManager.h" />
+    <ClInclude Include="src\ECS\ComponentManager.h" />
     <ClInclude Include="src\ECS\Core.h" />
     <ClInclude Include="src\Managers\GameStateManager.h" />
-    <ClInclude Include="src\Managers\SystemManager.h" />
+    <ClInclude Include="src\ECS\SystemManager.h" />
+    <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
+    <ClInclude Include="src\Systems\CollisionSystem.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
     <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
-    <ClInclude Include="src\Math\Vec2.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\machinegun.png" />
+    <Image Include="res\PlanetTexture.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

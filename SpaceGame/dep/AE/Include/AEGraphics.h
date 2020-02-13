@@ -316,13 +316,13 @@ AE_API f32 AEGfxGetWinMaxY(void);
 /*!
 \fn         void AEGfxSetCamPosition(f32 X, f32 Y)
 
-\brief      Set the camera's X and Y position.
+\brief      Set the camera's X and Y _position.
 
 \param      [in] X
-            X position to set camera to.
+            X _position to set camera to.
 
 \param      [in] Y
-            Y position to set camera to.
+            Y _position to set camera to.
 
 \retval     void
             No return.
@@ -334,13 +334,13 @@ AE_API void AEGfxSetCamPosition(f32 X, f32 Y);
 /*!
 \fn         void AEGfxGetCamPosition(f32 *pX, f32 *pY)
 
-\brief      Get the camera's X and Y position.
+\brief      Get the camera's X and Y _position.
 
 \param      [out] pX
-            Pointer to f32 to store the X position in.
+            Pointer to f32 to store the X _position in.
 
 \param      [out] pY
-            Pointer to f32 to store the Y position in.
+            Pointer to f32 to store the Y _position in.
 
 \retval     void
             No return.
@@ -356,13 +356,13 @@ AE_API void AEGfxGetCamPosition(f32 *pX, f32 *pY);
 /*!
 \fn         void AEGfxSetPosition(f32 X, f32 Y)
 
-\brief      Set the position (translation) to render from.
+\brief      Set the _position (translation) to render from.
 
 \param      [in] X
-            X position to render from.
+            X _position to render from.
 
 \param      [out] Y
-            Y position to render from.
+            Y _position to render from.
 
 \retval     void
             No return.
@@ -1151,25 +1151,25 @@ AE_API void			    AEGfxCone		(f32 x0, f32 y0, f32 z0,
 
 /******************************************************************************/
 /*!
-\fn		    void AEGfxAxis(f32 scale)
+\fn		    void AEGfxAxis(f32 _scale)
                           
 \brief      Draw a 3D axis on screen. 
 
 \details    The axis is rendered on the center of the screen
-            with size scale.
+            with size _scale.
 
 \warning    Do not call this function when AEGraphics is building mesh.
 
 \warning    Function may be slow. Use with caution.
 
-\param      [in] scale
+\param      [in] _scale
             Size of the axis
 
 \retval     void
             No return.
 */
 /******************************************************************************/
-AE_API void			    AEGfxAxis		(f32 scale);
+AE_API void			    AEGfxAxis		(f32 _scale);
 
 /******************************************************************************/
 /*!

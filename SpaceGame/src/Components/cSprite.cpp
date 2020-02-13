@@ -2,7 +2,7 @@
 * \file			cSprite.cpp
 * \author		Chong Jun Yi, Ang Wei Feng
 * \version		1.1
-* \date			2/01/2019
+* \date			2/01/2020
 * \par			Component 
 * \note			Course: GAM150
 * \brief		Component for a 2D sprite
@@ -18,22 +18,7 @@
 #include "cSprite.h"			//Self Header
 #include "../Tools/Console.h"	//remove after testing
 
-cSprite::cSprite(ENTITY parent)
-{
-	//Common Component variables
-	_name = "class SpriteComponent";				//Do not change this otherwise remove component wont work
-	//_categor = SYS_GRAPHICS;						//not sure why have warning here
-	_componentID = ID_SpriteComponent;	
-	_entityParent = parent;
-
-	//Component Specific variables
-	_mesh = nullptr;
-
-	//Create mesh
-	Init();
-}
-
-cSprite::cSprite(ENTITY parent, const char* texture)
+cSprite::cSprite(ENTITY parent, const char* texture, unsigned int layer)
 {
 	//Common Component variables
 	_name = "class SpriteComponent";	//Do not change this otherwise remove component wont work
@@ -43,7 +28,7 @@ cSprite::cSprite(ENTITY parent, const char* texture)
 
 	//Component Specific variables
 	_mesh = nullptr;
-
+	_layer = layer;
 	//Create mesh
 	Init();
 

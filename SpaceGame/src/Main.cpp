@@ -7,7 +7,7 @@
 * \note			Course: GAM150
 * \brief		Entry point for Game executable "End Of Space" by Moon Base
 				- Initalise Window, Console, hardware
-				- Game State Loop, Game loop 
+				- Game State Loop, Game loop
 				- Program Cleanup
 
 * \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
@@ -32,7 +32,7 @@
 
 /******************************************************************************/
 /*!
-  \brief	Entry point for Game executable "End Of Space" 
+  \brief	Entry point for Game executable "End Of Space"
 */
 /******************************************************************************/
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
@@ -65,7 +65,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #if _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);		//Memory Leak Checker
 	Console_Init();						//Resize console window
-	Editor_Init();	
+	Editor_Init();
 #endif
 
 	Global_Init();				// Get start time of game program
@@ -73,8 +73,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	// reset the system modules
 	AESysReset();
-	AEGfxSetBackgroundColor(0.5, 0.5, 0.5);
-
+	AEGfxSetBackgroundColor(1.0, 0.5, 1.0);
+	
 	//AEGameStateMgrInit();
 
 	// Initialization end
@@ -107,39 +107,46 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			// Handling Input
 			AEInputUpdate();
 
-		//TODO : Need to tidy this up next time
-		if (AEInputCheckTriggered(AEVK_P)) {
-			TogglePause();
-		}
-		else if (gGamePause)
-		{
-			AESysFrameEnd();
-			// check if forcing the application to quit
-			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-				gGameRunning = 0;
-			continue;
-		}
-		// -----------------------------------------------------------------------
-		// Game loop update
-		Editor_Update();
-		fpUpdate();
-		// Game loop update end
-		// -----------------------------------------------------------------------
+			//TODO : Need to tidy this up next time
+			if (AEInputCheckTriggered(AEVK_P)) {
+				TogglePause();
+			}
+			else if (gGamePause)
+			{
+				AESysFrameEnd();
+				// check if forcing the application to quit
+				if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
+					gGameRunning = 0;
+				continue;
+			}
+			if (AEInputCheckTriggered(AEVK_L))
+			{
+				Core::Get().GenerateWorldState();
+			}
+			// -----------------------------------------------------------------------
+			// Game loop update
+			Editor_Update();
+			fpUpdate();
+			// Game loop update end
+			// -----------------------------------------------------------------------
 
-		// -----------------------------------------------------------------------
-		// Game loop draw
-		fpDraw();
-		// Game loop draw end
-		// -----------------------------------------------------------------------
-		// Informing the system about the loop's end
-		AESysFrameEnd();
+			// -----------------------------------------------------------------------
+			// Game loop draw
+			fpDraw();
+			// Game loop draw end
+			// -----------------------------------------------------------------------
+			// Informing the system about the loop's end
+			AESysFrameEnd();
+
+			// Get deltatime
+			g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+			g_appTime += g_dt;
 
 			// check if forcing the application to quit
 			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 			{
 				gGameRunning = 0;
 			}
-			AESysFrameEnd();
 		}
 		fpFree();
 

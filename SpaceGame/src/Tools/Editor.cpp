@@ -23,7 +23,7 @@
 
 /******************************************************************************/
 /*!
-  \brief	Initalise Editor, move the windows to a comfortable debug position
+  \brief	Initalise Editor, move the windows to a comfortable debug _position
 */
 /******************************************************************************/
 void Editor_Init()

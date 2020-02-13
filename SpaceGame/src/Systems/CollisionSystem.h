@@ -1,29 +1,25 @@
+#pragma once
 /*********************************************************************************
-* \file			PhysicsSystem.h
+* \file			CollisionSystem.h
 * \author		Farzaana Binte Roslan
 * \version		1.0
 * \date			31/01/2020
 * \par			Systems
 * \note			Course: GAM150
-* \brief		Physics system to control various physics manager
-				-
+* \brief		Collision system to manage the component component
 
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#pragma once
-
 #include "System.h"
-#include "../Components/cRigidBody.h"
 
-class PhysicsSystem : public System
+class CollisionSystem : public System
 {
-public: 
+public:
 	void Init() override;
 	void Update() override;
 	void Render() override;
 	void OnComponentAdd(ENTITY entity);
 	void OnComponentRemove(ENTITY entity);
 };
-

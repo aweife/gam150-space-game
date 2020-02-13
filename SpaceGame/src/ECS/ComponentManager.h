@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Components/ComponentStorage.h"		//Storage used to contain all components of same kind
+#include "ComponentStorage.h"		//Storage used to contain all components of same kind
 #include <unordered_map>						//unordered map
 #include <memory>								//unique pointer
 
