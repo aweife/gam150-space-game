@@ -1,11 +1,15 @@
 #include "SystemManager.h"
-#include "AEEngine.h"
 #include "../Systems/RenderSystem.h"
 
 void SystemManager::Init()
 {
 	// Register systems
 	RegisterSystem<RenderSystem>();
+
+	for (auto const& system : _systemMap)
+	{
+		system.second->Init();
+	}
 }
 
 void SystemManager::Update()
@@ -22,41 +26,6 @@ void SystemManager::Render()
 	{
 		system.second->Render();
 	}
-}
-
-template<typename T>
-std::shared_ptr<T> SystemManager::RegisterSystem()
-{
-	// Get name of the system
-	const char* systemName = typeid(T).name();
-
-	// Assert if the system already exists
-	AE_ASSERT(_systemMap.find(systemName) == _systemMap.end() &&
-		"Registering system more than once.");
-
-	// Use make_share<T>() to make a shared pointer to the system
-	// Using auto because we do not know the type
-	auto system = std::make_shared<T>();
-
-	// Insert into system map as a pair: key value -- mapped value
-	_systemMap.insert({ systemName, system });
-
-	// Return the shared pointer
-	return system;
-}
-
-template<typename T>
-void SystemManager::SetSignature(SIGNATURE signature)
-{
-	// Get name of the system
-	const char* systemName = typeid(T).name();
-
-	// Assert if the system is used before registering it
-	AE_ASSERT(_systemMap.find(systemName) != _systemMap.end() &&
-		"Using system before registering.");
-
-	// Insert into signature map as a pair: key value -- mapped value
-	_signaturesMap.insert({ systemName, signature });
 }
 
 void SystemManager::EntityDestroyed(ENTITY entity)

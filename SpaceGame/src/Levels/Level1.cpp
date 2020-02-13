@@ -16,6 +16,7 @@
 #include "Level1.h"
 #include "../Tools/Console.h"
 #include "../ECS/Core.h"
+#include "../Components/ComponentList.h"
 
 ENTITY player;
 

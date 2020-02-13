@@ -2,6 +2,8 @@
 #include <typeinfo>								// typeid
 
 #include "../Tools/Console.h"
+#include "../Components/ComponentList.h"
+
 void ComponentManager::Init()
 {
 	//Register all the components here

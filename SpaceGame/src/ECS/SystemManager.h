@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "../Global_ECS.h"
 #include "../Systems/System.h"
+#include "AEEngine.h"
 
 class SystemManager
 {
@@ -18,12 +19,41 @@ public:
 
 	// Returns a shared pointer to this system
 	template<typename T>
-	std::shared_ptr<T> RegisterSystem();
+	std::shared_ptr<T> RegisterSystem()
+	{
+		// Get name of the system
+		const char* systemName = typeid(T).name();
+
+		// Assert if the system already exists
+		AE_ASSERT(_systemMap.find(systemName) == _systemMap.end() &&
+			"Registering system more than once.");
+
+		// Use make_share<T>() to make a shared pointer to the system
+		// Using auto because we do not know the type
+		auto system = std::make_shared<T>();
+
+		// Insert into system map as a pair: key value -- mapped value
+		_systemMap.insert({ systemName, system });
+
+		// Return the shared pointer
+		return system;
+	}
 
 	// Sets the unique signature for this system
 	// The template is needed to get the name of the system
 	template<typename T>
-	void SetSignature(SIGNATURE signature);
+	void SetSignature(SIGNATURE signature)
+	{
+		// Get name of the system
+		const char* systemName = typeid(T).name();
+
+		// Assert if the system is used before registering it
+		AE_ASSERT(_systemMap.find(systemName) != _systemMap.end() &&
+			"Using system before registering.");
+
+		// Insert into signature map as a pair: key value -- mapped value
+		_signaturesMap.insert({ systemName, signature });
+	}
 
 	// Erase an entity from all systems' entitiesList
 	void EntityDestroyed(ENTITY entity);

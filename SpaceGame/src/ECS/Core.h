@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include "../Managers/ComponentManager.h"
-#include "../Managers/EntityManager.h"
-#include "../Managers/SystemManager.h"
+#include "ComponentManager.h"
+#include "EntityManager.h"
+#include "SystemManager.h"
 
 class Core
 {

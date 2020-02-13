@@ -28,7 +28,7 @@ void Core::Core_Init()
 	coreComponentManager->Init();
 	coreSystemManager->Init();
 
-	//Factory::CreateCamera();
+	Factory::CreateCamera();
 }
 
 void Core::Core_Update()

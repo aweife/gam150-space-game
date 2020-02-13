@@ -9,6 +9,10 @@
 
 void RenderSystem::Init()
 {
+	SIGNATURE signature;
+	signature.set(Core::Get().GetComponentType<cTransform>(), true);
+	signature.set(Core::Get().GetComponentType<cSprite>(), true);
+	Core::Get().SetSystemSignature<RenderSystem>(signature);
 }
 
 void RenderSystem::Update()
