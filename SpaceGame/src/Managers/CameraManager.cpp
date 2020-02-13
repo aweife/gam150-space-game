@@ -5,7 +5,6 @@
 #include "../Global.h"			//g_dt
 #include "../Math/Math.h"
 
-
 namespace CameraManager
 {
 	unsigned int _cameraCount = 0;
@@ -52,8 +51,11 @@ namespace CameraManager
 	void Update()
 	{
 		if (_currCamera == 0) return;
+
 		SmoothFollow();
 		AEGfxSetCamPosition(currCameraTransform->_position.x, currCameraTransform->_position.y);
+		//AEGfxSetCamPosition(currCameraComp->_followTarget->_position.x, currCameraComp->_followTarget->_position.y);
+		//printf("camPosX = %f, camPosY = %f\n", currCameraTransform->_position.x, currCameraTransform->_position.y);
 	}
 
 	void SmoothFollow()
@@ -73,7 +75,7 @@ namespace CameraManager
 			currCameraTransform->_position.x = MBMath_SmoothDamp(currCameraTransform->_position.x, 
 				currCameraComp->_followTarget->_position.x, &(currCameraComp->_camVelocity), 0.3, 100, g_dt);
 
-			printf("%f\n", currCameraTransform->_position.x);
+			//printf("%f\n", currCameraTransform->_position.x);
 		}
 		if (abs(currCameraComp->_followTarget->_position.y - currCameraTransform->_position.y) > boundingY)
 		{
@@ -89,5 +91,10 @@ namespace CameraManager
 	void CameraShake()
 	{
 
+	}
+
+	cTransform* GetCameraTransform()
+	{
+		return currCameraTransform;
 	}
 }

@@ -13,4 +13,5 @@ namespace CameraManager
 	void Update();
 	void SmoothFollow();
 	void CameraShake();
+	cTransform* GetCameraTransform();
 };

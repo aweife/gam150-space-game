@@ -3,6 +3,7 @@
 #include <memory>
 #include <unordered_map>
 #include "../Global_ECS.h"
+#include "AEEngine.h"
 #include "../Systems/System.h"
 #include "AEEngine.h"
 

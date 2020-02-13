@@ -1,7 +1,5 @@
 #include "SystemManager.h"
-#include "../Systems/RenderSystem.h"
-#include "../Systems/PhysicsSystem.h"
-#include "../Systems/CollisionSystem.h"
+#include "../Systems/SystemList.h"
 
 void SystemManager::Init()
 {
@@ -9,7 +7,9 @@ void SystemManager::Init()
 	RegisterSystem<RenderSystem>();
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
-
+	RegisterSystem<PathFindingSystem>();
+	RegisterSystem<AISystem>();
+	RegisterSystem<SpaceShipLogicSystem>();
 
 	for (auto const& system : _systemMap)
 	{

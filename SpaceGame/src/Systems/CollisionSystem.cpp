@@ -16,8 +16,7 @@
 #include "Math.h"
 #include "../Global.h"
 #include "../ECS/Core.h"
-#include "../Components/cCollision.h"
-#include "../Components/cTransform.h"
+#include "../Components/ComponentList.h"
 
 /*********************************************************************************
 *
@@ -163,7 +162,7 @@ void CollisionSystem::Update()
 {
 	cCollision* collider;
 	cRigidBody* rigidbody;
-	cTransform* _transform;
+	cTransform* transform;
 
 	cCollision* collider2;
 	cRigidBody* rigidbody2;
@@ -173,12 +172,12 @@ void CollisionSystem::Update()
 	for (auto const& entity : entitiesList)
 	{
 		collider = Core::Get().GetComponent<cCollision>(entity);
-		_transform = Core::Get().GetComponent<cTransform>(entity);
+		transform = Core::Get().GetComponent<cTransform>(entity);
 
-		collider->boundingBox.max.x = 0.5f * _transform->_scale.x + _transform->_position.x;
-		collider->boundingBox.max.y = 0.5f * _transform->_scale.y + _transform->_position.y;
-		collider->boundingBox.min.x = -0.5f * _transform->_scale.x + _transform->_position.x;
-		collider->boundingBox.min.y = -0.5f * _transform->_scale.y + _transform->_position.y;
+		collider->boundingBox.max.x = 0.5f * transform->_scale.x + transform->_position.x;
+		collider->boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
+		collider->boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
+		collider->boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
 	}
 
 	// To check for collision for each entity in the list
@@ -186,7 +185,7 @@ void CollisionSystem::Update()
 	{
 		collider = Core::Get().GetComponent<cCollision>(entity1);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity1);
-		_transform = Core::Get().GetComponent<cTransform>(entity1);
+		transform = Core::Get().GetComponent<cTransform>(entity1);
 
 
 		for (auto const& entity2 : entitiesList)
@@ -200,12 +199,10 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			if (checkforCollisionAABB(collider->boundingBox, rigidbody->velocity, collider2->boundingBox, rigidbody2->velocity) == true)
+			if (checkforCollisionAABB(collider->boundingBox, rigidbody->velocityVector, collider2->boundingBox, rigidbody2->velocityVector) == true)
 			{
-				rigidbody->velocity.x = 0.0f;
-				rigidbody->velocity.y = 0.0f;
-				rigidbody2->velocity.x = 0.0f;
-				rigidbody2->velocity.y = 0.0f;
+				rigidbody->velocity = 10.0f;
+				rigidbody2->velocity = 10.0f;
 			}
 		}
 	}

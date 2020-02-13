@@ -1,3 +1,4 @@
+#pragma once
 /*********************************************************************************
 * \file			Global_ECS.h
 * \author		Chong Jun Yi
@@ -13,7 +14,6 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#pragma once
 #include <cstdint>
 #include <bitset>
 
@@ -31,16 +31,19 @@ typedef std::bitset<MAX_COMPONENTS> SIGNATURE;	//A collections of bits to repres
 enum COMPONENTID								//ID for each component, to be used to organise systems and map an entity
 {
 	ID_NullComponent = 0,
-	ID_TransformComponent = 1,
-	ID_SpriteComponent = 2, 
-	ID_RigidBodyComponent = 3, 
-	ID_CollisionComponent = 4,
-	ID_CameraComponent = 5
+	ID_TransformComponent,
+	ID_SpriteComponent, 
+	ID_RigidBodyComponent, 
+	ID_CollisionComponent,
+	ID_CameraComponent,
+	ID_PathFindingComponent,
+	ID_AIComponent,
+	ID_SpaceShip,
 };					
 
 enum SYSCATEGORY {
 	SYS_NULL = 0,
-	SYS_AI = 1,
+	SYS_AI,
 	SYS_GRAPHICS,
 	SYS_PHYSICS
 };

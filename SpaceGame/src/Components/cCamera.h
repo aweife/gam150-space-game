@@ -1,6 +1,8 @@
 #pragma once
-#include "../Components/Component.h"
-#include "../Components/cTransform.h"
+
+#include "Component.h"
+#include "cTransform.h"
+
 class cCamera :public Component
 {
 public:

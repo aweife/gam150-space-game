@@ -1,12 +1,11 @@
 #pragma once
 
 #include "../Global_ECS.h"				//typedef alias for Entity
-#include "../Components/Component.h"	//Access to component base class
 #include <unordered_map>				//storage type
 #include <array>						//storage type
 #include <memory>						//unique_ptr
 #include "ComponentStorage_Generic.h"	//Base class
-#include "../Components/Component.h"	//Header to all types of component used in game
+#include "../Components/Component.h"//Header to all types of component used in game
 #include "AEEngine.h"
 
 template<typename T>

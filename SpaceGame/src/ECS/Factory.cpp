@@ -23,8 +23,9 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(player, new cTransform);
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "res/Player_MachineGun.png", layer));
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody);
-		Core::Get().GetComponent<cRigidBody>(player)->velocity.x = 2;
+		Core::Get().GetComponent<cRigidBody>(player)->velocity = 0.0f;
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip);
 
 		return player;
 	}
@@ -39,7 +40,7 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(planet, new cTransform(newPostion, 0, newScale));
 		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "res/Prop_Planet1.png", layer));
 		Core::Get().AddComponent<cRigidBody>(planet, new cRigidBody);
-		Core::Get().GetComponent<cRigidBody>(planet)->velocity.x = 0;
+		Core::Get().GetComponent<cRigidBody>(planet)->velocity = 0;
 		//Core::Get().AddComponent<cCollision>(planet, new cCollision);
 
 		return planet;
@@ -55,7 +56,7 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(planet, new cTransform(newPostion, 0, newScale));
 		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "res/Prop_Planet2.png", layer));
 		Core::Get().AddComponent<cRigidBody>(planet, new cRigidBody);
-		Core::Get().GetComponent<cRigidBody>(planet)->velocity.x = 0;
+		Core::Get().GetComponent<cRigidBody>(planet)->velocity = 0;
 		//Core::Get().AddComponent<cCollision>(planet, new cCollision);
 
 		return planet;
@@ -70,7 +71,7 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(planet, new cTransform(newPostion, 0, newScale));
 		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "res/Prop_Planet3.png", layer));
 		Core::Get().AddComponent<cRigidBody>(planet, new cRigidBody);
-		Core::Get().GetComponent<cRigidBody>(planet)->velocity.x = 0;
+		Core::Get().GetComponent<cRigidBody>(planet)->velocity = 0;
 		//Core::Get().AddComponent<cCollision>(planet, new cCollision);
 
 		return planet;
@@ -85,10 +86,32 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(planet, new cTransform(newPostion, 0, newScale));
 		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "res/Prop_Planet4.png", layer));
 		Core::Get().AddComponent<cRigidBody>(planet, new cRigidBody);
-		Core::Get().GetComponent<cRigidBody>(planet)->velocity.x = 0;
+		Core::Get().GetComponent<cRigidBody>(planet)->velocity = 0;
 		//Core::Get().AddComponent<cCollision>(planet, new cCollision);
 
 		return planet;
+	}
+
+	ENTITY CreateEnemy1(ENTITY player, unsigned int layer)
+	{
+		ENTITY enemy = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
+		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "res/Planet2.png", layer));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody);
+		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
+		Core::Get().AddComponent<cPathFinding>(enemy, new cPathFinding);
+		Core::Get().AddComponent<cAI>(enemy, new cAI);
+		Core::Get().GetComponent<cAI>(enemy)->minDistance = 250.0f;
+		Core::Get().GetComponent<cAI>(enemy)->maxDistance = 500.0f;
+
+		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -200.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->velocity = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->velocityVector.y = 0.5f;
+		Core::Get().GetComponent<cPathFinding>(enemy)->target = player;
+		Core::Get().GetComponent<cPathFinding>(enemy)->currentState = PATH_SEEK;
+		return enemy;
 	}
 
 	void CreateBackground()

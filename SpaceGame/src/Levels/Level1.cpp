@@ -29,8 +29,11 @@ ENTITY planet2;
 // ----------------------------------------------------------------------------
 void Level1_Load()
 {
+	// Planet to test for collision
+	
 	//Create Player
 	player = Factory::CreatePlayer(2);
+	Factory::CreateEnemy1(player, 2);
 
 	// Create camera
 	Factory::CreateCamera(player, 2);
@@ -61,9 +64,6 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
-	Core::Get().GetComponent<cTransform>(player)->_scale.x = 50.0f;
-	Core::Get().GetComponent<cTransform>(player)->_scale.y = 50.0f;
-
 }
 
 // ----------------------------------------------------------------------------

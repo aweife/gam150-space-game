@@ -17,7 +17,7 @@
 #include "Math.h"
 #include "../Global.h"
 #include "../ECS/Core.h"
-#include "../Components/cTransform.h"
+#include "../Components/ComponentList.h"
 
 /*********************************************************************************
 *
@@ -41,12 +41,12 @@ void PhysicsSystem::Init()
 
 void PhysicsSystem::Update()
 {
-	cTransform* _transform;
+	cTransform* transform;
 	cRigidBody* rigidbody;
 
 	for (auto const& entity : entitiesList)
 	{
-		_transform = Core::Get().GetComponent<cTransform>(entity);
+		transform = Core::Get().GetComponent<cTransform>(entity);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
 
 		// Euler's method (tested using global variables)
@@ -88,12 +88,13 @@ void PhysicsSystem::Update()
 		_velocity = newVelocity;
 		displacement = newDisplacement;
 
-		_transform->_position.x += rigidbody->velocity.x;
-		_transform->_position.y += rigidbody->velocity.y;
+		if(!(rigidbody->velocityVector.x < FLT_EPSILON && rigidbody->velocityVector.x > -FLT_EPSILON &&
+			rigidbody->velocityVector.y < FLT_EPSILON && rigidbody->velocityVector.y > -FLT_EPSILON))
+			AEVec2Normalize(&rigidbody->velocityVector, &rigidbody->velocityVector);
+		transform->_position.x += rigidbody->velocityVector.x * rigidbody->velocity * g_dt;
+		transform->_position.y += rigidbody->velocityVector.y * rigidbody->velocity * g_dt;
 	}
 }
-
-void PhysicsSystem::Render() {}
-
+void PhysicsSystem::Render() {};
 void PhysicsSystem::OnComponentAdd(ENTITY) {};
 void PhysicsSystem::OnComponentRemove(ENTITY) {};

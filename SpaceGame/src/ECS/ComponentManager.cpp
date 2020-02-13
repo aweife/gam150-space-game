@@ -1,8 +1,7 @@
 #include "ComponentManager.h"					// Self Header
 #include <typeinfo>								// typeid
-
-#include "../Tools/Console.h"
 #include "../Components/ComponentList.h"
+#include "../Tools/Console.h"
 
 void ComponentManager::Init()
 {
@@ -12,6 +11,9 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cRigidBody>(ID_RigidBodyComponent);
 	RegisterComponentCollection<cCollision>(ID_CollisionComponent);
 	RegisterComponentCollection<cCamera>(ID_CameraComponent);
+	RegisterComponentCollection<cPathFinding>(ID_PathFindingComponent);
+	RegisterComponentCollection<cAI>(ID_AIComponent);
+	RegisterComponentCollection<cSpaceShip>(ID_SpaceShip);
 }
 
 template<typename T>

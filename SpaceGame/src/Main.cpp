@@ -21,9 +21,9 @@
 #include "Global.h"						// Global variables 
 #include "Tools/Editor.h"				// Editor for gameplay
 #include "Tools/Console.h"				// Debug logger
-#include "Levels/Level1.h"				// REMOVE AFTER TESTING
 #include "ECS/Core.h"
 #include "Managers/GameStateManager.h"
+#include "Input/Input.h"
 
 // ---------------------------------------------------------------------------
 // Libraries
@@ -99,6 +99,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			currentState = previousState;
 		}
 		fpInit();								//INITALISE data for current game state
+		InputInit();
 		while (nextState == currentState)
 		{
 			// Informing the system about the loop's start
@@ -106,6 +107,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 			// Handling Input
 			AEInputUpdate();
+			InputUpdate();
 
 			//TODO : Need to tidy this up next time
 			if (AEInputCheckTriggered(AEVK_P)) {
@@ -118,10 +120,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
 					gGameRunning = 0;
 				continue;
-			}
-			if (AEInputCheckTriggered(AEVK_L))
-			{
-				Core::Get().GenerateWorldState();
 			}
 			// -----------------------------------------------------------------------
 			// Game loop update
