@@ -1,6 +1,6 @@
 #include "cCamera.h"
 
-cCamera::cCamera()
+cCamera::cCamera(cTransform* target): _followTarget {target}
 {
 
 }

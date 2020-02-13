@@ -4,11 +4,11 @@
 class cCamera :public Component
 {
 public:
-	bool isCameraShake = false;
-	double camEffectStartTime = 0.0;
-	cTransform* followTarget = nullptr;
+	bool _isCameraShake = false;
+	double _camEffectStartTime = 0.0;
+	cTransform* _followTarget = nullptr;
 
-	cCamera();
+	cCamera(cTransform* target = nullptr);
 	void Init() override;
 };
 

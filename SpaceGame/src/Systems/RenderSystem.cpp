@@ -4,9 +4,6 @@
 #include "../Components/cTransform.h"
 #include "../Components/cSprite.h"
 
-#include "../Components/cSprite.h"
-#include "../Components/cTransform.h"
-
 void RenderSystem::Init()
 {
 }

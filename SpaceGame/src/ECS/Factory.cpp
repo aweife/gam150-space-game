@@ -1,6 +1,7 @@
 #include "Factory.h"
 #include "Core.h"
 #include "../Components/ComponentList.h"
+#include "../Managers/CameraManager.h"
 
 namespace Factory
 {
