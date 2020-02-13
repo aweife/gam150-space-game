@@ -1,15 +1,15 @@
 /*********************************************************************************
 * \file			Editor.cpp
-* \author		Chong Jun Yi
+* \author		Chong Jun Yi, Ang Wei Feng, Chong Jin Kiat, Farzaana Binte Roslan
 * \version		1.0
-* \date			25/01/2019
+* \date			25/01/2020
 * \par			Level Game State
 * \note			Course: GAM150
 * \brief		Level 1 Game State
 				-
 				-
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
@@ -19,6 +19,7 @@
 #include "../Components/ComponentList.h"
 
 ENTITY player;
+ENTITY planet;
 
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
@@ -27,9 +28,25 @@ ENTITY player;
 // ----------------------------------------------------------------------------
 void Level1_Load()
 {
-	player = Core::Get().CreateEntity();
-	Core::Get().AddComponent<cTransform>(player, new cTransform);
-	Core::Get().AddComponent<cSprite>(player, new cSprite(player,"res/machinegun.png"));
+	player = coreInstance.CreateEntity();
+	coreInstance.AddComponent<cTransform>(player, new cTransform);
+	coreInstance.AddComponent<cSprite>(player, new cSprite(player, "res/machinegun.png"));
+	coreInstance.AddComponent<cRigidBody>(player, new cRigidBody);
+	coreInstance.AddComponent<cCollision>(player, new cCollision);
+
+	coreInstance.GetComponent<cTransform>(player)->scale.x = 50.0f;
+	coreInstance.GetComponent<cTransform>(player)->scale.y = 50.0f;
+
+	// Planet to test for collision
+	planet = coreInstance.CreateEntity();
+	coreInstance.AddComponent<cTransform>(planet, new cTransform);
+	coreInstance.AddComponent<cSprite>(planet, new cSprite(planet, "res/Planet2.png"));
+	coreInstance.AddComponent<cRigidBody>(planet, new cRigidBody);
+	coreInstance.AddComponent<cCollision>(planet, new cCollision);
+
+	coreInstance.GetComponent<cTransform>(planet)->position.x = 300.0f;
+	coreInstance.GetComponent<cRigidBody>(planet)->velocity.x = 0.0f;
+	coreInstance.GetComponent<cRigidBody>(planet)->velocity.y = 0.0f;
 }
 
 // ----------------------------------------------------------------------------

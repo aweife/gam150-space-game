@@ -34,6 +34,7 @@ public:
 		//Register the component into storage
 		componentArray[currSize] = std::unique_ptr<T>{ component };
 
+		// Increment count
 		++currSize;
 	}
 
@@ -56,6 +57,7 @@ public:
 		entityToIndexMap.erase(entity);
 		indexToEntityMap.erase(backComponentIndex);
 
+		// Decrement count
 		--currSize;
 	}
 	T* RetrieveComponent(ENTITY entity)								//Return a pointer to the component that belongs to an entity

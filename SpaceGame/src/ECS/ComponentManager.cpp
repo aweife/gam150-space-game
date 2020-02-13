@@ -9,8 +9,8 @@ void ComponentManager::Init()
 	//Register all the components here
 	RegisterComponentCollection<cTransform>(ID_TransformComponent);
 	RegisterComponentCollection<cSprite>(ID_SpriteComponent);
-	
-	
+	RegisterComponentCollection<cRigidBody>(ID_RigidBodyComponent);
+	RegisterComponentCollection<cCollision>(ID_CollisionComponent);
 	RegisterComponentCollection<cCamera>(ID_CameraComponent);
 }
 

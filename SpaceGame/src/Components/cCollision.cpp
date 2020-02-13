@@ -1,31 +1,27 @@
 /*********************************************************************************
-* \file			PhysicsSystem.h
+* \file			cCollision.cpp
 * \author		Farzaana Binte Roslan
 * \version		1.0
 * \date			31/01/2020
 * \par			Systems
 * \note			Course: GAM150
-* \brief		Physics system to control various physics manager
-				-
+* \brief		Collision component that handles the collision between two 
+				objects
 
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#pragma once
-
-#include "../Global.h"
-#include "../Components/Component.h"
-#include "System.h"
-#include "../Components/cRigidBody.h"
+#include "cCollision.h"
+#include <AEVec2.h>
+#include "Math.h"
 
 
 
-class PhysicsSystem : public System
-{
-public: 
-	void Init(cRigidBody body);
 
-	void Update();
-};
-
+//// Checking for Collision (Circle)
+//bool CollisionComponent::checkforCollisionCircle()
+//{
+//	return false;
+//
+//}

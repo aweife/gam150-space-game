@@ -1,10 +1,15 @@
 #include "SystemManager.h"
 #include "../Systems/RenderSystem.h"
+#include "../Systems/PhysicsSystem.h"
+#include "../Systems/CollisionSystem.h"
 
 void SystemManager::Init()
 {
 	// Register systems
 	RegisterSystem<RenderSystem>();
+	RegisterSystem<PhysicsSystem>();
+	RegisterSystem<CollisionSystem>();
+
 
 	for (auto const& system : _systemMap)
 	{

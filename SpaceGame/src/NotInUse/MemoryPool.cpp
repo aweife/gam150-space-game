@@ -2,13 +2,13 @@
 * \file			MemoryPool.cpp
 * \author		Chong Jun Yi
 * \version		1.0
-* \date			31/01/2019
+* \date			31/01/2020
 * \par			Memory Management
 * \note			Course: GAM150
 * \brief		Intend to use to control new and delete, however will not be used
 				- Preallocate a fixed memory block for game to use
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/

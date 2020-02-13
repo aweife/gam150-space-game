@@ -2,7 +2,7 @@
 * \file			cSprite.cpp
 * \author		Chong Jun Yi, Ang Wei Feng
 * \version		1.1
-* \date			2/01/2019
+* \date			2/01/2020
 * \par			Component 
 * \note			Course: GAM150
 * \brief		Component for a 2D sprite

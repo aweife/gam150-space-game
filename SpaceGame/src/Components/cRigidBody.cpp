@@ -1,5 +1,5 @@
 /*********************************************************************************
-* \file			PhysicsSystem.h
+* \file			cRigidBody.cpp
 * \author		Farzaana Binte Roslan
 * \version		1.0
 * \date			31/01/2020
@@ -12,20 +12,23 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#pragma once
-
-#include "../Global.h"
-#include "../Components/Component.h"
-#include "System.h"
-#include "../Components/cRigidBody.h"
+#include "cRigidBody.h"
+#include <AEVec2.h>
+#include "Math.h"
 
 
-
-class PhysicsSystem : public System
+/*********************************************************************************
+*
+*  RIGIDBODY COMPONENT FUNCTIONS
+*
+**********************************************************************************/
+// Constructor
+cRigidBody::cRigidBody() : mass{ 30.0f }, inertia{ 10.0f },
+						   inertiaInverse{ 5.0f }, position{ 0.0f, 0.0f },
+						   velocity{ 2.0f, 0.0f }, angularVelocity{ 0.0f, 0.0f }
 {
-public: 
-	void Init(cRigidBody body);
 
-	void Update();
-};
+}
+
+// Using default destructor
 
