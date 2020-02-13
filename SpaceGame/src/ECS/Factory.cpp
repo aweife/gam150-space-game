@@ -91,17 +91,35 @@ namespace Factory
 		return planet;
 	}
 
-	ENTITY CreateBackground()
+	void CreateBackground()
 	{
 		AEVec2 newPostion, newScale;
 		AEVec2Set(&newPostion, 0, 0);
-		AEVec2Set(&newScale, 13000, 10000);
-
+		AEVec2Set(&newScale, 1300, 1000);
 		ENTITY background = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
 		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "res/BG_Background1.png", 6));
 
-		return background;
+		AEVec2Set(&newPostion, 1300, 0);
+		background = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
+		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "res/BG_Background1.png", 6));
+
+		AEVec2Set(&newPostion, -1300, 0);
+		background = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
+		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "res/BG_Background1.png", 6));
+
+		AEVec2Set(&newPostion, 0, 1300);
+		background = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
+		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "res/BG_Background1.png", 6));
+
+		AEVec2Set(&newPostion, 0, -1300);
+		background = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
+		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "res/BG_Background1.png", 6));
 	}
+
 }
 
