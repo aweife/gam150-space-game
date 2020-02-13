@@ -28,25 +28,18 @@ ENTITY planet;
 // ----------------------------------------------------------------------------
 void Level1_Load()
 {
-	player = coreInstance.CreateEntity();
-	coreInstance.AddComponent<cTransform>(player, new cTransform);
-	coreInstance.AddComponent<cSprite>(player, new cSprite(player, "res/machinegun.png"));
-	coreInstance.AddComponent<cRigidBody>(player, new cRigidBody);
-	coreInstance.AddComponent<cCollision>(player, new cCollision);
-
-	coreInstance.GetComponent<cTransform>(player)->scale.x = 50.0f;
-	coreInstance.GetComponent<cTransform>(player)->scale.y = 50.0f;
+	player = Core::Get().CreateEntity();
+	Core::Get().AddComponent<cTransform>(player, new cTransform);
+	Core::Get().AddComponent<cSprite>(player, new cSprite(player, "res/machinegun.png"));
+	Core::Get().AddComponent<cRigidBody>(player, new cRigidBody);
+	Core::Get().AddComponent<cCollision>(player, new cCollision);
 
 	// Planet to test for collision
-	planet = coreInstance.CreateEntity();
-	coreInstance.AddComponent<cTransform>(planet, new cTransform);
-	coreInstance.AddComponent<cSprite>(planet, new cSprite(planet, "res/Planet2.png"));
-	coreInstance.AddComponent<cRigidBody>(planet, new cRigidBody);
-	coreInstance.AddComponent<cCollision>(planet, new cCollision);
-
-	coreInstance.GetComponent<cTransform>(planet)->position.x = 300.0f;
-	coreInstance.GetComponent<cRigidBody>(planet)->velocity.x = 0.0f;
-	coreInstance.GetComponent<cRigidBody>(planet)->velocity.y = 0.0f;
+	planet = Core::Get().CreateEntity();
+	Core::Get().AddComponent<cTransform>(planet, new cTransform);
+	Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "res/Planet2.png"));
+	Core::Get().AddComponent<cRigidBody>(planet, new cRigidBody);
+	Core::Get().AddComponent<cCollision>(planet, new cCollision);
 }
 
 // ----------------------------------------------------------------------------
@@ -56,7 +49,12 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
+	Core::Get().GetComponent<cTransform>(player)->scale.x = 50.0f;
+	Core::Get().GetComponent<cTransform>(player)->scale.y = 50.0f;
 
+	Core::Get().GetComponent<cTransform>(planet)->position.x = 300.0f;
+	Core::Get().GetComponent<cRigidBody>(planet)->velocity.x = 0.0f;
+	Core::Get().GetComponent<cRigidBody>(planet)->velocity.y = 0.0f;
 }
 
 // ----------------------------------------------------------------------------

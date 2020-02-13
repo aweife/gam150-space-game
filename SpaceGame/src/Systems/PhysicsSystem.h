@@ -14,18 +14,14 @@
 **********************************************************************************/
 #pragma once
 
-#include "../Global.h"
-#include "../Components/Component.h"
 #include "System.h"
 #include "../Components/cRigidBody.h"
-
-
 
 class PhysicsSystem : public System
 {
 public: 
-	void Init(cRigidBody body);
-
-	void Update();
+	void Init() override;
+	void Update() override;
+	void Render() override;
 };
 

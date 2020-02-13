@@ -19,7 +19,8 @@
 
 bool gGamePause;				// GameStatePaused
 double gStartTime;				// Time when game was launched
-float g_dt = (f32) AEFrameRateControllerGetFrameTime();						
+float g_dt;
+float g_appTime;
 
 /******************************************************************************/
 /*!

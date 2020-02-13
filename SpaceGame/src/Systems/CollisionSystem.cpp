@@ -14,9 +14,10 @@
 #include "CollisionSystem.h"
 #include <AEVec2.h>
 #include "Math.h"
+#include "../Global.h"
 #include "../ECS/Core.h"
-
-extern Core coreInstance;
+#include "../Components/cCollision.h"
+#include "../Components/cTransform.h"
 
 /*********************************************************************************
 *
@@ -150,26 +151,29 @@ bool checkforCollisionAABB(const AABB& obj1, const AEVec2& vel1,
 **********************************************************************************/
 void CollisionSystem::Init()
 {
-	
+	// Sets the system signature for this system
+	SIGNATURE signature;
+	signature.set(Core::Get().GetComponentType<cTransform>());
+	signature.set(Core::Get().GetComponentType<cRigidBody>());
+	signature.set(Core::Get().GetComponentType<cCollision>());
+	Core::Get().SetSystemSignature<CollisionSystem>(signature);
 }
 
 void CollisionSystem::Update()
 {
 	cCollision* collider;
+	cRigidBody* rigidbody;
 	cTransform* transform;
 
-	cCollision* collider1;
 	cCollision* collider2;
-	cRigidBody* rigidbody1;
 	cRigidBody* rigidbody2;
-	cTransform* transform1;
 	cTransform* transform2;
 
 	// To set all the bounding boxes of each entity
 	for (auto const& entity : entitiesList)
 	{
-		collider = coreInstance.GetComponent<cCollision>(entity);
-		transform = coreInstance.GetComponent<cTransform>(entity);
+		collider = Core::Get().GetComponent<cCollision>(entity);
+		transform = Core::Get().GetComponent<cTransform>(entity);
 
 		collider->boundingBox.max.x = 0.5f * transform->scale.x + transform->position.x;
 		collider->boundingBox.max.y = 0.5f * transform->scale.y + transform->position.y;
@@ -180,10 +184,10 @@ void CollisionSystem::Update()
 	// To check for collision for each entity in the list
 	for (auto const& entity1 : entitiesList)
 	{
-		collider1 = coreInstance.GetComponent<cCollision>(entity1);
-		rigidbody1 = coreInstance.GetComponent<cRigidBody>(entity1);
-		transform1 = coreInstance.GetComponent<cTransform>(entity1);
-		
+		collider = Core::Get().GetComponent<cCollision>(entity1);
+		rigidbody = Core::Get().GetComponent<cRigidBody>(entity1);
+		transform = Core::Get().GetComponent<cTransform>(entity1);
+
 
 		for (auto const& entity2 : entitiesList)
 		{
@@ -192,19 +196,19 @@ void CollisionSystem::Update()
 				continue;
 			}
 
-			collider2 = coreInstance.GetComponent<cCollision>(entity2);
-			rigidbody2 = coreInstance.GetComponent<cRigidBody>(entity2);
-			transform2 = coreInstance.GetComponent<cTransform>(entity2);
+			collider2 = Core::Get().GetComponent<cCollision>(entity2);
+			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
+			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			if (checkforCollisionAABB(collider1->boundingBox, rigidbody1->velocity, collider2->boundingBox, rigidbody2->velocity) == true)
+			if (checkforCollisionAABB(collider->boundingBox, rigidbody->velocity, collider2->boundingBox, rigidbody2->velocity) == true)
 			{
-				rigidbody1->velocity.x = 0.0f;
-				rigidbody1->velocity.y = 0.0f;
+				rigidbody->velocity.x = 0.0f;
+				rigidbody->velocity.y = 0.0f;
 				rigidbody2->velocity.x = 0.0f;
 				rigidbody2->velocity.y = 0.0f;
 			}
-
 		}
 	}
 }
 
+void CollisionSystem::Render() {}

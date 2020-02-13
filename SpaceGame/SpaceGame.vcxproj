@@ -141,9 +141,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\machinegun.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\machinegun.png" />
     <Image Include="res\PlanetTexture.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

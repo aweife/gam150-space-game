@@ -6,7 +6,7 @@
 * \par			Systems
 * \note			Course: GAM150
 * \brief		Physics system to control various physics manager
-				- 
+				-
 
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
@@ -15,9 +15,9 @@
 #include "PhysicsSystem.h"
 #include <AEVec2.h>
 #include "Math.h"
+#include "../Global.h"
 #include "../ECS/Core.h"
-
-extern Core coreInstance;
+#include "../Components/cTransform.h"
 
 /*********************************************************************************
 *
@@ -30,30 +30,24 @@ float displacement = 50.0f;
 float _velocity = 30.0f;
 float _mass = 30.0f;
 
-void PhysicsSystem::Init(cRigidBody body)
+void PhysicsSystem::Init()
 {
-	// Set initial position
-	body.position.x = 0.0f;
-	body.position.y = 0.0f;
-
-	// Set initial velocity 
-	body.velocity.x = 0.0f;
-	body.velocity.y = 0.0f;
-
-	// Set angular velocity
-	body.angularVelocity.x = 0.0f;
-	body.angularVelocity.y = 0.0f;
+	// Sets the system signature for this system
+	SIGNATURE signature;
+	signature.set(Core::Get().GetComponentType<cTransform>());
+	signature.set(Core::Get().GetComponentType<cRigidBody>());
+	Core::Get().SetSystemSignature<PhysicsSystem>(signature);
 }
 
 void PhysicsSystem::Update()
 {
 	cTransform* transform;
 	cRigidBody* rigidbody;
-	
+
 	for (auto const& entity : entitiesList)
 	{
-		transform = coreInstance.GetComponent<cTransform>(entity);
-		rigidbody = coreInstance.GetComponent<cRigidBody>(entity);
+		transform = Core::Get().GetComponent<cTransform>(entity);
+		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
 
 		// Euler's method (tested using global variables)
 		// Trying Runge-Kutta method with basic Euler's
@@ -89,6 +83,7 @@ void PhysicsSystem::Update()
 
 		// Calculate the new displacement at time t + dt
 		newDisplacement = displacement + newVelocity * g_dt;
+		printf("%f\n", g_dt);
 
 		// Updating the old velocity
 		_velocity = newVelocity;
@@ -97,6 +92,6 @@ void PhysicsSystem::Update()
 		transform->position.x += rigidbody->velocity.x;
 		transform->position.y += rigidbody->velocity.y;
 	}
-	
-
 }
+
+void PhysicsSystem::Render() {}

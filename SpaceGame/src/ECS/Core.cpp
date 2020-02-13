@@ -28,6 +28,7 @@ void Core::Core_Init()
 	coreComponentManager->Init();
 	coreSystemManager->Init();
 
+	// Create camera
 	Factory::CreateCamera();
 }
 
@@ -41,12 +42,6 @@ void Core::Core_Render()
 {
 	// Update systems
 	coreSystemManager->Render();
-}
-
-void Core::Core_Update()
-{
-	// Update systems
-	coreSystemManager->Update();
 }
 
 ENTITY Core::CreateEntity()

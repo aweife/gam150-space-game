@@ -1,9 +1,4 @@
 #pragma once
-
-
-#include "../Global.h"
-#include "../Components/Component.h"
-#include "System.h"
 /*********************************************************************************
 * \file			CollisionSystem.h
 * \author		Farzaana Binte Roslan
@@ -17,14 +12,12 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-
-#include "../Components/cCollision.h"
-
+#include "System.h"
 
 class CollisionSystem : public System
 {
 public:
-	void Init();
-
-	void Update();
+	void Init() override;
+	void Update() override;
+	void Render() override;
 };
