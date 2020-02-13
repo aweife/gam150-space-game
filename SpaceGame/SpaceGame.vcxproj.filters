@@ -16,10 +16,10 @@
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
-    <ClCompile Include="src\Components\Component.cpp" />
     <ClCompile Include="src\Components\cTransform.cpp" />
     <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
+    <ClCompile Include="src\Systems\CollisionSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\Component.h" />
@@ -45,8 +45,10 @@
     <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Components\cRigidBody.h" />
     <ClInclude Include="src\Components\cCollision.h" />
+    <ClInclude Include="src\Systems\CollisionSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\PlanetTexture.png" />
+    <Image Include="res\machinegun.png" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 /*********************************************************************************
-* \file			RigidBodyComponent.cpp
+* \file			cRigidBody.cpp
 * \author		Farzaana Binte Roslan
 * \version		1.0
 * \date			31/01/2020
@@ -25,7 +25,7 @@
 // Constructor
 cRigidBody::cRigidBody() : mass{ 30.0f }, inertia{ 10.0f },
 						   inertiaInverse{ 5.0f }, position{ 0.0f, 0.0f },
-						   velocity{ 1.0f, 1.0f }, angularVelocity{ 0.0f, 0.0f }
+						   velocity{ 2.0f, 0.0f }, angularVelocity{ 0.0f, 0.0f }
 {
 
 }

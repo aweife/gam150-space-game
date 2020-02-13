@@ -1,6 +1,6 @@
 /*********************************************************************************
 * \file			Editor.cpp
-* \author		Chong Jun Yi
+* \author		Chong Jun Yi, Ang Wei Feng, Chong Jin Kiat, Farzaana Binte Roslan
 * \version		1.0
 * \date			25/01/2020
 * \par			Level Game State
@@ -17,8 +17,14 @@
 #include "../Tools/Console.h"
 
 #include "../ECS/Core.h"
+
+//-----------------------------------------------------------------------------
+// Global Variables
+//-----------------------------------------------------------------------------
 extern Core coreInstance;
 ENTITY player;
+ENTITY planet;
+
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -30,6 +36,21 @@ void Level1_Load()
 	coreInstance.AddComponent<cTransform>(player, new cTransform);
 	coreInstance.AddComponent<cSprite>(player, new cSprite(player, "res/machinegun.png"));
 	coreInstance.AddComponent<cRigidBody>(player, new cRigidBody);
+	coreInstance.AddComponent<cCollision>(player, new cCollision);
+
+	coreInstance.GetComponent<cTransform>(player)->scale.x = 50.0f;
+	coreInstance.GetComponent<cTransform>(player)->scale.y = 50.0f;
+
+	// Planet to test for collision
+	planet = coreInstance.CreateEntity();
+	coreInstance.AddComponent<cTransform>(planet, new cTransform);
+	coreInstance.AddComponent<cSprite>(planet, new cSprite(planet, "res/Planet2.png"));
+	coreInstance.AddComponent<cRigidBody>(planet, new cRigidBody);
+	coreInstance.AddComponent<cCollision>(planet, new cCollision);
+
+	coreInstance.GetComponent<cTransform>(planet)->position.x = 300.0f;
+	coreInstance.GetComponent<cRigidBody>(planet)->velocity.x = 0.0f;
+	coreInstance.GetComponent<cRigidBody>(planet)->velocity.y = 0.0f;
 }
 
 // ----------------------------------------------------------------------------

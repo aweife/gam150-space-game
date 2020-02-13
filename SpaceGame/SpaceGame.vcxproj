@@ -104,6 +104,7 @@
     <ClCompile Include="src\ECS\Core.cpp" />
     <ClCompile Include="src\Math\Vec2.cpp" />
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
+    <ClCompile Include="src\Systems\CollisionSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="src\ECS\Core.h" />
     <ClInclude Include="src\Managers\SystemManager.h" />
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
+    <ClInclude Include="src\Systems\CollisionSystem.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
     <ClInclude Include="src\Systems\System.h" />
@@ -135,6 +137,7 @@
     <ClInclude Include="src\Math\Vec2.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\machinegun.png" />
     <Image Include="res\PlanetTexture.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

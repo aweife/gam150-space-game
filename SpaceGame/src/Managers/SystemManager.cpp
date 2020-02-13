@@ -2,12 +2,14 @@
 #include "AEEngine.h"
 #include "../Systems/RenderSystem.h"
 #include "../Systems/PhysicsSystem.h"
+#include "../Systems/CollisionSystem.h"
 
 void SystemManager::Init()
 {
 	// Register systems
 	RegisterSystem<RenderSystem>();
 	RegisterSystem<PhysicsSystem>();
+	RegisterSystem<CollisionSystem>();
 }
 
 void SystemManager::Update()
