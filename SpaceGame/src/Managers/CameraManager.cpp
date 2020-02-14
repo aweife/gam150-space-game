@@ -63,7 +63,6 @@ namespace CameraManager
 		float boundingX = AEGfxGetWinMaxX() * 2 / 6;
 		float boundingY = AEGfxGetWinMaxY() * 3 / 6;
 
-		
 
 		if (abs(currCameraComp->_followTarget->_position.x - currCameraTransform->_position.x) > boundingX)
 		{
@@ -81,8 +80,8 @@ namespace CameraManager
 		{
 			/*currCameraTransform->_position.y = 
 				MBMath_Smoothstep(currCameraTransform->_position.y, currCameraComp->_followTarget->_position.y, currCameraComp->_followSpeed * g_dt);*/
-			/*currCameraTransform->_position.y =
-				MBMath_Lerp(currCameraTransform->_position.y, currCameraComp->_followTarget->_position.y, currCameraComp->_followSpeed * g_dt);*/
+			currCameraTransform->_position.y =
+				MBMath_Lerp(currCameraTransform->_position.y, currCameraComp->_followTarget->_position.y, currCameraComp->_followSpeed * g_dt);
 
 		}
 		

@@ -21,6 +21,7 @@ public:
 	void Core_Init();
 	void Core_Update();
 	void Core_Render();
+	void Core_Unload();
 
 	// ENTITY
 	ENTITY CreateEntity(const char* name = "");

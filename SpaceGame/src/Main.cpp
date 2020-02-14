@@ -73,7 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	// reset the system modules
 	AESysReset();
-	AEGfxSetBackgroundColor(1.0, 0.5, 1.0);
+	AEGfxSetBackgroundColor(0.6, 0.0, 0.8);
 	
 	//AEGameStateMgrInit();
 
@@ -158,7 +158,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// -----------------------------------------------------------------------
 
 	Console_CleanUp();
-	//Core_Unload();			// free all core system
+	Core::Get().Core_Unload();			// free all core system
 	//Console_CleanUp();
 	AESysExit();			// free the system
 }

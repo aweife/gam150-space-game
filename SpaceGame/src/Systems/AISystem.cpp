@@ -67,6 +67,7 @@ void AISystem::Update()
 			if (rb->velocity > targetRb->velocity/2.0f)
 				rb->velocity -= 15.0f;
 			printf("ATTACKING PLAYER\n");
+
 		}
 
 		/*if can - move - away - from - player

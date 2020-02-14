@@ -31,6 +31,10 @@ void Core::Core_Init()
 	coreSystemManager->Init();
 }
 
+void Core::Core_Unload()
+{
+	coreComponentManager->RemoveAllComponent(); //release memory
+}
 void Core::Core_Update()
 {
 	// Update systems

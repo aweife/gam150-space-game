@@ -1,6 +1,6 @@
 #pragma once
 #include "../Global_ECS.h"
-
+#include "AEEngine.h"
 namespace Factory
 {
 	ENTITY CreateCamera(ENTITY player, float followSpeed);
@@ -11,4 +11,5 @@ namespace Factory
 	ENTITY CreatePlanet4(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
 	void CreateBackground();
+	void CreateBullet(float posX, float posY, AEVec2 velocityVector, float rotation);
 }

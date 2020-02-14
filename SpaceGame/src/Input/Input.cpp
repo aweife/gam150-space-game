@@ -21,6 +21,8 @@
 #include "../Global.h"				//delta time
 #include "../Managers/CameraManager.h"
 
+#include "../ECS/Factory.h"
+
 /******************************************************************************/
 /*!
 	Player Variables
@@ -54,6 +56,8 @@ int*		pMousePosY			= &mousePosY; // Pointer to computer screen mouse position in
 
 float		angle				= 0.0f; // Angle between mouse position and player
 
+
+float		lastShootTime = 0.0f;		//Placeholder
 /******************************************************************************/
 /*!
 	RigidBody and Transform Variables
@@ -101,7 +105,7 @@ void InputUpdate()
 	cTransform* camTrans = CameraManager::GetCameraTransform();
 
 	AEInputGetCursorPosition(pMousePosX, pMousePosY);
-	//printf("mX: %d, mY: %d\n", *pMousePosX, *pMousePosY);
+	printf("mX: %d, mY: %d\n", *pMousePosX, *pMousePosY);
 
 	float windowWidth = rect.right - rect.left;
 	float windowHeight = rect.bottom - rect.top;
@@ -109,12 +113,15 @@ void InputUpdate()
 	//printf("worldMaxY: %f, worldMinY: %f\n", worldMaxY, worldMinY);
 
 	// Calculate mouse X position in world space
+	//float screenMousePosX = ((static_cast<float>(*pMousePosX) / windowWidth)* (worldMaxX - worldMinX)
+		//- ((worldMaxX - worldMinX) / 2.0f) - playerTransform->_position.x);
+
 	float screenMousePosX = (static_cast<float>(*pMousePosX) / windowWidth)* (worldMaxX - worldMinX)
 		- ((worldMaxX - worldMinX) / 2.0f);
 
-
-
 	// Calculate mouse Y position in world space
+	//float screenMousePosY = -((static_cast<float>(*pMousePosY) / windowHeight)* (worldMaxY - worldMinY)
+	//	- ((worldMaxY - worldMinY) / 2.0f)- playerTransform->_position.y);
 	float screenMousePosY = -((static_cast<float>(*pMousePosY) / windowHeight)* (worldMaxY - worldMinY)
 		- ((worldMaxY - worldMinY) / 2.0f));
 
@@ -207,22 +214,23 @@ void InputUpdate()
 		AEVec2Add(&playerRigidBody->velocityVector, &playerRigidBody->velocityVector, &thrustVelocity);
 	}
 
-	//if (AEInputCheckCurr(AEVK_LBUTTON))
-	//{
-	//	AEVec2 bulletDirection;
-	//	AEVec2 bulletVelocity;
-	//	//// Setting the spawning position of the bullet
-	//	//AEVec2Set(&bulletSpeedV, playerPosX * bulletSpeed, playerPosY * bulletSpeed);
-	//	//// Setting the velocity of the bullet
-	//	//AEVec2Add(&bulletRigidBody->velocity, &bulletRigidBody->velocity, &bulletSpeedV);
+	if (AEInputCheckCurr(AEVK_LBUTTON))
+	{
+		AEVec2 bulletDirection;
+		AEVec2 bulletVelocity;
 
-	//	// Setting the direction of bullet spawn
-	//	AEVec2Set(&bulletDirection, AECos(playerTransform->rotation), AESin(playerTransform->rotation));
-	//	// Bullet Speed
-	//	AEVec2Scale(&bulletVelocity, &bulletDirection, 5.0f * g_dt);
-	//	// Add velocity to player
-	//	AEVec2Add(&bulletRigidBody->velocityVector, &bulletRigidBody->velocityVector, &bulletVelocity);
-	//}
+		if (lastShootTime > 0.1f && g_appTime - lastShootTime < 0.5f) return;
+
+		// Setting the direction of bullet spawn
+		AEVec2Set(&bulletDirection, AECos(playerTransform->_rotation), AESin(playerTransform->_rotation));
+		// Bullet Speed
+		AEVec2Scale(&bulletVelocity, &bulletDirection, 5.0f * g_dt);
+		// Add velocity to player
+		Factory::CreateBullet(playerTransform->_position.x + AECos(playerTransform->_rotation)*94.0f,
+			playerTransform->_position.y + AESin(playerTransform->_rotation)*94.0f, bulletVelocity, playerTransform->_rotation + PI/2);
+		//AEVec2Add(&bulletRigidBody->velocityVector, &bulletRigidBody->velocityVector, &bulletVelocity);
+		lastShootTime = g_appTime;
+	}
 }
 
 	

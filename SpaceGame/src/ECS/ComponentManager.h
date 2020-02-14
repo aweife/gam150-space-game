@@ -20,6 +20,10 @@ private:
 	//void AddOrRemoveEntitySignature(ComponentType id, int set, ENTITY entity);
 
 public:
+	~ComponentManager()
+	{
+		printf("Component Manager Destructor");
+	}
 	virtual void Init();																//Register all components to use into a library
 
 	template<typename T>
@@ -58,6 +62,14 @@ public:
 	{
 		// Remove a component from the array for an entity
 		GetComponentStorage<T>()->UnregisterComponent(entity);
+	}
+
+	void RemoveAllComponent()
+	{
+		for (auto i : componentCollection) 
+		{
+			i.second.reset();
+		}
 	}
 
 	template<typename T>

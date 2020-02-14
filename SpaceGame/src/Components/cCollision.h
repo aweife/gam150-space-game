@@ -38,7 +38,7 @@ public:
 	//Game object instance structure
 	unsigned long		flag;		// bit flag or-ed together
 	AABB				boundingBox;// object bouding box that encapsulates the object
-
+	const char*			name = "";
 	// Constructor
 	cCollision() = default;
 

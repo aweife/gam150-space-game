@@ -38,9 +38,13 @@ void SystemManager::EntityDestroyed(ENTITY entity)
 	// Erase an entity from all system lists
 	for (auto const& pair : _systemMap)
 	{
-		// The first of the pair is the system name
-		// The second of the pair is the shared pointer to the system
-		pair.second->entitiesList.erase(entity);
+		if (pair.second->entitiesList.find(entity) != pair.second->entitiesList.end())
+		{
+			// The first of the pair is the system name
+			// The second of the pair is the shared pointer to the system
+			pair.second->entitiesList.erase(entity);
+		}
+
 	}
 }
 

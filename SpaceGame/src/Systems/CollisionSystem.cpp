@@ -203,6 +203,11 @@ void CollisionSystem::Update()
 			{
 				rigidbody->velocity = 10.0f;
 				rigidbody2->velocity = 10.0f;
+				if (strcmp(collider->name, "BULLET") ==0 )
+				{
+					//Core::Get().EntityDestroyed(entity1);//bug
+				}
+
 			}
 		}
 	}

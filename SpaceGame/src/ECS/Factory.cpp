@@ -96,7 +96,7 @@ namespace Factory
 	{
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
-		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "res/Planet2.png", layer));
+		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "res/Enemy_1.png", layer));
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody);
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cPathFinding>(enemy, new cPathFinding);
@@ -106,11 +106,14 @@ namespace Factory
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -200.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 100.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 150.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->velocityVector.x = -0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->velocityVector.y = 0.5f;
 		Core::Get().GetComponent<cPathFinding>(enemy)->target = player;
 		Core::Get().GetComponent<cPathFinding>(enemy)->currentState = PATH_SEEK;
+		Core::Get().GetComponent<cCollision>(enemy)->name = "ENEMY";
 		return enemy;
 	}
 
@@ -142,6 +145,23 @@ namespace Factory
 		background = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
 		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "res/BG_Background1.png", 6));
+	}
+
+	void CreateBullet(float posX, float posY, AEVec2 velocityVector, float rotation)
+	{
+		AEVec2 newPostion, newScale;
+		AEVec2Set(&newPostion, posX, posY);
+		AEVec2Set(&newScale, 20, 80);
+
+		ENTITY bullet = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(bullet, new cTransform(newPostion, rotation, newScale));
+		Core::Get().AddComponent<cSprite>(bullet, new cSprite(bullet, "res/Weapon_Bullet1.png", 2));
+		Core::Get().AddComponent<cRigidBody>(bullet, new cRigidBody());
+		//Core::Get().AddComponent<cCollision>(bullet, new cCollision);
+
+		Core::Get().GetComponent<cRigidBody>(bullet)->velocityVector = velocityVector;
+		Core::Get().GetComponent<cRigidBody>(bullet)->velocity = 500;
+		//Core::Get().GetComponent<cCollision>(bullet)->name = "BULLET";
 	}
 
 }
