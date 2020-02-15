@@ -72,7 +72,7 @@ namespace CameraManager
 				MBMath_Lerp(currCameraTransform->_position.x, currCameraComp->_followTarget->_position.x, currCameraComp->_followSpeed * g_dt);*/
 			
 			currCameraTransform->_position.x = MBMath_SmoothDamp(currCameraTransform->_position.x, 
-				currCameraComp->_followTarget->_position.x, &(currCameraComp->_camVelocity), 0.3, 100, g_dt);
+				currCameraComp->_followTarget->_position.x, &(currCameraComp->_camVelocity), 0.3f, 100.0f, g_dt);
 
 			//printf("%f\n", currCameraTransform->_position.x);
 		}

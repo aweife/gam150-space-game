@@ -73,7 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	// reset the system modules
 	AESysReset();
-	AEGfxSetBackgroundColor(0.6, 0.0, 0.8);
+	AEGfxSetBackgroundColor(0.6f, 0.0f, 0.8f);
 	
 	//AEGameStateMgrInit();
 

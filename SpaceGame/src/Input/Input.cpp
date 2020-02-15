@@ -102,13 +102,12 @@ void InputUpdate()
 	
 	cRigidBody* playerRigidBody = Core::Get().GetComponent<cRigidBody>(1);
 	cTransform* playerTransform = Core::Get().GetComponent<cTransform>(1); // 1 = Player Entity
-	cTransform* camTrans = CameraManager::GetCameraTransform();
 
 	AEInputGetCursorPosition(pMousePosX, pMousePosY);
 	printf("mX: %d, mY: %d\n", *pMousePosX, *pMousePosY);
 
-	float windowWidth = rect.right - rect.left;
-	float windowHeight = rect.bottom - rect.top;
+	long windowWidth = rect.right - rect.left;
+	long windowHeight = rect.bottom - rect.top;
 	//printf("worldMaxX: %f, worldMinX: %f, ", worldMaxX, worldMinX);
 	//printf("worldMaxY: %f, worldMinY: %f\n", worldMaxY, worldMinY);
 

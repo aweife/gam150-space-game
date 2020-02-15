@@ -10,6 +10,8 @@ EntityManager::EntityManager() : _activeEntityCount{ 0 }
 
 ENTITY EntityManager::CreateEntity(const char* name)
 {
+	UNREFERENCED_PARAMETER(name);
+
 	// Assert if we reached the cap
 	AE_ASSERT(_activeEntityCount < MAX_ENTITIES && "Too many entities created.");
 

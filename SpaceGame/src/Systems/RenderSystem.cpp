@@ -44,13 +44,13 @@ void RenderSystem::Render()
 			// Compute the _rotation matrix 
 			AEMtx33Rot(&rot, _transform->_rotation);
 
-			float parallaxOffsetX = 0;
-			float parallaxOffsetY = 0;
+			float parallaxOffsetX = 0.0f;
+			float parallaxOffsetY = 0.0f;
 			if (sprite->_layer > 0 && sprite->_layer < 6)
 			{
 				//Render with parallax offset
-				parallaxOffsetX = cameraX * -0.3 * sprite->_layer;
-				parallaxOffsetY = cameraY * -0.3 * sprite->_layer;
+				parallaxOffsetX = cameraX * -0.3f * sprite->_layer;
+				parallaxOffsetY = cameraY * -0.3f * sprite->_layer;
 			}
 			
 
