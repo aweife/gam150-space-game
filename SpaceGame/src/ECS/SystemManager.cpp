@@ -4,16 +4,21 @@
 void SystemManager::Init()
 {
 	// Register systems
-	RegisterSystem<RenderSystem>();
+	
+	// Logic 
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<PathFindingSystem>();
 	RegisterSystem<AISystem>();
 	RegisterSystem<SpaceShipLogicSystem>();
 
+	// Rendering
+	RegisterSystem<RenderSystem>();
+	RegisterSystem<UISystem>();
+
 	for (auto const& system : _systemMap)
 	{
-		system.second->Init();
+		system->Init();
 	}
 }
 
@@ -21,7 +26,7 @@ void SystemManager::Update()
 {
 	for (auto const& system : _systemMap)
 	{
-		system.second->Update();
+		system->Update();
 	}
 }
 
@@ -29,20 +34,21 @@ void SystemManager::Render()
 {
 	for (auto const& system : _systemMap)
 	{
-		system.second->Render();
+		system->Render();
 	}
 }
 
 void SystemManager::EntityDestroyed(ENTITY entity)
 {
 	// Erase an entity from all system lists
-	for (auto const& pair : _systemMap)
+	for (auto const& system : _systemMap)
 	{
-		if (pair.second->entitiesList.find(entity) != pair.second->entitiesList.end())
+		if (system->entitiesList.find(entity) != system->entitiesList.end())
 		{
 			// The first of the pair is the system name
 			// The second of the pair is the shared pointer to the system
-			pair.second->entitiesList.erase(entity);
+			system->OnComponentRemove(entity);				//Remove the entity from the system tracking (Sprite Layers)
+			system->entitiesList.erase(entity);
 		}
 
 	}
@@ -50,13 +56,12 @@ void SystemManager::EntityDestroyed(ENTITY entity)
 
 void SystemManager::UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature)
 {
-	for (auto const& pair : _systemMap)
+	for (auto const& system : _systemMap)
 	{
 		// The first of the pair is the system name
 		// The second of the pair is the shared pointer to the system
-		auto const& name = pair.first;
-		auto const& system = pair.second;
-		auto const& systemSignature = _signaturesMap[name];
+		const char* systemName = typeid(*system).name();
+		auto const& systemSignature = _signaturesMap[systemName];
 
 		// Do bitwise comparison of the signatures
 		// The & operator returns a result for us to compare against

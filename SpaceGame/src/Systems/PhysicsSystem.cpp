@@ -27,8 +27,8 @@
 float thrust = 500.0f;
 float drag = 5.0f;
 float displacement = 50.0f;
-float _velocity = 30.0f;
-float _mass = 30.0f;
+float velocity = 30.0f;
+float mass = 30.0f;
 
 void PhysicsSystem::Init()
 {
@@ -51,50 +51,56 @@ void PhysicsSystem::Update()
 
 		// Euler's method (tested using global variables)
 		// Trying Runge-Kutta method with basic Euler's
-		float force;				// total force
-		float acceleration;			// acceleration of the ship
-		float newVelocity;			// new velocity at the time t + dt
-		float newDisplacement;		// new displacement at the time t + dt
-		float k1, k2, k3, k4;
+		//float force;				// total force
+		//float acceleration;			// acceleration of the ship
+		//float newVelocity;			// new velocity at the time t + dt
+		//float newDisplacement;		// new displacement at the time t + dt
+		//float k1, k2, k3, k4;
 
-		// Calculate total force 
-		force = (thrust - (drag * _velocity));
+		//// Calculate total force 
+		//force = (thrust - (drag * velocity));
 
-		// Calculate the acceleration 
-		acceleration = force / _mass;
-		k1 = g_dt * acceleration;
+		//// Calculate the acceleration 
+		//acceleration = force / mass;
+		//k1 = g_dt * acceleration;
 
+		//force = (thrust - (drag * (velocity + k1 / 2)));
+		//acceleration = force / mass;
+		//k2 = g_dt * acceleration;
 
-		force = (thrust - (drag * (_velocity + k1 / 2)));
-		acceleration = force / _mass;
-		k2 = g_dt * acceleration;
+		//force = (thrust - (drag * (velocity + k2 / 2)));
+		//acceleration = force / mass;
+		//k3 = g_dt * acceleration;
 
-		force = (thrust - (drag * (_velocity + k2 / 2)));
-		acceleration = force / _mass;
-		k3 = g_dt * acceleration;
+		//force = (thrust - (drag * (velocity + k3)));
+		//acceleration = force / mass;
+		//k4 = g_dt * acceleration;
 
-		force = (thrust - (drag * (_velocity + k3)));
-		acceleration = force / _mass;
-		k4 = g_dt * acceleration;
+		//// Calculate the new velocity at time t + dt 
+		//// V is the velocity at time t
+		//newVelocity = velocity + (k1 + 2 * k2 + 2 * k3 + k4) / 6;
 
-		// Calculate the new velocity at time t + dt 
-		// V is the velocity at time t
-		newVelocity = _velocity + (k1 + 2 * k2 + 2 * k3 + k4) / 6;
+		//// Calculate the new displacement at time t + dt
+		//newDisplacement = displacement + newVelocity * g_dt;
 
-		// Calculate the new displacement at time t + dt
-		newDisplacement = displacement + newVelocity * g_dt;
+		//// Updating the old velocity
+		//velocity = newVelocity;
+		//displacement = newDisplacement;
 
-		// Updating the old velocity
-		_velocity = newVelocity;
-		displacement = newDisplacement;
+		// -----------------------------------------------------------------------
+		// Currently whats working
+		// -----------------------------------------------------------------------
 
-		if(!(rigidbody->velocityVector.x < FLT_EPSILON && rigidbody->velocityVector.x > -FLT_EPSILON &&
-			rigidbody->velocityVector.y < FLT_EPSILON && rigidbody->velocityVector.y > -FLT_EPSILON))
-			AEVec2Normalize(&rigidbody->velocityVector, &rigidbody->velocityVector);
-		transform->_position.x += rigidbody->velocityVector.x * rigidbody->velocity * g_dt;
-		transform->_position.y += rigidbody->velocityVector.y * rigidbody->velocity * g_dt;
+		////Check if the _velocityVector not (0,0) 
+		//if (!(rigidbody->_velocityVector.x < FLT_EPSILON && rigidbody->_velocityVector.x > -FLT_EPSILON &&
+		//	rigidbody->_velocityVector.y < FLT_EPSILON && rigidbody->_velocityVector.y > -FLT_EPSILON))
+		//{
+		//	AEVec2Normalize(&rigidbody->_velocityVector, &rigidbody->_velocityVector);
+		//}
+			
+		transform->_position.x += rigidbody->_velocityVector.x * g_dt;
+		transform->_position.y += rigidbody->_velocityVector.y * g_dt;
 	}
 }
-void PhysicsSystem::Render() {};
 void PhysicsSystem::OnComponentAdd(ENTITY) {};
 void PhysicsSystem::OnComponentRemove(ENTITY) {};

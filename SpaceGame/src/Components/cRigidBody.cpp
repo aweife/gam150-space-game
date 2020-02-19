@@ -23,12 +23,10 @@
 *
 **********************************************************************************/
 // Constructor
-cRigidBody::cRigidBody() 
-	: mass{ 30.0f }, inertia{ 10.0f }, inertiaInverse{ 5.0f },
-	velocityVector{ 0.0f, 0.0f }, angularVelocity{ 0.0f, 0.0f }
+cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float acceleration, float rotateVelocity)
+	: _mass{ mass }, _velocity{ velocity }, _velocityCap{velocityCap}, _acceleration{ acceleration }, _rotateVelocity{ rotateVelocity },
+	_velocityVector{0, 0}, _angularVelocity{0, 0}
 {
-
 }
 
-// Using default destructor
 

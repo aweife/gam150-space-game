@@ -3,7 +3,7 @@
 #include "ComponentManager.h"
 #include "EntityManager.h"
 #include "SystemManager.h"
-
+#include "../Tools/MemoryLeak.h"
 class Core
 {
 public:

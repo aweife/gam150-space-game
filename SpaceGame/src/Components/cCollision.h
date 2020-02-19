@@ -14,6 +14,7 @@
 **********************************************************************************/
 #pragma once
 
+#include "Component.h"
 #include "AEEngine.h"
 
 /**************************************************************************/
@@ -31,7 +32,7 @@ struct AABB
 };
 
 
-class cCollision
+class cCollision:public Component
 {
 
 public:
@@ -39,6 +40,7 @@ public:
 	unsigned long		flag;		// bit flag or-ed together
 	AABB				boundingBox;// object bouding box that encapsulates the object
 	const char*			name = "";
+
 	// Constructor
 	cCollision() = default;
 

@@ -199,10 +199,10 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			if (checkforCollisionAABB(collider->boundingBox, rigidbody->velocityVector, collider2->boundingBox, rigidbody2->velocityVector) == true)
+			if (checkforCollisionAABB(collider->boundingBox, rigidbody->_velocityVector, collider2->boundingBox, rigidbody2->_velocityVector) == true)
 			{
-				rigidbody->velocity = 10.0f;
-				rigidbody2->velocity = 10.0f;
+				rigidbody->_velocity = 10.0f;
+				rigidbody2->_velocity = 10.0f;
 				if (strcmp(collider->name, "BULLET") ==0 )
 				{
 					//Core::Get().EntityDestroyed(entity1);//bug
@@ -213,6 +213,5 @@ void CollisionSystem::Update()
 	}
 }
 
-void CollisionSystem::Render() {}
 void CollisionSystem::OnComponentAdd(ENTITY) {}
 void CollisionSystem::OnComponentRemove(ENTITY) {}

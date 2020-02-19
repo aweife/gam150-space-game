@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Global.h"
+#include "Component.h"
 
 enum PATH_STATE
 {
@@ -8,7 +9,7 @@ enum PATH_STATE
 	PATH_FLEE,
 };
 
-class cPathFinding
+class cPathFinding:public Component
 {
 public:
 	ENTITY target;

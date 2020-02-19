@@ -2,10 +2,12 @@
 
 enum GAMESTATE
 {
+	GS_LOADINGLvl,
 	GS_LEVEL1,
 
 	GS_QUIT,
-	GS_RESTART
+	GS_RESTART,
+	GS_NULL
 };
 
 	//The sequence of game states
@@ -23,3 +25,7 @@ extern void (*fpUnload)();
 
 void GSM_Init(int startGameState);
 void GSM_Update();
+void GSM_RestartLevel();
+void GSM_QuitGame();
+void GSM_ChangeState(int nextGameState);
+void GSM_LoadingTransition(int loadForState);

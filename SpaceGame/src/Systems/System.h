@@ -1,6 +1,6 @@
 #pragma once
 
-#include <set>
+#include <set>							//entitiesList
 #include "../Global_ECS.h"
 
 class System
@@ -17,4 +17,7 @@ public:
 	virtual void Render() = 0;
 	virtual void OnComponentAdd(ENTITY entity) = 0;
 	virtual void OnComponentRemove(ENTITY entity) = 0;
+
+	System() = default;
+	virtual ~System() = default;
 };

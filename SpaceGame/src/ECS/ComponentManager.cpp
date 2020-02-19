@@ -14,6 +14,7 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cPathFinding>(ID_PathFindingComponent);
 	RegisterComponentCollection<cAI>(ID_AIComponent);
 	RegisterComponentCollection<cSpaceShip>(ID_SpaceShip);
+	RegisterComponentCollection<cUIElement>(ID_UIComponent);
 }
 
 template<typename T>

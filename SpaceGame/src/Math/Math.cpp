@@ -6,6 +6,22 @@ float MBMath_Lerp(float a, float b, float time)
 	return a + ((b - a) * time);
 }
 
+float MBMath_LerpRotation(float a, float b, float time)
+{
+    //Angle will be in radian (-PI to PI)
+    float magnitude = b - a;
+
+    if (magnitude > PI)                 //Clockwise
+    {
+        a += 2 * PI;
+    }
+    else if (magnitude < -PI)           //Anti-Clockwise
+    {
+        a -= 2 * PI;
+    }
+    return  a + ((b - a) * time);
+}
+
 float MBMath_Smoothstep(float edge0, float edge1, float x) 
 {
     // Scale, bias and saturate x to 0..1 range

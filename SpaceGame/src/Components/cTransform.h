@@ -1,8 +1,9 @@
 #pragma once
 
 #include "AEEngine.h"
+#include "Component.h"
 
-class cTransform
+class cTransform:public Component
 {
 public:
 	AEMtx33 _transform;

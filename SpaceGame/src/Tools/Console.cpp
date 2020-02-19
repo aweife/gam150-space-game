@@ -135,6 +135,11 @@ void Console_Cout(const char* s, int num)
 	std::cout << s << " " << num << std::endl;
 }
 
+void Console_Cout(const char* s, float num)
+{
+	std::cout << s << " " << num << std::endl;
+}
+
 void Console_Cout(const std::string s, int num)
 {
 	std::cout << s << " " << num << std::endl;
@@ -151,10 +156,8 @@ void Console_Cout(const std::string s, int num)
 /******************************************************************************/
 void Console_CoutDetailed(const char* s, const int line, const char* function, const char* file, int number)
 {
-	f64 time = AEGetTime(&time) - gStartTime;
-
 	std::cout << "-------------------------------" << std::endl;
-	std::cout << "Line: " << line << " Function: " << function << " File: "<< file << " Time: " << time << std::endl;
+	std::cout << "Line: " << line << " Function: " << function << " File: "<< file << " Time: " << g_appTime << std::endl;
 	std::cout << s << " "<< number << std::endl;
 	std::cout << "-------------------------------" << std::endl;
 }
@@ -206,6 +209,15 @@ void Console_SetCursorPos(COORD c)
 	SetConsoleCursorPosition(sConsoleOutHandle, c);
 }
 
+/******************************************************************************/
+/*!
+  \brief	Get the Console Size
+*/
+/******************************************************************************/
+COORD Console_GetConsoleSize()
+{
+	return sConsoleSize;
+}
 
 /******************************************************************************/
 /*!

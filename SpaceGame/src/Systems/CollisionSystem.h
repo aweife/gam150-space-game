@@ -12,14 +12,16 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "System.h"
+#include "System.h"								//Inheritance
 
 class CollisionSystem : public System
 {
 public:
+	CollisionSystem() = default;
+	~CollisionSystem() = default;
 	void Init() override;
+	void Render() override {};
 	void Update() override;
-	void Render() override;
 	void OnComponentAdd(ENTITY entity) override;
 	void OnComponentRemove(ENTITY entity) override;
 };
