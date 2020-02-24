@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -15,9 +23,21 @@
     <ProjectGuid>{A2D1977C-904C-49D4-8EEF-6CA5E89DCA8F}</ProjectGuid>
     <RootNamespace>SpaceGame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>SpaceGame</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -36,6 +56,12 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -43,6 +69,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\</IntDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\</IntDir>
@@ -51,6 +85,23 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\AE\Include;$(ProjectDir)dep\FMOD\inc</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(ProjectDir)dep\AE\Lib\$(Platform);$(ProjectDir)dep\FMOD\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Alpha_EngineD.lib;fmodL_vc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(ProjectDir)dep\FMOD\lib\$(Platform)\fmodL.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -68,6 +119,27 @@
       <Command>xcopy /y /d "$(ProjectDir)dep\FMOD\lib\$(Platform)\fmodL.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\AE\Include;$(ProjectDir)dep\FMOD\inc</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(ProjectDir)dep\AE\Lib\$(Platform);$(ProjectDir)dep\FMOD\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Alpha_Engine.lib;fmod_vc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(ProjectDir)dep\FMOD\lib\$(Platform)\fmod.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
@@ -79,7 +151,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)dep\AE\Include;$(ProjectDir)dep\FMOD\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)dep\AE\Lib\$(Platform);$(ProjectDir)dep\FMOD\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -90,55 +162,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Components\cCollision.cpp" />
-    <ClCompile Include="src\Components\ComponentStorage.cpp" />
-    <ClCompile Include="src\Components\cSprite.cpp" />
-    <ClCompile Include="src\Components\cTransform.cpp" />
-    <ClCompile Include="src\Components\cRigidBody.cpp" />
-    <ClCompile Include="src\Managers\EntityManager.cpp" />
-    <ClCompile Include="src\Global.cpp" />
-    <ClCompile Include="src\Levels\Level1.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Managers\ComponentManager.cpp" />
-    <ClCompile Include="src\Managers\SystemManager.cpp" />
-    <ClCompile Include="src\ECS\Core.cpp" />
-    <ClCompile Include="src\Math\Vec2.cpp" />
-    <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
-    <ClCompile Include="src\Systems\CollisionSystem.cpp" />
-    <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
-    <ClCompile Include="src\Systems\RenderSystem.cpp" />
-    <ClCompile Include="src\Tools\Console.cpp" />
-    <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Components\cCollision.h" />
-    <ClInclude Include="src\Components\Component.h" />
-    <ClInclude Include="src\Components\ComponentList.h" />
-    <ClInclude Include="src\Components\ComponentStorage.h" />
-    <ClInclude Include="src\Components\ComponentStorage_Generic.h" />
-    <ClInclude Include="src\Components\cSprite.h" />
-    <ClInclude Include="src\Components\cTransform.h" />
-    <ClInclude Include="src\Components\cRigidBody.h" />
-    <ClInclude Include="src\Components\Transform.h" />
-    <ClInclude Include="src\Managers\EntityManager.h" />
-    <ClInclude Include="src\Global.h" />
-    <ClInclude Include="src\Global_ECS.h" />
-    <ClInclude Include="src\Levels\Level1.h" />
-    <ClInclude Include="src\Managers\ComponentManager.h" />
-    <ClInclude Include="src\ECS\Core.h" />
-    <ClInclude Include="src\Managers\SystemManager.h" />
-    <ClInclude Include="src\NotInUse\MemoryPool.h" />
-    <ClInclude Include="src\Systems\CollisionSystem.h" />
-    <ClInclude Include="src\Systems\PhysicsSystem.h" />
-    <ClInclude Include="src\Systems\RenderSystem.h" />
-    <ClInclude Include="src\Systems\System.h" />
-    <ClInclude Include="src\Tools\Console.h" />
-    <ClInclude Include="src\Tools\Editor.h" />
-    <ClInclude Include="src\Math\Vec2.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\machinegun.png" />
-    <Image Include="res\PlanetTexture.png" />
+    <ClInclude Include="Physics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
