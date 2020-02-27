@@ -7,6 +7,7 @@ class cRigidBody
 public:
 	float mass;                              // Mass of the ship
 	float inertia;                           // Inertia
+	float acceleration;						 // Acceleration
 	float inertiaInverse;                    // Inverse Inertia
 	float velocity;
 	AEVec2 position;						 // Position of the spaceship

@@ -25,7 +25,7 @@
 **********************************************************************************/
 
 // Checking for Collision (AABB)
-bool checkforCollisionAABB(const AABB& obj1, const AEVec2& vel1,
+bool AABBCollision(const AABB& obj1, const AEVec2& vel1,
 	const AABB& obj2, const AEVec2& vel2)
 {
 	// To check for collision detection between static rectangles, if the check returns no overlap, continue
@@ -142,6 +142,67 @@ bool checkforCollisionAABB(const AABB& obj1, const AEVec2& vel1,
 	return true;
 }
 
+// Checking if both circles
+bool CircleCircleCollision(const AABB& obj1, const AABB& obj2 )
+{
+	float distX = obj1.center.x - obj2.center.x;
+	float distY = obj1.center.y - obj2.center.y; 
+	float totalRadius = obj1.radius + obj2.radius;
+	float totalDist = (distX * distX) + (distY * distY);
+
+	// totaldist <= totalRadius ^ 2 (compare both distances)
+	if (totalDist <= (totalRadius * totalRadius) )
+	{
+		return true;
+	}
+	else
+	{
+		// no collision
+		return false;
+	}
+}
+
+// Checking if 1 circle and 1 rectangle
+bool RectangleCircleCollision(const AABB& circle, const AABB& rectangle)
+{
+	// temp variables for testing 
+	//float testX = circle.rad.x
+}
+
+/*********************************************************************************
+*
+* To check for which collision 
+*
+**********************************************************************************/
+bool CollisionCheck(const AABB& obj1, const ColliderShape shape1, const AEVec2 vel1,
+					const AEVec2 vel2,const ColliderShape shape2,const AABB& obj2)
+{
+	// if both objects bounding box are circle 
+	if (shape1 == ColliderShape::CIRCLE && shape2 == ColliderShape::CIRCLE)
+	{
+		// use the function for both circle check
+		CircleCircleCollision(obj1, obj2);
+
+	}
+	// if one rectangle and one circle
+	else if (shape1 == ColliderShape::CIRCLE && shape2 == ColliderShape::RECTANGLE)
+	{
+		// use the function for rectangle - circle check
+		RectangleCircleCollision(obj1, obj2);
+	}
+	// if both rectangles
+	else if (shape1 == ColliderShape::RECTANGLE && shape2 == ColliderShape::RECTANGLE)
+	{
+		// use the function for AABB 
+		AABBCollision(obj1, vel1, obj2, vel2);
+	}
+	else 
+	{
+		// return no collision
+		return false; 
+	}
+}
+
 
 /*********************************************************************************
 *
@@ -178,6 +239,9 @@ void CollisionSystem::Update()
 		collider->boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
 		collider->boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
 		collider->boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
+
+		// Set the enum to rectangle
+		collider->bbShape = ColliderShape::RECTANGLE;
 	}
 
 	// To check for collision for each entity in the list
@@ -199,7 +263,7 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			if (checkforCollisionAABB(collider->boundingBox, rigidbody->velocityVector, collider2->boundingBox, rigidbody2->velocityVector) == true)
+			if (AABBCollision(collider->boundingBox, rigidbody->velocityVector, collider2->boundingBox, rigidbody2->velocityVector) == true)
 			{
 				rigidbody->velocity = 10.0f;
 				rigidbody2->velocity = 10.0f;
