@@ -165,8 +165,13 @@ bool CircleCircleCollision(const AABB& obj1, const AABB& obj2 )
 // Checking if 1 circle and 1 rectangle
 bool RectangleCircleCollision(const AABB& circle, const AABB& rectangle)
 {
-	// temp variables for testing 
-	//float testX = circle.rad.x
+	float rectLength = rectangle.max.x - rectangle.min.x;
+	float rectHeight = rectangle.max.y - rectangle.min.y;
+
+	float deltaX = circle.center.x - max(rectangle.center.x, min(circle.center.x, rectangle.center.x + rectLength));
+	float deltaY = circle.center.y - max(rectangle.center.y, min(circle.center.y, rectangle.center.y + rectHeight));
+
+	return (deltaX * deltaX + deltaY * deltaY) < (circle.radius * circle.radius);
 }
 
 /*********************************************************************************

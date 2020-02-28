@@ -49,7 +49,6 @@ void PhysicsSystem::Update()
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
 
-		// Euler's method (tested using global variables)
 		// Trying Runge-Kutta method with basic Euler's
 		float force;				// total force
 		float acceleration;			// acceleration of the ship
@@ -94,6 +93,8 @@ void PhysicsSystem::Update()
 		transform->_position.x += rigidbody->velocityVector.x * rigidbody->velocity * g_dt;
 		transform->_position.y += rigidbody->velocityVector.y * rigidbody->velocity * g_dt;
 	}
+
+
 }
 void PhysicsSystem::Render() {};
 void PhysicsSystem::OnComponentAdd(ENTITY) {};
