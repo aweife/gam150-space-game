@@ -23,18 +23,19 @@
 *
 **********************************************************************************/
 // Constructor
-cRigidBody::cRigidBody() 
-	: mass{ 30.0f }, inertia{ 10.0f }, acceleration{ 0.0f }, inertiaInverse{ 5.0f }, velocity{ 0.0f },
-	force{ 3.5f }, velocityVector{ 0.0f, 0.0f }, angularVelocity{ 0.0f, 0.0f }, position{ 0.0f, 0.0f }
+cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float acceleration, float rotateVelocity)
+	: _mass{mass}, _velocity{velocity}, _velocityCap{velocityCap}, _acceleration{acceleration}, _rotateVelocity{rotateVelocity},
+	_velocityVector{ 0,0 }, _angularVelocity{ 0,0 }, _velocityChangeVector{ 0,0 }, _velocityDirection{ 0,0 }
 {
 
 }
+
 
 float cRigidBody::calculateVelwithAcc(float velocity)
 {
 	float acceleration = velocity / g_dt;
 	float newVelocity = (acceleration * g_dt) + velocity; 
-	newVelocity = newVelocity * 0.99; 
+	newVelocity = newVelocity * 0.99f; 
 	return newVelocity;
 }
 

@@ -13,6 +13,7 @@
 **********************************************************************************/
 #include "CollisionSystem.h"
 #include <AEVec2.h>
+#include <iostream>
 #include "Math.h"
 #include "../Global.h"
 #include "../ECS/Core.h"
@@ -268,12 +269,13 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			if (AABBCollision(collider->boundingBox, rigidbody->velocityVector, collider2->boundingBox, rigidbody2->velocityVector) == true)
+			if (AABBCollision(collider->boundingBox, rigidbody->_velocityVector, collider2->boundingBox, rigidbody2->_velocityVector) == true)
 			{
-				rigidbody->velocity = 10.0f;
-				rigidbody2->velocity = 10.0f;
-				if (strcmp(collider->name, "BULLET") ==0 )
+				rigidbody->_velocity = 10.0f;
+				rigidbody2->_velocity = 10.0f;
+				if (/*strcmp(collider->name, "BULLET") ==0*/ rigidbody->tag == COLLISIONTAG::BULLET && rigidbody2->tag == COLLISIONTAG::ENEMY )
 				{
+					printf("ENEMY HEALTH DECREASE\n");
 					//Core::Get().EntityDestroyed(entity1);//bug
 				}
 

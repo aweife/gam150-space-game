@@ -120,7 +120,7 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
 		Core::Get().GetComponent<cPathFinding>(enemy)->target = player;
-		Core::Get().GetComponent<cPathFinding>(enemy)->currentState = PATH_SEEK;
+		Core::Get().GetComponent<cRigidBody>(enemy)->tag = COLLISIONTAG::ENEMY; // testing collision
 		Core::Get().GetComponent<cCollision>(enemy)->name = "ENEMY";
 		return enemy;
 	}
@@ -174,9 +174,10 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(bullet, new cTransform(newPostion, rotation, newScale));
 		Core::Get().AddComponent<cSprite>(bullet, new cSprite(bullet, "Square Mesh", "Bullet_1", 2));
 		Core::Get().AddComponent<cRigidBody>(bullet, new cRigidBody(30.0f, 500.0f, 500.0f));
-		//Core::Get().AddComponent<cCollision>(bullet, new cCollision);
+		Core::Get().AddComponent<cCollision>(bullet, new cCollision);
 
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
+		Core::Get().GetComponent<cRigidBody>(bullet)->tag = COLLISIONTAG::BULLET;
 		//Core::Get().GetComponent<cCollision>(bullet)->name = "BULLET";
 
 		return bullet;
