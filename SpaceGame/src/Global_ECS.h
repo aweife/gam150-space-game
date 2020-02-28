@@ -39,6 +39,9 @@ enum COMPONENTID								//ID for each component, to be used to organise systems 
 	ID_PathFindingComponent,
 	ID_AIComponent,
 	ID_SpaceShip,
-	ID_UIComponent
+	ID_UIComponent,
+	ID_DebugToolsComponent,
+	ID_ParticleComponent,
+	ID_ParticleEmitterComponent
 };					
 

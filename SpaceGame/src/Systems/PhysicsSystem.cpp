@@ -91,13 +91,30 @@ void PhysicsSystem::Update()
 		// Currently whats working
 		// -----------------------------------------------------------------------
 
-		////Check if the _velocityVector not (0,0) 
-		//if (!(rigidbody->_velocityVector.x < FLT_EPSILON && rigidbody->_velocityVector.x > -FLT_EPSILON &&
-		//	rigidbody->_velocityVector.y < FLT_EPSILON && rigidbody->_velocityVector.y > -FLT_EPSILON))
-		//{
-		//	AEVec2Normalize(&rigidbody->_velocityVector, &rigidbody->_velocityVector);
-		//}
-			
+		
+
+		// Add the new frame velocity change onto the current velocity
+		AEVec2Add(&rigidbody->_velocityVector, &rigidbody->_velocityVector, &rigidbody->_velocityChangeVector);
+		// Reset the change in velocity for next frame
+		AEVec2Zero(&rigidbody->_velocityChangeVector);
+
+		// Set a cap onto the current velocity
+		if (AEVec2Length(&rigidbody->_velocityVector) >= rigidbody->_velocityCap)
+		{
+			AEVec2Scale(&rigidbody->_velocityVector, &rigidbody->_velocityVector, 0.99f);		//Smootly reduce velocity
+		}
+
+		// Calculate velocity magnitude
+		rigidbody->_velocity = AEVec2Length(&rigidbody->_velocityVector);
+
+		// Calculate normalised velocity vector.....Check if the _velocityVector not (0,0) 
+		if (!(rigidbody->_velocityVector.x < FLT_EPSILON && rigidbody->_velocityVector.x > -FLT_EPSILON &&
+			rigidbody->_velocityVector.y < FLT_EPSILON && rigidbody->_velocityVector.y > -FLT_EPSILON))
+		{
+			AEVec2Normalize(&rigidbody->_velocityDirection, &rigidbody->_velocityVector);
+		}
+
+		// Apply displacement on current position
 		transform->_position.x += rigidbody->_velocityVector.x * g_dt;
 		transform->_position.y += rigidbody->_velocityVector.y * g_dt;
 	}

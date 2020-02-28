@@ -29,6 +29,10 @@ void Level1_Load()
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);
 
+	//Create a debug arrow on player
+	Factory::DebugVector_Velocity(PlayerManager::player);
+
+
 	// Create camera
 	Factory::CreateCamera(PlayerManager::player);		
 

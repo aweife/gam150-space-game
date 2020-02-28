@@ -25,7 +25,7 @@
 // Constructor
 cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float acceleration, float rotateVelocity)
 	: _mass{ mass }, _velocity{ velocity }, _velocityCap{velocityCap}, _acceleration{ acceleration }, _rotateVelocity{ rotateVelocity },
-	_velocityVector{0, 0}, _angularVelocity{0, 0}
+	_velocityVector{0, 0}, _angularVelocity{0, 0}, _velocityChangeVector{0,0}, _velocityDirection{0,0}
 {
 }
 

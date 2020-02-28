@@ -36,23 +36,45 @@ namespace ResourceManager
 	{
 		AEGfxVertexList* mesh;
 
+		// -----------------------------------------------------------------------
+		// Square Mesh
+		// -----------------------------------------------------------------------
 		AEGfxMeshStart();
 
 		// This shape has 2 triangles
 		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFFFF0000, 0.0f, 1.0f,
-			0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-		AEGfxTriAdd(
-			0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
-			0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
+			-0.5f, -0.5f, 0xFFFF0000, 0.0f, 1.0f,				// 3
+			0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,				//
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				// 1		2
+		AEGfxTriAdd(											//
+			0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,				// 3        2
+			0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,					//
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				//          1
 
 		// Saving the mesh (list of triangles) in mesh
 		mesh = AEGfxMeshEnd();
 		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
 
 		meshLibrary.insert({ "Square Mesh", mesh });
+
+		// -----------------------------------------------------------------------
+		// Arrow Line Mesh
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		// This shape has 2 triangles
+		AEGfxVertexAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f);			 /*		   3\			*/
+		AEGfxVertexAdd(1.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f);			 /*		1----25 		*/
+		AEGfxVertexAdd(0.8f, 0.2f, 0xFFFFFFFF, 0.0f, 0.0f);			 /*		   4/			*/
+		AEGfxVertexAdd(0.8f, -0.2f, 0xFFFFFFFF, 0.0f, 0.0f);		 /*						*/
+		AEGfxVertexAdd(1.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f);
+
+		// Saving the mesh (list of triangles) in mesh
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+
+		meshLibrary.insert({"Arrow Line", mesh});
+
 	}
 
 	void LoadTextureLibrary_Essential()

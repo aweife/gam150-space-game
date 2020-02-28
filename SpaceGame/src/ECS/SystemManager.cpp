@@ -6,15 +6,17 @@ void SystemManager::Init()
 	// Register systems
 	
 	// Logic 
+	RegisterSystem<SpaceShipLogicSystem>();
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<PathFindingSystem>();
 	RegisterSystem<AISystem>();
-	RegisterSystem<SpaceShipLogicSystem>();
 
 	// Rendering
 	RegisterSystem<RenderSystem>();
+	RegisterSystem<ParticleSystem>();
 	RegisterSystem<UISystem>();
+	RegisterSystem<DebugToolsSystem>();
 
 	for (auto const& system : _systemMap)
 	{

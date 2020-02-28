@@ -92,6 +92,9 @@
   <ItemGroup>
     <ClCompile Include="src\Components\cCamera.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
+    <ClCompile Include="src\Components\cDebugTools.cpp" />
+    <ClCompile Include="src\Components\cParticle.cpp" />
+    <ClCompile Include="src\Components\cParticleEmitter.cpp" />
     <ClCompile Include="src\Components\cSpaceShip.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
     <ClCompile Include="src\ECS\ComponentStorage.cpp" />
@@ -116,6 +119,8 @@
     <ClCompile Include="src\Player\PlayerManager.cpp" />
     <ClCompile Include="src\Systems\AISystem.cpp" />
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
+    <ClCompile Include="src\Systems\DebugToolsSystem.cpp" />
+    <ClCompile Include="src\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Systems\PathFindingSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
@@ -128,8 +133,11 @@
     <ClInclude Include="src\Components\cAI.h" />
     <ClInclude Include="src\Components\cCamera.h" />
     <ClInclude Include="src\Components\cCollision.h" />
+    <ClInclude Include="src\Components\cDebugTools.h" />
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\ComponentList.h" />
+    <ClInclude Include="src\Components\cParticle.h" />
+    <ClInclude Include="src\Components\cParticleEmitter.h" />
     <ClInclude Include="src\Components\cPathFinding.h" />
     <ClInclude Include="src\Components\cSpaceShip.h" />
     <ClInclude Include="src\Components\cUIElement.h" />
@@ -156,6 +164,8 @@
     <ClInclude Include="src\Player\PlayerManager.h" />
     <ClInclude Include="src\Systems\AISystem.h" />
     <ClInclude Include="src\Systems\CollisionSystem.h" />
+    <ClInclude Include="src\Systems\DebugToolsSystem.h" />
+    <ClInclude Include="src\Systems\ParticleSystem.h" />
     <ClInclude Include="src\Systems\PathFindingSystem.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />

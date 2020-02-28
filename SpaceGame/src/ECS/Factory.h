@@ -2,6 +2,8 @@
 #include "../Global_ECS.h"
 #include "AEEngine.h"
 #include "../Tools/MemoryLeak.h"
+#include "../Components/ComponentList.h"
+
 namespace Factory
 {
 	ENTITY CreateCamera(ENTITY player);
@@ -16,4 +18,6 @@ namespace Factory
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, float rotation);
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
+	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale);
+	ENTITY DebugVector_Velocity(ENTITY target);
 }

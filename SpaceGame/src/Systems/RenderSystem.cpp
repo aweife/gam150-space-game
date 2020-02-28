@@ -37,14 +37,14 @@ void RenderSystem::Render()
 			// -----------------------------------------------------------------------
 			// Prepare TRANSFORM for rendering - SCALE, ROTATION, TRANSLATION
 			// -----------------------------------------------------------------------
-			AEMtx33 trans, rot, _scale;
+			AEMtx33 trans, rot, scale;
 			// Calculate the identity matrix
 			AEMtx33Identity(&trans);
 			AEMtx33Identity(&rot);
-			AEMtx33Identity(&_scale);
+			AEMtx33Identity(&scale);
 
 			//  Compute the SCALE, ROTATION matrix from ENTITY
-			AEMtx33Scale(&_scale, _transform->_scale.x, _transform->_scale.y);
+			AEMtx33Scale(&scale, _transform->_scale.x, _transform->_scale.y);
 			AEMtx33Rot(&rot, _transform->_rotation);
 
 			// -----------------------------------------------------------------------
@@ -70,7 +70,7 @@ void RenderSystem::Render()
 
 			// Concatenate the 3 matrix in the correct order in the object instance's "_transform" matrix
 			// Order of matrix concatenation: Translation*Rotation*Scaling
-			AEMtx33Concat(&_transform->_transform, &rot, &_scale);
+			AEMtx33Concat(&_transform->_transform, &rot, &scale);
 			AEMtx33Concat(&_transform->_transform, &trans, &_transform->_transform);
 
 			// -----------------------------------------------------------------------

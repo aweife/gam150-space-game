@@ -12,7 +12,9 @@ public:
 	float _acceleration;						// Rate of change of velocity
 	float _rotateVelocity;						// How fast a ship rotate
 
-	AEVec2 _velocityVector;						// Mainly for normalised Direction
+	AEVec2 _velocityVector;						// The current velocity since last frame (updated by end of physics system)
+	AEVec2 _velocityChangeVector;				// Velocity change in the current frame (Before physics system)
+	AEVec2 _velocityDirection;					// Mainly for normalised Direction at the end of physics system
 	AEVec2 _angularVelocity;					// Vector towards rotation direction
 
 	cRigidBody() = delete;	

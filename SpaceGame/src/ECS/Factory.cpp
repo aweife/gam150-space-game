@@ -1,6 +1,6 @@
 #include "Factory.h"
 #include "Core.h"
-#include "../Components/ComponentList.h"
+
 #include "../Managers/CameraManager.h"
 
 namespace Factory
@@ -191,6 +191,22 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(uiEntity, new cTransform(newPostion, 0, {1,1}));
 		Core::Get().AddComponent<cUIElement>(uiEntity, new cUIElement(text));
 		return uiEntity;
+	}
+
+	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale)
+	{
+		ENTITY debug = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cDebugTools>(debug, new cDebugTools(pos, rot, scale, DEBUGTYPE::DEBUG_ARROW, "Arrow Line"));
+		return debug;
+	}
+
+	ENTITY DebugVector_Velocity(ENTITY target)
+	{
+		AEVec2& rPlayerPos = Core::Get().GetComponent<cTransform>(target)->_position;
+		AEVec2& rPlayerVelocityRot = Core::Get().GetComponent<cRigidBody>(target)->_velocityDirection;
+		float& rVelocity = Core::Get().GetComponent<cRigidBody>(target)->_velocity;
+
+		return CreateDebug_Arrow(rPlayerPos, rPlayerVelocityRot, rVelocity);
 	}
 }
 

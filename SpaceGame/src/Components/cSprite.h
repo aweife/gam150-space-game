@@ -15,7 +15,6 @@ public:
 	cSprite(ENTITY parent, const char* meshName, const char* textureName, unsigned int layer  = 0);	
 	~cSprite();										// Virtual Destructor
 
-	void Init() {};
 	void LoadMesh(const char* meshName);
 	void LoadTexture(const char* textureName);
 };

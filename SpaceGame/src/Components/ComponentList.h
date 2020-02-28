@@ -13,3 +13,6 @@
 #include "cAI.h"
 #include "cSpaceShip.h"
 #include "cUIElement.h"
+#include "cDebugTools.h"
+#include "cParticle.h"
+#include "cParticleEmitter.h"
