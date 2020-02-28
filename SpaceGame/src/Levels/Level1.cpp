@@ -13,15 +13,12 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "Level1.h"
-#include "../Tools/Console.h"
-#include "../ECS/Core.h"
-#include "../Components/ComponentList.h"
-#include "../ECS/Factory.h"
+#include "Level1.h"									//Self Header
+#include "../ECS/Core.h"							//Systems to Update
+#include "../ECS/Factory.h"							//Entity to create
+#include "../Player/PlayerManager.h"				//Control over the player
 
-ENTITY player;
-ENTITY planet;
-ENTITY planet2;
+#include "../Tools/Console.h"
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -29,14 +26,18 @@ ENTITY planet2;
 // ----------------------------------------------------------------------------
 void Level1_Load()
 {
-	// Planet to test for collision
-	
 	//Create Player
-	player = Factory::CreatePlayer(2);
-	Factory::CreateEnemy1(player, 2);
+	PlayerManager::player = Factory::CreatePlayer(2);
+
+	//Create a debug arrow on player
+	Factory::DebugVector_Velocity(PlayerManager::player);
+
 
 	// Create camera
-	Factory::CreateCamera(player, 2);
+	Factory::CreateCamera(PlayerManager::player);		
+
+	//Create Enemy
+	Factory::CreateEnemy1(PlayerManager::player, 2);
 
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
@@ -72,6 +73,7 @@ void Level1_Init()
 // ----------------------------------------------------------------------------
 void Level1_Update()
 {
+	PlayerManager::Update();
 	Core::Get().Core_Update();
 }
 

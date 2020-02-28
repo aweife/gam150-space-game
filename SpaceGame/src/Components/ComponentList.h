@@ -1,7 +1,9 @@
 #pragma once
 
-// A collection of all headers for components in game
+// Base Component Class
 #include "Component.h"
+
+// A collection of all headers for components in game
 #include "cSprite.h"
 #include "cTransform.h"
 #include "cRigidBody.h"
@@ -10,3 +12,7 @@
 #include "cPathFinding.h"
 #include "cAI.h"
 #include "cSpaceShip.h"
+#include "cUIElement.h"
+#include "cDebugTools.h"
+#include "cParticle.h"
+#include "cParticleEmitter.h"

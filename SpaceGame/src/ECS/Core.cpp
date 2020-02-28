@@ -16,9 +16,9 @@
 **********************************************************************************/
 #include "Core.h"			//Self Header
 #include "Factory.h"
-
 #include "../Managers/CameraManager.h"
 #include "../Tools/Console.h"
+
 void Core::Core_Init()
 {
 	//Create the 3 main manager instances
@@ -39,12 +39,15 @@ void Core::Core_Update()
 {
 	// Update systems
 	coreSystemManager->Update();
+
+	// Late Update
+	CameraManager::Update();
 }
 
 void Core::Core_Render()
 {
 	// Update systems
-	CameraManager::Update();
+	
 	coreSystemManager->Render();
 }
 

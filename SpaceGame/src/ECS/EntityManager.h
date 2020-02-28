@@ -4,6 +4,7 @@
 #include <queue>
 #include <array>
 #include <map>
+
 class EntityManager
 {
 public:

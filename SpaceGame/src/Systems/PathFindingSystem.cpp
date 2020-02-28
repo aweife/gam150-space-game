@@ -80,15 +80,14 @@ void PathFindingSystem::Update()
 		switch (path->currentState)
 		{
 		case PATH_SEEK:
-			Seek(&trans->_position, &targetTrans->_position, &rb->velocityVector);
+			Seek(&trans->_position, &targetTrans->_position, &rb->_velocityVector);
 			break;
 		case PATH_FLEE:
-			Flee(&trans->_position, &targetTrans->_position, &rb->velocityVector);
+			Flee(&trans->_position, &targetTrans->_position, &rb->_velocityVector);
 			break;
 		}
 	}
 }
 
-void PathFindingSystem::Render() {}
 void PathFindingSystem::OnComponentAdd(ENTITY) {}
 void PathFindingSystem::OnComponentRemove(ENTITY) {}

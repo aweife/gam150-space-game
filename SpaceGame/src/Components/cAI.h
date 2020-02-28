@@ -2,6 +2,7 @@
 
 #include "../Global.h"
 
+
 class cAI
 {
 public:

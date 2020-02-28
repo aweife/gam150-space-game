@@ -17,10 +17,22 @@
 #include "Tools/Console.h"
 #include "AEEngine.h"			//Time
 
-bool gGamePause;				// GameStatePaused
-double gStartTime;				// Time when game was launched
-float g_dt;
-float g_appTime;
+bool		g_DebugEditor	= false;					// Should the game show a console window
+bool		g_GamePause		= false;					// Is the game paused?
+
+//Time Based
+float		g_dt			= 0.0f;						// Delta Time for game
+float		g_appTime		= 0.0f;						// Time since game was started		
+
+//Window Based
+float		g_WorldMinX		= 0.0f;						// World(Game) screen minimum X coordinates
+float		g_WorldMaxX		= 0.0f;						// World(Game) screen maximum X coordinates
+float		g_WorldMinY		= 0.0f;						// World(Game) screen minimum Y coordinates
+float		g_WorldMaxY		= 0.0f;						// World(Game) screen maximum Y coordinates
+
+RECT		g_WindowRect;								// Size of windowRect in pixels 
+long		g_WindowWidth;								// window Width
+long		g_WindowHeight;								// window Height
 
 /******************************************************************************/
 /*!
@@ -29,17 +41,24 @@ float g_appTime;
 /******************************************************************************/
 void Global_Init()
 {
-	AEGetTime(&gStartTime);
+	g_WorldMinX = AEGfxGetWinMinX(); // World minimum X coordinates
+	g_WorldMinY = AEGfxGetWinMinY(); // World minimum Y coordinates 
+	g_WorldMaxX = AEGfxGetWinMaxX(); // World maximum X coordinates
+	g_WorldMaxY = AEGfxGetWinMaxY(); // World maximum Y coordinates
+
+	GetWindowRect(AESysGetWindowHandle(), &g_WindowRect);		// Get Size of the windows display
+	g_WindowWidth = g_WindowRect.right - g_WindowRect.left;		// Calculate window Width
+	g_WindowHeight = g_WindowRect.bottom - g_WindowRect.top;	// Calculate window Height
 }
 
 /******************************************************************************/
 /*!
-  \brief	Pause or unpause the game .... may need to move to gamestate??
+  \brief	Pause or unpause the game
 */
 /******************************************************************************/
 void TogglePause()
 {
-	if (gGamePause) 
+	if (g_GamePause)
 	{
 		Console_CoutDetailed("Game is Unpaused", -1, " ");
 	}
@@ -47,5 +66,5 @@ void TogglePause()
 	{
 		Console_CoutDetailed("Game is Paused", -1, " ");
 	}
-	gGamePause = !gGamePause;
+	g_GamePause = !g_GamePause;
 }

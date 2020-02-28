@@ -11,10 +11,10 @@ public:
 	AEGfxTexture* _texture;
 	unsigned int _layer; /*0 to 5...see render system*/
 
-
-	cSprite(ENTITY parent, const char* texture, unsigned int layer = 0);	// Constructor with parameter
+	// Constructor with parameter
+	cSprite(ENTITY parent, const char* meshName, const char* textureName, unsigned int layer  = 0);	
 	~cSprite();										// Virtual Destructor
 
-	void Init();
-	void LoadTexture(const char* pathName);
+	void LoadMesh(const char* meshName);
+	void LoadTexture(const char* textureName);
 };

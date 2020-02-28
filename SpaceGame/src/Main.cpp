@@ -6,7 +6,7 @@
 * \par			MAIN
 * \note			Course: GAM150
 * \brief		Entry point for Game executable "End Of Space" by Moon Base
-				- Initalise Window, Console, hardware
+				- Initalise Window, Console, ECS Game Engine
 				- Game State Loop, Game loop
 				- Program Cleanup
 
@@ -14,16 +14,19 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-// ---------------------------------------------------------------------------
+
 // Includes
 #include <crtdbg.h>						// For Memory Leak
 #include "AEEngine.h"					// AlphaEngine
 #include "Global.h"						// Global variables 
 #include "Tools/Editor.h"				// Editor for gameplay
 #include "Tools/Console.h"				// Debug logger
-#include "ECS/Core.h"
-#include "Managers/GameStateManager.h"
-#include "Input/Input.h"
+#include "ECS/Core.h"					// Initalise Game Engine
+#include "Managers/GameStateManager.h"  // Control Game State Flow
+#include "Managers/InputManager.h"		// Recieve Input from AlphaEngine
+#include "Managers/ResourceManager.h"	// Generate Mesh and Load in Texture
+
+#include "Tools/MemoryLeak.h"
 
 // ---------------------------------------------------------------------------
 // Libraries
@@ -41,125 +44,98 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	// -----------------------------------------------------------------------
-	// Variable declaration
-
-	int gGameRunning = 1;
-	int gDebugEditor = 0;
-
-	// Variable declaration end
-	// -----------------------------------------------------------------------
-
 #if _DEBUG
-	gDebugEditor = 1; //Set Console to active while in debug mode
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);				//Memory Leak Checker
+	g_DebugEditor = true;														//Set Console while in debug mode
 #endif
 
 	// -----------------------------------------------------------------------
-	// Initialization
+	// Initialization of Application Window
+	// -----------------------------------------------------------------------
+	AESysInit(hInstance, nCmdShow, 1280, 720, g_DebugEditor, 60, true, NULL);	// Using custom window procedure
+	AESysSetWindowTitle("Master Branch");										// Changing the window title
+	AESysReset();																// reset the system modules
+	AEGfxSetBackgroundColor(0.07f, 0.04f, 0.22f);								// Set Dark Purple BG 
 
-	// Using custom window procedure
-	AESysInit(hInstance, nCmdShow, 1280, 720, gDebugEditor, 60, true, NULL);
-	// Changing the window title
-	AESysSetWindowTitle("Master Branch");
-
-#if _DEBUG
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);		//Memory Leak Checker
-	Console_Init();						//Resize console window
+#if defined(DEBUG) | defined(_DEBUG)
+	Console_Init();																//Resize console window
 	Editor_Init();
 #endif
 
-	Global_Init();				// Get start time of game program
-	Core::Get().Core_Init();
-
-	// reset the system modules
-	AESysReset();
-	AEGfxSetBackgroundColor(0.6f, 0.0f, 0.8f);
-	
-	//AEGameStateMgrInit();
-
-	// Initialization end
 	// -----------------------------------------------------------------------
-
-
-	//TODO: Implement GSM
+	// Initialization of Game 
 	// -----------------------------------------------------------------------
-	GSM_Init(GS_LEVEL1);
+	Global_Init();																// Init time, windowSize...
+	Core::Get().Core_Init();													// Initalise Game Engine ECS
+	ResourceManager::Init();													// Load in Bare Minimum
+	GSM_Init(GS_LOADINGLvl);														// Initalise Game StateManager
 
-	// Game Loop
+	// -----------------------------------------------------------------------
+	// GAME STATE LOOP
+	// -----------------------------------------------------------------------
 	while (currentState != GS_QUIT)
 	{
 		if (currentState != GS_RESTART)
 		{
-			GSM_Update();
-			fpLoad();
+			GSM_Update();														// Reassign function pointers
+			fpLoad();															// Load Assets needed for level
 		}
 		else
 		{
-			nextState = previousState;
+			nextState = previousState;											// Restart the level
 			currentState = previousState;
 		}
-		fpInit();								//INITALISE data for current game state
-		InputInit();
+		fpInit();																// INITALISE data for current game state
+		
+		// -----------------------------------------------------------------------
+		// Main Game loop
+		// -----------------------------------------------------------------------
 		while (nextState == currentState)
 		{
-			// Informing the system about the loop's start
-			AESysFrameStart();
+			// Informing the system about the loop's start ***********************
+			AESysFrameStart();			
 
-			// Handling Input
-			AEInputUpdate();
-			InputUpdate();
+			Editor_Update();										// Editor Update	
+			AEInputUpdate();										// Handling Input
+			InputManager::Update();
 
-			//TODO : Need to tidy this up next time
-			if (AEInputCheckTriggered(AEVK_P)) {
-				TogglePause();
-			}
-			else if (gGamePause)
+			if (!g_GamePause)										// Only update game if NOT PAUSED
 			{
-				AESysFrameEnd();
-				// check if forcing the application to quit
-				if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
-					gGameRunning = 0;
-				continue;
+				fpUpdate();											// Game State Update Logic
 			}
-			// -----------------------------------------------------------------------
-			// Game loop update
-			Editor_Update();
-			fpUpdate();
-			// Game loop update end
-			// -----------------------------------------------------------------------
+			fpDraw();												// Game State Render Graphics 
+			Editor_Render();										// Render any helper features for editor
 
-			// -----------------------------------------------------------------------
-			// Game loop draw
-			fpDraw();
-			// Game loop draw end
-			// -----------------------------------------------------------------------
-			// Informing the system about the loop's end
-			AESysFrameEnd();
+			// Informing the system about the loop's end *************************
+			AESysFrameEnd();							
 
 			// Get deltatime
 			g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 			g_appTime += g_dt;
 
-			// check if forcing the application to quit
-			if (AEInputCheckTriggered(AEVK_ESCAPE) || 0 == AESysDoesWindowExist())
+			// Check if forcing the application to quit
+			// See Input for Esc Key triggered to exit game
+			if ( 0 == AESysDoesWindowExist())
 			{
-				gGameRunning = 0;
+				nextState = GS_QUIT;
 			}
 		}
-		fpFree();
 
+		fpFree();													// Reset Game State Data
 		if (nextState != GS_RESTART)
 		{
-			fpUnload();
+			fpUnload();												// Unload assets and memory
 		}
 		previousState = currentState;
 		currentState = nextState;
 	}
-	// -----------------------------------------------------------------------
 
+	// -----------------------------------------------------------------------
+	// Clean up for all buffer and memory
+	// -----------------------------------------------------------------------
+	ResourceManager::Unload();
 	Console_CleanUp();
-	Core::Get().Core_Unload();			// free all core system
-	//Console_CleanUp();
-	AESysExit();			// free the system
+	Core::Get().Core_Unload();						// free all core system
+	AESysExit();									// free the system
 }
 

@@ -13,12 +13,14 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "AEEngine.h"
-#include "Editor.h"
-#include <Windows.h>
+#include "AEEngine.h"				//AESysGetWindowHandle
+#include <Windows.h>				//RECT
+#include <unordered_map>			//Variable Tracker
+#include "Editor.h"					//Self Header
 #include "Console.h"
-#include <iostream>
-//Console variables
+
+
+std::unordered_map<const char*, float> variableList;
 
 
 /******************************************************************************/
@@ -44,6 +46,36 @@ void Editor_Init()
 
 void Editor_Update()
 {
-
+	variableList.clear();						//Clear variable Tracking List before GameStateUpdate
 }
 
+void Editor_Render()
+{
+	COORD originMouse = Console_GetCursorPos();			//Get the mouse position before jumping around Console
+	COORD consoleSize = Console_GetConsoleSize();
+	short verticalOffset = originMouse.Y  > consoleSize.Y ? originMouse.Y - consoleSize.Y : 0;
+
+	//Tracking Variables
+	Console_ClearArea(0, verticalOffset, 100, static_cast<short>(variableList.size() + 3));
+	Console_Cout(0, verticalOffset + 2, "Tracking Variables");
+	for (auto &i :variableList)
+	{
+		Console_Cout(i.first, i.second);
+	}
+
+	Console_SetCursorPos(originMouse.X, originMouse.Y);
+}
+
+void Editor_TrackVariable(const char* text, float value)
+{
+	//Check if variables is new
+	if (variableList.find(text) == variableList.end())
+	{
+		variableList.insert({text , value});
+	}
+}
+
+void Editor_TrackVariable(const char* text, int value)
+{
+	Editor_TrackVariable(text, static_cast<float>(value));
+}

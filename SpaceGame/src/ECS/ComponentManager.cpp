@@ -14,6 +14,10 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cPathFinding>(ID_PathFindingComponent);
 	RegisterComponentCollection<cAI>(ID_AIComponent);
 	RegisterComponentCollection<cSpaceShip>(ID_SpaceShip);
+	RegisterComponentCollection<cUIElement>(ID_UIComponent);
+	RegisterComponentCollection<cDebugTools>(ID_DebugToolsComponent);
+	RegisterComponentCollection<cParticle>(ID_ParticleComponent);
+	RegisterComponentCollection<cParticleEmitter>(ID_ParticleEmitterComponent);
 }
 
 template<typename T>

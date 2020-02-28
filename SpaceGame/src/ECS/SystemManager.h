@@ -1,11 +1,12 @@
 #pragma once
 
-#include <memory>
-#include <unordered_map>
-#include "../Global_ECS.h"
-#include "AEEngine.h"
+#include <memory>						//Shared Pointer
+#include <algorithm>					//std::find for std::vector
+#include <vector>						//systemMap should have a sorting order based on standard game flow
+#include <unordered_map>				//systemSignature  
+#include "AEEngine.h"					//AE Asserts
+#include "../Global_ECS.h"				//ECS alias and typedef
 #include "../Systems/System.h"
-#include "AEEngine.h"
 
 class SystemManager
 {
@@ -20,24 +21,25 @@ public:
 
 	// Returns a shared pointer to this system
 	template<typename T>
-	std::shared_ptr<T> RegisterSystem()
+	void RegisterSystem()
 	{
 		// Get name of the system
 		const char* systemName = typeid(T).name();
 
 		// Assert if the system already exists
-		AE_ASSERT(_systemMap.find(systemName) == _systemMap.end() &&
-			"Registering system more than once.");
+		AE_ASSERT(std::find(_systemMapNames.begin(), _systemMapNames.end(), systemName) == _systemMapNames.end() 
+			&&"Registering system more than once.");
 
 		// Use make_share<T>() to make a shared pointer to the system
 		// Using auto because we do not know the type
-		auto system = std::make_shared<T>();
+		std::shared_ptr<T> system = std::make_shared<T>();
 
 		// Insert into system map as a pair: key value -- mapped value
-		_systemMap.insert({ systemName, system });
+		_systemMap.push_back(system);
+		_systemMapNames.push_back(systemName);
 
 		// Return the shared pointer
-		return system;
+		//return system;
 	}
 
 	// Sets the unique signature for this system
@@ -49,8 +51,8 @@ public:
 		const char* systemName = typeid(T).name();
 
 		// Assert if the system is used before registering it
-		AE_ASSERT(_systemMap.find(systemName) != _systemMap.end() &&
-			"Using system before registering.");
+		AE_ASSERT(std::find(_systemMapNames.begin(), _systemMapNames.end(), systemName) != _systemMapNames.end()
+			&& "Using system before registering.");
 
 		// Insert into signature map as a pair: key value -- mapped value
 		_signaturesMap.insert({ systemName, signature });
@@ -72,5 +74,6 @@ private:
 	std::unordered_map<const char*, SIGNATURE> _signaturesMap;
 
 	// Map from string to a system pointer
-	std::unordered_map<const char*, std::shared_ptr<System>> _systemMap;
+	std::vector<std::shared_ptr<System>> _systemMap;
+	std::vector<const char*> _systemMapNames;
 };

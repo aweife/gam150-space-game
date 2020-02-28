@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ComponentStorage.h"		//Storage used to contain all components of same kind
 #include <unordered_map>						//unordered map
 #include <memory>								//unique pointer
+#include "ComponentStorage.h"					//Storage used to contain all components of same kind
 
 class ComponentManager
 {

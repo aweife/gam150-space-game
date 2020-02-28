@@ -17,8 +17,9 @@
 ******************************************************************************/
 #include "cSprite.h"			//Self Header
 #include "../Tools/Console.h"	//remove after testing
+#include "../Managers/ResourceManager.h"
 
-cSprite::cSprite(ENTITY parent, const char* texture, unsigned int layer)
+cSprite::cSprite(ENTITY parent, const char* meshName, const char* textureName, unsigned int layer)
 {
 	//Common Component variables
 	_name = "class SpriteComponent";	//Do not change this otherwise remove component wont work
@@ -29,46 +30,30 @@ cSprite::cSprite(ENTITY parent, const char* texture, unsigned int layer)
 	//Component Specific variables
 	_mesh = nullptr;
 	_layer = layer;
-	//Create mesh
-	Init();
 
-	// Load texture
-	LoadTexture(texture);
+	Console_Cout("Creating SpriteComponent...");
+	LoadMesh(meshName);					
+	LoadTexture(textureName);	
 }
 
 cSprite::~cSprite()
 {
-	AEGfxMeshFree(_mesh);		//2 memory leaks if not done
-	if (_texture)
-		AEGfxTextureUnload(_texture);
+	//AEGfxMeshFree(_mesh);		//2 memory leaks if not done
+	//if (_texture)
+	//	AEGfxTextureUnload(_texture);
 	Console_Cout("SpriteComponent Destructor");
 }
 
-void cSprite::Init()
+void cSprite::LoadMesh(const char* meshName)
 {
-	Console_Cout("SpriteComponent Init");
-
-	// Informing the library that we're about to start adding triangles
-	AEGfxMeshStart();
-
-	// This shape has 2 triangles
-	AEGfxTriAdd(
-		-0.5f, -0.5f, 0xFFFF0000, 0.0f, 1.0f,
-		0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFFFF0000, 1.0f, 1.0f,
-		0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-
-	// Saving the mesh (list of triangles) in _mesh
-	_mesh = AEGfxMeshEnd();
-
-	AE_ASSERT_MESG(_mesh, "Failed to create mesh!");
+	AE_ASSERT_MESG(ResourceManager::meshLibrary.find(meshName) != ResourceManager::meshLibrary.end(), "Failed to find Mesh!");
+		
+	_mesh = ResourceManager::meshLibrary[meshName];
 }
 
-void cSprite::LoadTexture(const char* pathName)
+void cSprite::LoadTexture(const char* textureName)
 {
-	_texture = AEGfxTextureLoad(pathName);
-	AE_ASSERT_MESG(_texture, "Failed to create texture!");
+	AE_ASSERT_MESG(ResourceManager::textureLibrary.find(textureName) != ResourceManager::textureLibrary.end(), "Failed to find Texture!");
+
+	_texture = ResourceManager::textureLibrary[textureName];
 }
