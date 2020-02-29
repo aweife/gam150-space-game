@@ -10,7 +10,7 @@ cDebugTools::cDebugTools(AEVec2& pos, AEVec2& rot, float& scaleX, float& scaleY,
 
 cDebugTools::cDebugTools(AEVec2& pos, float& rot, float& scaleX, float& scaleY, DEBUGTYPE specifier, const char* meshName)
 	:_referencePosition{ pos }, _referenceEndPosition{ defaultAEVec2 }, _referenceRotation{ defaultAEVec2 }, _referenceScaleX{ scaleX },
-	_referenceScaleY{ scaleY }, _specifier{ specifier }, _referenceAngle{ defaultFloat } //<-- BY RIGHT HERE SHOULD BE ROT
+	_referenceScaleY{ scaleY }, _specifier{ specifier }, _referenceAngle{rot}
 {
 	LoadMesh(meshName);
 }

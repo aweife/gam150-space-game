@@ -35,7 +35,7 @@ void DebugToolsSystem::Render()
 			float rotation;
 			if (debugTComponent->_referenceAngle != 0)
 			{
-				rotation = atan2f(debugTComponent->_referenceAngle, debugTComponent->_referenceAngle);
+				rotation = debugTComponent->_referenceAngle;
 			}
 			else
 			{

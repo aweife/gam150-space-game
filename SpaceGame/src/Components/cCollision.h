@@ -13,13 +13,13 @@
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #pragma once
-
+#include "Component.h"
 #include "AEEngine.h"
 
 /**************************************************************************/
 /*!
 	This is the struct for the AABB collision detection
-	*/
+*/
 /**************************************************************************/
 struct AABB
 {
@@ -36,17 +36,17 @@ enum class ColliderShape
 {
 	CIRCLE = 0,
 	RECTANGLE = 1,
+	NONE
 };
 
-class cCollision
+class cCollision:public Component
 {
 
 public:
 	//Game object instance structure
-	unsigned long		flag;		// bit flag or-ed together
-	AABB				boundingBox;// object bouding box that encapsulates the object
-	const char*			name = "";
-	ColliderShape		bbShape;
+	unsigned long		_flag			= 0;						// bit _flag or-ed together
+	AABB				_boundingBox		= { 0 };				// object bouding box that encapsulates the object
+	ColliderShape		_bbShape			= ColliderShape::NONE;
 
 	// Constructor
 	cCollision() = default;
