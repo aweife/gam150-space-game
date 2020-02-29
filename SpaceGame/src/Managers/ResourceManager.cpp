@@ -58,6 +58,52 @@ namespace ResourceManager
 		meshLibrary.insert({ "Square Mesh", mesh });
 
 		// -----------------------------------------------------------------------
+		// Octagon Mesh
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		// This shape has 2 triangles
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//2-3 o CLOCK triangle
+			0.5f, 0.0f, 0xFFFF0000, 1.0f, 0.5f,
+			0.353553f, 0.353553f, 0xFFFF0000, 0.853553f, 0.853553f);
+		AEGfxTriAdd(											
+			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//12-1 o CLOCK triangle
+			0.353553f, 0.353553f, 0xFFFF0000, 0.853553f, 0.853553f,
+			0.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f);	
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//11-12 o CLOCK triangle
+			0.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f,
+			-0.353553f, 0.353553f, 0xFFFFFFFF, 0.146446f, 0.853553f);
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//9-10 o CLOCK triangle
+			-0.353553f, 0.353553f, 0xFFFFFFFF, 0.146446f, 0.853553f,
+			-0.5f, 0.0f, 0xFFFFFFFF, 0, 0.5f);
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//8-9 o CLOCK triangle
+			-0.5f, 0.0f, 0xFFFFFFFF, 0, 0.5f,
+			-0.353553f, -0.353553f, 0xFFFFFFFF, 0.146446f, 0.146446f);
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//6-7 o CLOCK triangle
+			-0.353553f, -0.353553f, 0xFFFFFFFF, 0.146446f, 0.146446f,
+			0.0, -0.5f, 0xFFFFFFFF, 0.5f, 0.0f);
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//5-6 o CLOCK triangle
+			0.0, -0.5f, 0xFFFFFFFF, 0.5f, 0.0f,
+			0.353553f, -0.353553f, 0xFFFFFFFF, 0.853553f, 0.146446f);
+		AEGfxTriAdd(
+			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//4-3 o CLOCK triangle
+			0.353553f, -0.353553f, 0xFFFFFFFF, 0.853553f, 0.146446f,
+			0.5f, 0.0f, 0xFFFF0000, 1.0f, 0.5f);
+
+
+		// Saving the mesh (list of triangles) in mesh
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+
+		meshLibrary.insert({ "Octagon Mesh", mesh });
+
+		// -----------------------------------------------------------------------
 		// Arrow Line Mesh
 		// -----------------------------------------------------------------------
 		AEGfxMeshStart();
@@ -74,6 +120,60 @@ namespace ResourceManager
 		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
 
 		meshLibrary.insert({"Arrow Line", mesh});
+
+		// -----------------------------------------------------------------------
+		// Simple Line Mesh
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		// This shape has 2 triangles
+		AEGfxVertexAdd(0.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f);			 /*		   			*/
+		AEGfxVertexAdd(1.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f);			 /*		1----2 		*/
+
+		// Saving the mesh (list of triangles) in mesh
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+
+		meshLibrary.insert({ "Simple Line", mesh });
+
+		// -----------------------------------------------------------------------
+		// Square Frame
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+		
+		// This shape has 2 triangles
+		AEGfxVertexAdd(-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f);			/*		   			*/
+		AEGfxVertexAdd(0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f);			/*		4----3 		*/
+		AEGfxVertexAdd(0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				/*		|    |		*/
+		AEGfxVertexAdd(-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);			/*		1----2		*/
+		AEGfxVertexAdd(-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 0.0f);			/*		5	 		*/
+
+		// Saving the mesh (list of triangles) in mesh
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+
+		meshLibrary.insert({ "Square Frame", mesh });
+
+		// -----------------------------------------------------------------------
+		// Octagon Frame
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		// This shape has 2 triangles
+		AEGfxVertexAdd(0.5f, 0.0f, 0xFFFFFFFF, 1.0f, 0.5f);
+		AEGfxVertexAdd(0.353553f, 0.353553f, 0xFFFFFFFF, 0.853553f, 0.853553f);
+		AEGfxVertexAdd(0.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f);
+		AEGfxVertexAdd(-0.353553f, 0.353553f, 0xFFFFFFFF, 0.146446f, 0.853553f);
+		AEGfxVertexAdd(-0.5f, 0.0f, 0xFFFFFFFF, 0, 0.5f);
+		AEGfxVertexAdd(-0.353553f, -0.353553f, 0xFFFFFFFF, 0.146446f, 0.146446f);
+		AEGfxVertexAdd(0.0, -0.5f, 0xFFFFFFFF, 0.5f, 0.0f);// Saving the mesh (list of triangles) in mesh
+		AEGfxVertexAdd(0.353553f, -0.353553f, 0xFFFFFFFF, 0.853553f, 0.146446f); 
+		AEGfxVertexAdd(0.5f, 0.0f, 0xFFFFFFFF, 1.0f, 0.5f);
+		
+		mesh = AEGfxMeshEnd();
+		AEGfxVertexAdd(0.5f, 0.0f, 0xFFFFFFFF, 1.0f, 0.5f); AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+
+		meshLibrary.insert({ "Octagon Frame", mesh });
 
 	}
 

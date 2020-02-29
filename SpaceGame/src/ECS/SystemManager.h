@@ -64,6 +64,19 @@ public:
 	// Notify all systems an entity changed signature (add/remove component)
 	void UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature);
 
+	template<typename T>
+	std::shared_ptr<System> GetSystemInstance()
+	{
+		const char* systemName = typeid(T).name();
+
+		AE_ASSERT(std::find(_systemMapNames.begin(), _systemMapNames.end(), systemName) != _systemMapNames.end()
+			&& "Cannot find specifed system");
+
+		auto it = std::find(_systemMapNames.begin(), _systemMapNames.end(), systemName);
+		size_t index = it - _systemMapNames.begin();
+		return _systemMap.at(index);
+	}
+
 private:
 	// Map stores elements in pairs: A key value and a mapped value
 	// The key value (.first) can be used to uniquely identify the mapped 

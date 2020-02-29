@@ -14,6 +14,10 @@ namespace CameraManager
 	ENTITY _currCamera = 0;						//ID of current Camera
 	ENTITY _sideCamera[3];						//Array of standby camera
 
+	const float SHAKETHRESHOLD_MIN = 10.0f;
+	const float SHAKETHRESHOLD_MAX = 20.0f;
+	float shakeIntensity = 0.0f;
+
 	cTransform* currCameraTransform;
 	cCamera* currCameraComp;
 
@@ -21,8 +25,15 @@ namespace CameraManager
 	{
 		if (_currCamera == 0) return;
 
+		//Apply basic camera follow
 		SmoothFollow();
-		AEGfxSetCamPosition(currCameraTransform->_position.x, currCameraTransform->_position.y);
+
+		//Apply secondary camera transformation effects like screenshake...
+		if (currCameraComp->_isCameraShake)	CameraShake();
+
+		//Take note that AECam position is not equal to its transform component
+		AEGfxSetCamPosition(currCameraTransform->_position.x + currCameraComp->_camOffsetPos.x
+			, currCameraTransform->_position.y + currCameraComp->_camOffsetPos.y);
 	}
 
 	void SmoothFollow()
@@ -43,9 +54,29 @@ namespace CameraManager
 		
 	}
 
+	void StartCameraShake()
+	{
+		currCameraComp->_isCameraShake = true;
+		// Set a starting shake intensity (small shake vs a big shake)
+		shakeIntensity = AERandFloat() * (SHAKETHRESHOLD_MAX - SHAKETHRESHOLD_MIN) + SHAKETHRESHOLD_MIN;
+	}
+
 	void CameraShake()
 	{
+		float currShakeAmount;
+		//Range from normalised -1.0f to 1.0f
+		currShakeAmount = (AERandFloat() * 2.0f - 1.0f) * shakeIntensity;
+		currCameraComp->_camOffsetPos.x = currShakeAmount;
+		currShakeAmount = (AERandFloat() * 2.0f - 1.0f) * shakeIntensity;
+		currCameraComp->_camOffsetPos.y = currShakeAmount;
 
+		shakeIntensity *= 0.8f;			//Intensity will decrease over time
+		if (shakeIntensity < 1.0f)
+		{
+			currCameraComp->_isCameraShake = false;
+			currCameraComp->_camOffsetPos.x = 0;
+			currCameraComp->_camOffsetPos.y = 0;
+		}
 	}
 
 	cTransform* GetCameraTransform()
@@ -55,16 +86,18 @@ namespace CameraManager
 
 	void AssignNewCam(ENTITY currCamera)
 	{
-		AE_ASSERT(_cameraCount < _cameraMaxCount && "Too many camera created.");
+		AE_ASSERT(_cameraCount < _cameraMaxCount - 1 && "Too many camera created.");
 
-		if (_currCamera != 0)					//if there is an existing camera
+		if (_currCamera != 0)		//if there is an existing camera
 		{
 			//Inactive cameras to switch perspective
-			_sideCamera[_cameraCount] = _currCamera;
+			_sideCamera[_cameraCount - 1] = _currCamera;
 		}
 		_currCamera = currCamera;
 		currCameraTransform = Core::Get().GetComponent<cTransform>(_currCamera);
 		currCameraComp = Core::Get().GetComponent<cCamera>(_currCamera);
+		// Update the camera position without any actual offset
+		currCameraComp->_camOffsetPos = { 0 };
 		++_cameraCount;
 
 	}

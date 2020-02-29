@@ -16,9 +16,11 @@
 #include "Global.h"
 #include "Tools/Console.h"
 #include "AEEngine.h"			//Time
+#include "Systems/DebugToolsSystem.h"		//Generate bounding box outline
 
 bool		g_DebugEditor	= false;					// Should the game show a console window
 bool		g_GamePause		= false;					// Is the game paused?
+bool		g_BBShowMode  = false;					// Display all outline of mesh rigidbody
 
 //Time Based
 float		g_dt			= 0.0f;						// Delta Time for game
@@ -33,6 +35,9 @@ float		g_WorldMaxY		= 0.0f;						// World(Game) screen maximum Y coordinates
 RECT		g_WindowRect;								// Size of windowRect in pixels 
 long		g_WindowWidth;								// window Width
 long		g_WindowHeight;								// window Height
+
+AEVec2 defaultAEVec2 = { 0,0 };
+float defaultFloat = 0.0f;
 
 /******************************************************************************/
 /*!
@@ -68,3 +73,17 @@ void TogglePause()
 	}
 	g_GamePause = !g_GamePause;
 }
+
+void ToggleShowBoundingBoxMode()
+{
+	if (g_BBShowMode)
+	{
+		RemoveAll_BoundingBoxOutline();
+	}
+	else
+	{
+		ShowAll_BoundingBoxOutline();
+	}
+	g_BBShowMode = !g_BBShowMode;
+}
+
