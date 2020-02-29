@@ -126,7 +126,7 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
 		Core::Get().GetComponent<cPathFinding>(enemy)->target = player;
-		Core::Get().GetComponent<cPathFinding>(enemy)->currentState = PATH_SEEK;
+		Core::Get().GetComponent<cRigidBody>(enemy)->tag = COLLISIONTAG::ENEMY; // testing collision
 		Core::Get().GetComponent<cCollision>(enemy)->name = "ENEMY";
 		return enemy;
 	}
@@ -184,6 +184,8 @@ namespace Factory
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
 
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
+		Core::Get().GetComponent<cRigidBody>(bullet)->tag = COLLISIONTAG::BULLET;
+		//Core::Get().GetComponent<cCollision>(bullet)->name = "BULLET";
 
 		return bullet;
 	}

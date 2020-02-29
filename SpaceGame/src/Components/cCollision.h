@@ -14,7 +14,6 @@
 **********************************************************************************/
 #pragma once
 
-#include "Component.h"
 #include "AEEngine.h"
 
 /**************************************************************************/
@@ -24,15 +23,22 @@
 /**************************************************************************/
 struct AABB
 {
-	//AEVec2	c; // center
-	//float  r[2]; // holds half width and half height
+	AEVec2	center;      // center
+	AEVec2  rad;
+	float   radius;       // holds half width and half height
 
 	AEVec2	min;
 	AEVec2	max;
 };
 
+// To check which shapes is used for the game object 
+enum class ColliderShape
+{
+	CIRCLE = 0,
+	RECTANGLE = 1,
+};
 
-class cCollision:public Component
+class cCollision
 {
 
 public:
@@ -40,6 +46,7 @@ public:
 	unsigned long		flag;		// bit flag or-ed together
 	AABB				boundingBox;// object bouding box that encapsulates the object
 	const char*			name = "";
+	ColliderShape		bbShape;
 
 	// Constructor
 	cCollision() = default;

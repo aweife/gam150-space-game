@@ -32,13 +32,14 @@
     <ClCompile Include="src\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Systems\UISystem.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
-    <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
     <ClCompile Include="src\Components\cDebugTools.cpp" />
     <ClCompile Include="src\Systems\DebugToolsSystem.cpp" />
     <ClCompile Include="src\Components\cParticle.cpp" />
     <ClCompile Include="src\Components\cParticleEmitter.cpp" />
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="src\Components\cCollision.cpp" />
+    <ClCompile Include="src\Components\cCollision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
