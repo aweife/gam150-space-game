@@ -7,11 +7,12 @@ enum PATH_STATE
 {
 	PATH_SEEK = 0,
 	PATH_FLEE,
+	PATH_UNKNOWN
 };
 
 class cPathFinding:public Component
 {
 public:
-	ENTITY target;
-	PATH_STATE currentState;
+	ENTITY target					 = 0;//Zero is not supposed to be used by any entity
+	PATH_STATE currentState			 = PATH_UNKNOWN;
 };

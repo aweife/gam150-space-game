@@ -1,10 +1,13 @@
 #include "Factory.h"
 #include "Core.h"
+#include "../Global.h"
 
 #include "../Managers/CameraManager.h"
 
 namespace Factory
 {
+
+
 	ENTITY CreateCamera(ENTITY player)
 	{
 		ENTITY cameraID = Core::Get().CreateEntity();
@@ -33,6 +36,8 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(30.0f, 0.0f, 300.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
+		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip);
 
 		return player;
@@ -65,7 +70,6 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "Square Mesh", "Planet_2", layer));
 		Core::Get().AddComponent<cRigidBody>(planet, new cRigidBody(1000.0f, 0.0f, 0.0f, 0.0f));
 		Core::Get().GetComponent<cRigidBody>(planet)->_velocity = 0;
-		//Core::Get().AddComponent<cCollision>(planet, new cCollision);
 
 		return planet;
 	}
@@ -107,6 +111,8 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 2.0f, 2.0f, 0.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
+		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE;
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
 		Core::Get().AddComponent<cPathFinding>(enemy, new cPathFinding);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
 		Core::Get().GetComponent<cAI>(enemy)->minDistance = 250.0f;
@@ -120,8 +126,7 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
 		Core::Get().GetComponent<cPathFinding>(enemy)->target = player;
-		Core::Get().GetComponent<cRigidBody>(enemy)->tag = COLLISIONTAG::ENEMY; // testing collision
-		Core::Get().GetComponent<cCollision>(enemy)->name = "ENEMY";
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
 		return enemy;
 	}
 
@@ -175,10 +180,11 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(bullet, new cSprite(bullet, "Square Mesh", "Bullet_1", 2));
 		Core::Get().AddComponent<cRigidBody>(bullet, new cRigidBody(30.0f, 500.0f, 500.0f));
 		Core::Get().AddComponent<cCollision>(bullet, new cCollision);
+		Core::Get().GetComponent<cCollision>(bullet)->_bbShape = ColliderShape::RECTANGLE;
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
 
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
-		Core::Get().GetComponent<cRigidBody>(bullet)->tag = COLLISIONTAG::BULLET;
-		//Core::Get().GetComponent<cCollision>(bullet)->name = "BULLET";
+		Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
 
 		return bullet;
 	}
@@ -197,7 +203,37 @@ namespace Factory
 	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale)
 	{
 		ENTITY debug = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cDebugTools>(debug, new cDebugTools(pos, rot, scale, DEBUGTYPE::DEBUG_ARROW, "Arrow Line"));
+		Core::Get().AddComponent<cDebugTools>(debug, new cDebugTools(pos, rot, scale, scale, DEBUGTYPE::DEBUG_ARROW, "Arrow Line"));
+		return debug;
+	}
+
+	//Lines are anchored from one dynamic point to another dynamic point
+	ENTITY CreateDebug_Line(AEVec2& start, AEVec2& end)
+	{
+		//Realistically rot and scale wont be used
+		ENTITY debug = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cDebugTools>(debug, new cDebugTools(start, defaultAEVec2, defaultFloat, defaultFloat,
+			DEBUGTYPE::DEBUG_LINE, "Simple Line", end));
+		return debug;
+
+		//SAMPLE CODE
+		/*Factory::CreateDebug_Line(Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position
+		, Core::Get().GetComponent<cTransform>(enemy)->_position);*/
+	}
+	
+	ENTITY CreateDebug_Square(AEVec2& pos, float& rot, AEVec2& scale)
+	{
+		//Realistically rot and scale wont be used
+		ENTITY debug = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cDebugTools>(debug, new cDebugTools(pos, rot, scale.x, scale.y, DEBUGTYPE::DEBUG_SQUARE, "Square Frame"));
+		return debug;
+	}
+
+	ENTITY CreateDebug_Octagon(AEVec2& pos, float& rot, AEVec2& scale)
+	{
+		//Realistically rot and scale wont be used
+		ENTITY debug = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cDebugTools>(debug, new cDebugTools(pos, rot, scale.x, scale.y, DEBUGTYPE::DEBUG_OCTAGON, "Octagon Frame"));
 		return debug;
 	}
 
@@ -208,6 +244,31 @@ namespace Factory
 		float& rVelocity = Core::Get().GetComponent<cRigidBody>(target)->_velocity;
 
 		return CreateDebug_Arrow(rPlayerPos, rPlayerVelocityRot, rVelocity);
+	}
+
+	ENTITY DebugBoundingBox_Rigidbody(ENTITY target)
+	{
+		cCollision* collisionComponent = Core::Get().GetComponent<cCollision>(target);
+		cTransform* transformComponent = Core::Get().GetComponent<cTransform>(target);
+		ENTITY boundingBox = 0;
+
+		AE_ASSERT(collisionComponent != nullptr && "No collision component on called object");
+
+		if (collisionComponent->_bbShape == ColliderShape::RECTANGLE)
+		{
+			boundingBox = Factory::CreateDebug_Square(transformComponent->_position, transformComponent->_rotation,
+				transformComponent->_scale);
+			return boundingBox;
+		}
+		else if (collisionComponent->_bbShape == ColliderShape::CIRCLE)
+		{
+			boundingBox = Factory::CreateDebug_Octagon(transformComponent->_position, transformComponent->_rotation,
+				transformComponent->_scale);
+			return boundingBox;
+		}
+		
+		AE_ASSERT(boundingBox != 0 && "No COLLIDERSHAPE specified on collision component");
+		return 0;
 	}
 }
 

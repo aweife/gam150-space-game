@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Component.h"
 #include "AEEngine.h"
 
 enum class COLLISIONTAG
@@ -7,10 +8,11 @@ enum class COLLISIONTAG
 	PLAYER = 0, 
 	BULLET = 1,
 	ENEMY = 2,
-	PLANET = 3
+	PLANET = 3,
+	NONE = 4
 };
 
-class cRigidBody
+class cRigidBody:public Component
 {
 public:
 	float _mass;                              // Mass of the object
@@ -24,16 +26,15 @@ public:
 	AEVec2 _velocityDirection;                // Mainly for normalised Direction at the end of the physics system 
 	AEVec2 _angularVelocity;				  // Vector towards rotation direction
 
-	COLLISIONTAG tag;
+	COLLISIONTAG _tag;
 
 	// Constructor
 	cRigidBody() = delete;
-	cRigidBody(float mass, float velocity,
-		float velocityCap = 0.0f, float acceleration = 0.0f,
-		float rotateVelocity = 0.0f);
+	cRigidBody(float mass, float velocity, float velocityCap = 0.0f, float acceleration = 0.0f,
+		float rotateVelocity = 0.0f, COLLISIONTAG tag = COLLISIONTAG::NONE);
 
 
-	float calculateVelwithAcc(float velocity);
+	float CalculateVelwithAcc(float velocity);
 
 	// Destructor
 	~cRigidBody() = default;

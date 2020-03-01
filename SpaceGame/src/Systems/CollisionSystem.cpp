@@ -13,12 +13,12 @@
 **********************************************************************************/
 #include "CollisionSystem.h"
 #include <AEVec2.h>
-#include <iostream>
 #include "Math.h"
 #include "../Global.h"
 #include "../ECS/Core.h"
 #include "../Components/ComponentList.h"
 
+#include <iostream>							//Testing
 /*********************************************************************************
 *
 *  COLLISION COMPONENT FUNCTIONS
@@ -93,7 +93,7 @@ bool AABBCollision(const AABB& obj1, const AEVec2& vel1,
 		return false;
 	}
 
-	// Working with one-dimention (x-axis)
+	// Working with one-dimention (y-axis)
 	if (newVelocity_y < 0)
 	{
 		// Case 1 
@@ -202,11 +202,9 @@ bool CollisionCheck(const AABB& obj1, const ColliderShape shape1, const AEVec2 v
 		// use the function for AABB 
 		AABBCollision(obj1, vel1, obj2, vel2);
 	}
-	else 
-	{
-		// return no collision
-		return false; 
-	}
+
+	// return no collision
+	return false; 
 }
 
 
@@ -241,13 +239,13 @@ void CollisionSystem::Update()
 		collider = Core::Get().GetComponent<cCollision>(entity);
 		transform = Core::Get().GetComponent<cTransform>(entity);
 
-		collider->boundingBox.max.x = 0.5f * transform->_scale.x + transform->_position.x;
-		collider->boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
-		collider->boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
-		collider->boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
+		collider->_boundingBox.max.x = 0.5f * transform->_scale.x + transform->_position.x;
+		collider->_boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
+		collider->_boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
+		collider->_boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
 
 		// Set the enum to rectangle
-		collider->bbShape = ColliderShape::RECTANGLE;
+		collider->_bbShape = ColliderShape::RECTANGLE;
 	}
 
 	// To check for collision for each entity in the list
@@ -269,24 +267,34 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			if (AABBCollision(collider->boundingBox, rigidbody->_velocityVector, collider2->boundingBox, rigidbody2->_velocityVector) == true)
+			if (AABBCollision(collider->_boundingBox, rigidbody->_velocityVector, collider2->_boundingBox, rigidbody2->_velocityVector) == true)
 			{
 				rigidbody->_velocity = 10.0f;
 				rigidbody2->_velocity = 10.0f;
-				if (rigidbody->tag == COLLISIONTAG::BULLET && rigidbody2->tag == COLLISIONTAG::ENEMY )
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
 					printf("ENEMY HEALTH DECREASE\n");
-					//Core::Get().EntityDestroyed(entity2);//bug
+					markedForDestruction.insert(entity1);
 				}
 
 				// if player and enemy colide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
 			}
-			
 		}
 	}
 
+	//Collision Resolution
+	//Part 1 - Destruction of objects
+	if (markedForDestruction.size() > 0)
+	{
+		for (auto const& entity : markedForDestruction)
+		{
+			Core::Get().EntityDestroyed(entity);
+		}
+		markedForDestruction.clear();
+	}
+	
 }
 
 void CollisionSystem::Render() {}

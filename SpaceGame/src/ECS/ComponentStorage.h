@@ -47,7 +47,7 @@ public:
 		componentArray[backComponentIndex].reset();									// release and deallocate unique pointer
 
 		//Update the index-entity relation map for the last element that has been moved
-		ENTITY backEntity = entityToIndexMap[backComponentIndex];
+		ENTITY backEntity = indexToEntityMap[backComponentIndex];
 		entityToIndexMap[backEntity] = unregisterIndex;
 		indexToEntityMap[unregisterIndex] = backEntity;
 

@@ -19,6 +19,8 @@
 #include "../Player/PlayerManager.h"				//Control over the player
 
 #include "../Tools/Console.h"
+#include "../Tools/Editor.h"
+ENTITY enemy;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -31,13 +33,12 @@ void Level1_Load()
 
 	//Create a debug arrow on player
 	Factory::DebugVector_Velocity(PlayerManager::player);
-
-
+	
 	// Create camera
 	Factory::CreateCamera(PlayerManager::player);		
 
 	//Create Enemy
-	Factory::CreateEnemy1(PlayerManager::player, 2);
+	enemy = Factory::CreateEnemy1(PlayerManager::player, 2);
 
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
@@ -75,6 +76,10 @@ void Level1_Update()
 {
 	PlayerManager::Update();
 	Core::Get().Core_Update();
+	if (AEInputCheckTriggered(AEVK_1))
+	{
+		Core::Get().EntityDestroyed(enemy);
+	}
 }
 
 // ----------------------------------------------------------------------------
