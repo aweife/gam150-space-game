@@ -273,15 +273,20 @@ void CollisionSystem::Update()
 			{
 				rigidbody->_velocity = 10.0f;
 				rigidbody2->_velocity = 10.0f;
-				if (/*strcmp(collider->name, "BULLET") ==0*/ rigidbody->tag == COLLISIONTAG::BULLET && rigidbody2->tag == COLLISIONTAG::ENEMY )
+				if (rigidbody->tag == COLLISIONTAG::BULLET && rigidbody2->tag == COLLISIONTAG::ENEMY )
 				{
 					printf("ENEMY HEALTH DECREASE\n");
-					//Core::Get().EntityDestroyed(entity1);//bug
+					//Core::Get().EntityDestroyed(entity2);//bug
 				}
 
+				// if player and enemy colide with each other 
+				// player and enemy's health will decrease 
+				// angular velocity will apply
 			}
+			
 		}
 	}
+
 }
 
 void CollisionSystem::Render() {}
