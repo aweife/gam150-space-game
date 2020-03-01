@@ -1,6 +1,7 @@
 #include "Math.h"
 #include <cmath>
 #include "AEEngine.h"
+
 float MBMath_Lerp(float a, float b, float time)
 {
 	return a + ((b - a) * time);

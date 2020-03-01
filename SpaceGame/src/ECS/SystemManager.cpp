@@ -11,6 +11,7 @@ void SystemManager::Init()
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<PathFindingSystem>();
 	RegisterSystem<AISystem>();
+	RegisterSystem<ParticleEmitterSystem>();
 
 	// Rendering
 	RegisterSystem<RenderSystem>();
@@ -56,7 +57,7 @@ void SystemManager::EntityDestroyed(ENTITY entity)
 	}
 }
 
-void SystemManager::UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature)
+void SystemManager::UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature, SIGNATURE oldentitySignature)
 {
 	for (auto const& system : _systemMap)
 	{
@@ -75,7 +76,7 @@ void SystemManager::UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignatu
 			system->entitiesList.insert(entity);
 			system->OnComponentAdd(entity);
 		}
-		else
+		else if((oldentitySignature & systemSignature) == systemSignature)
 		{
 			// Entity signature does not match system signature, erase from set
 			// Will run erase on all systems 

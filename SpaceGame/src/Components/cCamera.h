@@ -7,9 +7,12 @@ class cCamera :public Component
 {
 public:
 	bool _isCameraShake = false;
-	double _camEffectStartTime = 0.0;
+	float _camEffectStartTime = 0.0;
+	float _camEffectDuration = 0.0;
+	float _camEffectSpeed = 0.0;
 
 	AEVec2			_camOffsetPos = { 0,0 };
+	AEVec2			_camOffsetTarget = { 0,0 };
 	cTransform*		_followTarget = nullptr;
 	float			_followSpeed;							//the cap speed for camera follow
 	float			_camVelocityX = 0;					//for smoothdamp increments

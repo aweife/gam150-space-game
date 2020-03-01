@@ -3,6 +3,8 @@
 #include "../Global.h"
 
 #include "../ECS/Factory.h"
+
+#include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
 /******************************************************************************/
 /*!
 	Global Variables
@@ -79,4 +81,7 @@ void SpaceShipShoot(cTransform* transform)
 		// Spawn the bullet at the tip of player
 		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
 			transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);
+
+		Factory::CreateParticleEmitter_MYFIRST();
+		CameraManager::StartCameraShake();
 }

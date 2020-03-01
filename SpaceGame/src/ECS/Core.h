@@ -39,12 +39,13 @@ public:
 	void AddComponent(ENTITY entity, T* component)
 	{
 		coreComponentManager->AddComponent<T>(entity, component);
-
+		
+		auto old_signature = coreEntityManager->GetSignature(entity);
 		auto signature = coreEntityManager->GetSignature(entity);
 		signature.set(coreComponentManager->GetComponentType<T>(), true);
 		coreEntityManager->SetSignature(entity, signature);
 
-		coreSystemManager->UpdateEntitySignature(entity, signature);
+		coreSystemManager->UpdateEntitySignature(entity, signature, old_signature);
 	}
 
 	template<typename T>
@@ -52,11 +53,12 @@ public:
 	{
 		coreComponentManager->RemoveComponent<T>(entity);
 
+		auto old_signature = coreEntityManager->GetSignature(entity);
 		auto signature = coreEntityManager->GetSignature(entity);
 		signature.set(coreComponentManager->GetComponentType<T>(), false);
 		coreEntityManager->SetSignature(entity, signature);
 
-		coreSystemManager->UpdateEntitySignature(entity, signature);
+		coreSystemManager->UpdateEntitySignature(entity, signature, old_signature);
 	}
 
 	template<typename T>

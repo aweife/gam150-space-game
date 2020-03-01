@@ -40,6 +40,7 @@
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
+    <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="src\Components\cParticle.h" />
     <ClInclude Include="src\Components\cParticleEmitter.h" />
     <ClInclude Include="src\Systems\ParticleSystem.h" />
+    <ClInclude Include="src\Systems\ParticleEmitterSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

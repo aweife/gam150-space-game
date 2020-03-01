@@ -62,7 +62,7 @@ public:
 	void EntityDestroyed(ENTITY entity);
 
 	// Notify all systems an entity changed signature (add/remove component)
-	void UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature);
+	void UpdateEntitySignature(ENTITY entity, SIGNATURE entitySignature, SIGNATURE oldentitySignature);
 
 	template<typename T>
 	std::shared_ptr<System> GetSystemInstance()
