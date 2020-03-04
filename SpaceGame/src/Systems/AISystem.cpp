@@ -74,13 +74,13 @@ void AISystem::Update()
 		// If too close to player
 		if (distanceToPlayer < ai->minDistance)
 		{
-			path->currentState = PATH_FLEE;
+			path->currentState = PATH_STATE::PATH_FLEE;
 			if (rb->_velocity < targetRb->_velocity)
 				rb->_velocity += 30.0f;
 		}
 		else if (distanceToPlayer > ai->maxDistance)
 		{
-			path->currentState = PATH_SEEK;
+			path->currentState = PATH_STATE::PATH_SEEK;
 			if (rb->_velocity < targetRb->_velocity)
 				rb->_velocity += 30.0f;
 		}

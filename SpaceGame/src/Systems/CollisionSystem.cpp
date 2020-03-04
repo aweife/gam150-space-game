@@ -13,12 +13,109 @@
 **********************************************************************************/
 #include "CollisionSystem.h"
 #include <AEVec2.h>
-#include "Math.h"
+#include <iostream>							//Testing
+#include <array>
+#include <vector>
+#include <limits>
+
+#include "../Math/Math.h"
 #include "../Global.h"
 #include "../ECS/Core.h"
 #include "../Components/ComponentList.h"
 
-#include <iostream>							//Testing
+/*********************************************************************************
+*
+* OPERATOR OVERLOAD
+*
+*********************************************************************************/
+
+
+
+/*********************************************************************************
+*
+* HELPER FUNCTIONS
+*
+*********************************************************************************/
+using RectVertexArray = std::array<AEVec2, 4>; // the array to store 4 sides of the rectangle
+
+float min = std::numeric_limits<float>::infinity();
+float max = -std::numeric_limits<float>::infinity();
+
+// Finding the minimum and maximum projections of each array on the axis 
+AEVec2 vectorProjections(const RectVertexArray& vertices, const AEVec2& axis)
+{
+	// to check all the vertices for projection 
+	for (auto& vertex : vertices)
+	{
+		float proj = MBMath_DotProduct(vertex, axis);
+		if (proj < min)
+		{
+			min = proj;
+		}
+
+		if (proj > max)
+		{
+			max = proj;
+		}
+
+		return AEVec2{ min, max };
+	}
+}
+
+// to check whether both vectors are overlapping
+bool isOverlapping(const AEVec2 vec1, const AEVec2 vec2)
+{
+	return vec1.x <= vec2.y && vec1.y >= vec2.x;
+}
+
+// to get the overlap length 
+float overlappingLength(const AEVec2 vec1, const AEVec2 vec2)
+{
+	if (!isOverlapping(vec1, vec2))
+	{
+		return 0.0f; 
+	}
+	
+	return min(vec1.y, vec2.y) - max(vec1.y, vec2.y);
+}
+
+RectVertexArray getVertices(const Colliders& shape)
+{
+	// since its just a rectangle, vertices will be just 4 
+	RectVertexArray vertices;
+	for (size_t i = 0; i < 4; ++i)
+	{
+		vertices[i] = shape._point;
+	}
+	return vertices;
+}
+
+AEVec2 getPerpendicularAxis(const RectVertexArray& vertex, size_t index)
+{
+	float diffX = vertex[index + 1].x - vertex[index].x;
+	float diffY = vertex[index + 1].y - vertex[index].y;
+	AEVec2 vec{ diffX, diffY };
+
+	assert(index >= 0 && index < 4);
+	return MBMath_getNormalofVector(MBMath_getNormalizedVector(vec));
+}
+
+
+// to check whether the axes are parallel, if they are parallel, do not need to check
+std::array<AEVec2, 4> getPerpendicularAxesCheck(const RectVertexArray& vertices1, const RectVertexArray& vertices2)
+{
+	std::array<AEVec2, 4> axes; 
+
+	axes[0] = getPerpendicularAxis(vertices1, 0);
+	axes[1] = getPerpendicularAxis(vertices1, 1);
+
+	axes[2] = getPerpendicularAxis(vertices2, 0);
+	axes[3] = getPerpendicularAxis(vertices2, 1);
+
+	return axes;
+}
+
+
 /*********************************************************************************
 *
 *  COLLISION COMPONENT FUNCTIONS
@@ -26,8 +123,8 @@
 **********************************************************************************/
 
 // Checking for Collision (AABB)
-bool AABBCollision(const AABB& obj1, const AEVec2& vel1,
-	const AABB& obj2, const AEVec2& vel2)
+bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
+	const Colliders& obj2, const AEVec2& vel2)
 {
 	// To check for collision detection between static rectangles, if the check returns no overlap, continue
 	if ((obj1.max.x < obj2.min.x || obj1.min.x > obj2.max.x ||
@@ -143,8 +240,8 @@ bool AABBCollision(const AABB& obj1, const AEVec2& vel1,
 	return true;
 }
 
-// Checking if both circles
-bool CircleCircleCollision(const AABB& obj1, const AABB& obj2 )
+// Checking if both circles collision
+bool CircleCircleCollision(const Colliders& obj1, const Colliders& obj2 )
 {
 	float distX = obj1.center.x - obj2.center.x;
 	float distY = obj1.center.y - obj2.center.y; 
@@ -164,7 +261,7 @@ bool CircleCircleCollision(const AABB& obj1, const AABB& obj2 )
 }
 
 // Checking if 1 circle and 1 rectangle
-bool RectangleCircleCollision(const AABB& circle, const AABB& rectangle)
+bool RectangleCircleCollision(const Colliders& circle, const Colliders& rectangle)
 {
 	float rectLength = rectangle.max.x - rectangle.min.x;
 	float rectHeight = rectangle.max.y - rectangle.min.y;
@@ -172,16 +269,72 @@ bool RectangleCircleCollision(const AABB& circle, const AABB& rectangle)
 	float deltaX = circle.center.x - max(rectangle.center.x, min(circle.center.x, rectangle.center.x + rectLength));
 	float deltaY = circle.center.y - max(rectangle.center.y, min(circle.center.y, rectangle.center.y + rectHeight));
 
-	return (deltaX * deltaX + deltaY * deltaY) < (circle.radius * circle.radius);
+	if ( (deltaX * deltaX + deltaY * deltaY) < (circle.radius * circle.radius) )
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
+
+
+// find the overlap 
+float minOverlap = std::numeric_limits<float>::infinity();
+
+bool SATCollision(const Colliders& obj1, const Colliders& obj2, AEVec2 mtv)
+{
+	RectVertexArray vertices1 = getVertices(obj1);
+	RectVertexArray vertices2 = getVertices(obj2);
+	std::array<AEVec2, 4> axes = getPerpendicularAxesCheck(vertices1, vertices2);
+
+	for (auto& axis : axes)
+	{
+		AEVec2 proj1 = vectorProjections(vertices1, axis);
+		AEVec2 proj2 = vectorProjections(vertices2, axis);
+
+		float overlap = overlappingLength(proj1, proj2);
+		if (overlap == 0.0f)
+		{
+			return false;
+		}
+		else
+		{
+			if (overlap < minOverlap)
+			{
+				minOverlap = overlap; 
+				mtv.x = axis.x * minOverlap;
+				mtv.y = axis.y * minOverlap;
+			}
+		}
+	}
+		
+	float diffVec_x = obj1.center.x - obj2.center.x;
+	float diffVec_y = obj1.center.y - obj2.center.y;
+	AEVec2 diffVec{ diffVec_x, diffVec_y };
+
+	bool notSameDirection = MBMath_DotProduct(diffVec, mtv) < 0;
+	if (notSameDirection)
+	{
+		float nmtv_x = -(mtv.x);	
+		float nmtv_y = -(mtv.y);
+		AEVec2 nmtv{ nmtv_x, nmtv_y };
+		mtv = nmtv; 
+	}
+	return true;
+}
+
+
+
 
 /*********************************************************************************
 *
 * To check for which collision 
 *
 **********************************************************************************/
-bool CollisionCheck(const AABB& obj1, const ColliderShape shape1, const AEVec2 vel1,
-					const AEVec2 vel2,const ColliderShape shape2,const AABB& obj2)
+bool CollisionCheck(const Colliders& obj1, const ColliderShape shape1, const AEVec2 vel1,
+					const Colliders& obj2,const ColliderShape shape2, const AEVec2 vel2)
 {
 	// if both objects bounding box are circle 
 	if (shape1 == ColliderShape::CIRCLE && shape2 == ColliderShape::CIRCLE)
@@ -201,6 +354,17 @@ bool CollisionCheck(const AABB& obj1, const ColliderShape shape1, const AEVec2 v
 	{
 		// use the function for AABB 
 		AABBCollision(obj1, vel1, obj2, vel2);
+	}
+	else if (shape1 == ColliderShape::RECTANGLE_OBB && shape2 == ColliderShape::RECTANGLE_OBB)
+	{
+		if (AABBCollision(obj1, vel1, obj2, vel2) == true)
+		{
+			SATCollision(obj1, obj2, vel1);
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	// return no collision
@@ -267,10 +431,14 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
+			// to check whether is it colliding or not 
+			// just return true or false
+			CollisionCheck(collider->_boundingBox, collider->_bbShape, rigidbody->_velocityVector, collider2->_boundingBox, collider2->_bbShape, rigidbody2->_velocityVector);
+
 			if (AABBCollision(collider->_boundingBox, rigidbody->_velocityVector, collider2->_boundingBox, rigidbody2->_velocityVector) == true)
 			{
 				rigidbody->_velocity = 10.0f;
-				rigidbody2->_velocity = 10.0f;
+				rigidbody2->_velocity = 15.0f;
 				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
 					printf("ENEMY HEALTH DECREASE\n");
@@ -281,6 +449,15 @@ void CollisionSystem::Update()
 				// player and enemy's health will decrease 
 				// angular velocity will apply
 			}
+
+			/*if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY)
+			{
+				if (SATCollision() == true)
+				{
+					printf("ENEMY HEALTH DECREASE\n");
+					markedForDestruction.insert(entity1);
+				}
+			}*/
 		}
 	}
 

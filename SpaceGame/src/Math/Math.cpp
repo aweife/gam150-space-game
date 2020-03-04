@@ -1,6 +1,10 @@
 #include "Math.h"
 #include <cmath>
 #include "AEEngine.h"
+
+// for the floating point 
+static const float TOLERANCE_FLOAT = 0.0001f;
+
 float MBMath_Lerp(float a, float b, float time)
 {
 	return a + ((b - a) * time);
@@ -61,4 +65,34 @@ float MBMath_SmoothDamp(float current, float target, float* currentVelocity, flo
         *currentVelocity = (num8 - num5) / deltaTime;
     }
     return num8;
+}
+
+float MBMath_DotProduct(const AEVec2& vec1, const AEVec2& vec2)
+{
+    return vec1.x * vec2.x + vec1.y * vec2.y;
+}
+
+// May have floating point error; Use this if you really need to
+float MBMath_getLengthofVector(const AEVec2& vector)
+{
+    return std::sqrt(vector.x * vector.x + vector.y * vector.y);
+}
+
+// Getting the normalized vector 
+AEVec2 MBMath_getNormalizedVector(const AEVec2& vector)
+{
+    float lengthofVector = MBMath_getLengthofVector(vector);
+
+    if (lengthofVector < TOLERANCE_FLOAT)
+    {
+        return vector; 
+    }
+
+    return AEVec2{ (vector.x / lengthofVector), (vector.y / lengthofVector) };
+}
+
+// Getting the normals of the Vector
+AEVec2 MBMath_getNormalofVector(const AEVec2& vector)
+{
+    return AEVec2{ -vector.x, vector.y };
 }
