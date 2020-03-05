@@ -39,6 +39,8 @@
     <ClCompile Include="src\Components\cParticle.cpp" />
     <ClCompile Include="src\Components\cParticleEmitter.cpp" />
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
+    <ClCompile Include="src\AI\aiSeekPlayer.cpp" />
+    <ClCompile Include="src\AI\aiFleePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -87,6 +89,11 @@
     <ClInclude Include="src\Components\cParticle.h" />
     <ClInclude Include="src\Components\cParticleEmitter.h" />
     <ClInclude Include="src\Systems\ParticleSystem.h" />
+    <ClInclude Include="src\AI\aiBlackBoard.h" />
+    <ClInclude Include="src\AI\aiSeekPlayer.h" />
+    <ClInclude Include="src\AI\aiBase.h" />
+    <ClInclude Include="src\AI\aiState.h" />
+    <ClInclude Include="src\AI\aiFleePlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

@@ -58,6 +58,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)dep\AE\Include;$(ProjectDir)dep\FMOD\inc</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,6 +91,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AI\aiFleePlayer.cpp" />
+    <ClCompile Include="src\AI\aiSeekPlayer.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Components\cDebugTools.cpp" />
@@ -130,6 +133,11 @@
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AI\aiFleePlayer.h" />
+    <ClInclude Include="src\AI\aiSeekPlayer.h" />
+    <ClInclude Include="src\AI\aiState.h" />
+    <ClInclude Include="src\AI\aiBlackBoard.h" />
+    <ClInclude Include="src\AI\aiBase.h" />
     <ClInclude Include="src\Components\cAI.h" />
     <ClInclude Include="src\Components\cCamera.h" />
     <ClInclude Include="src\Components\cCollision.h" />

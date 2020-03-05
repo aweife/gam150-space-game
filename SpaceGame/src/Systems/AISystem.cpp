@@ -1,13 +1,13 @@
 /*********************************************************************************
 * \file			AISystem.cpp
 * \author		Ang Wei Feng
-* \version		1.0
-* \date			13/02/2019
+* \version		2.0
+* \date			28/02/2020
 * \par			AI Pillar/System Code
 * \note			Course: GAM150
 * \brief		Controls the behaviour for AI
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
@@ -15,6 +15,7 @@
 #include "../ECS/Core.h"						//Work with ECS
 #include "../Components/ComponentList.h"		//Get necessary component references
 #include "../Global.h"
+#include <variant>
 
 /******************************************************************************/
 /*!
@@ -38,16 +39,6 @@ bool shouldUpdate = false;
 
 void AISystem::Update()
 {
-	timer += g_dt;
-	if (timer > 0.75f)
-	{
-		timer = 0.0f;
-		shouldUpdate = true;
-	}
-
-	if (!shouldUpdate)
-		return;
-
 	cTransform* trans;
 	cRigidBody* rb;
 	cPathFinding* path;
@@ -69,42 +60,13 @@ void AISystem::Update()
 		targetTrans = Core::Get().GetComponent<cTransform>(path->target);
 		targetRb = Core::Get().GetComponent<cRigidBody>(path->target);
 
-		float distanceToPlayer = AEVec2Distance(&trans->_position, &targetTrans->_position);
+		// Update ai's blackboard
+		ai->_blackboard.distanceFromPlayer = AEVec2Distance(&trans->_position, &targetTrans->_position);
 
-		// If too close to player
-		if (distanceToPlayer < ai->minDistance)
+		std::visit([&]( auto& state ) 
 		{
-			path->currentState = PATH_FLEE;
-			if (rb->_velocity < targetRb->_velocity)
-				rb->_velocity += 30.0f;
-		}
-		else if (distanceToPlayer > ai->maxDistance)
-		{
-			path->currentState = PATH_SEEK;
-			if (rb->_velocity < targetRb->_velocity)
-				rb->_velocity += 30.0f;
-		}
-		else
-		{
-			if (rb->_velocity > targetRb->_velocity/2.0f)
-				rb->_velocity -= 15.0f;
-			printf("ATTACKING PLAYER\n");
-
-		}
-
-		/*if can - move - away - from - player
-			AND(damage - taken > morale
-				OR too - close - to - player)
-			move - away - from - player
-		else if can - move - toward - player
-			AND damage - taken < morale
-			AND too - far - from - player
-			move - toward - player
-		else if can - attack - player
-			attack - player
-		else stand - still*/
-
-		shouldUpdate = false;
+			state.Run( ai->_blackboard, ai->_currentState );
+		}, ai->_currentState.m_Varient );
 	}
 }
 
