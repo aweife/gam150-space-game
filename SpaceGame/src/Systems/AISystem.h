@@ -2,6 +2,10 @@
 
 #include "System.h"
 
+// For Blackboard
+#include "../Player/PlayerManager.h"
+#include "../AI/aiBlackBoard.h"
+
 
 class AISystem : public System
 {
@@ -13,4 +17,7 @@ public:
 	void Update() override;
 	void OnComponentAdd(ENTITY) override;
 	void OnComponentRemove(ENTITY) override;
+
+private:
+	void UpdateBlackboard(aiBlackBoard&, ENTITY);
 };

@@ -9,7 +9,6 @@ void SystemManager::Init()
 	RegisterSystem<SpaceShipLogicSystem>();
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
-	RegisterSystem<PathFindingSystem>();
 	RegisterSystem<AISystem>();
 
 	// Rendering

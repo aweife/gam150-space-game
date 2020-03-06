@@ -5,12 +5,9 @@
 #include "../AI/aiState.h"
 
 
-class cAI : Component
+class cAI : public Component
 {
 public:
-	float minDistance;
-	float maxDistance;
-
 	aiBlackBoard _blackboard;
 	the_variant  _currentState;
 };

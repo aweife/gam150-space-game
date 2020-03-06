@@ -124,7 +124,6 @@
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
     <ClCompile Include="src\Systems\DebugToolsSystem.cpp" />
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
-    <ClCompile Include="src\Systems\PathFindingSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
@@ -146,7 +145,6 @@
     <ClInclude Include="src\Components\ComponentList.h" />
     <ClInclude Include="src\Components\cParticle.h" />
     <ClInclude Include="src\Components\cParticleEmitter.h" />
-    <ClInclude Include="src\Components\cPathFinding.h" />
     <ClInclude Include="src\Components\cSpaceShip.h" />
     <ClInclude Include="src\Components\cUIElement.h" />
     <ClInclude Include="src\ECS\ComponentStorage.h" />
@@ -174,7 +172,6 @@
     <ClInclude Include="src\Systems\CollisionSystem.h" />
     <ClInclude Include="src\Systems\DebugToolsSystem.h" />
     <ClInclude Include="src\Systems\ParticleSystem.h" />
-    <ClInclude Include="src\Systems\PathFindingSystem.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
     <ClInclude Include="src\Systems\SpaceShipLogicSystem.h" />

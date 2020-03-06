@@ -20,7 +20,6 @@
     <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
-    <ClCompile Include="src\Systems\PathFindingSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
@@ -48,7 +47,6 @@
     <ClInclude Include="src\Components\cCollision.h" />
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\ComponentList.h" />
-    <ClInclude Include="src\Components\cPathFinding.h" />
     <ClInclude Include="src\Components\cSpaceShip.h" />
     <ClInclude Include="src\ECS\ComponentStorage.h" />
     <ClInclude Include="src\ECS\ComponentStorage_Generic.h" />
@@ -69,7 +67,6 @@
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
     <ClInclude Include="src\Systems\AISystem.h" />
     <ClInclude Include="src\Systems\CollisionSystem.h" />
-    <ClInclude Include="src\Systems\PathFindingSystem.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
     <ClInclude Include="src\Systems\SpaceShipLogicSystem.h" />

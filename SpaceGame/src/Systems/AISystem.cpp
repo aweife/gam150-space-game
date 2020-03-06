@@ -25,44 +25,28 @@
 void AISystem::Init()
 {
 	SIGNATURE signature;
+
 	//Set the bits for necessary components
-	signature.set(Core::Get().GetComponentType<cTransform>());
-	signature.set(Core::Get().GetComponentType<cRigidBody>());
-	signature.set(Core::Get().GetComponentType<cPathFinding>());
 	signature.set(Core::Get().GetComponentType<cAI>());
+
 	//Assign the signature for this System
 	Core::Get().SetSystemSignature<AISystem>(signature);
 }
 
-float timer = 0.0f;
-bool shouldUpdate = false;
-
 void AISystem::Update()
 {
-	cTransform* trans;
-	cRigidBody* rb;
-	cPathFinding* path;
 	cAI* ai;
-
-	cTransform* targetTrans;
-	cRigidBody* targetRb;
 
 	// Update all entities that has the components we want
 	for (auto const& entity : entitiesList)
 	{
 		// Get self
-		trans = Core::Get().GetComponent<cTransform>(entity);
-		rb = Core::Get().GetComponent<cRigidBody>(entity);
 		ai = Core::Get().GetComponent<cAI>(entity);
-		path = Core::Get().GetComponent<cPathFinding>(entity);
 
-		// Get target
-		targetTrans = Core::Get().GetComponent<cTransform>(path->target);
-		targetRb = Core::Get().GetComponent<cRigidBody>(path->target);
+		// Update this ai's blackboard
+		UpdateBlackboard(ai->_blackboard, entity);
 
-		// Update ai's blackboard
-		ai->_blackboard.distanceFromPlayer = AEVec2Distance(&trans->_position, &targetTrans->_position);
-
+		// Run this ai's current state
 		std::visit([&]( auto& state ) 
 		{
 			state.Run( ai->_blackboard, ai->_currentState );
@@ -72,3 +56,23 @@ void AISystem::Update()
 
 void AISystem::OnComponentAdd(ENTITY) {};
 void AISystem::OnComponentRemove(ENTITY) {};
+
+void AISystem::UpdateBlackboard(aiBlackBoard& bb, ENTITY id)
+{
+	// Set ids
+	bb.id = id;
+	const ENTITY pid = PlayerManager::player;
+
+	// Get components
+	cTransform* self = Core::Get().GetComponent<cTransform>(id);
+	cTransform* player = Core::Get().GetComponent<cTransform>(pid);
+	
+	// Calculate distance
+	bb.distanceFromPlayer = AEVec2Distance(&player->_position, &self->_position);
+
+	// Calculate vector towards player
+	AEVec2 temp;
+	AEVec2Sub(&temp, &player->_position, &self->_position);
+	AEVec2Normalize(&temp, &temp);
+	bb.directionToPlayer = temp;
+}

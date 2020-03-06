@@ -7,7 +7,6 @@
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
 #include "CollisionSystem.h"
-#include "PathFindingSystem.h"
 #include "AISystem.h"
 #include "SpaceShipLogicSystem.h"
 #include "UISystem.h"

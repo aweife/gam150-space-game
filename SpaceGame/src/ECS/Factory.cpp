@@ -107,10 +107,7 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 2.0f, 2.0f, 0.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
-		Core::Get().AddComponent<cPathFinding>(enemy, new cPathFinding);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().GetComponent<cAI>(enemy)->minDistance = 250.0f;
-		Core::Get().GetComponent<cAI>(enemy)->maxDistance = 500.0f;
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -200.0f;
@@ -119,8 +116,6 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
-		Core::Get().GetComponent<cPathFinding>(enemy)->target = player;
-		Core::Get().GetComponent<cPathFinding>(enemy)->currentState = PATH_SEEK;
 		Core::Get().GetComponent<cCollision>(enemy)->name = "ENEMY";
 		return enemy;
 	}
