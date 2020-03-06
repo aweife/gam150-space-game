@@ -124,117 +124,115 @@ std::array<AEVec2, 4> getPerpendicularAxesCheck(const RectVertexArray& vertices1
 
 // Checking for Collision (AABB)
 bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
-	const Colliders& obj2, const AEVec2& vel2)
+	               const Colliders& obj2, const AEVec2& vel2)
 {
-	// To check for collision detection between static rectangles, if the check returns no overlap, continue
-	if ((obj1.max.x < obj2.min.x || obj1.min.x > obj2.max.x ||
-		obj1.max.y < obj2.min.y || obj1.min.y > obj2.max.y) == false)
-	{
-		return true;
-	}
-
 	// Initialise variables and calculate the new velocity
 	float tFirst = 0;
 	float tLast = g_dt;
 	float newVelocity_x = vel2.x - vel1.x;
 	float newVelocity_y = vel2.y - vel1.y;
-	float dFirst_x = obj1.min.x - obj2.max.x;
-	float dLast_x = obj1.max.x - obj2.min.x;
-	float dFirst_y = obj1.min.y - obj2.max.y;
-	float dLast_y = obj1.max.y - obj2.min.y;
+	float dFirst_x = obj1.max.x - obj2.min.x;
+	float dLast_x = obj1.min.x - obj2.max.x;
+	float dFirst_y = obj1.max.y - obj2.min.y;
+	float dLast_y = obj1.min.y - obj2.max.y;
 
-	// Working with one-dimention (x-axis)
-	if (newVelocity_x < 0)
+	// To check for collision detection between static rectangles, if the check returns no overlap, continue
+	if (obj1.max.x < obj2.min.x || obj1.min.x > obj2.max.x ||
+		obj1.max.y < obj2.min.y || obj1.min.y > obj2.max.y)
 	{
-		// Case 1 
-		if (obj1.max.x > obj2.min.x)
+		// Working with one-dimention (x-axis)
+		if (newVelocity_x < 0.0f)
+		{
+			// Case 1 
+			if (obj1.min.x > obj2.max.x)
+			{
+				return false;
+			}
+
+			// Case 4 
+			if (obj1.max.x < obj2.min.x)
+			{
+				tFirst = AEMax(dFirst_x / newVelocity_x, tFirst);
+			}
+
+			if (obj1.min.x < obj2.max.x)
+			{
+				tLast = AEMin(dLast_x / newVelocity_x, tLast);
+			}
+		}
+
+		if (newVelocity_x > 0)
+		{
+			// Case 2 
+			if (obj1.min.x > obj2.max.x)
+			{
+				tFirst = AEMax(dFirst_x / newVelocity_x, tFirst);
+			}
+
+			if (obj1.max.x > obj2.min.x)
+			{
+				tLast = AEMin(dLast_x / newVelocity_x, tLast);
+			}
+
+			// Case 3 
+			if (obj1.max.x < obj2.min.x)
+			{
+				return false;
+			}
+		}
+
+		// Case 5
+		if (tFirst > tLast)
 		{
 			return false;
 		}
 
-		// Case 4 
-		if (obj1.max.x < obj2.min.x)
+		// Working with one-dimention (y-axis)
+		if (newVelocity_y < 0)
 		{
-			tFirst = max(dFirst_x / newVelocity_x, tFirst);
+			// Case 1 
+			if (obj1.max.y > obj2.min.y)
+			{
+				return false;
+			}
+
+			// Case 4 
+			if (obj1.max.y < obj2.min.y)
+			{
+				tFirst = AEMax(dFirst_y / newVelocity_y, tFirst);
+			}
+
+			if (obj1.min.y < obj2.max.y)
+			{
+				tLast = AEMin(dLast_y / newVelocity_y, tLast);
+			}
 		}
 
-		if (obj1.min.x < obj2.max.x)
+		if (newVelocity_y > 0)
 		{
-			tLast = min(dLast_x / newVelocity_x, tLast);
-		}
-	}
+			// Case 2 
+			if (obj1.min.y > obj2.max.y)
+			{
+				tFirst = AEMax(dFirst_y / newVelocity_y, tFirst);
+			}
 
-	if (newVelocity_x > 0)
-	{
-		// Case 2 
-		if (obj1.min.x > obj2.max.x)
-		{
-			tFirst = max(dFirst_x / newVelocity_x, tFirst);
-		}
+			if (obj1.max.y > obj2.min.y)
+			{
+				tLast = AEMin(dLast_y / newVelocity_y, tLast);
+			}
 
-		if (obj1.max.x > obj2.min.x)
-		{
-			tLast = min(dLast_x / newVelocity_x, tLast);
-		}
-
-		// Case 3 
-		if (obj1.max.x < obj2.min.x)
-		{
-			return false;
-		}
-	}
-
-	// Case 5
-	if (tFirst > tLast)
-	{
-		return false;
-	}
-
-	// Working with one-dimention (y-axis)
-	if (newVelocity_y < 0)
-	{
-		// Case 1 
-		if (obj1.max.y > obj2.min.y)
-		{
-			return false;
+			// Case 3 
+			if (obj1.max.y < obj2.min.y)
+			{
+				return false;
+			}
 		}
 
-		// Case 4 
-		if (obj1.max.y < obj2.min.y)
-		{
-			tFirst = max(dFirst_y / newVelocity_y, tFirst);
-		}
-
-		if (obj1.min.y < obj2.max.y)
-		{
-			tLast = min(dLast_y / newVelocity_y, tLast);
-		}
-	}
-
-	if (newVelocity_y > 0)
-	{
-		// Case 2 
-		if (obj1.min.y > obj2.max.y)
-		{
-			tFirst = max(dFirst_y / newVelocity_y, tFirst);
-		}
-
-		if (obj1.max.y > obj2.min.y)
-		{
-			tLast = min(dLast_y / newVelocity_y, tLast);
-		}
-
-		// Case 3 
-		if (obj1.max.y < obj2.min.y)
+		// Case 5
+		if (tFirst > tLast)
 		{
 			return false;
 		}
-	}
-
-	// Case 5
-	if (tFirst > tLast)
-	{
-		return false;
 	}
 
 	return true;
