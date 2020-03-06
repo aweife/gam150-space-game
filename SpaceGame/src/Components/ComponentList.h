@@ -13,3 +13,5 @@
 #include "cAI.h"
 #include "cSpaceShip.h"
 #include "cUIElement.h"
+#include "cWeapon.h"
+#include "cHealth.h"
