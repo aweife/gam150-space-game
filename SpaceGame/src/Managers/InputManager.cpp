@@ -62,7 +62,7 @@ namespace InputManager
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
 
 		mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
-		mouseLTrigger = AEInputCheckCurr(AEVK_LBUTTON);
+		mouseLTrigger = AEInputCheckTriggered(AEVK_LBUTTON);
 	}
 }
 	
