@@ -34,6 +34,9 @@
     <ClCompile Include="src\Components\cUIElement.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
+    <ClCompile Include="src\Components\cWeapon.cpp" />
+    <ClCompile Include="src\Components\cHealth.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -77,6 +80,9 @@
     <ClInclude Include="src\Systems\UISystem.h" />
     <ClInclude Include="src\Components\cUIElement.h" />
     <ClInclude Include="src\Levels\LoadingLevel.h" />
+    <ClInclude Include="src\Components\cWeapon.h" />
+    <ClInclude Include="src\Components\cHealth.h" />
+    <ClInclude Include="src\Systems\WeaponSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

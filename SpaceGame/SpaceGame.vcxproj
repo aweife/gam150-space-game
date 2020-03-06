@@ -92,8 +92,10 @@
   <ItemGroup>
     <ClCompile Include="src\Components\cCamera.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
+    <ClCompile Include="src\Components\cHealth.cpp" />
     <ClCompile Include="src\Components\cSpaceShip.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
+    <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\ECS\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\ECS\Factory.cpp" />
@@ -121,6 +123,7 @@
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
     <ClCompile Include="src\Systems\UISystem.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystem.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
@@ -128,11 +131,13 @@
     <ClInclude Include="src\Components\cAI.h" />
     <ClInclude Include="src\Components\cCamera.h" />
     <ClInclude Include="src\Components\cCollision.h" />
+    <ClInclude Include="src\Components\cHealth.h" />
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\ComponentList.h" />
     <ClInclude Include="src\Components\cPathFinding.h" />
     <ClInclude Include="src\Components\cSpaceShip.h" />
     <ClInclude Include="src\Components\cUIElement.h" />
+    <ClInclude Include="src\Components\cWeapon.h" />
     <ClInclude Include="src\ECS\ComponentStorage.h" />
     <ClInclude Include="src\ECS\ComponentStorage_Generic.h" />
     <ClInclude Include="src\Components\cSprite.h" />
@@ -163,6 +168,7 @@
     <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Systems\SystemList.h" />
     <ClInclude Include="src\Systems\UISystem.h" />
+    <ClInclude Include="src\Systems\WeaponSystem.h" />
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
     <ClInclude Include="src\Tools\MemoryLeak.h" />

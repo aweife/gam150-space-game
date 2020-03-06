@@ -6,6 +6,7 @@ void SystemManager::Init()
 	// Register systems
 	
 	// Logic 
+	RegisterSystem<WeaponSystem>();
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<PathFindingSystem>();

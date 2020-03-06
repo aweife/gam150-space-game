@@ -11,3 +11,5 @@
 #include "AISystem.h"
 #include "SpaceShipLogicSystem.h"
 #include "UISystem.h"
+#include "WeaponSystem.h"
+//health system

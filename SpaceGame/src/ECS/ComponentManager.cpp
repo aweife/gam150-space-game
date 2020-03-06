@@ -15,6 +15,9 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cAI>(ID_AIComponent);
 	RegisterComponentCollection<cSpaceShip>(ID_SpaceShip);
 	RegisterComponentCollection<cUIElement>(ID_UIComponent);
+	RegisterComponentCollection<cRangeWeapon>(ID_RangeWeaponComponent);
+	RegisterComponentCollection<cMeleeWeapon>(ID_MeleeWeaponComponent);
+	RegisterComponentCollection<cHealth>(ID_HealthComponent);
 }
 
 template<typename T>

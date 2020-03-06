@@ -34,6 +34,8 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(30.0f, 0.0f, 300.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip);
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon);
+		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon);
 
 		return player;
 	}
