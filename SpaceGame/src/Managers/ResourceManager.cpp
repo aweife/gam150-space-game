@@ -1,22 +1,26 @@
-#include "ResourceManager.h"
-#include "GameStateManager.h"
-#include "../Global.h"					//app time
+#include "ResourceManager.h"			// Function Declaration
+#include "GameStateManager.h"			// Load for different game state levels
+#include "../Global.h"					// app time
 
 #include "../Tools/Console.h"
 
 namespace ResourceManager
 {
+	//Resource Related Storage
 	std::unordered_map<const char*, AEGfxVertexList*> meshLibrary;
 	std::unordered_map<const char*, AEGfxTexture*> textureLibrary;
-	bool loadingCompelete = true;
-	unsigned int loadingProgress = 100;
-	unsigned int loadingStage = 0;
 	u32 fontId = 0;
 
-	void Init()					//Run at start of game
+	//Progress Tracker Variables
+	bool loadingCompleted = true;						//Is the Jobs done?
+	unsigned int loadingProgress = 100;					//Represents Percentage
+	unsigned int loadingStage = 0;						//Represents Number of Items to load
+	
+
+	void Init()					//Runs at start of game
 	{
-		fontId = AEGfxCreateFont("Courier New", 24, true, false);
-		GenerateMeshLibrary();
+		fontId = AEGfxCreateFont("Tahoma", 24, true, false);
+		GenerateMeshLibrary_1();							//CHANGE THIS to essentials !!!!
 		LoadTextureLibrary_Essential();
 	}
 
@@ -24,6 +28,8 @@ namespace ResourceManager
 	{
 		switch (loadingCode)
 		{
+		case GS_MAINMENU:
+			break;
 		case GS_LEVEL1:
 			LoadTextureLibrary_1(&loadingStage, &loadingProgress);
 			break;
@@ -32,7 +38,12 @@ namespace ResourceManager
 		}
 	}
 
-	void GenerateMeshLibrary()
+	void GenerateMeshLibrary_Essentials()
+	{
+
+	}
+
+	void GenerateMeshLibrary_1()
 	{
 		AEGfxVertexList* mesh;
 
@@ -54,7 +65,6 @@ namespace ResourceManager
 		// Saving the mesh (list of triangles) in mesh
 		mesh = AEGfxMeshEnd();
 		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
-
 		meshLibrary.insert({ "Square Mesh", mesh });
 
 		// -----------------------------------------------------------------------
@@ -100,7 +110,6 @@ namespace ResourceManager
 		// Saving the mesh (list of triangles) in mesh
 		mesh = AEGfxMeshEnd();
 		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
-
 		meshLibrary.insert({ "Octagon Mesh", mesh });
 
 		// -----------------------------------------------------------------------
@@ -115,10 +124,9 @@ namespace ResourceManager
 		AEGfxVertexAdd(0.8f, -0.2f, 0xFFFFFFFF, 0.0f, 0.0f);		 /*						*/
 		AEGfxVertexAdd(1.0f, 0.0f, 0xFFFFFFFF, 0.0f, 0.0f);
 
-		// Saving the mesh (list of triangles) in mesh
+		// Saving the mesh (list of vertex) in mesh
 		mesh = AEGfxMeshEnd();
 		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
-
 		meshLibrary.insert({"Arrow Line", mesh});
 
 		// -----------------------------------------------------------------------
@@ -171,16 +179,41 @@ namespace ResourceManager
 		AEGfxVertexAdd(0.5f, 0.0f, 0xFFFFFFFF, 1.0f, 0.5f);
 		
 		mesh = AEGfxMeshEnd();
-		AEGfxVertexAdd(0.5f, 0.0f, 0xFFFFFFFF, 1.0f, 0.5f); AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
 
 		meshLibrary.insert({ "Octagon Frame", mesh });
 
+		// -----------------------------------------------------------------------
+		// UI - HP Bar 
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		AEGfxTriAdd(
+			0.0f, -0.5f, 0xFFFF0000, 0.0f, 0.0f,
+			0.8f, -0.5f, 0xFFFF0000, 0.5f, 0.0f,
+			1.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f);
+		AEGfxTriAdd(
+			1.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f,
+			0.2f, 0.5f, 0xFFFF0000, 0.0f, 1.0f,
+			0.0f, -0.5f, 0xFFFF0000, 0.0f, 0.0f);
+
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+
+		meshLibrary.insert({ "UI_HP bar", mesh });
 	}
 
 	void LoadTextureLibrary_Essential()
 	{
 		//SHOULD BE AS LIGHT WEIGHT AS POSSIBLE
-		textureLibrary.insert({"BG_Loading", AEGfxTextureLoad("res/Loading.png") });
+		textureLibrary.insert({"GameLogo", AEGfxTextureLoad("res/GameLogo.png") });
+		textureLibrary.insert({"BG_MainMenu", AEGfxTextureLoad("res/Loading.png") });
+
+		//not very impt...
+		textureLibrary.insert({ "Texture_Default", AEGfxTextureLoad("res/Texture_Default.png") });
+		textureLibrary.insert({ "Texture_Fill", AEGfxTextureLoad("res/Texture_Fill.png") });
+		textureLibrary.insert({ "Texture_Fill2", AEGfxTextureLoad("res/Texture_Fill2.png") });
+		textureLibrary.insert({ "HP_FILL", AEGfxTextureLoad("res/HP_Fill.png") });
 	}
 
 	void LoadTextureLibrary_1(unsigned int* stage, unsigned int * progress)
@@ -223,7 +256,7 @@ namespace ResourceManager
 					break;
 				case 7:
 					if (textureLibrary.find("BG_1") != textureLibrary.end()) break;
-					//textureLibrary.insert({ "BG_1", AEGfxTextureLoad("res/BG_Background1.png") });
+					textureLibrary.insert({ "BG_1", AEGfxTextureLoad("res/BG_Space1.png") });
 					break;
 				case 8:
 					if (textureLibrary.find("Particle_Default") != textureLibrary.end()) break;

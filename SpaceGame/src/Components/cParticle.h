@@ -2,15 +2,9 @@
 
 #include "Component.h"					//Base Class
 #include "AEEngine.h"
+#include "../Global_Graphics.h"			//ColorInfo
 #include <vector>
 
-struct ColorInfo
-{
-	float r;
-	float g;
-	float b;
-	float a;
-};
 
 struct ParticleInfo
 {

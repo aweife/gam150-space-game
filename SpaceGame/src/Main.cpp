@@ -68,7 +68,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Global_Init();																// Init time, windowSize...
 	Core::Get().Core_Init();													// Initalise Game Engine ECS
 	ResourceManager::Init();													// Load in Bare Minimum
-	GSM_Init(GS_LOADINGLvl);														// Initalise Game StateManager
+	GSM_Init(GS_MAINMENU);													// Initalise Game StateManager
 
 	// -----------------------------------------------------------------------
 	// GAME STATE LOOP

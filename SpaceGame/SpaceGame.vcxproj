@@ -104,6 +104,9 @@
     <ClCompile Include="src\ECS\EntityManager.cpp" />
     <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
+    <ClCompile Include="src\Levels\MainMenu.cpp" />
+    <ClCompile Include="src\Levels\MapGenerator.cpp" />
+    <ClCompile Include="src\Levels\SplashScreen.cpp" />
     <ClCompile Include="src\Managers\CameraManager.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
@@ -114,6 +117,7 @@
     <ClCompile Include="src\ECS\Core.cpp" />
     <ClCompile Include="src\Managers\InputManager.cpp" />
     <ClCompile Include="src\Managers\ResourceManager.cpp" />
+    <ClCompile Include="src\Managers\UIEventsManager.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
     <ClCompile Include="src\Player\PlayerManager.cpp" />
@@ -149,7 +153,13 @@
     <ClInclude Include="src\Components\cRigidBody.h" />
     <ClInclude Include="src\ECS\Factory.h" />
     <ClInclude Include="src\ECS\EntityManager.h" />
+    <ClInclude Include="src\Events\Events.h" />
+    <ClInclude Include="src\Events\UIEvents.h" />
+    <ClInclude Include="src\Global_Graphics.h" />
     <ClInclude Include="src\Levels\LoadingLevel.h" />
+    <ClInclude Include="src\Levels\MainMenu.h" />
+    <ClInclude Include="src\Levels\MapGenerator.h" />
+    <ClInclude Include="src\Levels\SplashScreen.h" />
     <ClInclude Include="src\Managers\CameraManager.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Global_ECS.h" />
@@ -159,7 +169,9 @@
     <ClInclude Include="src\Managers\GameStateManager.h" />
     <ClInclude Include="src\ECS\SystemManager.h" />
     <ClInclude Include="src\Managers\InputManager.h" />
+    <ClInclude Include="src\Managers\ManagerList.h" />
     <ClInclude Include="src\Managers\ResourceManager.h" />
+    <ClInclude Include="src\Managers\UIEventsManager.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
     <ClInclude Include="src\Player\PlayerManager.h" />

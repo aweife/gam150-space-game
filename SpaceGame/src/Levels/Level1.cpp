@@ -17,6 +17,7 @@
 #include "../ECS/Core.h"							//Systems to Update
 #include "../ECS/Factory.h"							//Entity to create
 #include "../Player/PlayerManager.h"				//Control over the player
+#include "../Managers/UIEventsManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -57,7 +58,7 @@ void Level1_Load()
 	Factory::CreatePlanet1(5, 1300.0f, -90.0f, 100.0f, 100.0f);
 
 	//Factory::CreateBackground();
-	
+	Factory_UI::Create_PlayerUserInterface();
 }
 
 // ----------------------------------------------------------------------------
@@ -106,5 +107,7 @@ void Level1_Free()
 // ----------------------------------------------------------------------------
 void Level1_Unload()
 {
-
+	UIEventsManager::Cleanup();
+	Core::Get().DestroyAllEntity();
 }
+

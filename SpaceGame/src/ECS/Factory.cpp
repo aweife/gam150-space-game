@@ -1,8 +1,9 @@
 #include "Factory.h"
 #include "Core.h"
 #include "../Global.h"
-
-#include "../Managers/CameraManager.h"
+#include "../Systems/SystemList.h"
+#include "../Managers/ManagerList.h"		
+#include "../Global_Graphics.h"	
 
 namespace Factory
 {
@@ -136,35 +137,6 @@ namespace Factory
 		ENTITY background = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
 		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
-
-		AEVec2Set(&newPostion, 1300, 0);
-		background = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
-		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
-
-		AEVec2Set(&newPostion, -1300, 0);
-		background = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
-		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
-
-		AEVec2Set(&newPostion, 0, 1300);
-		background = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
-		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
-
-		AEVec2Set(&newPostion, 0, -1300);
-		background = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
-		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
-	}
-
-
-	ENTITY CreateBackground_Load()
-	{
-		ENTITY background = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(background, new cTransform({ 0,0 }, 0, { 1000, 1000 }));
-		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_Loading", 6));
-		return background;
 	}
 
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, float rotation)
@@ -187,16 +159,8 @@ namespace Factory
 		return bullet;
 	}
 
-	ENTITY CreateUI_Text(float posX, float posY, const char* text)
-	{
-		AEVec2 newPostion;
-		AEVec2Set(&newPostion, posX, posY);
 
-		ENTITY uiEntity = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(uiEntity, new cTransform(newPostion, 0, {1,1}));
-		Core::Get().AddComponent<cUIElement>(uiEntity, new cUIElement(text));
-		return uiEntity;
-	}
+	
 
 	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale)
 	{
@@ -293,3 +257,108 @@ namespace Factory
 	}
 }
 
+namespace Factory_UI
+{
+	ENTITY Create_MM_BeginCampaignUI(AEVec2 position)
+	{
+		ENTITY begin = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(begin, new cTransform(position, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(begin, new cSprite(begin, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(begin)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(begin, new cUIElement("Play"));
+		Core::Get().GetComponent<cUIElement>(begin) ->_text._anchor = TEXT_ANCHOR::CENTER;
+		UIEventsManager::Subscribe(begin, &OnButtonClick_MainMenuUI);
+
+		return begin;
+	}
+	ENTITY Create_MM_OptionsUI(AEVec2 position)
+	{
+		ENTITY options = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(options, new cTransform(position, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(options, new cSprite(options, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(options)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(options, new cUIElement("Options"));
+		Core::Get().GetComponent<cUIElement>(options)->_text._anchor = TEXT_ANCHOR::CENTER;
+		//UIEventsManager::Subscribe(options, &OnButtonClick_MainMenuUI);
+		return 0;
+
+	}
+	ENTITY Create_MM_CreditsUI(AEVec2 position)
+	{
+		ENTITY credits = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(credits, new cTransform(position, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(credits, new cSprite(credits, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(credits)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(credits, new cUIElement("Credits"));
+		Core::Get().GetComponent<cUIElement>(credits)->_text._anchor = TEXT_ANCHOR::CENTER;
+		//UIEventsManager::Subscribe(credits, &OnButtonClick_MainMenuUI);
+		return 0;
+	}
+	ENTITY Create_MM_Quit(AEVec2 position)
+	{
+		ENTITY quit = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(quit, new cTransform(position, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(quit, new cSprite(quit, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(quit)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(quit, new cUIElement("Quit"));
+		Core::Get().GetComponent<cUIElement>(quit)->_text._anchor = TEXT_ANCHOR::CENTER;
+		//UIEventsManager::Subscribe(quit, &OnButtonClick_MainMenuUI);
+		return 0;
+	}
+
+	ENTITY Create_GameLogo(AEVec2 position, AEVec2 scale)
+	{
+		ENTITY gameLogo = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(gameLogo, new cTransform(position, 0, scale));
+		Core::Get().AddComponent<cSprite>(gameLogo, new cSprite(gameLogo, "Square Mesh", "GameLogo", 6));
+		return gameLogo;
+	}
+
+	//Placed here so that all the leves UI will be standardised in case of change
+	//This includes health bar, shield bar and thruster fuel
+	void Create_PlayerUserInterface()
+	{
+		AEVec2 spritePos;
+		for (int i = 0; i < 3; ++i)
+		{
+			spritePos = ScreenBasedCoords(100.0f + 50.0f * i, -75.0f, UI_ANCHOR::TOPLEFT);
+			Create_SingleHealthBar(spritePos, i);
+		}
+	}
+
+	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
+	{
+		ENTITY hpBar = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(hpBar, new cTransform(position, 0, { 50, 50 }));
+		Core::Get().AddComponent<cSprite>(hpBar, new cSprite(hpBar, "UI_HP bar", "HP_FILL", 0));
+		Core::Get().GetComponent<cSprite>(hpBar)->_colorTint = { 1.0f,0, 0.2f,0.8f };
+		Core::Get().AddComponent<cUIElement>(hpBar, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::HEALTH, i));
+		UIEventsManager::Subscribe(hpBar, &OnHealthChange_HPUI);
+		//UIEventsManager::UnSubscribe<Events::OnHealthChange>(hpBar);
+
+		/*ENTITY effect = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(effect, new cTransform(position, 0, { 50, 50 }));
+		Core::Get().AddComponent<cSprite>(effect, new cSprite(effect, "UI_HP bar", "Planet_1", 0));
+		Core::Get().GetComponent<cSprite>(effect)->_colorTint = { 1.0f, 1.0, 1.0f,0.2f };
+		Core::Get().GetComponent<cSprite>(effect)->_blend = AE_GFX_BM_ADD;*/
+
+		return hpBar;
+	}
+
+	ENTITY CreateUI_Text(float posX, float posY, const char* text)
+	{
+		AEVec2 newPostion;
+		AEVec2Set(&newPostion, posX, posY);
+
+		ENTITY uiEntity = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(uiEntity, new cTransform(newPostion, 0, { 1,1 }));
+		Core::Get().AddComponent<cUIElement>(uiEntity, new cUIElement(text));
+		return uiEntity;
+	}
+
+	ENTITY CreateBackground_Load()
+	{
+		ENTITY gamelogo = Create_GameLogo({ 0,100 }, { 500, 300 });
+		return gamelogo;
+	}
+}

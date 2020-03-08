@@ -41,6 +41,10 @@
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
+    <ClCompile Include="src\Managers\UIEventsManager.cpp" />
+    <ClCompile Include="src\Levels\MainMenu.cpp" />
+    <ClCompile Include="src\Levels\MapGenerator.cpp" />
+    <ClCompile Include="src\Levels\SplashScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -90,6 +94,14 @@
     <ClInclude Include="src\Components\cParticleEmitter.h" />
     <ClInclude Include="src\Systems\ParticleSystem.h" />
     <ClInclude Include="src\Systems\ParticleEmitterSystem.h" />
+    <ClInclude Include="src\Global_Graphics.h" />
+    <ClInclude Include="src\Events\UIEvents.h" />
+    <ClInclude Include="src\Events\Events.h" />
+    <ClInclude Include="src\Managers\UIEventsManager.h" />
+    <ClInclude Include="src\Levels\MainMenu.h" />
+    <ClInclude Include="src\Levels\MapGenerator.h" />
+    <ClInclude Include="src\Levels\SplashScreen.h" />
+    <ClInclude Include="src\Managers\ManagerList.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />
