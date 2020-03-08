@@ -75,7 +75,7 @@ void SpaceShipShoot(cTransform* transform)
 		// Setting the direction of bullet spawn
 		AEVec2Set(&bulletDirection, AECos(transform->_rotation), AESin(transform->_rotation));
 		// Bullet velocity
-		AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
+		AEVec2Scale(&bulletVelocity, &bulletDirection, 500.0f);
 		// Spawn the bullet at the tip of player
 		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
 			transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);

@@ -11,17 +11,18 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "CollisionSystem.h"
-#include <AEVec2.h>
-#include <iostream>							//Testing
-#include <array>
-#include <vector>
-#include <limits>
+#include "CollisionSystem.h"                // Self header
+#include <AEVec2.h>                         // for AEVec2
+#include <iostream>							//For debug purposes
+#include <array>                            // array container
+#include <vector>                           // vector container
+#include <limits>                           // limits
 
-#include "../Math/Math.h"
-#include "../Global.h"
-#include "../ECS/Core.h"
-#include "../Components/ComponentList.h"
+#include "../Managers/CameraManager.h"		// For screen shake
+#include "../Math/Math.h"                   // Additional Math functions
+#include "../Global.h"                      // g_dt
+#include "../ECS/Core.h"                    // For ECS
+#include "../Components/ComponentList.h"    // For component list
 
 /*********************************************************************************
 *
@@ -338,20 +339,20 @@ bool CollisionCheck(const Colliders& obj1, const ColliderShape shape1, const AEV
 	if (shape1 == ColliderShape::CIRCLE && shape2 == ColliderShape::CIRCLE)
 	{
 		// use the function for both circle check
-		CircleCircleCollision(obj1, obj2);
+		return CircleCircleCollision(obj1, obj2);
 
 	}
 	// if one rectangle and one circle
 	else if (shape1 == ColliderShape::CIRCLE && shape2 == ColliderShape::RECTANGLE)
 	{
 		// use the function for rectangle - circle check
-		RectangleCircleCollision(obj1, obj2);
+		return RectangleCircleCollision(obj1, obj2);
 	}
 	// if both rectangles
 	else if (shape1 == ColliderShape::RECTANGLE && shape2 == ColliderShape::RECTANGLE)
 	{
 		// use the function for AABB 
-		AABBCollision(obj1, vel1, obj2, vel2);
+		return AABBCollision(obj1, vel1, obj2, vel2);
 	}
 	else if (shape1 == ColliderShape::RECTANGLE_OBB && shape2 == ColliderShape::RECTANGLE_OBB)
 	{
@@ -429,33 +430,41 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			// to check whether is it colliding or not 
-			// just return true or false
-			CollisionCheck(collider->_boundingBox, collider->_bbShape, rigidbody->_velocityVector, collider2->_boundingBox, collider2->_bbShape, rigidbody2->_velocityVector);
-
-			if (AABBCollision(collider->_boundingBox, rigidbody->_velocityVector, collider2->_boundingBox, rigidbody2->_velocityVector) == true)
+			// For to check which collision
+			if (CollisionCheck(collider->_boundingBox, collider->_bbShape, 
+				               rigidbody->_velocityVector, collider2->_boundingBox,
+				               collider2->_bbShape,rigidbody2->_velocityVector) == true)
 			{
-				rigidbody->_velocity = 10.0f;
-				rigidbody2->_velocity = 15.0f;
-				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
-				{
-					printf("ENEMY HEALTH DECREASE\n");
-					markedForDestruction.insert(entity1);
-				}
 
-				// if player and enemy colide with each other 
+				// if player and enemy collide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
-			}
-
-			/*if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY)
-			{
-				if (SATCollision() == true)
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
 				{
+					CameraManager::StartCameraShake();
+					printf("Enemy health decrease lmao\n");
+
+					// for player's bounce off
+					rigidbody->_angularVelocity.x = -20.0f;
+					rigidbody->_angularVelocity.y = -20.0f;
+					rigidbody->_velocityVector.x += rigidbody->_angularVelocity.x;
+					rigidbody->_velocityVector.y += rigidbody->_angularVelocity.y;
+
+					// for enemy's bounce off
+					rigidbody2->_angularVelocity.x = -50.0f;
+					rigidbody2->_angularVelocity.y = -50.0f;
+					rigidbody2->_velocityChangeVector = rigidbody2->_angularVelocity;
+				}
+				
+				// if bullet collide with enemy
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
+				{
+					CameraManager::StartCameraShake();
 					printf("ENEMY HEALTH DECREASE\n");
 					markedForDestruction.insert(entity1);
 				}
-			}*/
+
+			}
 		}
 	}
 

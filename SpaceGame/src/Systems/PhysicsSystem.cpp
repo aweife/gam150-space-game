@@ -14,7 +14,8 @@
 **********************************************************************************/
 #include "PhysicsSystem.h"
 #include <AEVec2.h>
-#include "Math.h"
+#include "../Math/Math.h"
+#include <math.h>
 #include "../Global.h"
 #include "../ECS/Core.h"
 #include "../Components/ComponentList.h"
@@ -24,11 +25,26 @@
 *  GLOBAL VARIABLES (FOR EULER'S METHOD <TEST>)
 *
 **********************************************************************************/
-float thrust = 500.0f;
+float thrust = 300.0f;
 float drag = 5.0f;
-float displacement = 50.0f;
+float displacement = 25.0f;
 float velocity = 30.0f;
 float mass = 30.0f;
+
+bool foranglecheck(AEVec2 currdir, AEVec2 newdir)
+{
+	float angle = AERadToDeg(acosf(MBMath_DotProduct(currdir, newdir)));
+
+	if (angle > 90)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 
 void PhysicsSystem::Init()
 {
@@ -116,6 +132,7 @@ void PhysicsSystem::Update()
 		// Apply displacement on current position
 		transform->_position.x += rigidbody->_velocityVector.x * g_dt;
 		transform->_position.y += rigidbody->_velocityVector.y * g_dt;
+
 	}
 
 

@@ -56,7 +56,4 @@ public:
 	// Destructor
 	~cCollision() = default;
 
-	//// Checking for Collision (Circle)
-	//bool checkforCollisionCircle();
-
 };

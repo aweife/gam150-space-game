@@ -39,6 +39,7 @@ namespace Factory
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip);
+		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER; // testing collision
 
 		return player;
 	}
