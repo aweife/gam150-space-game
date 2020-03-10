@@ -20,8 +20,9 @@
 #include "AEEngine.h"									// AE Input
 #include "../Managers/GameStateManager.h"				// Exit Game or Restart
 #include "../Global.h"									// delta time, windowSize
+#include "../Tools/Editor.h"							// Track Variable + Mesh Show mode
 
-#include "../Tools/Editor.h"							//Track Variable
+#include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
 
 namespace InputManager
 {
@@ -51,6 +52,16 @@ namespace InputManager
 		if (AEInputCheckTriggered(AEVK_R))
 		{
 			//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+		}
+
+		//Debug functionality
+		if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
+		{
+			ToggleShowBoundingBoxMode(); 
+		}
+		if (AEInputCheckTriggered(AEVK_S))
+		{
+			CameraManager::StartCameraShake();
 		}
 
 		// -----------------------------------------------------------------------

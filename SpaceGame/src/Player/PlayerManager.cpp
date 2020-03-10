@@ -54,9 +54,9 @@ namespace PlayerManager
 		float dirY = worldMousePosY - playerTransform->_position.y;
 		float length = sqrtf(dirX * dirX + dirY * dirY);
 
-		Editor_TrackVariable("A", camTransform->_position.x);
+		/*Editor_TrackVariable("A", camTransform->_position.x);
 		Editor_TrackVariable("B", playerTransform->_position.x);
-		Editor_TrackVariable("C", dirX);
+		Editor_TrackVariable("C", dirX);*/
 
 		//Make sure mouse is a certain distance away before calculating
 		if (length > playerTransform->_scale.x / 2)

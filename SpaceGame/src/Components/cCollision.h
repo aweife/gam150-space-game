@@ -13,33 +13,40 @@
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #pragma once
-
 #include "Component.h"
 #include "AEEngine.h"
 
 /**************************************************************************/
 /*!
 	This is the struct for the AABB collision detection
-	*/
+*/
 /**************************************************************************/
 struct AABB
 {
-	//AEVec2	c; // center
-	//float  r[2]; // holds half width and half height
+	AEVec2	center;      // center
+	AEVec2  rad;
+	float   radius;       // holds half width and half height
 
 	AEVec2	min;
 	AEVec2	max;
 };
 
+// To check which shapes is used for the game object 
+enum class ColliderShape
+{
+	CIRCLE = 0,
+	RECTANGLE = 1,
+	NONE
+};
 
 class cCollision:public Component
 {
 
 public:
 	//Game object instance structure
-	unsigned long		flag;		// bit flag or-ed together
-	AABB				boundingBox;// object bouding box that encapsulates the object
-	const char*			name = "";
+	unsigned long		_flag			= 0;						// bit _flag or-ed together
+	AABB				_boundingBox		= { 0 };				// object bouding box that encapsulates the object
+	ColliderShape		_bbShape			= ColliderShape::NONE;
 
 	// Constructor
 	cCollision() = default;

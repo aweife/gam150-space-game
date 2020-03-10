@@ -17,7 +17,7 @@ void RenderSystem::Init()
 void RenderSystem::Render() 
 {
 	//Reference Components when looping through ENTITY
-	cTransform* _transform;
+	cTransform* transform;
 	cSprite* sprite;
 
 	//Camera position
@@ -31,7 +31,7 @@ void RenderSystem::Render()
 	{
 		for (auto const& entity : *layer)
 		{
-			_transform = Core::Get().GetComponent<cTransform>(entity);
+			transform = Core::Get().GetComponent<cTransform>(entity);
 			sprite = Core::Get().GetComponent<cSprite>(entity);
 
 			// -----------------------------------------------------------------------
@@ -44,8 +44,8 @@ void RenderSystem::Render()
 			AEMtx33Identity(&scale);
 
 			//  Compute the SCALE, ROTATION matrix from ENTITY
-			AEMtx33Scale(&scale, _transform->_scale.x, _transform->_scale.y);
-			AEMtx33Rot(&rot, _transform->_rotation);
+			AEMtx33Scale(&scale, transform->_scale.x, transform->_scale.y);
+			AEMtx33Rot(&rot, transform->_rotation);
 
 			// -----------------------------------------------------------------------
 			//  Parallax Background calculation...displace layers based on camera from origin
@@ -66,12 +66,12 @@ void RenderSystem::Render()
 			}
 
 			//  Compute the TRANSLATION matrix after PARALLAX
-			AEMtx33Trans(&trans, _transform->_position.x + parallaxOffsetX, _transform->_position.y + parallaxOffsetY);
+			AEMtx33Trans(&trans, transform->_position.x + parallaxOffsetX, transform->_position.y + parallaxOffsetY);
 
 			// Concatenate the 3 matrix in the correct order in the object instance's "_transform" matrix
 			// Order of matrix concatenation: Translation*Rotation*Scaling
-			AEMtx33Concat(&_transform->_transform, &rot, &scale);
-			AEMtx33Concat(&_transform->_transform, &trans, &_transform->_transform);
+			AEMtx33Concat(&transform->_transform, &rot, &scale);
+			AEMtx33Concat(&transform->_transform, &trans, &transform->_transform);
 
 			// -----------------------------------------------------------------------
 			// RENDERING EFFECTS
@@ -89,7 +89,7 @@ void RenderSystem::Render()
 			AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 			// Render at _position
-			AEGfxSetTransform(_transform->_transform.m);
+			AEGfxSetTransform(transform->_transform.m);
 
 			//Draw
 			AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);

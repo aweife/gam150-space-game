@@ -18,6 +18,7 @@
 #include "../ECS/Core.h"
 #include "../Components/ComponentList.h"
 
+#include <iostream>							//Testing
 /*********************************************************************************
 *
 *  COLLISION COMPONENT FUNCTIONS
@@ -25,7 +26,7 @@
 **********************************************************************************/
 
 // Checking for Collision (AABB)
-bool checkforCollisionAABB(const AABB& obj1, const AEVec2& vel1,
+bool AABBCollision(const AABB& obj1, const AEVec2& vel1,
 	const AABB& obj2, const AEVec2& vel2)
 {
 	// To check for collision detection between static rectangles, if the check returns no overlap, continue
@@ -92,7 +93,7 @@ bool checkforCollisionAABB(const AABB& obj1, const AEVec2& vel1,
 		return false;
 	}
 
-	// Working with one-dimention (x-axis)
+	// Working with one-dimention (y-axis)
 	if (newVelocity_y < 0)
 	{
 		// Case 1 
@@ -142,6 +143,70 @@ bool checkforCollisionAABB(const AABB& obj1, const AEVec2& vel1,
 	return true;
 }
 
+// Checking if both circles
+bool CircleCircleCollision(const AABB& obj1, const AABB& obj2 )
+{
+	float distX = obj1.center.x - obj2.center.x;
+	float distY = obj1.center.y - obj2.center.y; 
+	float totalRadius = obj1.radius + obj2.radius;
+	float totalDist = (distX * distX) + (distY * distY);
+
+	// totaldist <= totalRadius ^ 2 (compare both distances)
+	if (totalDist <= (totalRadius * totalRadius) )
+	{
+		return true;
+	}
+	else
+	{
+		// no collision
+		return false;
+	}
+}
+
+// Checking if 1 circle and 1 rectangle
+bool RectangleCircleCollision(const AABB& circle, const AABB& rectangle)
+{
+	float rectLength = rectangle.max.x - rectangle.min.x;
+	float rectHeight = rectangle.max.y - rectangle.min.y;
+
+	float deltaX = circle.center.x - max(rectangle.center.x, min(circle.center.x, rectangle.center.x + rectLength));
+	float deltaY = circle.center.y - max(rectangle.center.y, min(circle.center.y, rectangle.center.y + rectHeight));
+
+	return (deltaX * deltaX + deltaY * deltaY) < (circle.radius * circle.radius);
+}
+
+/*********************************************************************************
+*
+* To check for which collision 
+*
+**********************************************************************************/
+bool CollisionCheck(const AABB& obj1, const ColliderShape shape1, const AEVec2 vel1,
+					const AEVec2 vel2,const ColliderShape shape2,const AABB& obj2)
+{
+	// if both objects bounding box are circle 
+	if (shape1 == ColliderShape::CIRCLE && shape2 == ColliderShape::CIRCLE)
+	{
+		// use the function for both circle check
+		CircleCircleCollision(obj1, obj2);
+
+	}
+	// if one rectangle and one circle
+	else if (shape1 == ColliderShape::CIRCLE && shape2 == ColliderShape::RECTANGLE)
+	{
+		// use the function for rectangle - circle check
+		RectangleCircleCollision(obj1, obj2);
+	}
+	// if both rectangles
+	else if (shape1 == ColliderShape::RECTANGLE && shape2 == ColliderShape::RECTANGLE)
+	{
+		// use the function for AABB 
+		AABBCollision(obj1, vel1, obj2, vel2);
+	}
+
+	// return no collision
+	return false; 
+}
+
 
 /*********************************************************************************
 *
@@ -174,10 +239,13 @@ void CollisionSystem::Update()
 		collider = Core::Get().GetComponent<cCollision>(entity);
 		transform = Core::Get().GetComponent<cTransform>(entity);
 
-		collider->boundingBox.max.x = 0.5f * transform->_scale.x + transform->_position.x;
-		collider->boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
-		collider->boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
-		collider->boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
+		collider->_boundingBox.max.x = 0.5f * transform->_scale.x + transform->_position.x;
+		collider->_boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
+		collider->_boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
+		collider->_boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
+
+		// Set the enum to rectangle
+		collider->_bbShape = ColliderShape::RECTANGLE;
 	}
 
 	// To check for collision for each entity in the list
@@ -199,19 +267,33 @@ void CollisionSystem::Update()
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
 
-			if (checkforCollisionAABB(collider->boundingBox, rigidbody->_velocityVector, collider2->boundingBox, rigidbody2->_velocityVector) == true)
+			if (AABBCollision(collider->_boundingBox, rigidbody->_velocityVector, collider2->_boundingBox, rigidbody2->_velocityVector) == true)
 			{
 				rigidbody->_velocity = 10.0f;
 				rigidbody2->_velocity = 10.0f;
-				if (strcmp(collider->name, "BULLET") ==0 )
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
-					//Core::Get().EntityDestroyed(entity1);//bug
+					printf("ENEMY HEALTH DECREASE\n");
+					markedForDestruction.insert(entity1);
 				}
-
+				
 			}
 		}
 	}
+
+	//Collision Resolution
+	//Part 1 - Destruction of objects
+	if (markedForDestruction.size() > 0)
+	{
+		for (auto const& entity : markedForDestruction)
+		{
+			Core::Get().EntityDestroyed(entity);
+		}
+		markedForDestruction.clear();
+	}
+	
 }
 
+void CollisionSystem::Render() {}
 void CollisionSystem::OnComponentAdd(ENTITY) {}
 void CollisionSystem::OnComponentRemove(ENTITY) {}

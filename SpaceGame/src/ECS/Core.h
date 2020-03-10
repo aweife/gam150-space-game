@@ -82,6 +82,12 @@ public:
 	}
 
 	template<typename T>
+	std::shared_ptr<System> GetSystem()
+	{
+		return coreSystemManager->GetSystemInstance<T>();
+	}
+
+	template<typename T>
 	void SetSystemSignature(SIGNATURE signature)
 	{
 		coreSystemManager->SetSignature<T>(signature);
