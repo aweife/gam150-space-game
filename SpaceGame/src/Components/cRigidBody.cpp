@@ -30,7 +30,7 @@ cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float acce
 
 }
 
-
+//Please move this to system
 float cRigidBody::CalculateVelwithAcc(float velocity)
 {
 	float acceleration = velocity / g_dt;

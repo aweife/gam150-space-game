@@ -1,8 +1,21 @@
+/**********************************************************************************
+* \file			ResourceManager.cpp
+* \brief		Manages loading of assets such as mesh, texture, sound
+* \author		Jun Yi, Chong, 100% Code Contribution
+*
+*				Long Description
+*				- Allocates memory for mesh and texture under AEEngine
+*				- Breaks up the loading across each frame so game will not freeze 
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "ResourceManager.h"			// Function Declaration
 #include "GameStateManager.h"			// Load for different game state levels
 #include "../Global.h"					// app time
 
-#include "../Tools/Console.h"
+#include "../Tools/Console.h"			// Testing 
 
 namespace ResourceManager
 {
@@ -12,20 +25,22 @@ namespace ResourceManager
 	u32 fontId = 0;
 
 	//Progress Tracker Variables
-	bool loadingCompleted = true;						//Is the Jobs done?
+	bool loadingCompleted = true;						//Is the loading done?
 	unsigned int loadingProgress = 100;					//Represents Percentage
 	unsigned int loadingStage = 0;						//Represents Number of Items to load
 	
 
-	void Init()					//Runs at start of game
+	//Runs at start of game
+	void Init()					
 	{
 		fontId = AEGfxCreateFont("Tahoma", 24, true, false);
-		GenerateMeshLibrary_1();							//CHANGE THIS to essentials !!!!
+		GenerateMeshLibrary_1();						//CHANGE THIS to essentials !!!!
 		LoadTextureLibrary_Essential();
 	}
 
 	void Update(unsigned int loadingCode)
 	{
+		// loadingCode represents loading for different levels or stages of the game
 		switch (loadingCode)
 		{
 		case GS_MAINMENU:
@@ -168,13 +183,13 @@ namespace ResourceManager
 		AEGfxMeshStart();
 
 		// This shape has 2 triangles
-		AEGfxVertexAdd(0.5f, 0.0f, 0xFFFFFFFF, 1.0f, 0.5f);
+		AEGfxVertexAdd(0.5f, 0.0f, 0xFFFFFFFF, 1.0f, 0.5f); 
 		AEGfxVertexAdd(0.353553f, 0.353553f, 0xFFFFFFFF, 0.853553f, 0.853553f);
 		AEGfxVertexAdd(0.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f);
 		AEGfxVertexAdd(-0.353553f, 0.353553f, 0xFFFFFFFF, 0.146446f, 0.853553f);
 		AEGfxVertexAdd(-0.5f, 0.0f, 0xFFFFFFFF, 0, 0.5f);
 		AEGfxVertexAdd(-0.353553f, -0.353553f, 0xFFFFFFFF, 0.146446f, 0.146446f);
-		AEGfxVertexAdd(0.0, -0.5f, 0xFFFFFFFF, 0.5f, 0.0f);// Saving the mesh (list of triangles) in mesh
+		AEGfxVertexAdd(0.0, -0.5f, 0xFFFFFFFF, 0.5f, 0.0f);
 		AEGfxVertexAdd(0.353553f, -0.353553f, 0xFFFFFFFF, 0.853553f, 0.146446f); 
 		AEGfxVertexAdd(0.5f, 0.0f, 0xFFFFFFFF, 1.0f, 0.5f);
 		
@@ -189,7 +204,7 @@ namespace ResourceManager
 		AEGfxMeshStart();
 
 		AEGfxTriAdd(
-			0.0f, -0.5f, 0xFFFF0000, 0.0f, 0.0f,
+			0.0f, -0.5f, 0xFFFF0000, 0.0f, 0.0f,		//Slanted Parallelogram
 			0.8f, -0.5f, 0xFFFF0000, 0.5f, 0.0f,
 			1.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f);
 		AEGfxTriAdd(
@@ -201,6 +216,45 @@ namespace ResourceManager
 		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
 
 		meshLibrary.insert({ "UI_HP bar", mesh });
+
+		// -----------------------------------------------------------------------
+		// UI - Thruster Overheat
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		//modifiables
+		float segments = 7.0f;
+		float innerRadius = 1.001f;			//not sure why it has a limit...
+		float circularRange = PI * 2 * 24 / 36;			//300 degree
+
+		//Do not modify	
+		float deltaAngle = circularRange / segments;
+		//float offset = 0.25f * deltaAngle /2;			//offset due to gap between segements
+		float startAngle = 2*PI * (180/360.0f) /*- offset*/;		// PI /2 + circularRange/2 - offset; //balanced alighnment
+		for (int i = 0; i < segments; ++i)
+		{
+			AEGfxTriAdd(								
+				innerRadius*cos(startAngle - (i * deltaAngle)), innerRadius * sin(startAngle - (i * deltaAngle))
+				,0xFFFF0000, 1.0f, i /segments * 0.25f,		
+				innerRadius * cos(startAngle - ((i + 0.75f) * deltaAngle)), innerRadius * sin(startAngle - ((i + 0.75f) * deltaAngle))
+				, 0xFFFFFFFF, 1.0f, (i + 0.75f) / segments * 0.25f,
+				50.0f * cos(startAngle - ((i + 0.75f) * deltaAngle)), 50.0f * sin(startAngle - ((i + 0.75f) * deltaAngle))
+				, 0xFFFFFFFF, 0.0f, (i + 0.75f) / segments * 0.25f);
+			AEGfxTriAdd(								//8-9 o CLOCK triangle
+				50.0f * cos(startAngle - ((i + 0.75f) * deltaAngle)), 50.0f * sin(startAngle - ((i + 0.75f) * deltaAngle))
+				, 0xFFFFFFFF, 0.0f, (i + 0.75f) / segments * 0.25f,
+				50.0f * cos(startAngle - (i * deltaAngle)), 50.0f * sin(startAngle -( i * deltaAngle))
+				, 0xFFFF0000, 0.0f, i / segments * 0.25f,
+				innerRadius * cos(startAngle - (i * deltaAngle)), innerRadius * sin(startAngle - (i * deltaAngle))
+				, 0xFFFF0000, 1.0f, i / segments * 0.25f);
+		}
+		
+
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+
+		meshLibrary.insert({ "UI_Thruster", mesh });
+
 	}
 
 	void LoadTextureLibrary_Essential()

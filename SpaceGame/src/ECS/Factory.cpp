@@ -324,6 +324,13 @@ namespace Factory_UI
 			spritePos = ScreenBasedCoords(100.0f + 50.0f * i, -75.0f, UI_ANCHOR::TOPLEFT);
 			Create_SingleHealthBar(spritePos, i);
 		}
+
+		spritePos = ScreenBasedCoords(-150.0f, -75.0f, UI_ANCHOR::TOPRIGHT);
+		Create_ThrusterUI(spritePos);
+
+		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::CENTER);
+		ENTITY group[9] = { 0 };
+		Create_ChooseThree(spritePos, group);
 	}
 
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
@@ -343,6 +350,54 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(effect)->_blend = AE_GFX_BM_ADD;*/
 
 		return hpBar;
+	}
+
+	ENTITY Create_ThrusterUI(AEVec2 position)
+	{
+		ENTITY thruster = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(thruster, new cTransform(position, 0, { 1, 1}));			//mesh scale of 50
+		Core::Get().AddComponent<cSprite>(thruster, new cSprite(thruster, "UI_Thruster", "Texture_Fill", 0));
+		Core::Get().GetComponent<cSprite>(thruster)->_colorTint = { 1.0f,1.0f, 0.0f,0.8f };
+		Core::Get().AddComponent<cUIElement>(thruster, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::THRUSTER));
+		//UIEventsManager::Subscribe(hpBar, &OnHealthChange_HPUI);
+
+		return thruster;
+	}
+
+
+	void Create_ChooseThree(AEVec2 centralPos, ENTITY(&group)[9])
+	{
+		ENTITY border = 0, fakeupgrade, upgrade = 0, title = 0, text = 0, comfirm;
+		float borderSize = 100, borderSpace = 10;
+		AEVec2 startingPos;
+		AEVec2Set(&centralPos, centralPos.x - borderSize - borderSpace, centralPos.y);
+
+		for (int i = 0; i < 3; ++i)
+		{
+			AEVec2Set(&startingPos, centralPos.x + (borderSize + borderSpace)*i, centralPos.y);
+			border = Core::Get().CreateEntity();
+			Core::Get().AddComponent<cTransform>(border, new cTransform(startingPos, 0.0f, { borderSize , borderSize }));
+			Core::Get().AddComponent<cSprite>(border, new cSprite(border, "Square Mesh", "Texture_Default", 0));
+			Core::Get().AddComponent<cUIElement>(border, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FRAME));
+			group[i] = border;
+
+			AEVec2Set(&startingPos, startingPos.x, centralPos.y + (borderSize * 0.9f) / 2 - (borderSize * 0.9f) * (1.0f / 10)); //start small and expand
+			upgrade = Core::Get().CreateEntity();
+			Core::Get().AddComponent<cTransform>(upgrade, new cTransform(startingPos, 0.0f, { borderSize *0.9f, (2.0f/ 10) * borderSize }));
+			Core::Get().AddComponent<cSprite>(upgrade, new cSprite(upgrade, "Square Mesh", "Texture_Default", 0));
+			Core::Get().GetComponent<cSprite>(upgrade)->_colorTint = { 1.0f,0.0f, 0.0f,1.0f };
+			Core::Get().AddComponent<cUIElement>(upgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
+			group[i + 1] = upgrade;
+
+			AEVec2Set(&startingPos, startingPos.x, centralPos.y + (borderSize*0.9f)/2 - (borderSize * 0.9f) * (6.0f/10));
+			fakeupgrade = Core::Get().CreateEntity();
+			Core::Get().AddComponent<cTransform>(fakeupgrade, new cTransform(startingPos, 0.0f, {borderSize * 0.9f, (8.0f / 10) * borderSize }));
+			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh", "Texture_Default", 0));
+			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 0.0f,0.0f, 1.0f,1.0f };
+			Core::Get().AddComponent<cUIElement>(fakeupgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FAKEUPGRADE));
+			group[i + 2] = fakeupgrade;
+
+		}
 	}
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text)

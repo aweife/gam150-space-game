@@ -41,6 +41,8 @@ namespace Factory_UI
 
 	void Create_PlayerUserInterface();
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i);
+	ENTITY Create_ThrusterUI(AEVec2 position);
+	void Create_ChooseThree(AEVec2 centralPos, ENTITY(&group)[9]);
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 
 	ENTITY CreateBackground_Load();
