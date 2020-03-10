@@ -16,6 +16,7 @@
 #include "../Components/ComponentList.h"		//Get necessary component references
 #include "../Global.h"
 #include <variant>
+#include "../ECS/Factory.h"
 
 /******************************************************************************/
 /*!
@@ -74,5 +75,5 @@ void AISystem::UpdateBlackboard(aiBlackBoard& bb, ENTITY id)
 	AEVec2 temp;
 	AEVec2Sub(&temp, &player->_position, &self->_position);
 	AEVec2Normalize(&temp, &temp);
-	bb.directionToPlayer = temp;
+	bb.directionToPlayerN = temp;
 }

@@ -8,7 +8,7 @@ void aiFleePlayer::Run( const aiBlackBoard&, the_variant& Varient )
 	count++;
 	if (count > 500)
 	{
-		Varient.m_Varient.emplace<aiSeekPlayer>();
+		Varient.m_Varient.emplace<aiChase>();
 		count = 0;
 	}
 }

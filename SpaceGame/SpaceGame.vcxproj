@@ -91,8 +91,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AI\aiAttack.cpp" />
     <ClCompile Include="src\AI\aiFleePlayer.cpp" />
-    <ClCompile Include="src\AI\aiSeekPlayer.cpp" />
+    <ClCompile Include="src\AI\aiChase.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Components\cDebugTools.cpp" />
@@ -132,8 +133,9 @@
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AI\aiAttack.h" />
     <ClInclude Include="src\AI\aiFleePlayer.h" />
-    <ClInclude Include="src\AI\aiSeekPlayer.h" />
+    <ClInclude Include="src\AI\aiChase.h" />
     <ClInclude Include="src\AI\aiState.h" />
     <ClInclude Include="src\AI\aiBlackBoard.h" />
     <ClInclude Include="src\AI\aiBase.h" />
@@ -184,6 +186,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />
+    <Image Include="res\Enemy_1.png" />
+    <Image Include="res\GameLogo.png" />
+    <Image Include="res\Loading.png" />
     <Image Include="res\machinegun.png" />
     <Image Include="res\Planet2.png" />
     <Image Include="res\PlanetTexture.png" />

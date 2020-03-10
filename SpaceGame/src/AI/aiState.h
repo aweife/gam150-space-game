@@ -3,12 +3,13 @@
 #pragma once
 
 #include <variant>
-#include "aiSeekPlayer.h"
+#include "aiChase.h"
+#include "aiAttack.h"
 #include "aiFleePlayer.h"
 
 struct the_variant
 {
-	std::variant< aiSeekPlayer, aiFleePlayer > m_Varient;
+	std::variant< aiChase, aiAttack > m_Varient;
 };
 
 #endif

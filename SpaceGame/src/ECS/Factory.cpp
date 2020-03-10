@@ -117,13 +117,17 @@ namespace Factory
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -200.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 100.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 150.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 150.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 100.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
-		Core::Get().GetComponent<cCollision>(enemy)->name = "ENEMY";
 		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+
+		// debug ai
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
+		cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
 		return enemy;
 	}
 
