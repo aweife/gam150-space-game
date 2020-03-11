@@ -21,6 +21,7 @@ ENTITY EntityManager::CreateEntity(const char* name)
 	//_entitiesNames[entity] = name;
 	_availableEntities.pop();
 	++_activeEntityCount;
+	_activeEntity.insert(entity);
 
 	return entity;
 }
@@ -35,6 +36,7 @@ void EntityManager::EntityDestroyed(ENTITY entity)
 
 	// Add to the back of the queue
 	_availableEntities.push(entity);
+	_activeEntity.erase(entity);
 	--_activeEntityCount;
 }
 
@@ -53,4 +55,9 @@ SIGNATURE EntityManager::GetSignature(ENTITY entity)
 	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");
 
 	return _signatures[entity];
+}
+
+const std::set<ENTITY> EntityManager::GetActiveSet() const
+{
+	return _activeEntity;
 }

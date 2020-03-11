@@ -53,7 +53,7 @@ void Global_Init()
 
 	GetWindowRect(AESysGetWindowHandle(), &g_WindowRect);		// Get Size of the windows display
 	g_WindowWidth = g_WindowRect.right - g_WindowRect.left;		// Calculate window Width
-	g_WindowHeight = g_WindowRect.bottom - g_WindowRect.top;	// Calculate window Height
+	g_WindowHeight = g_WindowRect.bottom - g_WindowRect.top;	// Calculate window Height...-30 for the title
 }
 
 /******************************************************************************/

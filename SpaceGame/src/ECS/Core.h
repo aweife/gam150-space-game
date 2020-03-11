@@ -1,9 +1,10 @@
 #pragma once
-#include <memory>
+#include <memory>								//std::unique_ptr
 #include "ComponentManager.h"
 #include "EntityManager.h"
 #include "SystemManager.h"
 #include "../Tools/MemoryLeak.h"
+
 class Core
 {
 public:
@@ -26,6 +27,7 @@ public:
 	// ENTITY
 	ENTITY CreateEntity(const char* name = "");
 	void EntityDestroyed(ENTITY entity);
+	void DestroyAllEntity();
 
 	// COMPONENT
 	template<typename T>
@@ -46,9 +48,6 @@ public:
 		coreEntityManager->SetSignature(entity, signature);
 
 		coreSystemManager->UpdateEntitySignature(entity, signature, old_signature);
-
-		// Update base component
-		component->_entityParent = entity;
 	}
 
 	template<typename T>

@@ -23,6 +23,7 @@
 #include "../Tools/Editor.h"							// Track Variable + Mesh Show mode
 
 #include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
+#include "UIEventsManager.h"							//Testing events calling
 
 namespace InputManager
 {
@@ -59,9 +60,15 @@ namespace InputManager
 		{
 			ToggleShowBoundingBoxMode(); 
 		}
+
+		//Testing...remove once done
 		if (AEInputCheckTriggered(AEVK_S))
 		{
 			CameraManager::StartCameraShake();
+		}
+		if (AEInputCheckTriggered(AEVK_E))
+		{
+			UIEventsManager::Broadcast(new Events::OnHealthChange(22.0f));
 		}
 
 		// -----------------------------------------------------------------------
@@ -72,8 +79,23 @@ namespace InputManager
 		Editor_TrackVariable("mouse Screen X", mousePosX);
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
 
+		if (AEInputCheckCurr(AEVK_LBUTTON))
+		{
+			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY))))
+			{
+				mouseLTrigger = true;
+			}
+			else
+			{
+				mouseLTrigger = false;
+			}
+		}
+		else
+		{
+			mouseLTrigger = false;
+		}
 		mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
-		mouseLTrigger = AEInputCheckCurr(AEVK_LBUTTON);
+	
 	}
 }
 	

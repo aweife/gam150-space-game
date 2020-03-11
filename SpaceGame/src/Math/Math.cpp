@@ -2,9 +2,6 @@
 #include <cmath>
 #include "AEEngine.h"
 
-// for the floating point 
-static const float TOLERANCE_FLOAT = 0.0001f;
-
 float MBMath_Lerp(float a, float b, float time)
 {
 	return a + ((b - a) * time);

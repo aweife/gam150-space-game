@@ -6,10 +6,13 @@ void SystemManager::Init()
 	// Register systems
 	
 	// Logic 
+	RegisterSystem<WeaponSystemRange>();
+	RegisterSystem<WeaponSystemMelee>();
 	RegisterSystem<SpaceShipLogicSystem>();
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<AISystem>();
+	RegisterSystem<HealthSystem>();
 	RegisterSystem<ParticleEmitterSystem>();
 
 	// Rendering

@@ -2,14 +2,28 @@
 
 #include "Component.h"					//Base Class
 #include "AEEngine.h"
+#include "../Global_Graphics.h"			//ColorInfo
 #include <vector>
 
-struct ColorInfo
+
+struct ParticleInfo
 {
-	float r;
-	float g;
-	float b;
-	float a;
+	ColorInfo _currColor;
+	AEVec2 _scaleFactor;
+	float _totalLifeTime;
+	float _currLifeTime;
+	AEVec2 _gravity;
+	AEVec2 _currGravity;
+	AEVec2 _direction;
+	float _velocityBase;
+	float _rotation;
+	unsigned int _layer;
+
+	std::vector<ColorInfo>	_colorOverLifetime;
+	std::vector<AEVec2>		_scaleOverLifetime;
+	std::vector <AEVec2>	_directionOverLifetime;
+	std::vector<float>		_velocityOverLifetime;
+	std::vector<float>		_rotationOverLifetime;
 };
 
 struct ParticleInfo

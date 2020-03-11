@@ -2,27 +2,27 @@
 #include "../ECS/Factory.h"
 #include "../ECS/Core.h"
 #include "../Managers/ResourceManager.h"
-#include <queue>
+#include "../Managers/UIEventsManager.h"
+#include "../Managers/GameStateManager.h"
 
 unsigned int loadingForState = GS_NULL;
-std::queue<ENTITY> entityToDestroy;
 
 void LoadingLvl_Load()
 {
-	entityToDestroy.push(Factory::CreateUI_Text(100, -150, "Loading Level..."));
-	entityToDestroy.push(Factory::CreateBackground_Load());
+	Factory_UI::CreateUI_Text(100, -150, "Loading Level...");
+	Factory_UI::CreateBackground_Load();
 }
 
 void LoadingLvl_Init()
 {
-	loadingForState = GS_LEVEL1;					//REMOVE IN FUTURE
+	//loadingForState = GS_LEVEL1;					//REMOVE IN FUTURE
 	ResourceManager::loadingProgress = 0;
-	ResourceManager::loadingCompelete = false;
+	ResourceManager::loadingCompleted = false;
 }
 
 void LoadingLvl_Update()
 {
-	ResourceManager::Update(GS_LEVEL1);
+	ResourceManager::Update(loadingForState);
 	if (ResourceManager::loadingProgress >= 100)
 	{
 		GSM_ChangeState(loadingForState);
@@ -38,15 +38,11 @@ void LoadingLvl_Free()
 {
 	loadingForState = GS_NULL;
 	ResourceManager::loadingProgress = 100;
-	ResourceManager::loadingCompelete = true;
+	ResourceManager::loadingCompleted = true;
 }
 
 void LoadingLvl_Unload()
 {
-	while (entityToDestroy.size() > 0)
-	{
-		ENTITY destroy = entityToDestroy.front();
-		Core::Get().EntityDestroyed(destroy);
-		entityToDestroy.pop();
-	}
+	UIEventsManager::Cleanup();
+	Core::Get().DestroyAllEntity();
 }

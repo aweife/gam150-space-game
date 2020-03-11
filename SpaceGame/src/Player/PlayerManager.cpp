@@ -5,6 +5,7 @@
 #include "../Managers/CameraManager.h"
 #include "../Math/Math.h"						// Rotation Lerp
 #include "../Components/cSpaceShip.h"
+#include "../Components/cWeapon.h"
 
 #include "../Tools/Editor.h"					//Debugging
 
@@ -20,6 +21,7 @@ namespace PlayerManager
 		cRigidBody* playerRigidBody = Core::Get().GetComponent<cRigidBody>(player);
 		cTransform* playerTransform = Core::Get().GetComponent<cTransform>(player); 
 		cSpaceShip* playerSpaceShip = Core::Get().GetComponent<cSpaceShip>(player);
+		cRangeWeapon* playerWeapon = Core::Get().GetComponent<cRangeWeapon>(player);
 		cTransform* camTransform = CameraManager::GetCameraTransform();
 		int mousePosX = InputManager::mousePosX;
 		int mousePosY = InputManager::mousePosY;
@@ -27,8 +29,10 @@ namespace PlayerManager
 		RotateWithMouse(mousePosX, mousePosY, camTransform, playerTransform, playerRigidBody);
 		
 		playerSpaceShip->_isThrusting = InputManager::mouseRTrigger;
-		playerSpaceShip->_isShooting = InputManager::mouseLTrigger;
-
+		if (playerSpaceShip->_currWeaponMode == WeaponMode::range)
+		{
+			playerWeapon->_isShooting = InputManager::mouseLTrigger;
+		}
 	}
 
 	void RotateWithMouse(int mousePosX, int mousePosY, cTransform* camTransform, 

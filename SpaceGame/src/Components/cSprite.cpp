@@ -16,32 +16,19 @@
 				written consent of DigiPen Institute of Technology is prohibited.
 ******************************************************************************/
 #include "cSprite.h"			//Self Header
-#include "../Tools/Console.h"	//remove after testing
 #include "../Managers/ResourceManager.h"
 
-cSprite::cSprite(ENTITY parent, const char* meshName, const char* textureName, unsigned int layer)
+
+cSprite::cSprite(ENTITY parent, const char* meshName, const char* textureName, unsigned int layer, SPRITE_RM mode)
+	:_mesh{ nullptr }, _layer{ layer }, _mode{ mode }, _UVOffset{0,0}, _blend{ AEGfxBlendMode::AE_GFX_BM_BLEND }
 {
-	//Common Component variables
-	_name = "class SpriteComponent";	//Do not change this otherwise remove component wont work
-	//_categor = SYS_GRAPHICS;			//not sure why have warning here
+	//Base Component Variables
+	_name = "class SpriteComponent";	
 	_componentID = ID_SpriteComponent;
 	_entityParent = parent;
 
-	//Component Specific variables
-	_mesh = nullptr;
-	_layer = layer;
-
-	Console_Cout("Creating SpriteComponent...");
 	LoadMesh(meshName);					
-	LoadTexture(textureName);	
-}
-
-cSprite::~cSprite()
-{
-	//AEGfxMeshFree(_mesh);		//2 memory leaks if not done
-	//if (_texture)
-	//	AEGfxTextureUnload(_texture);
-	Console_Cout("SpriteComponent Destructor");
+	if (strcmp(textureName, "None") != 0) LoadTexture(textureName);
 }
 
 void cSprite::LoadMesh(const char* meshName)
