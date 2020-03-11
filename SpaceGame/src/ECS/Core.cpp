@@ -58,11 +58,12 @@ ENTITY Core::CreateEntity(const char* name)
 
 void Core::EntityDestroyed(ENTITY entity)
 {
+	//The original order is entity -> component -> system
 	coreEntityManager->EntityDestroyed(entity);
+	
+	coreSystemManager->EntityDestroyed(entity); // Some system will perform functions on component when a object is destroyed
 
 	coreComponentManager->EntityDestroyed(entity);
-
-	coreSystemManager->EntityDestroyed(entity); //Will we need this
 }
 
 //Purely used for debuging

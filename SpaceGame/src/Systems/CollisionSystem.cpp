@@ -22,14 +22,8 @@
 #include "../Math/Math.h"                   // Additional Math functions
 #include "../Global.h"                      // g_dt
 #include "../ECS/Core.h"                    // For ECS
+#include "../ECS/Factory.h"                 // For Particle System
 #include "../Components/ComponentList.h"    // For component list
-
-/*********************************************************************************
-*
-* OPERATOR OVERLOAD
-*
-*********************************************************************************/
-
 
 
 /*********************************************************************************
@@ -325,8 +319,6 @@ bool SATCollision(const Colliders& obj1, const Colliders& obj2, AEVec2 mtv)
 }
 
 
-
-
 /*********************************************************************************
 *
 * To check for which collision 
@@ -459,6 +451,7 @@ void CollisionSystem::Update()
 				// if bullet collide with enemy
 				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					CameraManager::StartCameraShake();
 					printf("ENEMY HEALTH DECREASE\n");
 					markedForDestruction.insert(entity1);

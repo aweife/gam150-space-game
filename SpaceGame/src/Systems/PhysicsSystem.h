@@ -15,6 +15,10 @@
 #pragma once
 
 #include "System.h"				//Inheritance
+#include "AEVec2.h"             //AEVec2
+
+
+bool foranglecheck(AEVec2 currdir, AEVec2 newdir);
 
 class PhysicsSystem : public System
 {
@@ -28,4 +32,3 @@ public:
 	void OnComponentAdd(ENTITY entity) override;
 	void OnComponentRemove(ENTITY entity) override;
 };
-
