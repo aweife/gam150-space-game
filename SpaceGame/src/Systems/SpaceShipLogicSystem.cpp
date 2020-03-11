@@ -49,7 +49,7 @@ void SpaceShipLogicSystem::Update()
 
 //OUTSIDE OF NAMESPACE for helper functions
 
-void SpaceShipThrust(cRigidBody* rb, cTransform* transform, cSpaceShip* spaceship)
+void SpaceShipThrust(cRigidBody* rb, cTransform* transform)
 {
 	AEVec2 thrustDir, thrustVector;
 
@@ -57,7 +57,7 @@ void SpaceShipThrust(cRigidBody* rb, cTransform* transform, cSpaceShip* spaceshi
 	AEVec2Set(&thrustDir, AECos(transform->_rotation), AESin(transform->_rotation));
 
 	// Thrust vector will be added onto velocity, based on rate of change (acceleration)
-	AEVec2Scale(&thrustVector, &thrustDir, rb->_acceleration + spaceship->_thrustSpeedAddition);
+	AEVec2Scale(&thrustVector, &thrustDir, rb->_acceleration);
 
 	// Add Thrust Vector to current velocity change
 	AEVec2Add(&rb->_velocityChangeVector, &rb->_velocityChangeVector, &thrustVector);

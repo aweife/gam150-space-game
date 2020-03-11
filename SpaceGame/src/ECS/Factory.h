@@ -28,6 +28,8 @@ namespace Factory
 	ENTITY DebugBoundingBox_Rigidbody(ENTITY target);
 
 	ENTITY CreateParticleEmitter_MYFIRST();
+	ENTITY CreateParticleEmitter_UPONIMPACT(cTransform* target);
+	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar);
 }
 
 namespace Factory_UI

@@ -12,7 +12,6 @@
 #include "cRigidBody.h"
 #include "cCollision.h"
 // AI
-#include "cPathFinding.h"
 #include "cAI.h"
 // Player
 #include "cSpaceShip.h"
