@@ -1,4 +1,4 @@
-#include "WeaponSystem.h"
+#include "WeaponSystemRange.h"
 #include "SpaceShipLogicSystem.h"
 #include "../ECS/Core.h"
 #include "../Global.h"
@@ -11,57 +11,49 @@
 */
 /******************************************************************************/
 
-void WeaponSystem::Init()
+void WeaponSystemRange::Init()
 {
 	SIGNATURE signature;
 	signature.set(Core::Get().GetComponentType<cTransform>());
-	signature.set(Core::Get().GetComponentType<cRigidBody>());
 	signature.set(Core::Get().GetComponentType<cRangeWeapon>());
-	signature.set(Core::Get().GetComponentType<cMeleeWeapon>());
-	signature.set(Core::Get().GetComponentType<cSpaceShip>());
-	Core::Get().SetSystemSignature<WeaponSystem>(signature);
+	Core::Get().SetSystemSignature<WeaponSystemRange>(signature);
 }
 
-void WeaponSystem::Update()
+void WeaponSystemRange::Update()
 {
 	cTransform* transform;
-	cRigidBody* rigidbody;
-	cSpaceShip* spaceship;
 	cRangeWeapon* rangeweapon;
-	cMeleeWeapon* meleeweapon;
 
 	for (auto const& entity : entitiesList)
 	{
 		transform = Core::Get().GetComponent<cTransform>(entity);
-		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
-		spaceship = Core::Get().GetComponent<cSpaceShip>(entity);
 		rangeweapon = Core::Get().GetComponent<cRangeWeapon>(entity);
-		meleeweapon = Core::Get().GetComponent<cMeleeWeapon>(entity);
 
 		//Time update
-		rangeweapon->_fireRate += g_dt;
-
-		if (/*spaceship->_currWeaponMode == WeaponMode::range &&*/ rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireRate*/)
+		if (rangeweapon)
 		{
+			rangeweapon->_fireRate += g_dt;
 
-			std::cout << "shootpistol" << std::endl;
-			switch (rangeweapon->_currWeapon)
+			if (/*spaceship->_currWeaponMode == WeaponMode::range &&*/
+				rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireRate*/)
 			{
-			case WeaponType::pistol:
-				rangeweapon->_fireRate = 0.0f;
-				NormalShoot(transform);
-				break;
-			case WeaponType::machineGun:
-				rangeweapon->_fireRate = 0.0f;
-				MachineGunShoot(transform);
-				break;
-			case WeaponType::grenadeGun:
-				break;
-			case WeaponType::laser:
-				break;
+				switch (rangeweapon->_currWeapon)
+				{
+				case WeaponType::pistol:
+					rangeweapon->_fireRate = 0.0f;
+					NormalShoot(transform);
+					break;
+				case WeaponType::machineGun:
+					rangeweapon->_fireRate = 0.0f;
+					MachineGunShoot(transform);
+					break;
+				case WeaponType::grenadeGun:
+					break;
+				case WeaponType::laser:
+					break;
+				}
 			}
 		}
-
 	}
 }
 
@@ -111,8 +103,3 @@ void MachineGunShoot(cTransform* transform)
 //	Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
 //		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);
 //}
-
-void EquipWeapon(Weapon* weaponComponent, WeaponType weaponType)
-{
-	weaponComponent->_currWeapon = weaponType;
-}

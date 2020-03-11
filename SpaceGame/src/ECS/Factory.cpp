@@ -37,9 +37,11 @@ namespace Factory
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
-		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip);
-		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon);
-		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon);
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, 0.0, WeaponMode::range));
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon());
+		UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
+			, WeaponType::pistol, UpgradePackages::Range_Pistol);
+		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 
 		return player;
 	}
@@ -332,7 +334,7 @@ namespace Factory_UI
 
 		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::CENTER);
 		ENTITY group[9] = { 0 };
-		Create_ChooseThree(spritePos, group);
+		//Create_ChooseThree(spritePos, group);
 	}
 
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)

@@ -1,5 +1,4 @@
 #include "SpaceShipLogicSystem.h"
-#include "WeaponSystem.h"
 #include "../ECS/Core.h"
 #include "../Global.h"
 
@@ -18,7 +17,6 @@ void SpaceShipLogicSystem::Init()
 	signature.set(Core::Get().GetComponentType<cTransform>());
 	signature.set(Core::Get().GetComponentType<cRigidBody>());
 	signature.set(Core::Get().GetComponentType<cSpaceShip>());
-	signature.set(Core::Get().GetComponentType<cRangeWeapon>());
 	Core::Get().SetSystemSignature<SpaceShipLogicSystem>(signature);
 }
 
@@ -28,23 +26,20 @@ void SpaceShipLogicSystem::Update()
 	cTransform* transform;
 	cRigidBody* rigidbody;
 	cSpaceShip* spaceship;
-	cRangeWeapon* rangeweapon;
 
 	for (auto const& entity : entitiesList)
 	{
 		transform = Core::Get().GetComponent<cTransform>(entity); 
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity); 
 		spaceship = Core::Get().GetComponent<cSpaceShip>(entity);
-		rangeweapon = Core::Get().GetComponent<cRangeWeapon>(entity);
 
 		//Time update
-		rangeweapon->_fireRate += g_dt;
 		spaceship->_thrustDelay += g_dt;
 
 		if (spaceship->_isThrusting /*&& spaceship->_thrustDelay > 1.5f*/)
 		{
 			//spaceship->_thrustDelay = 0.0f;
-			SpaceShipThrust(rigidbody, transform);
+			SpaceShipThrust(rigidbody, transform, spaceship);
 		}
 
 	}
@@ -67,20 +62,20 @@ void SpaceShipThrust(cRigidBody* rb, cTransform* transform, cSpaceShip* spaceshi
 }
 
 
-// This should move to weapons system
-void SpaceShipShoot(cTransform* transform)
-{
-		AEVec2 bulletDirection;
-		AEVec2 bulletVelocity;
-
-		// Setting the direction of bullet spawn
-		AEVec2Set(&bulletDirection, AECos(transform->_rotation), AESin(transform->_rotation));
-		// Bullet velocity
-		AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
-		// Spawn the bullet at the tip of player
-		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
-			transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);
-
-		Factory::CreateParticleEmitter_MYFIRST();
-		CameraManager::StartCameraShake();
-}
+//// This should move to weapons system
+//void SpaceShipShoot(cTransform* transform)
+//{
+//		AEVec2 bulletDirection;
+//		AEVec2 bulletVelocity;
+//
+//		// Setting the direction of bullet spawn
+//		AEVec2Set(&bulletDirection, AECos(transform->_rotation), AESin(transform->_rotation));
+//		// Bullet velocity
+//		AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
+//		// Spawn the bullet at the tip of player
+//		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
+//			transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);
+//
+//		Factory::CreateParticleEmitter_MYFIRST();
+//		CameraManager::StartCameraShake();
+//}

@@ -18,4 +18,4 @@ public:
 	void OnComponentRemove(ENTITY) override {};
 };
 
-void SpaceShipThrust(cRigidBody* rb, cTransform* transform);
+void SpaceShipThrust(cRigidBody* rb, cTransform* transform, cSpaceShip* spaceship);

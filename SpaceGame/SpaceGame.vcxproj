@@ -120,12 +120,14 @@
     <ClCompile Include="src\Managers\InputManager.cpp" />
     <ClCompile Include="src\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Managers\UIEventsManager.cpp" />
+    <ClCompile Include="src\Managers\UpgradeManager.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
     <ClCompile Include="src\Player\PlayerManager.cpp" />
     <ClCompile Include="src\Systems\AISystem.cpp" />
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
     <ClCompile Include="src\Systems\DebugToolsSystem.cpp" />
+    <ClCompile Include="src\Systems\HealthSystem.cpp" />
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Systems\PathFindingSystem.cpp" />
@@ -133,7 +135,8 @@
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
     <ClCompile Include="src\Systems\UISystem.cpp" />
-    <ClCompile Include="src\Systems\WeaponSystem.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystemMelee.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystemRange.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
@@ -177,6 +180,7 @@
     <ClInclude Include="src\Managers\ManagerList.h" />
     <ClInclude Include="src\Managers\ResourceManager.h" />
     <ClInclude Include="src\Managers\UIEventsManager.h" />
+    <ClInclude Include="src\Managers\UpgradeManager.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
     <ClInclude Include="src\Player\PlayerManager.h" />
@@ -192,7 +196,8 @@
     <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Systems\SystemList.h" />
     <ClInclude Include="src\Systems\UISystem.h" />
-    <ClInclude Include="src\Systems\WeaponSystem.h" />
+    <ClInclude Include="src\Systems\WeaponSystemMelee.h" />
+    <ClInclude Include="src\Systems\WeaponSystemRange.h" />
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
     <ClInclude Include="src\Tools\MemoryLeak.h" />

@@ -41,7 +41,7 @@ enum COMPONENTID								//ID for each component, to be used to organise systems 
 	ID_SpaceShip,
 	ID_RangeWeaponComponent,
 	ID_MeleeWeaponComponent,
-	ID_HealthComponent
+	ID_HealthComponent,
 	ID_UIComponent,
 	ID_DebugToolsComponent,
 	ID_ParticleComponent,

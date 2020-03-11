@@ -7,11 +7,11 @@
 
 
 
-class WeaponSystem : public System
+class WeaponSystemRange : public System
 {
 public:
-	WeaponSystem() = default;					//Virtual Constructor...
-	~WeaponSystem() = default;					//...and destructor
+	WeaponSystemRange() = default;					//Virtual Constructor...
+	~WeaponSystemRange() = default;					//...and destructor
 
 	void Init() override;
 	void Update() override;
@@ -24,4 +24,3 @@ public:
 void NormalShoot(cTransform* transform);
 void HomingShoot(cTransform* transform);
 void MachineGunShoot(cTransform* transform);
-void EquipWeapon(Weapon* weaponComponent, WeaponType weaponType);

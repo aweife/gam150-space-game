@@ -42,13 +42,16 @@
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
     <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\Components\cHealth.cpp" />
-    <ClCompile Include="src\Systems\WeaponSystem.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
     <ClCompile Include="src\Managers\UIEventsManager.cpp" />
     <ClCompile Include="src\Levels\MainMenu.cpp" />
     <ClCompile Include="src\Levels\MapGenerator.cpp" />
     <ClCompile Include="src\Levels\SplashScreen.cpp" />
+    <ClCompile Include="src\Managers\UpgradeManager.cpp" />
+    <ClCompile Include="src\Systems\HealthSystem.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystemMelee.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystemRange.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -94,7 +97,6 @@
     <ClInclude Include="src\Levels\LoadingLevel.h" />
     <ClInclude Include="src\Components\cWeapon.h" />
     <ClInclude Include="src\Components\cHealth.h" />
-    <ClInclude Include="src\Systems\WeaponSystem.h" />
     <ClInclude Include="src\Components\cDebugTools.h" />
     <ClInclude Include="src\Systems\DebugToolsSystem.h" />
     <ClInclude Include="src\Components\cParticle.h" />
@@ -109,6 +111,9 @@
     <ClInclude Include="src\Levels\MapGenerator.h" />
     <ClInclude Include="src\Levels\SplashScreen.h" />
     <ClInclude Include="src\Managers\ManagerList.h" />
+    <ClInclude Include="src\Managers\UpgradeManager.h" />
+    <ClInclude Include="src\Systems\WeaponSystemMelee.h" />
+    <ClInclude Include="src\Systems\WeaponSystemRange.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

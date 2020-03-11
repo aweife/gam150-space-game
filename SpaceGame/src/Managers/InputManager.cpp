@@ -81,9 +81,19 @@ namespace InputManager
 
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 		{
-			UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY)));
+			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY))))
+			{
+				mouseLTrigger = true;
+			}
+			else
+			{
+				mouseLTrigger = false;
+			}
 		}
-		mouseLTrigger = AEInputCheckCurr(AEVK_LBUTTON);
+		else
+		{
+			mouseLTrigger = false;
+		}
 		mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
 	
 	}
