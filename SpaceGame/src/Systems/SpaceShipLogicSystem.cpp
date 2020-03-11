@@ -62,6 +62,8 @@ void SpaceShipThrust(cRigidBody* rb, cTransform* transform)
 	// Add Thrust Vector to current velocity change
 	AEVec2Add(&rb->_velocityChangeVector, &rb->_velocityChangeVector, &thrustVector);
 
+	rb->_velocity += rb->_acceleration;
+	//Editor_TrackVariable("Velocity: ", rb->_velocity);
 }
 
 

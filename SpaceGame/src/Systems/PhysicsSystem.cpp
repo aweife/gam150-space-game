@@ -19,17 +19,8 @@
 #include "../Global.h"
 #include "../ECS/Core.h"
 #include "../Components/ComponentList.h"
+#include "../Tools/Editor.h"
 
-/*********************************************************************************
-*
-*  GLOBAL VARIABLES (FOR EULER'S METHOD <TEST>)
-*
-**********************************************************************************/
-float thrust = 300.0f;
-float drag = 5.0f;
-float displacement = 25.0f;
-float velocity = 30.0f;
-float mass = 30.0f;
 
 bool foranglecheck(AEVec2 currdir, AEVec2 newdir)
 {
@@ -65,48 +56,10 @@ void PhysicsSystem::Update()
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
 
-		// Trying Runge-Kutta method with basic Euler's
-		//float force;				// total force
-		//float acceleration;			// acceleration of the ship
-		//float newVelocity;			// new velocity at the time t + dt
-		//float newDisplacement;		// new displacement at the time t + dt
-		//float k1, k2, k3, k4;
-
-		//// Calculate total force 
-		//force = (thrust - (drag * velocity));
-
-		//// Calculate the acceleration 
-		//acceleration = force / mass;
-		//k1 = g_dt * acceleration;
-
-		//force = (thrust - (drag * (velocity + k1 / 2)));
-		//acceleration = force / mass;
-		//k2 = g_dt * acceleration;
-
-		//force = (thrust - (drag * (velocity + k2 / 2)));
-		//acceleration = force / mass;
-		//k3 = g_dt * acceleration;
-
-		//force = (thrust - (drag * (velocity + k3)));
-		//acceleration = force / mass;
-		//k4 = g_dt * acceleration;
-
-		//// Calculate the new velocity at time t + dt 
-		//// V is the velocity at time t
-		//newVelocity = velocity + (k1 + 2 * k2 + 2 * k3 + k4) / 6;
-
-		//// Calculate the new displacement at time t + dt
-		//newDisplacement = displacement + newVelocity * g_dt;
-
-		//// Updating the old velocity
-		//velocity = newVelocity;
-		//displacement = newDisplacement;
 
 		// -----------------------------------------------------------------------
 		// Currently whats working
 		// -----------------------------------------------------------------------
-
-		
 
 		// Add the new frame velocity change onto the current velocity
 		AEVec2Add(&rigidbody->_velocityVector, &rigidbody->_velocityVector, &rigidbody->_velocityChangeVector);
@@ -114,13 +67,14 @@ void PhysicsSystem::Update()
 		AEVec2Zero(&rigidbody->_velocityChangeVector);
 
 		// Set a cap onto the current velocity
-		if (AEVec2Length(&rigidbody->_velocityVector) >= rigidbody->_velocityCap)
-		{
-			AEVec2Scale(&rigidbody->_velocityVector, &rigidbody->_velocityVector, 0.99f);		//Smootly reduce velocity
-		}
+		//if (AEVec2Length(&rigidbody->_velocityVector) >= rigidbody->_velocityCap)
+		//{
+			
+		//}
 
 		// Calculate velocity magnitude
 		rigidbody->_velocity = AEVec2Length(&rigidbody->_velocityVector);
+		//Editor_TrackVariable("Velocity: ", rigidbody->_velocity)
 
 		// Calculate normalised velocity vector.....Check if the _velocityVector not (0,0) 
 		if (!(rigidbody->_velocityVector.x < FLT_EPSILON && rigidbody->_velocityVector.x > -FLT_EPSILON &&
@@ -129,10 +83,42 @@ void PhysicsSystem::Update()
 			AEVec2Normalize(&rigidbody->_velocityDirection, &rigidbody->_velocityVector);
 		}
 
+		// if the velocity hits the velocity cap
+		if (rigidbody->_velocity > rigidbody->_velocityCap)
+			rigidbody->_velocity = rigidbody->_velocityCap;
+
+		// Add onto the velocity
+		AEVec2Scale(&rigidbody->_velocityVector, &rigidbody->_velocityDirection, rigidbody->_velocity);
+
+		/***************
+		* AI
+		****************/
+		// Addition of forces to final calculation
+		rigidbody->_aiSteeringVector.x = rigidbody->_aiSteeringVector.x / rigidbody->_mass;
+		rigidbody->_aiSteeringVector.y = rigidbody->_aiSteeringVector.y / rigidbody->_mass;
+
+
+		// add steering vector into the velocity vector
+		AEVec2Add(&rigidbody->_velocityVector, &rigidbody->_velocityVector, &rigidbody->_aiSteeringVector);
+
+		// check if the collision is bigger than the other vectors
+		if (rigidbody->_collisionVector.x > rigidbody->_velocityVector.x &&
+			rigidbody->_collisionVector.y > rigidbody->_velocityVector.y)
+		{
+			// to set the current velocity vector to the collision vector, and decrement the collision vector 
+			--rigidbody->_collisionVector.x;
+			--rigidbody->_collisionVector.y;
+		}
+
+		//add the gravitational vector into the velocity vector
+		AEVec2Add(&rigidbody->_velocityVector, &rigidbody->_velocityVector, &rigidbody->_gravityVelocity);
+
+		//Smootly reduce velocity
+		AEVec2Scale(&rigidbody->_velocityVector, &rigidbody->_velocityVector, 0.995f);
+
 		// Apply displacement on current position
 		transform->_position.x += rigidbody->_velocityVector.x * g_dt;
 		transform->_position.y += rigidbody->_velocityVector.y * g_dt;
-
 	}
 
 

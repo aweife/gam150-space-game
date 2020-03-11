@@ -17,6 +17,7 @@
 #include <array>                            // array container
 #include <vector>                           // vector container
 #include <limits>                           // limits
+#include <cmath>                            // For abs
 
 #include "../Managers/CameraManager.h"		// For screen shake
 #include "../Math/Math.h"                   // Additional Math functions
@@ -135,8 +136,15 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 	if (obj1.max.x < obj2.min.x || obj1.min.x > obj2.max.x ||
 		obj1.max.y < obj2.min.y || obj1.min.y > obj2.max.y)
 	{
+		// Check x-axis 
+		if (fabs(newVelocity_x) < FLT_EPSILON) // If vel is 0 
+		{
+			// If they do not overlap on the x-axis 
+			if ((obj2.max.x < obj1.min.x) || (obj2.min.x > obj1.max.x))
+				return false;
+		}
 		// Working with one-dimention (x-axis)
-		if (newVelocity_x < 0.0f)
+		else if (newVelocity_x < 0.0f)
 		{
 			// Case 1 
 			if (obj1.min.x > obj2.max.x)
@@ -156,7 +164,7 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			}
 		}
 
-		if (newVelocity_x > 0)
+		else if (newVelocity_x > 0)
 		{
 			// Case 2 
 			if (obj1.min.x > obj2.max.x)
@@ -182,8 +190,16 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			return false;
 		}
 
+		// Check y-axis 
+		if (fabs(newVelocity_y) < FLT_EPSILON) // If vel is 0 
+		{
+			// If they do not overlap on the x-axis 
+			if ((obj2.max.y < obj1.min.y) || (obj2.min.y > obj1.max.y))
+				return false;
+		}
+
 		// Working with one-dimention (y-axis)
-		if (newVelocity_y < 0)
+		else if (newVelocity_y < 0)
 		{
 			// Case 1 
 			if (obj1.max.y > obj2.min.y)
@@ -203,7 +219,7 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			}
 		}
 
-		if (newVelocity_y > 0)
+		else if (newVelocity_y > 0)
 		{
 			// Case 2 
 			if (obj1.min.y > obj2.max.y)
@@ -437,15 +453,15 @@ void CollisionSystem::Update()
 					printf("Enemy health decrease lmao\n");
 
 					// for player's bounce off
-					rigidbody->_angularVelocity.x = -20.0f;
-					rigidbody->_angularVelocity.y = -20.0f;
-					rigidbody->_velocityVector.x += rigidbody->_angularVelocity.x;
-					rigidbody->_velocityVector.y += rigidbody->_angularVelocity.y;
+					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.5f), -(rigidbody->_velocityVector.y * 1.5f));
+					/*rigidbody->_collisionVector.x = -20.0f;
+					rigidbody->_collisionVector.y = -20.0f;*/
+					rigidbody->_velocityVector.x += rigidbody->_collisionVector.x;
+					rigidbody->_velocityVector.y += rigidbody->_collisionVector.y;
 
 					// for enemy's bounce off
-					rigidbody2->_angularVelocity.x = -50.0f;
-					rigidbody2->_angularVelocity.y = -50.0f;
-					rigidbody2->_velocityChangeVector = rigidbody2->_angularVelocity;
+					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.5f), -(rigidbody->_velocityVector.y * 1.5f));
+					rigidbody2->_velocityChangeVector = rigidbody2->_collisionVector;
 				}
 				
 				// if bullet collide with enemy

@@ -42,6 +42,7 @@ namespace Factory
 		UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
 			, WeaponType::pistol, UpgradePackages::Range_Pistol);
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
+		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 
 		return player;
 	}
@@ -112,14 +113,14 @@ namespace Factory
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
-		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 2.0f, 2.0f, 0.0f));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 0.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -200.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -400.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 150.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 100.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
