@@ -33,7 +33,7 @@ void Level1_Load()
 
 	//Create a debug arrow on player
 	Factory::DebugVector_Velocity(PlayerManager::player);
-	
+
 	// Create camera
 	Factory::CreateCamera(PlayerManager::player);		
 

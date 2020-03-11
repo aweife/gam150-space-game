@@ -20,7 +20,6 @@
     <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
-    <ClCompile Include="src\Systems\PathFindingSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
@@ -32,6 +31,7 @@
     <ClCompile Include="src\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Systems\UISystem.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
+    <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
     <ClCompile Include="src\Components\cDebugTools.cpp" />
     <ClCompile Include="src\Systems\DebugToolsSystem.cpp" />
@@ -41,6 +41,9 @@
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
+    <ClCompile Include="src\AI\aiFleePlayer.cpp" />
+    <ClCompile Include="src\AI\aiAttack.cpp" />
+    <ClCompile Include="src\AI\aiChase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -48,7 +51,6 @@
     <ClInclude Include="src\Components\cCollision.h" />
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\ComponentList.h" />
-    <ClInclude Include="src\Components\cPathFinding.h" />
     <ClInclude Include="src\Components\cSpaceShip.h" />
     <ClInclude Include="src\ECS\ComponentStorage.h" />
     <ClInclude Include="src\ECS\ComponentStorage_Generic.h" />
@@ -69,7 +71,6 @@
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
     <ClInclude Include="src\Systems\AISystem.h" />
     <ClInclude Include="src\Systems\CollisionSystem.h" />
-    <ClInclude Include="src\Systems\PathFindingSystem.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
     <ClInclude Include="src\Systems\SpaceShipLogicSystem.h" />
@@ -89,6 +90,12 @@
     <ClInclude Include="src\Components\cParticle.h" />
     <ClInclude Include="src\Components\cParticleEmitter.h" />
     <ClInclude Include="src\Systems\ParticleSystem.h" />
+    <ClInclude Include="src\AI\aiBlackBoard.h" />
+    <ClInclude Include="src\AI\aiBase.h" />
+    <ClInclude Include="src\AI\aiState.h" />
+    <ClInclude Include="src\AI\aiFleePlayer.h" />
+    <ClInclude Include="src\AI\aiAttack.h" />
+    <ClInclude Include="src\AI\aiChase.h" />
     <ClInclude Include="src\Systems\ParticleEmitterSystem.h" />
   </ItemGroup>
   <ItemGroup>
@@ -102,5 +109,8 @@
     <Image Include="res\Prop_Planet3.png" />
     <Image Include="res\Prop_Planet4.png" />
     <Image Include="res\Weapon_Bullet1.png" />
+    <Image Include="res\Enemy_1.png" />
+    <Image Include="res\GameLogo.png" />
+    <Image Include="res\Loading.png" />
   </ItemGroup>
 </Project>

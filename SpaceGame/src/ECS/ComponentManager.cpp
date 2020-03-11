@@ -11,7 +11,6 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cRigidBody>(ID_RigidBodyComponent);
 	RegisterComponentCollection<cCollision>(ID_CollisionComponent);
 	RegisterComponentCollection<cCamera>(ID_CameraComponent);
-	RegisterComponentCollection<cPathFinding>(ID_PathFindingComponent);
 	RegisterComponentCollection<cAI>(ID_AIComponent);
 	RegisterComponentCollection<cSpaceShip>(ID_SpaceShip);
 	RegisterComponentCollection<cUIElement>(ID_UIComponent);
