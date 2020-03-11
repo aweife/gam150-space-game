@@ -101,6 +101,7 @@
     <ClCompile Include="src\Components\cParticle.cpp" />
     <ClCompile Include="src\Components\cParticleEmitter.cpp" />
     <ClCompile Include="src\Components\cSpaceShip.cpp" />
+    <ClCompile Include="src\Components\cTimeline.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
     <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\ECS\ComponentStorage.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="src\Components\cParticle.h" />
     <ClInclude Include="src\Components\cParticleEmitter.h" />
     <ClInclude Include="src\Components\cSpaceShip.h" />
+    <ClInclude Include="src\Components\cTimeline.h" />
     <ClInclude Include="src\Components\cUIElement.h" />
     <ClInclude Include="src\Components\cWeapon.h" />
     <ClInclude Include="src\ECS\ComponentStorage.h" />

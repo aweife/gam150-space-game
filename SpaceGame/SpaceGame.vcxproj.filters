@@ -55,6 +55,7 @@
     <ClCompile Include="src\AI\aiFleePlayer.cpp" />
     <ClCompile Include="src\AI\aiAttack.cpp" />
     <ClCompile Include="src\AI\aiChase.cpp" />
+    <ClCompile Include="src\Components\cTimeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="src\Managers\UpgradeManager.h" />
     <ClInclude Include="src\Systems\WeaponSystemMelee.h" />
     <ClInclude Include="src\Systems\WeaponSystemRange.h" />
+    <ClInclude Include="src\Components\cTimeline.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

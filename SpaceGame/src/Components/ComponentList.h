@@ -22,3 +22,4 @@
 #include "cDebugTools.h"
 #include "cParticle.h"
 #include "cParticleEmitter.h"
+#include "cTimeline.h"

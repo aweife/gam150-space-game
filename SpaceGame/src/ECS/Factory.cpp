@@ -127,6 +127,10 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
 
+		Core::Get().AddComponent<cTimeline>(enemy, new cTimeline(g_appTime, g_appTime + 10.0f));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(enemy)->_rotation, Core::Get().GetComponent<cTimeline>(enemy));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(enemy)->_rotation, Core::Get().GetComponent<cTimeline>(enemy), 5.0f, 1.0f);
+
 		// debug ai
 		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
 		cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
@@ -432,7 +436,7 @@ namespace Factory_UI
 			AEVec2Set(&startingPos, startingPos.x, centralPos.y + (borderSize * 0.9f) / 2 - (borderSize * 0.9f) * (1.0f / 10)); //start small and expand
 			upgrade = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(upgrade, new cTransform(startingPos, 0.0f, { borderSize *0.9f, (2.0f/ 10) * borderSize }));
-			Core::Get().AddComponent<cSprite>(upgrade, new cSprite(upgrade, "Square Mesh", "Texture_Default", 0));
+			Core::Get().AddComponent<cSprite>(upgrade, new cSprite(upgrade, "Square Mesh", "Planet_1", 0));
 			Core::Get().GetComponent<cSprite>(upgrade)->_colorTint = { 1.0f,0.0f, 0.0f,1.0f };
 			Core::Get().AddComponent<cUIElement>(upgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
 			group[i + 1] = upgrade;
@@ -440,7 +444,7 @@ namespace Factory_UI
 			AEVec2Set(&startingPos, startingPos.x, centralPos.y + (borderSize*0.9f)/2 - (borderSize * 0.9f) * (6.0f/10));
 			fakeupgrade = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(fakeupgrade, new cTransform(startingPos, 0.0f, {borderSize * 0.9f, (8.0f / 10) * borderSize }));
-			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh", "Texture_Default", 0));
+			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh", "Planet_2", 0));
 			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 0.0f,0.0f, 1.0f,1.0f };
 			Core::Get().AddComponent<cUIElement>(fakeupgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FAKEUPGRADE));
 			group[i + 2] = fakeupgrade;

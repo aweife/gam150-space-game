@@ -16,3 +16,4 @@
 #include "DebugToolsSystem.h"
 #include "ParticleSystem.h"
 #include "ParticleEmitterSystem.h"
+#include "TimelineSystem.h"
