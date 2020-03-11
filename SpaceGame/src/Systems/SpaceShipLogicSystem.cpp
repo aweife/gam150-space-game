@@ -57,10 +57,10 @@ void SpaceShipThrust(cRigidBody* rb, cTransform* transform)
 	AEVec2Set(&thrustDir, AECos(transform->_rotation), AESin(transform->_rotation));
 
 	// Thrust vector will be added onto velocity, based on rate of change (acceleration)
-	AEVec2Scale(&thrustVector, &thrustDir, rb->_acceleration);
+	//AEVec2Scale(&thrustVector, &thrustDir, rb->_acceleration);
 
 	// Add Thrust Vector to current velocity change
-	AEVec2Add(&rb->_velocityChangeVector, &rb->_velocityChangeVector, &thrustVector);
+	AEVec2Add(&rb->_velocityChangeVector, &rb->_velocityChangeVector, &thrustDir);
 
 }
 
