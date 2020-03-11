@@ -450,7 +450,7 @@ void CollisionSystem::Update()
 				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
 				{
 					CameraManager::StartCameraShake();
-					printf("Enemy health decrease lmao\n");
+					//printf("Enemy health decrease lmao\n");
 
 					// for player's bounce off
 					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.5f), -(rigidbody->_velocityVector.y * 1.5f));

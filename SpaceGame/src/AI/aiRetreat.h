@@ -15,7 +15,7 @@ private:
 
 	AEVec2 _targetPosition;
 	float _safeDistance;
+	float rotationSpeed;
 
 	void FindSafePosition(const aiBlackBoard& bb);
-	void Flee();
 };

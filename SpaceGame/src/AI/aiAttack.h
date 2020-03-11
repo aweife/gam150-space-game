@@ -10,6 +10,7 @@ public:
 	virtual void Run(const aiBlackBoard&, the_variant&) override;
 private:
 	cTransform* trans;
+	cRigidBody* rb;
 
 	// Attack
 	float rotationSpeed;

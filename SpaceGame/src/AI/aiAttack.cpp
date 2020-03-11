@@ -12,6 +12,7 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 
 		// Cache self components
 		trans = Core::Get().GetComponent<cTransform>(bb.id);
+		rb = Core::Get().GetComponent<cRigidBody>(bb.id);
 
 		// Initialise state
 		rotationSpeed = 10.0f;
@@ -22,14 +23,20 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 		delayBetweenAttacks = 0.5f;
 		delayTimer = 0.0f;
 
-		maxDistance = 700.0f;
+		maxDistance = 900.0f;
 		minDistance = 200.0f;
 
 		// Change inner state
 		innerState = INNER_STATE_ONUPDATE;
 
+		printf("AI is attacking\n");
+
 		break;
 	case INNER_STATE_ONUPDATE:
+
+		// Slowdown
+		if (rb->_velocity > rb->_acceleration)
+			rb->_velocity *= 0.9f;
 
 		// Always aim at player in this state
 		AimAtTarget(bb);
@@ -70,8 +77,7 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 
 void aiAttack::AimAtTarget(const aiBlackBoard& bb)
 {
-	trans->_rotation = 
-		Transform::RotateToTarget(bb.directionToPlayerN, trans->_rotation, rotationSpeed * g_dt);
+	Transform::RotateToTarget(trans->_rotation, bb.directionToPlayerN, rotationSpeed * g_dt);
 }
 
 bool aiAttack::TargetInRange(const aiBlackBoard& bb)

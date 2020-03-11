@@ -1,6 +1,7 @@
 #include "aiState.h"
 #include "../ECS/Core.h"
 #include "../Tools/Editor.h"
+#include "../Global.h"
 
 void aiRetreat::Run(const aiBlackBoard& bb, the_variant& var)
 {
@@ -14,18 +15,27 @@ void aiRetreat::Run(const aiBlackBoard& bb, the_variant& var)
 
 		// Initialize state
 		_safeDistance = 600.0f;
+		rotationSpeed = 10.0f;
 		FindSafePosition(bb);
 
 
 		// Change inner state
 		innerState = INNER_STATE_ONUPDATE;
+		printf("AI is retreating\n");
 
 		break;
 	case INNER_STATE_ONUPDATE:
 
-		if(bb.distanceFromPlayer < _safeDistance)
-			Flee();
-		else
+		Editor_TrackVariable("safe x", _targetPosition.x);
+		Editor_TrackVariable("safe y", _targetPosition.y);
+
+		if (AEVec2Distance(&_targetPosition, &trans->_position) > 20.0f)
+		{
+			rb->_velocity += rb->_acceleration;
+			Steering::SeekTarget(rb->_steeringVector, trans->_position, _targetPosition, rb->_velocity * g_dt, rb->_velocityVector);
+			Transform::RotateToTarget(trans->_rotation, trans->_position, _targetPosition, rotationSpeed * g_dt);
+		}
+		else 
 		{
 			// Change inner state
 			innerState = INNER_STATE_ONEXIT;
@@ -46,23 +56,8 @@ void aiRetreat::Run(const aiBlackBoard& bb, the_variant& var)
 void aiRetreat::FindSafePosition(const aiBlackBoard& bb)
 {
 	AEVec2 desired = bb.directionToPlayerN;
+	AEVec2Neg(&desired, &desired);
 	AEVec2Scale(&desired, &desired, _safeDistance);
 	AEVec2Add(&_targetPosition, &trans->_position, &desired);
-	Editor_TrackVariable("safe x", _targetPosition.x);
-	Editor_TrackVariable("safe y", _targetPosition.y);
-}
-
-void aiRetreat::Flee()
-{
-	return;
-	AEVec2 desired;
-	AEVec2Sub(&desired, &_targetPosition, &trans->_position);
-
-	// Replace with steeringVector in rb
-	AEVec2 steering;
-	AEVec2Sub(&steering, &desired, &rb->_velocityVector);
-
-	// Flee
-	rb->_velocityVector.x += steering.x;
-	rb->_velocityVector.y += steering.y;
+	//AEVec2Set(&_targetPosition, -400.0f, 50.0f);
 }

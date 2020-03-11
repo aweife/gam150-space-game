@@ -113,7 +113,7 @@ namespace Factory
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
-		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 0.0f));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
@@ -130,8 +130,10 @@ namespace Factory
 
 		// debug ai
 		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
-		cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
-		CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
+		CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
 		return enemy;
 	}
 

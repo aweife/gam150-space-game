@@ -82,6 +82,9 @@ void PhysicsSystem::Update()
 		// Affect steering force by mass
 		//AEVec2Scale(&rb->_steeringVector, &rb->_steeringVector, 1.0f/rb->_mass);
 
+		// Add player force into the velocity vector
+		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_velocityChangeVector);
+
 		// Add steering force into the velocity vector
 		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_steeringVector);
 
