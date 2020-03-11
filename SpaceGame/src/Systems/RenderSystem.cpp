@@ -4,6 +4,7 @@
 #include "../Components/cTransform.h"					//Required Component to manage 
 #include "../Components/cSprite.h"						
 #include "../Global.h"									//Window Width and Height for parallax
+#include "ParticleSystem.h"
 
 void RenderSystem::Init()
 {
@@ -23,6 +24,12 @@ void RenderSystem::Render()
 	//Camera position
 	float cameraX, cameraY;		
 	AEGfxGetCamPosition(&cameraX, &cameraY);
+	float parallaxOffsetX = 0.0f;
+	float parallaxOffsetY = 0.0f;
+
+	//Update particle system based on layers after finished 
+	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
+	unsigned int currentLayer = 6;
 
 	// -----------------------------------------------------------------------
 	// Update all entities that has the components we want
@@ -50,8 +57,8 @@ void RenderSystem::Render()
 			// -----------------------------------------------------------------------
 			//  Parallax Background calculation...displace layers based on camera from origin
 			// -----------------------------------------------------------------------
-			float parallaxOffsetX = 0.0f;
-			float parallaxOffsetY = 0.0f;
+			parallaxOffsetX = 0.0f;
+			parallaxOffsetY = 0.0f;
 			if (sprite->_layer > 2 && sprite->_layer < 6)				//BACKGROUND <--
 			{
 				//Render with parallax offset
@@ -94,6 +101,8 @@ void RenderSystem::Render()
 			//Draw
 			AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);
 		}
+		particleSystemInstance->RenderLayer(currentLayer, parallaxOffsetX, parallaxOffsetY);
+		--currentLayer;
 	}
 }
 
@@ -131,12 +140,40 @@ void RenderSystem::OnComponentAdd(ENTITY entity)
 }
 void RenderSystem::OnComponentRemove(ENTITY entity)
 {
-	entityLayer0.erase(entity);
+	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+	switch (sprite->_layer)
+	{
+	case 0:
+		entityLayer0.erase(entity);
+		break;
+	case 1:
+		entityLayer1.erase(entity);
+		break;
+	case 2:
+		entityLayer2.erase(entity);
+		break;
+	case 3:
+		entityLayer3.erase(entity);
+		break;
+	case 4:
+		entityLayer4.erase(entity);
+		break;
+	case 5:
+		entityLayer5.erase(entity);
+		break;
+	case 6:
+		entityLayer6.erase(entity);
+		break;
+	default:
+		break;
+	}
+	
+	/*entityLayer0.erase(entity);
 	entityLayer1.erase(entity);
 	entityLayer2.erase(entity);
 	entityLayer3.erase(entity);
 	entityLayer4.erase(entity);
 	entityLayer5.erase(entity);
-	entityLayer6.erase(entity);
+	entityLayer6.erase(entity);*/
 
 }

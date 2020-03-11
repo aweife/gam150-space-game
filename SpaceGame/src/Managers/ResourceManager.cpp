@@ -224,10 +224,14 @@ namespace ResourceManager
 				case 7:
 					if (textureLibrary.find("BG_1") != textureLibrary.end()) break;
 					//textureLibrary.insert({ "BG_1", AEGfxTextureLoad("res/BG_Background1.png") });
+					break;
+				case 8:
+					if (textureLibrary.find("Particle_Default") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });
 					*progress = 100;
 					break;
 			}
-			*progress += static_cast<unsigned int>(100 / 8);
+			*progress += static_cast<unsigned int>(100 / 9);
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

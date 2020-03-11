@@ -21,7 +21,7 @@
 	This is the struct for the AABB collision detection
 */
 /**************************************************************************/
-struct AABB
+struct Colliders
 {
 	AEVec2	center;      // center
 	AEVec2  rad;
@@ -29,6 +29,7 @@ struct AABB
 
 	AEVec2	min;
 	AEVec2	max;
+	AEVec2  _point;
 };
 
 // To check which shapes is used for the game object 
@@ -36,6 +37,7 @@ enum class ColliderShape
 {
 	CIRCLE = 0,
 	RECTANGLE = 1,
+	RECTANGLE_OBB = 2,
 	NONE
 };
 
@@ -45,7 +47,7 @@ class cCollision:public Component
 public:
 	//Game object instance structure
 	unsigned long		_flag			= 0;						// bit _flag or-ed together
-	AABB				_boundingBox		= { 0 };				// object bouding box that encapsulates the object
+	Colliders		    _boundingBox		= { 0 };				// object bouding box that encapsulates the object
 	ColliderShape		_bbShape			= ColliderShape::NONE;
 
 	// Constructor
@@ -53,8 +55,5 @@ public:
 
 	// Destructor
 	~cCollision() = default;
-
-	//// Checking for Collision (Circle)
-	//bool checkforCollisionCircle();
 
 };

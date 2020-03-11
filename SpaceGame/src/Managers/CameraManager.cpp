@@ -15,7 +15,11 @@ namespace CameraManager
 	ENTITY _sideCamera[3];						//Array of standby camera
 
 	const float SHAKETHRESHOLD_MIN = 10.0f;
-	const float SHAKETHRESHOLD_MAX = 20.0f;
+	const float SHAKETHRESHOLD_MAX = 40.0f;
+	const float SHAKEDURATION_MIN = 0.5f;
+	const float SHAKEDURATION_MAX = 1.0f;
+	const float SHAKESPEED_MIN = 0.2f;
+	const float SHAKESPEED_MAX = 1.0f;
 	float shakeIntensity = 0.0f;
 
 	cTransform* currCameraTransform;
@@ -57,26 +61,56 @@ namespace CameraManager
 	void StartCameraShake()
 	{
 		currCameraComp->_isCameraShake = true;
+		currCameraComp->_camEffectStartTime = g_appTime;
+		currCameraComp->_camEffectSpeed = AERandFloat() * (SHAKESPEED_MAX - SHAKESPEED_MIN) + SHAKESPEED_MIN;
+		currCameraComp->_camEffectDuration = AERandFloat() * (SHAKEDURATION_MAX - SHAKEDURATION_MIN) + SHAKEDURATION_MIN;
+
 		// Set a starting shake intensity (small shake vs a big shake)
 		shakeIntensity = AERandFloat() * (SHAKETHRESHOLD_MAX - SHAKETHRESHOLD_MIN) + SHAKETHRESHOLD_MIN;
 	}
 
 	void CameraShake()
 	{
-		float currShakeAmount;
-		//Range from normalised -1.0f to 1.0f
-		currShakeAmount = (AERandFloat() * 2.0f - 1.0f) * shakeIntensity;
-		currCameraComp->_camOffsetPos.x = currShakeAmount;
-		currShakeAmount = (AERandFloat() * 2.0f - 1.0f) * shakeIntensity;
-		currCameraComp->_camOffsetPos.y = currShakeAmount;
+		if (AEVec2Distance(&currCameraComp->_camOffsetTarget, &currCameraComp->_camOffsetPos) < 1.0f)
+		{
+			Update_ScreenShakeTarget();
+		}
+		
+		AEVec2 directionVector, distanceVector, tweenVector;
+		
+		AEVec2Sub(&distanceVector, &currCameraComp->_camOffsetTarget, &currCameraComp->_camOffsetPos);
+		AEVec2Scale(&tweenVector, &distanceVector, 0.1f); //Tweening - move 0.1 towards target
+		AEVec2Scale(&directionVector, &currCameraComp->_camOffsetTarget, currCameraComp->_camEffectSpeed); //Base speed
+		AEVec2Add(&directionVector, &tweenVector, &directionVector);
+		if (AEVec2Length(&distanceVector) < AEVec2Length(&directionVector))
+		{
+			AEVec2Set(&directionVector, distanceVector.x, distanceVector.y);			//Make sure does not exceed target
+		}
+		AEVec2Add(&currCameraComp->_camOffsetPos, &currCameraComp->_camOffsetPos, &directionVector);
 
-		shakeIntensity *= 0.8f;			//Intensity will decrease over time
-		if (shakeIntensity < 1.0f)
+		if (g_appTime - currCameraComp->_camEffectStartTime > currCameraComp->_camEffectDuration)
 		{
 			currCameraComp->_isCameraShake = false;
 			currCameraComp->_camOffsetPos.x = 0;
 			currCameraComp->_camOffsetPos.y = 0;
+			currCameraComp->_camOffsetTarget.x = 0;
+			currCameraComp->_camOffsetTarget.y = 0;
 		}
+	}
+
+	void Update_ScreenShakeTarget()
+	{
+		currCameraComp->_camOffsetPos.x = 0;
+		currCameraComp->_camOffsetPos.y = 0;
+
+		float currShakeAmount;
+		//Range from normalised -1.0f to 1.0f
+		currShakeAmount = (AERandFloat() * 2.0f - 1.0f) * shakeIntensity;
+		currCameraComp->_camOffsetTarget.x = currShakeAmount;
+		currShakeAmount = (AERandFloat() * 2.0f - 1.0f) * shakeIntensity;
+		currCameraComp->_camOffsetTarget.y = currShakeAmount;
+
+		shakeIntensity *= 0.9f;			//Intensity will decrease over time non-linearly
 	}
 
 	cTransform* GetCameraTransform()

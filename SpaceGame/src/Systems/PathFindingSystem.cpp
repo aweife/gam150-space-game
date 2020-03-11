@@ -79,10 +79,10 @@ void PathFindingSystem::Update()
 		// Decide logic
 		switch (path->currentState)
 		{
-		case PATH_SEEK:
+		case PATH_STATE::PATH_SEEK:
 			Seek(&trans->_position, &targetTrans->_position, &rb->_velocityVector);
 			break;
-		case PATH_FLEE:
+		case PATH_STATE::PATH_FLEE:
 			Flee(&trans->_position, &targetTrans->_position, &rb->_velocityVector);
 			break;
 		}

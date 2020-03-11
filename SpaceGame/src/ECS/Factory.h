@@ -24,4 +24,8 @@ namespace Factory
 	ENTITY CreateDebug_Octagon(AEVec2& pos, float& rot, AEVec2& scale);
 	ENTITY DebugVector_Velocity(ENTITY target);
 	ENTITY DebugBoundingBox_Rigidbody(ENTITY target);
+
+	ENTITY CreateParticleEmitter_MYFIRST();
+	ENTITY CreateParticleEmitter_UPONIMPACT(cTransform* target);
+	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar);
 }

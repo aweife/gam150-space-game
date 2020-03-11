@@ -1,8 +1,11 @@
 #include "SpaceShipLogicSystem.h"
 #include "../ECS/Core.h"
 #include "../Global.h"
+#include "../Tools/Editor.h"
 
 #include "../ECS/Factory.h"
+
+#include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
 /******************************************************************************/
 /*!
 	Global Variables
@@ -39,6 +42,7 @@ void SpaceShipLogicSystem::Update()
 		{
 			//spaceship->_thrustDelay = 0.0f;
 			SpaceShipThrust(rigidbody, transform);
+			Factory::CreateParticleEmitter_TRAIL(transform);
 		}
 
 		if (spaceship->_isShooting && spaceship->_shootDelay > 1.5f)
@@ -63,6 +67,7 @@ void SpaceShipThrust(cRigidBody* rb, cTransform* transform)
 
 	// Add Thrust Vector to current velocity change
 	AEVec2Add(&rb->_velocityChangeVector, &rb->_velocityChangeVector, &thrustVector);
+
 }
 
 
@@ -75,7 +80,7 @@ void SpaceShipShoot(cTransform* transform)
 		// Setting the direction of bullet spawn
 		AEVec2Set(&bulletDirection, AECos(transform->_rotation), AESin(transform->_rotation));
 		// Bullet velocity
-		AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
+		AEVec2Scale(&bulletVelocity, &bulletDirection, 500.0f);
 		// Spawn the bullet at the tip of player
 		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
 			transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);

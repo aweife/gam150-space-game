@@ -11,6 +11,7 @@ namespace CameraManager
 	void SmoothFollow();
 	void StartCameraShake();
 	void CameraShake();
+	void Update_ScreenShakeTarget();
 	cTransform* GetCameraTransform();
 
 	void AssignNewCam(ENTITY currCamera);
