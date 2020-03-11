@@ -92,7 +92,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\aiAttack.cpp" />
-    <ClCompile Include="src\AI\aiFleePlayer.cpp" />
+    <ClCompile Include="src\AI\AIBehaviors.cpp" />
+    <ClCompile Include="src\AI\aiRetreat.cpp" />
     <ClCompile Include="src\AI\aiChase.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
@@ -145,11 +146,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiAttack.h" />
-    <ClInclude Include="src\AI\aiFleePlayer.h" />
+    <ClInclude Include="src\AI\aiRetreat.h" />
     <ClInclude Include="src\AI\aiChase.h" />
     <ClInclude Include="src\AI\aiState.h" />
     <ClInclude Include="src\AI\aiBlackBoard.h" />
     <ClInclude Include="src\AI\aiBase.h" />
+    <ClInclude Include="src\AI\AIBehaviors.h" />
     <ClInclude Include="src\Components\cAI.h" />
     <ClInclude Include="src\Components\cCamera.h" />
     <ClInclude Include="src\Components\cCollision.h" />

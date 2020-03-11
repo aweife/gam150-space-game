@@ -22,7 +22,8 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 		delayBetweenAttacks = 0.5f;
 		delayTimer = 0.0f;
 
-		maxDistance = 500.0f;
+		maxDistance = 700.0f;
+		minDistance = 200.0f;
 
 		// Change inner state
 		innerState = INNER_STATE_ONUPDATE;
@@ -34,8 +35,20 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 		AimAtTarget(bb);
 
 		// Attack with timer
-		if(TargetInRange(bb))
+		if (TargetInRange(bb))
+		{
 			Attack();
+
+			// If too close to player
+			if (bb.distanceFromPlayer < minDistance)
+			{
+				// Change inner state
+				innerState = INNER_STATE_ONEXIT;
+
+				// Change state to seek
+				var.m_Varient.emplace<aiRetreat>();
+			}
+		}
 		else
 		{
 			// Change inner state
@@ -57,11 +70,8 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 
 void aiAttack::AimAtTarget(const aiBlackBoard& bb)
 {
-	// Calculate angle
-	float angle = atan2(bb.directionToPlayerN.y, bb.directionToPlayerN.x);
-
-	// Face player
-	trans->_rotation = MBMath_LerpRotation(trans->_rotation, angle, rotationSpeed* g_dt);
+	trans->_rotation = 
+		Transform::RotateToTarget(bb.directionToPlayerN, trans->_rotation, rotationSpeed * g_dt);
 }
 
 bool aiAttack::TargetInRange(const aiBlackBoard& bb)
