@@ -1,5 +1,4 @@
 #pragma once
-#include "../Managers/GameStateManager.h"
 
 extern unsigned int loadingForState;
 

@@ -3,8 +3,11 @@
 #include "../ECS/Core.h"
 #include "../Components/cUIElement.h"
 #include "../Components/cTransform.h"
+#include "../Components/cSprite.h"
 #include "../Managers/ResourceManager.h"				//FontId
-
+#include "../Math/Math.h"								//lerping
+#include "../Global.h"									//Screen size
+#include "../Managers/GameStateManager.h"
 
 #include "../Tools/Console.h"
 void UISystem::Init()
@@ -27,14 +30,34 @@ void UISystem::Render()
 		uiComponent = Core::Get().GetComponent<cUIElement>(entity);
 		uiTransform = Core::Get().GetComponent<cTransform>(entity);
 		
-		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-		AEGfxTextureSet(NULL, 0, 0);
-		AEGfxSetBlendMode(AE_GFX_BM_NONE);
-		AEGfxSetTransparency(1.0f);
+		if (uiComponent->_type == UI_TYPE::TEXT)
+		{
+			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+			AEGfxTextureSet(NULL, 0, 0);
+			AEGfxSetBlendMode(AE_GFX_BM_NONE);
+			AEGfxSetTransparency(uiComponent->_text._colorTint.a);
 
-		Console_Cout(uiComponent->_text);
-		AEGfxPrint(ResourceManager::fontId, uiComponent->_text,
-			static_cast<int>(uiTransform->_position.x), static_cast<int>(uiTransform->_position.y), 1.0f, 0.0f, 0.0f);
+			AEVec2 textPosition = { 0 };
+			if (uiComponent->_text._anchor == TEXT_ANCHOR::CENTERLEFT)
+			{
+				AEVec2Set(&textPosition, uiTransform->_position.x - (uiTransform->_scale.x * 0.5f), uiTransform->_position.y - 8);
+			}
+			else if(uiComponent->_text._anchor == TEXT_ANCHOR::CENTERRIGHT)
+			{
+				AEVec2Set(&textPosition, uiTransform->_position.x + (uiTransform->_scale.x * 0.5f)
+					- (14.5f * uiComponent->_text._bufferCount), uiTransform->_position.y - 8) ;
+			}
+			else if (uiComponent->_text._anchor == TEXT_ANCHOR::CENTER)
+			{
+				AEVec2Set(&textPosition, uiTransform->_position.x - (14.5f * uiComponent->_text._bufferCount/2)
+					, uiTransform->_position.y - 8);
+			}
+
+			AEGfxPrint(ResourceManager::fontId, uiComponent->_text._textBuffer,
+				static_cast<int>(textPosition.x), static_cast<int>(textPosition.y),
+				uiComponent->_text._colorTint.r, uiComponent->_text._colorTint.g, uiComponent->_text._colorTint.b);
+		}
+		
 	}
 }
 
@@ -43,5 +66,96 @@ void UISystem::EditText(ENTITY target, const char* newText)
 	AE_ASSERT(entitiesList.find(target) != entitiesList.end() && "UI not found");
 
 	cUIElement* uiComponent = Core::Get().GetComponent<cUIElement>(target);
-	sprintf_s(uiComponent->_text, newText);
+	sprintf_s(uiComponent->_text._textBuffer, newText);
+	uiComponent->_text._bufferCount = strlen(newText);
+}
+
+//Percentage upon 1.0f
+AEVec2 ScreenBasedCoords(float x, float y, UI_ANCHOR anchor, bool percentage)
+{
+	AEVec2 screenVector;
+	AEVec2Set(&screenVector, 0.0f, 0.0f);
+	switch (anchor)
+	{
+		case UI_ANCHOR::CENTER:
+			if (percentage)
+				AEVec2Set(&screenVector, g_WorldMaxX * x, g_WorldMaxY * y);
+			else
+				AEVec2Set(&screenVector, x, y);
+			break;
+		case UI_ANCHOR::TOPLEFT:
+			if (percentage)
+				AEVec2Set(&screenVector, g_WorldMaxX * 2 * (x-0.5f), g_WorldMaxY * 2 * (y + 0.5f));
+			else
+				AEVec2Set(&screenVector, x - g_WorldMaxX , g_WorldMaxY + y);
+			break;
+		case UI_ANCHOR::TOPRIGHT:
+			if (percentage)
+				AEVec2Set(&screenVector, g_WorldMaxX * 2 * (x + 0.5f), g_WorldMaxY * 2 * (y + 0.5f));
+			else
+				AEVec2Set(&screenVector, x + g_WorldMaxX , g_WorldMaxY + y);
+			break;
+		case UI_ANCHOR::BOTTOMLEFT:
+			if (percentage)
+				AEVec2Set(&screenVector, g_WorldMaxX * 2 * (x - 0.5f), g_WorldMaxY * 2 * (y - 0.5f));
+			else
+				AEVec2Set(&screenVector, x - g_WorldMaxX , y - g_WorldMaxY);
+			break;
+		case UI_ANCHOR::BOTTOMRIGHT:
+			if (percentage)
+				AEVec2Set(&screenVector, g_WorldMaxX * (x + 0.5f), g_WorldMaxY * 2 * (y - 0.5f));
+			else
+				AEVec2Set(&screenVector, x + g_WorldMaxX , y - g_WorldMaxY);
+			break;
+	}
+	return screenVector;
+}
+
+int globalHealth = 30;
+
+bool OnHealthChange_HPUI(ENTITY entity, Events::OnHealthChange* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
+
+	globalHealth = static_cast<int>(MBMath_Lerp(static_cast<float>(globalHealth), message->_newHealth, 1.0f));
+	printf("globalHealth %d entity %d \n", globalHealth, uiComp->_roleIndex);
+	if (globalHealth / 10 > uiComp->_roleIndex)
+	{
+		sprite->_UVOffset.x = 0.0f;
+	}
+	else if (globalHealth / 10 == uiComp->_roleIndex)
+	{
+		sprite->_UVOffset.x = 0.5f * (10 - (globalHealth % 10))/10;
+
+	}
+	else if (globalHealth / 10 < uiComp->_roleIndex)
+	{
+		sprite->_UVOffset.x = 0.5f;
+	}
+
+	return true;
+}
+
+bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
+{
+	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+	
+	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
+	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
+	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
+	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
+
+	//printf("mouse %f %f \n", message->_xPos, message->_yPos);
+	//printf("orig %f %f \n", transform->_position.x, transform->_position.y);
+	//printf("min %f %f \n", buttomMinX, buttomMinY);
+	//printf("max %f %f \n", buttomMaxX, buttomMaxY);
+	if ((buttomMaxX > message->_xPos && buttomMinX < message->_xPos &&
+		buttomMaxY > message->_yPos && buttomMinY < message->_yPos) == false)
+	{
+		//printf("failed\n");
+		return false;
+	}
+	GSM_LoadingTransition(GS_LEVEL1);
+	return true;
 }

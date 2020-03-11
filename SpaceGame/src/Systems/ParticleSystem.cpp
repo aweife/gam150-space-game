@@ -5,6 +5,7 @@
 #include "../Components/cParticleEmitter.h"
 #include "../Global.h"
 #include "../Math/Math.h"
+#include "AEEngine.h"
 
 void ParticleSystem::Init()
 {

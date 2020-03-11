@@ -96,11 +96,13 @@
     <ClCompile Include="src\AI\aiChase.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
+    <ClCompile Include="src\Components\cHealth.cpp" />
     <ClCompile Include="src\Components\cDebugTools.cpp" />
     <ClCompile Include="src\Components\cParticle.cpp" />
     <ClCompile Include="src\Components\cParticleEmitter.cpp" />
     <ClCompile Include="src\Components\cSpaceShip.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
+    <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\ECS\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\ECS\Factory.cpp" />
@@ -108,6 +110,9 @@
     <ClCompile Include="src\ECS\EntityManager.cpp" />
     <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
+    <ClCompile Include="src\Levels\MainMenu.cpp" />
+    <ClCompile Include="src\Levels\MapGenerator.cpp" />
+    <ClCompile Include="src\Levels\SplashScreen.cpp" />
     <ClCompile Include="src\Managers\CameraManager.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
@@ -118,18 +123,23 @@
     <ClCompile Include="src\ECS\Core.cpp" />
     <ClCompile Include="src\Managers\InputManager.cpp" />
     <ClCompile Include="src\Managers\ResourceManager.cpp" />
+    <ClCompile Include="src\Managers\UIEventsManager.cpp" />
+    <ClCompile Include="src\Managers\UpgradeManager.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
     <ClCompile Include="src\Player\PlayerManager.cpp" />
     <ClCompile Include="src\Systems\AISystem.cpp" />
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
     <ClCompile Include="src\Systems\DebugToolsSystem.cpp" />
+    <ClCompile Include="src\Systems\HealthSystem.cpp" />
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
     <ClCompile Include="src\Systems\UISystem.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystemMelee.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystemRange.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
@@ -143,6 +153,7 @@
     <ClInclude Include="src\Components\cAI.h" />
     <ClInclude Include="src\Components\cCamera.h" />
     <ClInclude Include="src\Components\cCollision.h" />
+    <ClInclude Include="src\Components\cHealth.h" />
     <ClInclude Include="src\Components\cDebugTools.h" />
     <ClInclude Include="src\Components\Component.h" />
     <ClInclude Include="src\Components\ComponentList.h" />
@@ -150,6 +161,7 @@
     <ClInclude Include="src\Components\cParticleEmitter.h" />
     <ClInclude Include="src\Components\cSpaceShip.h" />
     <ClInclude Include="src\Components\cUIElement.h" />
+    <ClInclude Include="src\Components\cWeapon.h" />
     <ClInclude Include="src\ECS\ComponentStorage.h" />
     <ClInclude Include="src\ECS\ComponentStorage_Generic.h" />
     <ClInclude Include="src\Components\cSprite.h" />
@@ -157,7 +169,13 @@
     <ClInclude Include="src\Components\cRigidBody.h" />
     <ClInclude Include="src\ECS\Factory.h" />
     <ClInclude Include="src\ECS\EntityManager.h" />
+    <ClInclude Include="src\Events\Events.h" />
+    <ClInclude Include="src\Events\UIEvents.h" />
+    <ClInclude Include="src\Global_Graphics.h" />
     <ClInclude Include="src\Levels\LoadingLevel.h" />
+    <ClInclude Include="src\Levels\MainMenu.h" />
+    <ClInclude Include="src\Levels\MapGenerator.h" />
+    <ClInclude Include="src\Levels\SplashScreen.h" />
     <ClInclude Include="src\Managers\CameraManager.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Global_ECS.h" />
@@ -167,7 +185,10 @@
     <ClInclude Include="src\Managers\GameStateManager.h" />
     <ClInclude Include="src\ECS\SystemManager.h" />
     <ClInclude Include="src\Managers\InputManager.h" />
+    <ClInclude Include="src\Managers\ManagerList.h" />
     <ClInclude Include="src\Managers\ResourceManager.h" />
+    <ClInclude Include="src\Managers\UIEventsManager.h" />
+    <ClInclude Include="src\Managers\UpgradeManager.h" />
     <ClInclude Include="src\Math\Math.h" />
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
     <ClInclude Include="src\Player\PlayerManager.h" />
@@ -182,6 +203,8 @@
     <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Systems\SystemList.h" />
     <ClInclude Include="src\Systems\UISystem.h" />
+    <ClInclude Include="src\Systems\WeaponSystemMelee.h" />
+    <ClInclude Include="src\Systems\WeaponSystemRange.h" />
     <ClInclude Include="src\Tools\Console.h" />
     <ClInclude Include="src\Tools\Editor.h" />
     <ClInclude Include="src\Tools\MemoryLeak.h" />

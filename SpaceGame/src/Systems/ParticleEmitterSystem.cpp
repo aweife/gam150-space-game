@@ -4,7 +4,6 @@
 #include "../Components/cTransform.h"
 #include "../Global.h"
 
-
 void ParticleEmitterSystem::Init()
 {
 	// Sets the system signature for this system

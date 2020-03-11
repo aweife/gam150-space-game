@@ -15,7 +15,7 @@ private:
 	std::unordered_map<ENTITY, unsigned int> entityToIndexMap;			// Map from an entity ID to an array index.
 	std::unordered_map<unsigned int, ENTITY> indexToEntityMap;			// Map from an array index to an entity ID.
 
-	unsigned int currSize;												// Current numbe of valid components in the array.
+	unsigned int currSize = 0;											// Current numbe of valid components in the array.
 public:
 	//Data
 	std::array<std::unique_ptr<T>, MAX_ENTITIES> componentArray;		//A list of components based on entity

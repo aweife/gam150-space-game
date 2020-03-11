@@ -1,34 +1,39 @@
-#pragma once
-/*********************************************************************************
+/**********************************************************************************
 * \file			cSpaceShip.h
-* \author		Chong Jin Kiat
-* \version		1.0
-* \date			31/01/2020
-* \par			Systems
-* \note			Course: GAM150
-* \brief		Component for Player Spaceship and AI Spaceship
-				- Thruster
-				- Shield
-				- Timer
-
-* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
-				or disclosure of this file or its contents without the prior
-				written consent of DigiPen Institute of Technology is prohibited.
+* \brief		Component for interlligent entity that behave like spaceship
+* \author		Jin Kiat, Chong, 100% Code Contribution
+*
+*				Long Description
+*				- Data for thrust movement
+*				- Data for weapon capability
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
+#pragma once
 #include "Component.h"
+
+enum class WeaponMode
+{
+	none,					//If the spaceship does not have weapon features
+	range,
+	melee
+};
 
 class cSpaceShip:public Component
 {
 public:
-	bool	_isThrusting;			// Check for thruster use
-	float	_thrustDelay;			// Countdown timer
-	float	_shield;				// Shield amount
-	bool	_activateShield;		// Check for shield activation
-	int		_lives;					// ok
-	float	_health;
-	bool	_isShooting;
-	float	_shootDelay;
+	// Spaceship Thruster (Movements)
+	bool	_isThrusting;			// Check for thruster use from player/AI input
+	float	_thrustDelay;			// Countdown timer when thruster overheats
+	float	_thrustSpeedAddition;	// ????? need to double comfirm
 
-	cSpaceShip();
+	int		_lives;					// 
+	
+	WeaponMode _currWeaponMode = WeaponMode::range;	//We can know if the spaceship has any weapon features
+
+	cSpaceShip() = delete;
+	cSpaceShip(bool isThrusting, float thrustDelay, int lives, float _thrustSpeedAddition, WeaponMode currWeaponMode);
 	~cSpaceShip() = default;
 };
