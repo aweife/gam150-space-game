@@ -68,7 +68,7 @@ void NormalShoot(cTransform* transform)
 	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
 	// Spawn the bullet at the tip of player
 	Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
-		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);
+		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, bulletDirection, transform->_rotation + PI / 2);
 }
 
 void HomingShoot(cTransform* transform)
@@ -87,7 +87,7 @@ void MachineGunShoot(cTransform* transform)
 	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
 	// Spawn the bullet at the tip of player
 	Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
-		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);
+		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, bulletDirection, transform->_rotation + PI / 2);
 }
 
 //void TripleShot(cTransform* transform)

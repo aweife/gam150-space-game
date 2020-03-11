@@ -22,20 +22,12 @@
 #include "../Tools/Editor.h"
 
 
-bool foranglecheck(AEVec2 currdir, AEVec2 newdir)
+bool foranglecheck(const AEVec2 currdir, const AEVec2 newdir)
 {
 	float angle = AERadToDeg(acosf(MBMath_DotProduct(currdir, newdir)));
-
-	if (angle > 90)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	//Editor_TrackVariable("player angle ", angle);
+	return (angle > PI / 2.0f);
 }
-
 
 void PhysicsSystem::Init()
 {
@@ -48,77 +40,123 @@ void PhysicsSystem::Init()
 
 void PhysicsSystem::Update()
 {
-	cTransform* transform;
-	cRigidBody* rigidbody;
+	cTransform* trans;
+	cRigidBody* rb;
 
 	for (auto const& entity : entitiesList)
 	{
-		transform = Core::Get().GetComponent<cTransform>(entity);
-		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
+		trans = Core::Get().GetComponent<cTransform>(entity);
+		rb = Core::Get().GetComponent<cRigidBody>(entity);
 
-
-		// -----------------------------------------------------------------------
-		// Currently whats working
-		// -----------------------------------------------------------------------
-
-		// Add the new frame velocity change onto the current velocity
-		AEVec2Add(&rigidbody->_velocityVector, &rigidbody->_velocityVector, &rigidbody->_velocityChangeVector);
-		// Reset the change in velocity for next frame
-		AEVec2Zero(&rigidbody->_velocityChangeVector);
-
-		// Set a cap onto the current velocity
-		//if (AEVec2Length(&rigidbody->_velocityVector) >= rigidbody->_velocityCap)
-		//{
-			
-		//}
-
-		// Calculate velocity magnitude
-		rigidbody->_velocity = AEVec2Length(&rigidbody->_velocityVector);
-		//Editor_TrackVariable("Velocity: ", rigidbody->_velocity)
-
-		// Calculate normalised velocity vector.....Check if the _velocityVector not (0,0) 
-		if (!(rigidbody->_velocityVector.x < FLT_EPSILON && rigidbody->_velocityVector.x > -FLT_EPSILON &&
-			rigidbody->_velocityVector.y < FLT_EPSILON && rigidbody->_velocityVector.y > -FLT_EPSILON))
+		/*if (foranglecheck(rb->_currentVelocityDirection, rb->_velocityDirection))
 		{
-			AEVec2Normalize(&rigidbody->_velocityDirection, &rigidbody->_velocityVector);
-		}
+			rb->_velocity *= 0.995f;
+
+			if (rb->_velocity < 1.0f)
+				rb->_currentVelocityDirection = rb->_velocityDirection;
+		}*/
+
+		// Apply "air friction"
+		rb->_velocity *= 0.999f;
 
 		// if the velocity hits the velocity cap
-		if (rigidbody->_velocity > rigidbody->_velocityCap)
-			rigidbody->_velocity = rigidbody->_velocityCap;
+		if (rb->_velocity > rb->_velocityCap)
+			rb->_velocity *= 0.995f;
 
-		// Add onto the velocity
-		AEVec2Scale(&rigidbody->_velocityVector, &rigidbody->_velocityDirection, rigidbody->_velocity);
+		// Calculate current velocity vector based on velocity and direction
+		AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity * g_dt);
 
-		/***************
-		* AI
-		****************/
-		// Addition of forces to final calculation
-		rigidbody->_aiSteeringVector.x = rigidbody->_aiSteeringVector.x / rigidbody->_mass;
-		rigidbody->_aiSteeringVector.y = rigidbody->_aiSteeringVector.y / rigidbody->_mass;
+		// -----------------------------------------------------------------------
+		//	Physics calculation: Sum of all extra forces
+		// -----------------------------------------------------------------------
 
-
-		// add steering vector into the velocity vector
-		AEVec2Add(&rigidbody->_velocityVector, &rigidbody->_velocityVector, &rigidbody->_aiSteeringVector);
-
-		// check if the collision is bigger than the other vectors
-		if (rigidbody->_collisionVector.x > rigidbody->_velocityVector.x &&
-			rigidbody->_collisionVector.y > rigidbody->_velocityVector.y)
+		// check if the collision is bigger than the other vectors (should this be in collisionsystem?)
+		if (rb->_collisionVector.x > rb->_velocityVector.x&&
+			rb->_collisionVector.y > rb->_velocityVector.y)
 		{
 			// to set the current velocity vector to the collision vector, and decrement the collision vector 
-			--rigidbody->_collisionVector.x;
-			--rigidbody->_collisionVector.y;
+			--rb->_collisionVector.x;
+			--rb->_collisionVector.y;
 		}
 
-		//add the gravitational vector into the velocity vector
-		AEVec2Add(&rigidbody->_velocityVector, &rigidbody->_velocityVector, &rigidbody->_gravityVelocity);
+		// Affect steering force by mass
+		//AEVec2Scale(&rb->_steeringVector, &rb->_steeringVector, 1.0f/rb->_mass);
 
-		//Smootly reduce velocity
-		AEVec2Scale(&rigidbody->_velocityVector, &rigidbody->_velocityVector, 0.995f);
+		// Add steering force into the velocity vector
+		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_steeringVector);
 
-		// Apply displacement on current position
-		transform->_position.x += rigidbody->_velocityVector.x * g_dt;
-		transform->_position.y += rigidbody->_velocityVector.y * g_dt;
+		// Add the gravitational force into the velocity vector
+		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_gravityVelocity);
+
+		// Finally, add velocity to transform
+		AEVec2Add(&trans->_position, &trans->_position, &rb->_velocityVector);
+
+		// Update directional vector
+		if (fabs(rb->_velocityVector.x + rb->_velocityVector.y) > FLT_EPSILON)
+			AEVec2Normalize(&rb->_velocityDirection, &rb->_velocityVector);
+
+		//// -----------------------------------------------------------------------
+		//// Currently whats working
+		//// -----------------------------------------------------------------------
+
+		//// Add the new frame velocity change onto the current velocity
+		//AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_velocityChangeVector);
+		//// Reset the change in velocity for next frame
+		//AEVec2Zero(&rb->_velocityChangeVector);
+
+		//// Set a cap onto the current velocity
+		////if (AEVec2Length(&rigidbody->_velocityVector) >= rigidbody->_velocityCap)
+		////{
+		//	
+		////}
+
+		//// Calculate velocity magnitude
+		////rigidbody->_velocity = AEVec2Length(&rigidbody->_velocityVector);
+		////Editor_TrackVariable("Velocity: ", rigidbody->_velocity)
+
+		//// Calculate normalised velocity vector.....Check if the _velocityVector not (0,0) 
+		//if (!(rb->_velocityVector.x < FLT_EPSILON && rb->_velocityVector.x > -FLT_EPSILON &&
+		//	rb->_velocityVector.y < FLT_EPSILON && rb->_velocityVector.y > -FLT_EPSILON))
+		//{
+		//	AEVec2Normalize(&rb->_velocityDirection, &rb->_velocityVector);
+		//}
+
+		//// if the velocity hits the velocity cap
+		//if (rb->_velocity > rb->_velocityCap)
+		//	rb->_velocity *= 0.99f;
+
+		//// Add onto the velocity
+		//AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity);
+
+		///***************
+		//* AI
+		//****************/
+		//// Addition of forces to final calculation
+		//rb->_aiSteeringVector.x = rb->_aiSteeringVector.x / rb->_mass;
+		//rb->_aiSteeringVector.y = rb->_aiSteeringVector.y / rb->_mass;
+
+
+		//// add steering vector into the velocity vector
+		//AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_aiSteeringVector);
+
+		//// check if the collision is bigger than the other vectors
+		//if (rb->_collisionVector.x > rb->_velocityVector.x &&
+		//	rb->_collisionVector.y > rb->_velocityVector.y)
+		//{
+		//	// to set the current velocity vector to the collision vector, and decrement the collision vector 
+		//	--rb->_collisionVector.x;
+		//	--rb->_collisionVector.y;
+		//}
+
+		////add the gravitational vector into the velocity vector
+		//AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_gravityVelocity);
+
+		////Smootly reduce velocity
+		//AEVec2Scale(&rb->_velocityVector, &rb->_velocityVector, 0.9f);
+
+		//// Apply displacement on current position
+		//trans->_position.x += rb->_velocityVector.x * g_dt;
+		//trans->_position.y += rb->_velocityVector.y * g_dt;
 	}
 
 

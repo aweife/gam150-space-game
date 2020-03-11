@@ -33,7 +33,7 @@ namespace Factory
 		ENTITY player = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(player, new cTransform);
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
-		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(30.0f, 0.0f, 300.0, 3.0f, 2.0f));
+		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 300.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
@@ -145,7 +145,7 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
 	}
 
-	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, float rotation)
+	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation)
 	{
 		AEVec2 newPostion, newScale;
 		AEVec2Set(&newPostion, posX, posY);
@@ -159,6 +159,7 @@ namespace Factory
 		Core::Get().GetComponent<cCollision>(bullet)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
 
+		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityDirection = dir;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
 

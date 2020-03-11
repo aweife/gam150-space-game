@@ -26,7 +26,7 @@
 cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float acceleration, float rotateVelocity, COLLISIONTAG tag)
 	: _mass{mass}, _velocity { velocity }, _velocityCap{ velocityCap }, _acceleration{ acceleration }, _rotateVelocity{ rotateVelocity },
 	_velocityVector{ 0,0 }, _angularVelocity{ 0,0 }, _velocityChangeVector{ 0,0 }, _velocityDirection{ 0,0 }, 
-	_gravityVelocity{ 0,0 }, _aiSteeringVector{ 0,0 }, _collisionVector{ 0,0 }, _tag{ tag }
+	_gravityVelocity{ 0,0 }, _steeringVector{ 0,0 }, _collisionVector{ 0,0 }, _tag{ tag }
 {
 
 }
