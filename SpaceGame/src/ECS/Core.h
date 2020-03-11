@@ -45,7 +45,10 @@ public:
 		signature.set(coreComponentManager->GetComponentType<T>(), true);
 		coreEntityManager->SetSignature(entity, signature);
 
-		coreSystemManager->UpdateEntitySignature(entity, signature, old_signature);
+		coreSystemManager->UpdateEntitySignature(entity, signature);
+
+		// Update base component
+		component->_entityParent = entity;
 	}
 
 	template<typename T>

@@ -112,20 +112,21 @@ namespace Factory
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
-		Core::Get().AddComponent<cPathFinding>(enemy, new cPathFinding);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().GetComponent<cAI>(enemy)->minDistance = 250.0f;
-		Core::Get().GetComponent<cAI>(enemy)->maxDistance = 500.0f;
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -250.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 100.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 150.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -200.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 150.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 100.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
-		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = 0.0f;
-		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.0f;
-		Core::Get().GetComponent<cPathFinding>(enemy)->target = player;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+
+		// debug ai
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
+		cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
 		return enemy;
 	}
 
