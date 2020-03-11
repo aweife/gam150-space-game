@@ -30,8 +30,8 @@ void SpaceShipLogicSystem::Update()
 
 	for (auto const& entity : entitiesList)
 	{
-		transform = Core::Get().GetComponent<cTransform>(entity); 
-		rigidbody = Core::Get().GetComponent<cRigidBody>(entity); 
+		transform = Core::Get().GetComponent<cTransform>(entity);
+		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
 		spaceship = Core::Get().GetComponent<cSpaceShip>(entity);
 
 		//Time update
@@ -42,7 +42,12 @@ void SpaceShipLogicSystem::Update()
 			//spaceship->_thrustDelay = 0.0f;
 			SpaceShipThrust(rigidbody, transform);
 			Factory::CreateParticleEmitter_TRAIL(transform);
+
+			// Increase terminal velocity
+			rigidbody->_velocityCap = 400.0f;
 		}
+		else
+			rigidbody->_velocityCap = 300.0f;
 
 	}
 }
@@ -54,14 +59,16 @@ void SpaceShipThrust(cRigidBody* rb, cTransform* transform)
 	AEVec2 thrustDir, thrustVector;
 
 	// New Thrust direction to apply ontop of ship current velocity
-	AEVec2Set(&thrustDir, AECos(transform->_rotation), AESin(transform->_rotation));
+	AEVec2Set(&rb->_steeringVector, AECos(transform->_rotation), AESin(transform->_rotation));
+
+	// Accelerate
+	rb->_velocity += rb->_acceleration;
 
 	// Thrust vector will be added onto velocity, based on rate of change (acceleration)
-	AEVec2Scale(&thrustVector, &thrustDir, rb->_acceleration);
+	//AEVec2Scale(&thrustVector, &thrustDir, rb->_velocity);
 
 	// Add Thrust Vector to current velocity change
-	AEVec2Add(&rb->_velocityChangeVector, &rb->_velocityChangeVector, &thrustVector);
-
+	//AEVec2Add(&rb->_velocityChangeVector, &rb->_velocityChangeVector, &thrustVector);
 }
 
 
