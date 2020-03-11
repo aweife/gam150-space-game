@@ -17,18 +17,23 @@
 **********************************************************************************/
 #include "Component.h"
 
+enum class WeaponMode
+{
+	none,
+	range,
+	melee
+};
+
 class cSpaceShip:public Component
 {
 public:
 	bool	_isThrusting;			// Check for thruster use
 	float	_thrustDelay;			// Countdown timer
-	float	_shield;				// Shield amount
-	bool	_activateShield;		// Check for shield activation
 	int		_lives;					// ok
-	float	_health;
-	bool	_isShooting;
-	float	_shootDelay;
+	float	_thrustSpeedAddition;
+	WeaponMode _currWeaponMode = WeaponMode::range;
 
-	cSpaceShip();
+	cSpaceShip() = default;
+	cSpaceShip(bool isThrusting, float thrustDelay, int lives, float _thrustSpeedAddition, WeaponMode currWeaponMode);
 	~cSpaceShip() = default;
 };

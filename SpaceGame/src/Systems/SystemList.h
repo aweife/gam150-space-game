@@ -11,6 +11,8 @@
 #include "AISystem.h"
 #include "SpaceShipLogicSystem.h"
 #include "UISystem.h"
+#include "WeaponSystem.h"
+//health system
 #include "DebugToolsSystem.h"
 #include "ParticleSystem.h"
 #include "ParticleEmitterSystem.h"

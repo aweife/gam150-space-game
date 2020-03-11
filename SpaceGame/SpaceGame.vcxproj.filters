@@ -39,6 +39,10 @@
     <ClCompile Include="src\Components\cParticleEmitter.cpp" />
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
+    <ClCompile Include="src\Levels\LoadingLevel.cpp" />
+    <ClCompile Include="src\Components\cWeapon.cpp" />
+    <ClCompile Include="src\Components\cHealth.cpp" />
+    <ClCompile Include="src\Systems\WeaponSystem.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
     <ClCompile Include="src\Managers\UIEventsManager.cpp" />
@@ -88,6 +92,9 @@
     <ClInclude Include="src\Systems\UISystem.h" />
     <ClInclude Include="src\Components\cUIElement.h" />
     <ClInclude Include="src\Levels\LoadingLevel.h" />
+    <ClInclude Include="src\Components\cWeapon.h" />
+    <ClInclude Include="src\Components\cHealth.h" />
+    <ClInclude Include="src\Systems\WeaponSystem.h" />
     <ClInclude Include="src\Components\cDebugTools.h" />
     <ClInclude Include="src\Systems\DebugToolsSystem.h" />
     <ClInclude Include="src\Components\cParticle.h" />

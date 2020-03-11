@@ -38,6 +38,8 @@ namespace Factory
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip);
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon);
+		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon);
 
 		return player;
 	}
