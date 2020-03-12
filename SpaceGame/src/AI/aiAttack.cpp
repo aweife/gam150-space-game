@@ -18,8 +18,8 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 		// Initialise state
 		rotationSpeed = 10.0f;
 
-		maxDistance = 900.0f;
-		minDistance = 200.0f;
+		maxDistance = 500.0f;
+		minDistance = 100.0f;
 
 		// Change inner state
 		innerState = INNER_STATE_ONUPDATE;

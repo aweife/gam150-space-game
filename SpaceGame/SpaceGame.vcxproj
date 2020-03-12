@@ -93,6 +93,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\aiAttack.cpp" />
+    <ClCompile Include="src\AI\aiPursuit.cpp" />
     <ClCompile Include="src\Managers\AIBehaviors.cpp" />
     <ClCompile Include="src\AI\aiRetreat.cpp" />
     <ClCompile Include="src\AI\aiChase.cpp" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiAttack.h" />
+    <ClInclude Include="src\AI\aiPursuit.h" />
     <ClInclude Include="src\AI\aiRetreat.h" />
     <ClInclude Include="src\AI\aiChase.h" />
     <ClInclude Include="src\AI\aiState.h" />

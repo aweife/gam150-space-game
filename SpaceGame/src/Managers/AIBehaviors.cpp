@@ -28,6 +28,47 @@ namespace Steering
 		// Get steering vector
 		AEVec2Sub(&steering, &desired, &current);
 	}
+
+	void SetAngle(AEVec2& vector, const float& value)
+	{
+		float length = AEVec2Length(&vector);
+		vector.x = cosf(value) * length;
+		vector.y = sinf(value) * length;
+	}
+
+	void Wander(AEVec2& steering, const AEVec2& currentDir, const float circleDistance, const float circleRadius, float& wanderAngle, const float angleChange)
+	{
+		// Calculate the circle's position
+		AEVec2 circleCenter = currentDir;
+		AEVec2Scale(&circleCenter, &circleCenter, circleDistance);
+
+		// Calculate displacement force
+		AEVec2 displacement = { 0.0f, -1.0f };
+		AEVec2Scale(&circleCenter, &circleCenter, circleRadius);
+
+		// Change wanderAngle just a bit, so it
+		// won't have the same value in the next game frame.
+		SetAngle(displacement, wanderAngle);
+
+		// Change wanderAngle just a bit, so it
+		// won't have the same value in the next game frame.
+		wanderAngle += AERandFloat() * angleChange - angleChange * 0.5f;
+
+		// Add to steering
+		AEVec2 wanderForce;
+		AEVec2Add(&wanderForce, &circleCenter, &displacement);
+		AEVec2Add(&steering, &steering, &displacement);
+	}
+
+	void Pursuit(AEVec2& steering, AEVec2& futurePosition, const float& prediction, AEVec2& targetPos, AEVec2 targetVel, AEVec2& selfPos, const f32& velocity, const AEVec2& currentVel)
+	{
+		AEVec2 predictionPos;
+		AEVec2Scale(&predictionPos, &targetVel, prediction);
+		AEVec2Add(&futurePosition, &targetPos, &predictionPos);
+
+		// Seek future position
+		SeekTarget(steering, selfPos, futurePosition, velocity, currentVel);
+	}
 }
 
 /* Transform *****************************************************************/
