@@ -35,12 +35,12 @@ public:
 	virtual ~Weapon() = 0 {};
 };
 
-class cRangeWeapon: public Weapon, Component
+class cRangeWeapon : public Weapon, Component
 {
 public:
 	bool		_isShooting;			//Player input
-	float		_fireRate;
-	float		_currfireRate;
+	float		_fireCooldownTimer;
+	float		_fireCooldown;
 	float		_reloadRate;
 	bool		_isReloading;
 	bool		_isFiring;				//?????
@@ -49,16 +49,24 @@ public:
 	float		_bulletSize;
 	float		_bulletSpeed;
 
-	cRangeWeapon() = default;
-	cRangeWeapon(bool isShooting, float fireRate, float currFireRate, float reloadRate, bool isReloading, bool isFiring, int ammo,
-				float shootingSpread, float bulletSize, float bulletSpeed);
+	// Temporary
+	float	_attackCooldown;
+	float	_attackCooldownTimer;
+	int		_attacksLeft;
+	float	_delayTimer;
+	float	_delayBetweenAttacks;
+	int		_numberOfAttacks;
+
+	cRangeWeapon() = delete;
+	cRangeWeapon(float attackCooldown, float delayBetweenAttacks = 0.0f, int numberOfAttacks = 1);
+	cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, bool isReloading, bool isFiring, int ammo, float shootingSpread, float bulletSize, float bulletSpeed);
 	~cRangeWeapon() {};
 };
 
 class cMeleeWeapon : public Weapon, Component
 {
 public:
-	float		_meleeRange;			
+	float		_meleeRange;
 
 	cMeleeWeapon() = default;
 	cMeleeWeapon(float meleeRange);

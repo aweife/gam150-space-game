@@ -11,11 +11,11 @@ namespace Factory
 
 	//GameObjects
 	ENTITY CreatePlayer(unsigned int layer);
+	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet4(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
-	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
 	void CreateBackground();
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation);
 

@@ -16,7 +16,6 @@ void WeaponSystemRange::Init()
 	SIGNATURE signature;
 	signature.set(Core::Get().GetComponentType<cTransform>());
 	signature.set(Core::Get().GetComponentType<cRangeWeapon>());
-	signature.set(Core::Get().GetComponentType<cSpaceShip>());
 	Core::Get().SetSystemSignature<WeaponSystemRange>(signature);
 }
 
@@ -24,35 +23,25 @@ void WeaponSystemRange::Update()
 {
 	cTransform* transform;
 	cRangeWeapon* rangeweapon;
-	cSpaceShip* spaceship;
 
 	for (auto const& entity : entitiesList)
 	{
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rangeweapon = Core::Get().GetComponent<cRangeWeapon>(entity);
-		spaceship = Core::Get().GetComponent<cSpaceShip>(entity);
 
-		//Time update
-		if (rangeweapon->_isShooting)
+		if (!rangeweapon->_isShooting) continue;
 		{
-			rangeweapon->_fireRate -= g_dt;
-
-			if (rangeweapon->_fireRate <= 0)
-			{
-				rangeweapon->_fireRate = rangeweapon->_currfireRate;
-			}
-
 			//if (/*spaceship->_currWeaponMode == WeaponMode::range &&*/
-			//	rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireRate*/)
+			//	rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireCooldownTimer*/)
 			//{
 			//	switch (rangeweapon->_currWeapon)
 			//	{
 			//	case WeaponType::pistol:
-			//		rangeweapon->_fireRate = 0.0f;
+			//		rangeweapon->_fireCooldownTimer = 0.0f;
 			//		NormalShoot(transform);
 			//		break;
 			//	case WeaponType::machineGun:
-			//		rangeweapon->_fireRate = 0.0f;
+			//		rangeweapon->_fireCooldownTimer = 0.0f;
 			//		MachineGunShoot(transform);
 			//		break;
 			//	case WeaponType::grenadeGun:
@@ -61,6 +50,35 @@ void WeaponSystemRange::Update()
 			//		break;
 			//	}
 			//}
+		}
+
+		// Decrement timer if on cooldown
+		if (rangeweapon->_attackCooldownTimer > 0.0f)
+		{
+			rangeweapon->_attackCooldownTimer -= g_dt;
+
+			if (rangeweapon->_attacksLeft > 0)
+			{
+				// Currently attacking, set delay between attacks
+				if (rangeweapon->_delayTimer > 0.0f)
+					rangeweapon->_delayTimer -= g_dt;
+				else
+				{
+					// Set delay
+					rangeweapon->_delayTimer = rangeweapon->_delayBetweenAttacks;
+
+					// Fire
+					NormalShoot(transform);
+					--rangeweapon->_attacksLeft;
+					rangeweapon->_isShooting = false;
+				}
+			}
+		}
+		else
+		{
+			// Set cooldown
+			rangeweapon->_attackCooldownTimer = rangeweapon->_attackCooldown;
+			rangeweapon->_attacksLeft = rangeweapon->_numberOfAttacks;
 		}
 	}
 }

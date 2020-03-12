@@ -47,13 +47,13 @@ namespace UpgradeManager
 		switch (level)
 		{
 		case 1:
-			rangeWeapon->_fireRate			+= data->Get_U1_FireRate();
+			rangeWeapon->_fireCooldownTimer			+= data->Get_U1_FireRate();
 			rangeWeapon->_reloadRate		+= data->Get_U1_ReloadRate();
 			rangeWeapon->_ammo				+= data->Get_U1_Ammo();
 			rangeWeapon->_damage			+= data->Get_U1_Damage();
 			break;
 		case 2:
-			rangeWeapon->_fireRate			+= data->Get_U2_FireRate();
+			rangeWeapon->_fireCooldownTimer			+= data->Get_U2_FireRate();
 			rangeWeapon->_reloadRate		+= data->Get_U2_ReloadRate();
 			rangeWeapon->_ammo				+= data->Get_U2_Ammo();
 			rangeWeapon->_damage			+= data->Get_U2_Damage();
@@ -80,7 +80,7 @@ namespace UpgradeManager
 		//Reset the upgrade values
 		WeaponUpgrade_BaseRange* data = database_rangeUpgrade[upgradePack];
 
-		rangeWeapon->_fireRate				= data->Get_U0_FireRate();
+		rangeWeapon->_fireCooldownTimer				= data->Get_U0_FireRate();
 		rangeWeapon->_reloadRate			= data->Get_U0_ReloadRate();
 		rangeWeapon->_ammo					= data->Get_U0_Ammo();
 		rangeWeapon->_damage				= data->Get_U0_Damage();

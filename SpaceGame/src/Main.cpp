@@ -72,8 +72,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	ResourceManager::Init();													// Load in Bare Minimum
 	UpgradeManager::Init_UpgradeDatabase();
 	AudioManager::Init();
-	AudioManager::Loadsound("res/SFX/Confirm.wav"); // to be removed
-	float timer = 0.0f;
+	//AudioManager::Loadsound("res/SFX/Confirm.wav"); // to be removed
+	//float timer = 0.0f;
 
 	GSM_Init(GS_MAINMENU);														// Initalise Game StateManager
 
@@ -99,12 +99,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// -----------------------------------------------------------------------
 		while (nextState == currentState)
 		{
-			timer += g_dt;   // to be removed
-			if (timer > 1.0f)
-			{
-				AudioManager::PlayOneShot();
-				timer = 0.0f;
-			}
+			//timer += g_dt;   // to be removed
+			//if (timer > 1.0f)
+			//{
+			//	AudioManager::PlayOneShot();
+			//	timer = 0.0f;
+			//}
 
 
 			// Informing the system about the loop's start ***********************

@@ -27,7 +27,6 @@ namespace AudioManager
 	void Shutdown()
 	{
 		// Clean up.
-		ErrorCheck(_sound->release());
 		ErrorCheck(_system->release());
 	}
 

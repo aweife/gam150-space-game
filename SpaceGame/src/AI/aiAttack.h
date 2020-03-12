@@ -14,14 +14,8 @@ private:
 	cRigidBody* rb;
 	cRangeWeapon* rwp;
 
-	// Attack
+	// Variables
 	float rotationSpeed;
-	float attackCooldownTimer;
-	float attackCooldown;
-	int numberOfAttacks;
-	int attacksLeft;
-	float delayBetweenAttacks;
-	float delayTimer;
 
 	// State transition checks
 	float minDistance;
@@ -30,5 +24,4 @@ private:
 	void AimAtTarget(const aiBlackBoard&);
 	bool TargetInRange(const aiBlackBoard&);
 	void Attack();
-	void FireProjectile();
 };

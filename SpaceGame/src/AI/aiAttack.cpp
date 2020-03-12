@@ -13,15 +13,10 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 		// Cache self components
 		trans = Core::Get().GetComponent<cTransform>(bb.id);
 		rb = Core::Get().GetComponent<cRigidBody>(bb.id);
+		rwp = Core::Get().GetComponent<cRangeWeapon>(bb.id);
 
 		// Initialise state
 		rotationSpeed = 10.0f;
-		attackCooldownTimer = 0.0f;
-		attackCooldown = 3.0f;
-		numberOfAttacks = 2;
-		attacksLeft = 0;
-		delayBetweenAttacks = 0.5f;
-		delayTimer = 0.0f;
 
 		maxDistance = 900.0f;
 		minDistance = 200.0f;
@@ -88,36 +83,5 @@ bool aiAttack::TargetInRange(const aiBlackBoard& bb)
 
 void aiAttack::Attack()
 {
-	// Decrement timer if on cooldown
-	if (attackCooldownTimer > 0.0f)
-	{
-		attackCooldownTimer -= g_dt;
-
-		if (attacksLeft > 0)
-		{
-			// Currently attacking, set delay between attacks
-			if (delayTimer > 0.0f)
-				delayTimer -= g_dt;
-			else
-			{
-				// Set delay
-				delayTimer = delayBetweenAttacks;
-
-				// Fire
-				FireProjectile();
-				--attacksLeft;
-			}
-		}
-	}
-	else
-	{
-		// Set cooldown
-		attackCooldownTimer = attackCooldown;
-		attacksLeft = numberOfAttacks;
-	}
-}
-
-void aiAttack::FireProjectile()
-{
-	Console_Cout("fire");
+	rwp->_isShooting = true;
 }
