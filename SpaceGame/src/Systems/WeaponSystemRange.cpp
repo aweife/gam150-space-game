@@ -16,6 +16,7 @@ void WeaponSystemRange::Init()
 	SIGNATURE signature;
 	signature.set(Core::Get().GetComponentType<cTransform>());
 	signature.set(Core::Get().GetComponentType<cRangeWeapon>());
+	signature.set(Core::Get().GetComponentType<cSpaceShip>());
 	Core::Get().SetSystemSignature<WeaponSystemRange>(signature);
 }
 
@@ -23,36 +24,43 @@ void WeaponSystemRange::Update()
 {
 	cTransform* transform;
 	cRangeWeapon* rangeweapon;
+	cSpaceShip* spaceship;
 
 	for (auto const& entity : entitiesList)
 	{
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rangeweapon = Core::Get().GetComponent<cRangeWeapon>(entity);
+		spaceship = Core::Get().GetComponent<cSpaceShip>(entity);
 
 		//Time update
-		if (rangeweapon)
+		if (rangeweapon->_isShooting)
 		{
-			rangeweapon->_fireRate += g_dt;
+			rangeweapon->_fireRate -= g_dt;
 
-			if (/*spaceship->_currWeaponMode == WeaponMode::range &&*/
-				rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireRate*/)
+			if (rangeweapon->_fireRate <= 0)
 			{
-				switch (rangeweapon->_currWeapon)
-				{
-				case WeaponType::pistol:
-					rangeweapon->_fireRate = 0.0f;
-					NormalShoot(transform);
-					break;
-				case WeaponType::machineGun:
-					rangeweapon->_fireRate = 0.0f;
-					MachineGunShoot(transform);
-					break;
-				case WeaponType::grenadeGun:
-					break;
-				case WeaponType::laser:
-					break;
-				}
+				rangeweapon->_fireRate = rangeweapon->_currfireRate;
 			}
+
+			//if (/*spaceship->_currWeaponMode == WeaponMode::range &&*/
+			//	rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireRate*/)
+			//{
+			//	switch (rangeweapon->_currWeapon)
+			//	{
+			//	case WeaponType::pistol:
+			//		rangeweapon->_fireRate = 0.0f;
+			//		NormalShoot(transform);
+			//		break;
+			//	case WeaponType::machineGun:
+			//		rangeweapon->_fireRate = 0.0f;
+			//		MachineGunShoot(transform);
+			//		break;
+			//	case WeaponType::grenadeGun:
+			//		break;
+			//	case WeaponType::laser:
+			//		break;
+			//	}
+			//}
 		}
 	}
 }
