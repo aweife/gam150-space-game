@@ -86,6 +86,39 @@ namespace Factory
 		return enemy;
 	}
 
+	ENTITY CreateEnemy2(ENTITY player, unsigned int layer)
+	{
+		ENTITY enemy = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
+		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_2", layer));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
+		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
+		Core::Get().AddComponent<cAI>(enemy, new cAI);
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+
+		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 400.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+
+
+
+		// debug ai
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
+		//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
+		CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
+		return enemy;
+	}
+
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
 	{
 		AEVec2 newPostion, newScale;
@@ -287,8 +320,7 @@ namespace Factory
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
 			VARIANCETYPE::NONE, { 40,40 }, { 70, 70 }, VARIANCETYPE::RANDOM_UNIFORM, { -1,-1 }, { 1,1 }, VARIANCETYPE::RANDOM);
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 0.75f, 0.0f, 0.9f });
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 0.2f, 0.2f, 0.2f, 0.9f });
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 0.5f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 0.15f, 0.1f, 0.1f, 0.9f });
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 0.4f, 0.0f, 0.9f });
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 0.0f });
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(2.0f);

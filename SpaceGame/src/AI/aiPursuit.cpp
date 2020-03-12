@@ -20,10 +20,10 @@ void aiPursuit::Run(const aiBlackBoard& bb, the_variant& var)
 		prb = Core::Get().GetComponent<cRigidBody>(PlayerManager::player);
 
 		// Initialize state
-		attackRange = 200.0f;
-		maxSpeed = 150.0f;
+		attackRange = 400.0f;
+		maxSpeed = 130.0f;
 		rb->_velocityCap = maxSpeed;
-		acceleration = 5.0f;
+		acceleration = 4.0f;
 		rotationSpeed = 30.0f;
 		wanderAngle = 0.0f;
 

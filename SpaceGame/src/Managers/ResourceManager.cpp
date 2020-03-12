@@ -289,30 +289,34 @@ namespace ResourceManager
 					textureLibrary.insert({"Enemy_1", AEGfxTextureLoad("res/Enemy_1.png") });
 					break;
 				case 2:
+					if (textureLibrary.find("Enemy_2") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Enemy_2", AEGfxTextureLoad("res/Enemy_2.png") });
+					break;
+				case 3:
 					if (textureLibrary.find("Planet_1") != textureLibrary.end()) break;
 					textureLibrary.insert({"Planet_1", AEGfxTextureLoad("res/Prop_Planet1.png") });
 					break;
-				case 3:
+				case 4:
 					if (textureLibrary.find("Planet_2") != textureLibrary.end()) break;
 					textureLibrary.insert({"Planet_2", AEGfxTextureLoad("res/Prop_Planet2.png") });
 					break;
-				case 4:
+				case 5:
 					if (textureLibrary.find("Planet_3") != textureLibrary.end()) break;
 					textureLibrary.insert({"Planet_3", AEGfxTextureLoad("res/Prop_Planet3.png") });
 					break;
-				case 5:
+				case 6:
 					if (textureLibrary.find("Planet_4") != textureLibrary.end()) break;
 					textureLibrary.insert({"Planet_4", AEGfxTextureLoad("res/Prop_Planet4.png") });
 					break;
-				case 6:
+				case 7:
 					if (textureLibrary.find("Bullet_1") != textureLibrary.end()) break;
 					textureLibrary.insert({"Bullet_1", AEGfxTextureLoad("res/Weapon_Bullet1.png") });
 					break;
-				case 7:
+				case 8:
 					if (textureLibrary.find("BG_1") != textureLibrary.end()) break;
 					textureLibrary.insert({ "BG_1", AEGfxTextureLoad("res/BG_Space1.png") });
 					break;
-				case 8:
+				case 9:
 					if (textureLibrary.find("Particle_Default") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });
 					*progress = 100;
