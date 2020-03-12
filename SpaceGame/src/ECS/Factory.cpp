@@ -33,7 +33,7 @@ namespace Factory
 		ENTITY player = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(player, new cTransform);
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
-		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(30.0f, 0.0f, 300.0, 3.0f, 2.0f));
+		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, 0.0, WeaponMode::range));
 		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(0.5f));
@@ -46,6 +46,9 @@ namespace Factory
 
 		// Debug
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
+
+		Core::Get().GetComponent<cTransform>(player)->_scale.x = 50.0f;
+		Core::Get().GetComponent<cTransform>(player)->_scale.y = 50.0f;
 
 		return player;
 	}
@@ -158,7 +161,7 @@ namespace Factory
 	{
 		AEVec2 newPostion, newScale;
 		AEVec2Set(&newPostion, posX, posY);
-		AEVec2Set(&newScale, 20, 80);
+		AEVec2Set(&newScale, 10, 40);
 
 		ENTITY bullet = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(bullet, new cTransform(newPostion, rotation, newScale));
@@ -171,6 +174,7 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityDirection = dir;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
+
 
 		return bullet;
 	}
