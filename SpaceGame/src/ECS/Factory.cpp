@@ -33,18 +33,54 @@ namespace Factory
 		ENTITY player = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(player, new cTransform);
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
-		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 300.0, 3.0f, 2.0f));
+		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(30.0f, 0.0f, 300.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
-		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
-		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, 0.0, WeaponMode::range));
 		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon());
-		UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
-			, WeaponType::pistol, UpgradePackages::Range_Pistol);
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
+		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
+
+		UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
+			, WeaponType::pistol, UpgradePackages::Range_Pistol);
+
+		// Debug
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
 
 		return player;
+	}
+
+	ENTITY CreateEnemy1(ENTITY player, unsigned int layer)
+	{
+		ENTITY enemy = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
+		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
+		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
+		Core::Get().AddComponent<cAI>(enemy, new cAI);
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon());
+
+		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -400.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 150.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 100.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+
+
+
+		// debug ai
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
+		//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
+		CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
+		return enemy;
 	}
 
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
@@ -147,7 +183,7 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
 	}
 
-	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation)
+	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, float rotation)
 	{
 		AEVec2 newPostion, newScale;
 		AEVec2Set(&newPostion, posX, posY);
@@ -161,7 +197,6 @@ namespace Factory
 		Core::Get().GetComponent<cCollision>(bullet)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
 
-		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityDirection = dir;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
 

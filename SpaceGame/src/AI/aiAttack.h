@@ -3,6 +3,7 @@
 #include "aiBase.h"
 #include "../Components/cTransform.h"
 #include "../Components/cRigidBody.h"
+#include "../Components/cWeapon.h"
 
 class aiAttack : public aiBase
 {
@@ -11,6 +12,7 @@ public:
 private:
 	cTransform* trans;
 	cRigidBody* rb;
+	cRangeWeapon* rwp;
 
 	// Attack
 	float rotationSpeed;
