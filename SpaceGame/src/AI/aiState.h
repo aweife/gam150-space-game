@@ -7,8 +7,8 @@
 #include "aiAttack.h"
 #include "aiRetreat.h"
 
-// For all states
-#include "AIBehaviors.h"
+// For commonly used ai functions
+#include "../Managers/AIBehaviors.h"
 
 struct the_variant
 {

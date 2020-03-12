@@ -18,6 +18,7 @@
 #include "../ECS/Factory.h"							//Entity to create
 #include "../Player/PlayerManager.h"				//Control over the player
 #include "../Managers/UIEventsManager.h"
+#include "../Managers/AudioManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -59,6 +60,9 @@ void Level1_Load()
 
 	//Factory::CreateBackground();
 	Factory_UI::Create_PlayerUserInterface();
+
+	// FOR NOW, audio
+	//AudioManager::Loadsound();
 }
 
 // ----------------------------------------------------------------------------

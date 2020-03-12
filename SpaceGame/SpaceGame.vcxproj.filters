@@ -55,7 +55,8 @@
     <ClCompile Include="src\AI\aiAttack.cpp" />
     <ClCompile Include="src\AI\aiChase.cpp" />
     <ClCompile Include="src\AI\aiRetreat.cpp" />
-    <ClCompile Include="src\AI\AIBehaviors.cpp" />
+    <ClCompile Include="src\Managers\AIBehaviors.cpp" />
+    <ClCompile Include="src\Managers\AudioManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -122,7 +123,8 @@
     <ClInclude Include="src\Systems\WeaponSystemMelee.h" />
     <ClInclude Include="src\Systems\WeaponSystemRange.h" />
     <ClInclude Include="src\AI\aiRetreat.h" />
-    <ClInclude Include="src\AI\AIBehaviors.h" />
+    <ClInclude Include="src\Managers\AIBehaviors.h" />
+    <ClInclude Include="src\Managers\AudioManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

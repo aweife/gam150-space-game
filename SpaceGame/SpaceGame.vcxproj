@@ -92,7 +92,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\aiAttack.cpp" />
-    <ClCompile Include="src\AI\AIBehaviors.cpp" />
+    <ClCompile Include="src\Managers\AIBehaviors.cpp" />
     <ClCompile Include="src\AI\aiRetreat.cpp" />
     <ClCompile Include="src\AI\aiChase.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
@@ -114,6 +114,7 @@
     <ClCompile Include="src\Levels\MainMenu.cpp" />
     <ClCompile Include="src\Levels\MapGenerator.cpp" />
     <ClCompile Include="src\Levels\SplashScreen.cpp" />
+    <ClCompile Include="src\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Managers\CameraManager.cpp" />
     <ClCompile Include="src\Global.cpp" />
     <ClCompile Include="src\Levels\Level1.cpp" />
@@ -151,7 +152,7 @@
     <ClInclude Include="src\AI\aiState.h" />
     <ClInclude Include="src\AI\aiBlackBoard.h" />
     <ClInclude Include="src\AI\aiBase.h" />
-    <ClInclude Include="src\AI\AIBehaviors.h" />
+    <ClInclude Include="src\Managers\AIBehaviors.h" />
     <ClInclude Include="src\Components\cAI.h" />
     <ClInclude Include="src\Components\cCamera.h" />
     <ClInclude Include="src\Components\cCollision.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="src\Levels\MainMenu.h" />
     <ClInclude Include="src\Levels\MapGenerator.h" />
     <ClInclude Include="src\Levels\SplashScreen.h" />
+    <ClInclude Include="src\Managers\AudioManager.h" />
     <ClInclude Include="src\Managers\CameraManager.h" />
     <ClInclude Include="src\Global.h" />
     <ClInclude Include="src\Global_ECS.h" />
