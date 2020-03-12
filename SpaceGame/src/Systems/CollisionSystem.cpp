@@ -17,11 +17,14 @@
 #include <array>                            // array container
 #include <vector>                           // vector container
 #include <limits>                           // limits
+#include <cmath>                            // For abs
 
 #include "../Managers/CameraManager.h"		// For screen shake
+#include "../Systems/HealthSystem.h"		// For Damage Taken
 #include "../Math/Math.h"                   // Additional Math functions
 #include "../Global.h"                      // g_dt
 #include "../ECS/Core.h"                    // For ECS
+#include "../Tools/Editor.h"                    // For ECS
 #include "../ECS/Factory.h"                 // For Particle System
 #include "../Components/ComponentList.h"    // For component list
 
@@ -135,8 +138,15 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 	if (obj1.max.x < obj2.min.x || obj1.min.x > obj2.max.x ||
 		obj1.max.y < obj2.min.y || obj1.min.y > obj2.max.y)
 	{
+		// Check x-axis 
+		if (fabs(newVelocity_x) < FLT_EPSILON) // If vel is 0 
+		{
+			// If they do not overlap on the x-axis 
+			if ((obj2.max.x < obj1.min.x) || (obj2.min.x > obj1.max.x))
+				return false;
+		}
 		// Working with one-dimention (x-axis)
-		if (newVelocity_x < 0.0f)
+		else if (newVelocity_x < 0.0f)
 		{
 			// Case 1 
 			if (obj1.min.x > obj2.max.x)
@@ -156,7 +166,7 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			}
 		}
 
-		if (newVelocity_x > 0)
+		else if (newVelocity_x > 0)
 		{
 			// Case 2 
 			if (obj1.min.x > obj2.max.x)
@@ -182,8 +192,16 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			return false;
 		}
 
+		// Check y-axis 
+		if (fabs(newVelocity_y) < FLT_EPSILON) // If vel is 0 
+		{
+			// If they do not overlap on the x-axis 
+			if ((obj2.max.y < obj1.min.y) || (obj2.min.y > obj1.max.y))
+				return false;
+		}
+
 		// Working with one-dimention (y-axis)
-		if (newVelocity_y < 0)
+		else if (newVelocity_y < 0)
 		{
 			// Case 1 
 			if (obj1.max.y > obj2.min.y)
@@ -203,7 +221,7 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			}
 		}
 
-		if (newVelocity_y > 0)
+		else if (newVelocity_y > 0)
 		{
 			// Case 2 
 			if (obj1.min.y > obj2.max.y)
@@ -383,6 +401,7 @@ void CollisionSystem::Update()
 	cCollision* collider;
 	cRigidBody* rigidbody;
 	cTransform* transform;
+	cHealth* health;
 
 	cCollision* collider2;
 	cRigidBody* rigidbody2;
@@ -409,6 +428,7 @@ void CollisionSystem::Update()
 		collider = Core::Get().GetComponent<cCollision>(entity1);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity1);
 		transform = Core::Get().GetComponent<cTransform>(entity1);
+		std::shared_ptr<HealthSystem> healthSys(std::static_pointer_cast<HealthSystem>(Core::Get().GetSystem<HealthSystem>()));
 
 
 		for (auto const& entity2 : entitiesList)
@@ -427,33 +447,59 @@ void CollisionSystem::Update()
 				               rigidbody->_velocityVector, collider2->_boundingBox,
 				               collider2->_bbShape,rigidbody2->_velocityVector) == true)
 			{
-
 				// if player and enemy collide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
 				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
 				{
 					CameraManager::StartCameraShake();
-					printf("Enemy health decrease lmao\n");
+					//printf("Enemy health decrease lmao\n");
 
 					// for player's bounce off
-					rigidbody->_angularVelocity.x = -20.0f;
-					rigidbody->_angularVelocity.y = -20.0f;
-					rigidbody->_velocityVector.x += rigidbody->_angularVelocity.x;
-					rigidbody->_velocityVector.y += rigidbody->_angularVelocity.y;
+					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
+					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), - (rigidbody->_velocityVector.y * 1.2f));
+					AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
 
 					// for enemy's bounce off
-					rigidbody2->_angularVelocity.x = -50.0f;
-					rigidbody2->_angularVelocity.y = -50.0f;
-					rigidbody2->_velocityChangeVector = rigidbody2->_angularVelocity;
+					AEVec2Set(&rigidbody2->_velocityDirection, -(rigidbody2->_velocityVector.x), -(rigidbody2->_velocityVector.y));
+					AEVec2Set(&rigidbody2->_collisionVector, -(rigidbody2->_velocityVector.x * 1.5f), -(rigidbody2->_velocityVector.y * 1.5f));
+					AEVec2Add(&rigidbody2->_collisionVector, &rigidbody2->_collisionVector, &rigidbody2->_velocityDirection);
+
 				}
 				
 				// if bullet collide with enemy
-				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
+				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY )
+				{
+
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					//CameraManager::StartCameraShake();
+					printf("ENEMY HEALTH DECREASE\n");
+					markedForDestruction.insert(entity1);
+				}
+				// if bullet collide with Player
+				else if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)
 				{
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-					CameraManager::StartCameraShake();
-					printf("ENEMY HEALTH DECREASE\n");
+					//CameraManager::StartCameraShake();
+					printf("PLAYER HEALTH DECREASE\n");
+					markedForDestruction.insert(entity1);
+
+					//Check invulnerablity frames
+					healthSys->TakeDamage(entity2);
+				}
+
+
+				// if bullet collide with planet
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLANET)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					markedForDestruction.insert(entity2);
+				}
+
+				// if player near planet
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::PLANET)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					markedForDestruction.insert(entity1);
 				}
 

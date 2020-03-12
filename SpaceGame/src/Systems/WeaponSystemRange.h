@@ -21,6 +21,6 @@ public:
 };
 
 
-void NormalShoot(cTransform* transform);
+void NormalShoot(cTransform* transform, OWNERTAG tag);
 void HomingShoot(cTransform* transform);
 void MachineGunShoot(cTransform* transform);

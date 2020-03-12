@@ -26,6 +26,7 @@
 #include "Managers/InputManager.h"		// Recieve Input from AlphaEngine
 #include "Managers/ResourceManager.h"	// Generate Mesh and Load in Texture
 
+#include "Managers/AudioManager.h"
 #include "Managers/UpgradeManager.h"
 #include "Tools/MemoryLeak.h"
 
@@ -70,6 +71,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Core::Get().Core_Init();													// Initalise Game Engine ECS
 	ResourceManager::Init();													// Load in Bare Minimum
 	UpgradeManager::Init_UpgradeDatabase();
+	AudioManager::Init();
+	//AudioManager::Loadsound("res/SFX/Confirm.wav"); // to be removed
+	//float timer = 0.0f;
+
 	GSM_Init(GS_MAINMENU);														// Initalise Game StateManager
 
 	// -----------------------------------------------------------------------
@@ -94,6 +99,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// -----------------------------------------------------------------------
 		while (nextState == currentState)
 		{
+			//timer += g_dt;   // to be removed
+			//if (timer > 1.0f)
+			//{
+			//	AudioManager::PlayOneShot();
+			//	timer = 0.0f;
+			//}
+
+
 			// Informing the system about the loop's start ***********************
 			AESysFrameStart();			
 
@@ -137,6 +150,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// -----------------------------------------------------------------------
 	ResourceManager::Unload();
 	UpgradeManager::Cleanup_UpgradeDatabase();
+	AudioManager::Shutdown();
 	Console_CleanUp();
 	Core::Get().Core_Unload();						// free all core system
 	AESysExit();									// free the system

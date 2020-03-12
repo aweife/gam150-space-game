@@ -17,6 +17,7 @@
 #include "cSpaceShip.h"
 #include "cWeapon.h"
 #include "cHealth.h"
+#include "cProjectile.h"
 // Additional Graphics
 #include "cUIElement.h"
 #include "cDebugTools.h"

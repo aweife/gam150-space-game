@@ -4,11 +4,28 @@
 #include"../Components/cSpaceShip.h"
 #include"../Components/cHealth.h"
 
+#define NUMBER_OF_PLAYERPGRADES 3
+#define NUMBER_OF_RANGEWEAPONUPGRADES 7
+#define NUMBER_OF_MELEEWEAPONUPGRADES 2
+#define NUMBER_OF_UPGRADES_TYPE 3
+
 enum class UpgradePackages
 {
-	Player_V1,
-	Range_Pistol,
-	Melee_Normal
+	PlayerUpgrade_HpUp1,
+	PlayerUpgrade_LifeUp1,
+	PlayerUpgrade_ShieldUp1,
+	PlayerUpgrade_ThrustAccelUp1,
+
+	RangeWeaponUpgrade_FireRateDown1,
+	RangeWeaponUpgrade_ReloadRateDown1,
+	RangeWeaponUpgrade_AmmoUp1,
+	RangeWeaponUpgrade_DamageUp1,
+	RangeWeaponUpgrade_SpreadDown1,
+	RangeWeaponUpgrade_BulletSizeUp1,
+	RangeWeaponUpgrade_BulletSpeedUp1,
+
+	MeleeWeaponUpgrade_RangeUp1,
+	MeleeWeaponUpgrade_DamageUp1
 };
 
 namespace UpgradeManager
@@ -16,149 +33,140 @@ namespace UpgradeManager
 	void Init_UpgradeDatabase();
 	void Cleanup_UpgradeDatabase();
 
-	void PlayerUpgrade(cSpaceShip* spaceship, cHealth* health, UpgradePackages upgradePack, int level);
-	void WeaponUpgradeRange(cRangeWeapon* rangeWeapon, UpgradePackages upgradePack, int level);
-	void WeaponUpgradeMelee(cMeleeWeapon* meleeWeapon, UpgradePackages upgradePack, int level);
-	void WeaponChange(cRangeWeapon* rangeWeapon, WeaponType weaponType, UpgradePackages upgradePack);
+	int RandomUpgrade();
+	bool CheckUnique();
+	void ClearAllUpgradeChoice();
+
+	void PlayerUpgrade(cSpaceShip* spaceship, cHealth* health, UpgradePackages upgradePack);
+	void WeaponUpgradeRange(cRangeWeapon* rangeWeapon, UpgradePackages upgradePack);
+	void WeaponUpgradeMelee(cMeleeWeapon* meleeWeapon, UpgradePackages upgradePack);
+	//void WeaponChange(cRangeWeapon* rangeWeapon, WeaponType weaponType, UpgradePackages upgradePack);
 }
 
 //Database of upgrades - BASE CLASS
 
+
+/******************************** Player Upgrades ********************************/
+
+
 struct PlayerUpgrade_Base
 {
-	inline virtual float Get_U0_ThrustDelay() = 0;
-	inline virtual float Get_U0_ShootDelay() = 0;
-	inline virtual float Get_U0_Shield() = 0;
-	inline virtual float Get_U0_Health() = 0;
-	inline virtual int   Get_U0_Life() = 0;
+	inline virtual float Get_ThrustAcceleration()	{ return 0.0f; };
+	inline virtual float Get_ShieldIncrease()		{ return 0.0f; };
+	inline virtual float Get_HealthIncrease()		{ return 0.0f; };
+	inline virtual int   Get_LifeIncrease()			{ return 0; };
 
-	inline virtual float Get_U1_ThrustDelay() = 0;
-	inline virtual float Get_U1_ShootDelay() = 0;
-	inline virtual float Get_U1_ShieldIncrease() = 0;
-	inline virtual float Get_U1_HealthIncrease() = 0;
-	inline virtual int   Get_U1_LifeIncrease() = 0;
-
-	inline virtual float Get_U2_ThrustDelay() = 0;
-	inline virtual float Get_U2_ShootDelay() = 0;
-	inline virtual float Get_U2_ShieldIncrease() = 0;
-	inline virtual float Get_U2_HealthIncrease() = 0;
-	inline virtual int	 Get_U2_LifeIncrease() = 0;
+	virtual ~PlayerUpgrade_Base() = 0 {};
 };
 
-struct PlayerUpgrade_V1: public PlayerUpgrade_Base
+struct PlayerUpgrade_HpUp1: public PlayerUpgrade_Base
 {
-	/******************************** Player Upgrades ********************************/
-	/******** Player Upgrade Level 0 ********/
-	inline float Get_U0_ThrustDelay()		{ return 0.5f; };
-	inline float Get_U0_ShootDelay()		{ return 0.5f; };
-	/****************************************/
-
-	/******** Player Upgrade Level 1 ********/
-	inline float Get_U1_ThrustDelay()		{ return 0.5f; };
-	inline float Get_U1_ShootDelay()		{ return 0.5f; };
-	/****************************************/
-
-	/******** Player Upgrade Level 2 ********/
-	inline float Get_U2_ThrustDelay()		{ return 1.0f; };
-	inline float Get_U2_ShootDelay()		{ return 1.0f; };
-	/****************************************/
-
-
-	////////////////////////////////////////////////////////////////////////////////////
-
-
-	/******************************** Health & Shield Upgrades ********************************/
-	/******** Health Upgrade Level 0 ********/
-	inline float Get_U0_Shield()			{ return 60.0f; }
-	inline float Get_U0_Health()			{ return 100.0f; }
-	inline int   Get_U0_Life()				{ return 3; }
-	/****************************************/
-
-
-	/******** Health Upgrade Level 1 ********/
-	inline float Get_U1_ShieldIncrease()	{ return 10.0f; }
-	inline float Get_U1_HealthIncrease()	{ return 20.0f; }
-	inline int   Get_U1_LifeIncrease()		{ return 1;		}
-	/****************************************/
-
-
-	/******** Health Upgrade Level 2 ********/
-	inline float Get_U2_ShieldIncrease()	{ return 50.0f; }
-	inline float Get_U2_HealthIncrease()	{ return 50.0f; }
-	inline int   Get_U2_LifeIncrease()		{ return 2;		}
-	/***************************************/
-
-	////////////////////////////////////////////////////////////////////////////////////
+	inline float Get_HealthIncrease() override		{ return 1.0f; };
 
 };
 
-struct WeaponUpgrade_BaseRange
+struct PlayerUpgrade_LifeUp1 : public PlayerUpgrade_Base
 {
-	inline virtual float Get_U0_FireRate() = 0;
-	inline virtual float Get_U0_ReloadRate() = 0;
-	inline virtual int	 Get_U0_Ammo() = 0;
-	inline virtual float Get_U0_Damage() = 0;
+	inline int Get_LifeIncrease() override { return 1; };
 
-	inline virtual float Get_U1_FireRate() = 0;
-	inline virtual float Get_U1_ReloadRate() = 0;
-	inline virtual int	 Get_U1_Ammo() = 0;
-	inline virtual float Get_U1_Damage() = 0;
-
-	inline virtual float Get_U2_FireRate() = 0;
-	inline virtual float Get_U2_ReloadRate() = 0;
-	inline virtual int	 Get_U2_Ammo() = 0;
-	inline virtual float Get_U2_Damage() = 0;
 };
 
-struct WeaponUpgrade_Pistol: public WeaponUpgrade_BaseRange
+struct PlayerUpgrade_ShieldUp1 : public PlayerUpgrade_Base
 {
-	/******************************** Weapon Upgrades ********************************/
-	/******** Range Weapon Upgrade Level 0 ********/
-	inline float Get_U0_FireRate()			{ return 10.0f; };
-	inline float Get_U0_ReloadRate()		{ return 20.0f; };
-	inline int	 Get_U0_Ammo()				{ return 10; };
-	inline float Get_U0_Damage()			{ return 20.0f; };
-	/*************************************************/
+	inline float Get_ShieldIncrease() override { return 1.0f; };
 
-	/******** Range Weapon Upgrade Level 1 ********/
-	inline float Get_U1_FireRate()			{ return 10.0f; };
-	inline float Get_U1_ReloadRate()		{ return 20.0f; };
-	inline int	 Get_U1_Ammo()				{ return 10; };
-	inline float Get_U1_Damage()			{ return 20.0f; };
-	/*************************************************/
-
-	/******** Range Weapon Upgrade Level 2 ********/
-	inline float Get_U2_FireRate()			{ return 10.0f; };
-	inline float Get_U2_ReloadRate()		{ return 20.0f; };
-	inline int	 Get_U2_Ammo()				{ return 10; };
-	inline float Get_U2_Damage()			{ return 20.0f; };
-	/*************************************************/
-
-	////////////////////////////////////////////////////////////////////////////////////
 };
 
-struct WeaponUpgrade_BaseMelee
+struct PlayerUpgrade_ThrustAccelUp1 : public PlayerUpgrade_Base
 {
-	inline virtual float Get_U0_MeleeRange() = 0;
-	inline virtual float Get_U0_Damage() = 0;
+	inline float Get_ThrustAcceleration() override { return 1.0f; };
 
-	inline virtual float Get_U1_MeleeRange() = 0;
-	inline virtual float Get_U1_Damage() = 0;
 };
+/***************************************************************************************/
 
-struct WeaponUpgrade_Normal: public WeaponUpgrade_BaseMelee
+
+/******************************** Range Weapon Upgrades ********************************/
+
+struct WeaponUpgradeRange_BaseRange
 {
-	/******** Melee Weapon Upgrade Level 0********/
-	inline float Get_U0_MeleeRange()		{ return 40.0f; };
-	inline float Get_U0_Damage()			{ return 50.0f; };
-	/*********************************************/
+	inline virtual float Get_FireRateDecrease()			{ return 0.0f; };
+	inline virtual float Get_ReloadRateDecrease()		{ return 0.0f; };
+	inline virtual int	 Get_AmmoIncrease()				{ return 0; };
+	inline virtual float Get_DamageIncrease()			{ return 0.0f; };
+	inline virtual float Get_SpreadDecrease()			{ return 0.0f; };
+	inline virtual float Get_BulletSizeIncrease()		{ return 0.0f; };
+	inline virtual float Get_BulletSpeedIncrease()		{ return 0.0f; };
 
-	/******** Melee Weapon Upgrade Level 1********/
-	inline float Get_U1_MeleeRange()		{ return 50.0f; };
-	inline float Get_U1_Damage()			{ return 60.0f; };
-	/*********************************************/
+	virtual ~WeaponUpgradeRange_BaseRange() = 0 {};
 };
 
+struct RangeWeaponUpgrade_FireRateDown1 : public WeaponUpgradeRange_BaseRange
+{
+	inline float Get_FireRateDecrease() override { return 1.0f; };
+
+};
+
+struct RangeWeaponUpgrade_ReloadRateDown1 : public WeaponUpgradeRange_BaseRange
+{
+	inline float Get_ReloadRateDecrease() override { return 1.0f; };
+
+};
+
+struct RangeWeaponUpgrade_AmmoUp1 : public WeaponUpgradeRange_BaseRange
+{
+	inline int Get_AmmoIncrease() override { return 1; };
+
+};
+
+struct RangeWeaponUpgrade_DamageUp1 : public WeaponUpgradeRange_BaseRange
+{
+	inline float Get_DamageIncrease() override { return 1.0f; };
+
+};
+
+struct RangeWeaponUpgrade_SpreadDown1 : public WeaponUpgradeRange_BaseRange
+{
+	inline float Get_SpreadDecrease() override { return 1.0f; };
+
+};
+
+struct RangeWeaponUpgrade_BulletSizeUp1 : public WeaponUpgradeRange_BaseRange
+{
+	inline float Get_BulletSizeIncrease() override { return 1.0f; };
+
+};
+
+struct RangeWeaponUpgrade_BulletSpeedUp1 : public WeaponUpgradeRange_BaseRange
+{
+	inline float Get_BulletSpeedIncrease() override { return 1.0f; };
+
+};
+/***************************************************************************************/
+
+
+/******************************** Melee Weapon Upgrades ********************************/
+
+struct WeaponUpgradeMelee_BaseMelee
+{
+	inline virtual float Get_RangeIncrease()  { return 0.0f; };
+	inline virtual float Get_DamageIncrease()  { return 0.0f; };
+
+	virtual ~WeaponUpgradeMelee_BaseMelee() = 0 {};
+};
+
+struct MeleeWeaponUpgrade_RangeUp1 : public WeaponUpgradeMelee_BaseMelee
+{
+	inline float Get_RangeIncrease() override { return 1.0f; };
+
+};
+
+struct MeleeWeaponUpgrade_DamageUp1 : public WeaponUpgradeMelee_BaseMelee
+{
+	inline float Get_DamageIncrease() override { return 1.0f; };
+
+};
+
+/***************************************************************************************/
 
 
 

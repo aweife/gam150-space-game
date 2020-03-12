@@ -17,6 +17,7 @@ private:
 	float attackRange;
 	float maxSpeed;
 	float acceleration;
+	float rotationSpeed;
 
 	void RotateToTarget(const aiBlackBoard&);
 	void MoveToTarget(const aiBlackBoard&);

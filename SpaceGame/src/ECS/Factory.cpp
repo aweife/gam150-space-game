@@ -13,16 +13,16 @@ namespace Factory
 		cTransform* playerTransform = Core::Get().GetComponent<cTransform>(player);
 		cRigidBody* playerRigidBody = Core::Get().GetComponent<cRigidBody>(player);
 
-		float followSpeed = 300;
-		if (playerRigidBody)	
+		float followSpeed = 300.0f;
+		if (playerRigidBody)
 		{
-			if (playerRigidBody->_velocityCap > 50.0f) 
+			if (playerRigidBody->_velocityCap > 50.0f)
 			{
 				followSpeed = playerRigidBody->_velocityCap;
 			}
 		}
 		Core::Get().AddComponent<cTransform>(cameraID, new cTransform());
-		Core::Get().AddComponent<cCamera>(cameraID, new cCamera(playerTransform, followSpeed));
+		Core::Get().AddComponent<cCamera>(cameraID, new cCamera(playerTransform, 400.0f));
 		CameraManager::AssignNewCam(cameraID);
 
 		return cameraID;
@@ -38,17 +38,57 @@ namespace Factory
 		ENTITY player = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(player, new cTransform);
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
-		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(30.0f, 0.0f, 300.0, 3.0f, 2.0f));
+		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
-		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
-		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
-		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, 0.0, WeaponMode::range));
-		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon());
-		UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
-			, WeaponType::pistol, UpgradePackages::Range_Pistol);
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, WeaponMode::range));
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.5f));
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
+		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
+		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
+
+		/* UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
+			, WeaponType::pistol, UpgradePackages::Range_Pistol); */
+
+		// Debug
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
+
+		Core::Get().GetComponent<cTransform>(player)->_scale.x = 50.0f;
+		Core::Get().GetComponent<cTransform>(player)->_scale.y = 50.0f;
 
 		return player;
+	}
+
+	ENTITY CreateEnemy1(ENTITY player, unsigned int layer)
+	{
+		ENTITY enemy = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
+		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
+		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
+		Core::Get().AddComponent<cAI>(enemy, new cAI);
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+
+		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -400.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+
+
+
+		// debug ai
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
+		//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
+		CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
+		return enemy;
 	}
 
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
@@ -112,33 +152,6 @@ namespace Factory
 		return planet;
 	}
 
-	ENTITY CreateEnemy1(ENTITY player, unsigned int layer)
-	{
-		ENTITY enemy = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
-		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
-		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 2.0f, 2.0f, 0.0f));
-		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
-		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
-		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
-		Core::Get().AddComponent<cAI>(enemy, new cAI);
-
-		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -200.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 150.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 100.0f;
-		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
-		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
-		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
-		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
-
-		// debug ai
-		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
-		cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
-		CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
-		return enemy;
-	}
-
 	void CreateBackground()
 	{
 		AEVec2 newPostion, newScale;
@@ -149,22 +162,27 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
 	}
 
-	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, float rotation)
+	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag)
 	{
 		AEVec2 newPostion, newScale;
 		AEVec2Set(&newPostion, posX, posY);
-		AEVec2Set(&newScale, 20, 80);
+		AEVec2Set(&newScale, 10, 40);
 
 		ENTITY bullet = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(bullet, new cTransform(newPostion, rotation, newScale));
 		Core::Get().AddComponent<cSprite>(bullet, new cSprite(bullet, "Square Mesh", "Bullet_1", 2));
 		Core::Get().AddComponent<cRigidBody>(bullet, new cRigidBody(30.0f, 500.0f, 500.0f));
 		Core::Get().AddComponent<cCollision>(bullet, new cCollision);
+		Core::Get().AddComponent<cProjectile>(bullet, new cProjectile(2.0f, 2.0f, bulletType::normal));
 		Core::Get().GetComponent<cCollision>(bullet)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
 
+		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityDirection = dir;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
-		Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
+		if (tag == OWNERTAG::PLAYER)
+			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET_PLAYER;
+		else 
+			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
 
 		return bullet;
 	}
@@ -189,7 +207,7 @@ namespace Factory
 		/*Factory::CreateDebug_Line(Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position
 		, Core::Get().GetComponent<cTransform>(enemy)->_position);*/
 	}
-	
+
 	ENTITY CreateDebug_Square(AEVec2& pos, float& rot, AEVec2& scale)
 	{
 		//Realistically rot and scale wont be used
@@ -235,7 +253,7 @@ namespace Factory
 				transformComponent->_scale);
 			return boundingBox;
 		}
-		
+
 		AE_ASSERT(boundingBox != 0 && "No COLLIDERSHAPE specified on collision component");
 		return 0;
 	}
@@ -244,22 +262,22 @@ namespace Factory
 	{
 		ENTITY emitter = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ 0, 0 }, 0.0f, { 1,1 }));
-		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({0,0}, 160.0f, 0.2f, 0.4f, 1.0f, 1));
+		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0,0 }, 160.0f, 0.2f, 0.4f, 1.0f, 1));
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 3;
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", {1.0f, 1.0f, 1.0f, 0.35f},
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", { 1.0f, 1.0f, 1.0f, 0.35f },
 			{ 20,20 }, 1.0f, { 0.0f,0.0f }, { 0.0f, 1.0f }, 5.0f, 0.0f, 2);
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
-			VARIANCETYPE::NONE, { 40,40 }, { 70, 70 }, VARIANCETYPE::RANDOM_UNIFORM, { -1,-1 }, {1,1}, VARIANCETYPE::RANDOM);
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 0.0f, 0.9f});
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 0.9f});
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 0.0f, 0.9f});
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 0.0f});
+			VARIANCETYPE::NONE, { 40,40 }, { 70, 70 }, VARIANCETYPE::RANDOM_UNIFORM, { -1,-1 }, { 1,1 }, VARIANCETYPE::RANDOM);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 0.0f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 0.0f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 0.0f });
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(2.0f);
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(0.0f);
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({150, 150});
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({120, 120 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 150, 150 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 120, 120 });
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 100, 100 });
-		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({40, 40 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 40, 40 });
 		return emitter;
 	}
 
@@ -319,7 +337,7 @@ namespace Factory_UI
 		Core::Get().AddComponent<cSprite>(begin, new cSprite(begin, "Square Mesh", "Texture_Default", 0));
 		Core::Get().GetComponent<cSprite>(begin)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(begin, new cUIElement("Play"));
-		Core::Get().GetComponent<cUIElement>(begin) ->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(begin)->_text._anchor = TEXT_ANCHOR::CENTER;
 		UIEventsManager::Subscribe(begin, &OnButtonClick_MainMenuUI);
 
 		return begin;
@@ -408,7 +426,7 @@ namespace Factory_UI
 	ENTITY Create_ThrusterUI(AEVec2 position)
 	{
 		ENTITY thruster = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(thruster, new cTransform(position, 0, { 1, 1}));			//mesh scale of 50
+		Core::Get().AddComponent<cTransform>(thruster, new cTransform(position, 0, { 1, 1 }));			//mesh scale of 50
 		Core::Get().AddComponent<cSprite>(thruster, new cSprite(thruster, "UI_Thruster", "Texture_Fill", 0));
 		Core::Get().GetComponent<cSprite>(thruster)->_colorTint = { 1.0f,1.0f, 0.0f,0.8f };
 		Core::Get().AddComponent<cUIElement>(thruster, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::THRUSTER));
@@ -427,7 +445,7 @@ namespace Factory_UI
 
 		for (int i = 0; i < 3; ++i)
 		{
-			AEVec2Set(&startingPos, centralPos.x + (borderSize + borderSpace)*i, centralPos.y);
+			AEVec2Set(&startingPos, centralPos.x + (borderSize + borderSpace) * i, centralPos.y);
 			border = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(border, new cTransform(startingPos, 0.0f, { borderSize , borderSize }));
 			Core::Get().AddComponent<cSprite>(border, new cSprite(border, "Square Mesh", "Texture_Default", 0));

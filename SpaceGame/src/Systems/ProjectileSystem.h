@@ -1,17 +1,17 @@
 #pragma once
 #include "System.h"
+#include <set>
 
-class HealthSystem : public System
+class ProjectileSystem : public System
 {
 public:
-	HealthSystem() = default;					//Virtual Constructor...
-	~HealthSystem() = default;					//...and destructor
+	std::set<ENTITY> objToDestory;
+	ProjectileSystem() = default;					//Virtual Constructor...
+	~ProjectileSystem() = default;					//...and destructor
 
 	void Init() override;
 	void Update() override;
 	void Render() override {};
 	void OnComponentAdd(ENTITY) override {};
 	void OnComponentRemove(ENTITY) override {};
-
-	void TakeDamage(ENTITY entity);
 };

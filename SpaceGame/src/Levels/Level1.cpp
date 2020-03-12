@@ -18,6 +18,7 @@
 #include "../ECS/Factory.h"							//Entity to create
 #include "../Player/PlayerManager.h"				//Control over the player
 #include "../Managers/UIEventsManager.h"
+#include "../Managers/AudioManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -44,12 +45,12 @@ void Level1_Load()
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
 	Factory::CreatePlanet2(3, 200.0f, 179.0f, 200.0f, 200.0f);
-	Factory::CreatePlanet4(3, 700.0f, -300.0f, 300.0f, 300.0f);
+	Factory::CreatePlanet4(3, 700.0f, -300.0f, 700.0f, 700.0f);
 	Factory::CreatePlanet2(5, -30.0f, -200.0f, 30.0f, 30.0f);
 
 	Factory::CreatePlanet3(4, 400.0f, 400.0f, 230.0f, 230.0f);
 	Factory::CreatePlanet3(4, 630.0f, -40.0f, 60.0f, 60.0f);
-	Factory::CreatePlanet3(4, -300.0f, -400.0f, 300.0f, 300.0f);
+	Factory::CreatePlanet3(4, -300.0f, -400.0f, 400.0f, 400.0f);
 	Factory::CreatePlanet3(4, 1000.0f, 240.0f, 100.0f, 100.0f);
 
 	Factory::CreatePlanet1(3, -400.0f, 200.0f, 100.0f, 100.0f );
@@ -57,8 +58,11 @@ void Level1_Load()
 	Factory::CreatePlanet1(5, -820.0f, -100.0f, 200.0f, 200.0f);
 	Factory::CreatePlanet1(5, 1300.0f, -90.0f, 100.0f, 100.0f);
 
-	//Factory::CreateBackground();
+	Factory::CreateBackground();
 	Factory_UI::Create_PlayerUserInterface();
+
+	// FOR NOW, audio
+	//AudioManager::Loadsound();
 }
 
 // ----------------------------------------------------------------------------

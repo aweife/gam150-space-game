@@ -12,12 +12,17 @@ written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #include "cHealth.h"				//component class declaration
 
-cHealth::cHealth(float shieldMax, float healthMax, float shieldCurr, float healthCurr, bool activateShield)
-	:_activateShield{ activateShield }, 
+cHealth::cHealth(float shieldMax, float healthMax, float shieldCurr, float healthCurr, float shieldRegenCooldown, float shieldRegenTime, float invulnerabilityWindow) :
+	_activateShield{ false },
 	_shieldMax{ shieldMax },
 	_healthMax{ healthMax },
 	_shieldCurr{ shieldCurr },
-	_healthCurr{ healthCurr }
+	_healthCurr{ healthCurr },
+	_shieldRegenCooldown{ shieldRegenCooldown },
+	_shieldRegenTime{ shieldRegenTime },
+	_invulnerabilityWindow{invulnerabilityWindow},
+	_isInvulnerable{ false }
+
 {
 
 }

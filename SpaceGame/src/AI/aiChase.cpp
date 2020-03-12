@@ -16,25 +16,27 @@ void aiChase::Run(const aiBlackBoard& bb, the_variant& var)
 
 		// Initialize state
 		minDistance = 400.0f;
-		attackRange = 300.0f;
+		attackRange = 350.0f;
 		maxSpeed = 100.0f;
 		acceleration = 5.0f;
+		rotationSpeed = 10.0f;
 
 		// Change inner state
 		innerState = INNER_STATE_ONUPDATE;
+		printf("AI is chasing\n");
 
 		break;
 	case INNER_STATE_ONUPDATE:
 
-		MoveToTarget(bb);
+		rb->_velocity += rb->_acceleration;
+		Steering::SeekTarget(rb->_steeringVector, bb.directionToPlayerN, rb->_velocity * g_dt, rb->_velocityVector);
+		Transform::RotateToTarget(trans->_rotation, bb.directionToPlayerN, rotationSpeed * g_dt);
 
 		// If close enought to attack
 		if (bb.distanceFromPlayer < attackRange)
 		{
 			// Change inner state
 			innerState = INNER_STATE_ONEXIT;
-
-			// Change state to seek
 			var.m_Varient.emplace<aiAttack>();
 		}
 

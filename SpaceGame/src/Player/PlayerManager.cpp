@@ -30,9 +30,7 @@ namespace PlayerManager
 		
 		playerSpaceShip->_isThrusting = InputManager::mouseRTrigger;
 		if (playerSpaceShip->_currWeaponMode == WeaponMode::range)
-		{
 			playerWeapon->_isShooting = InputManager::mouseLTrigger;
-		}
 	}
 
 	void RotateWithMouse(int mousePosX, int mousePosY, cTransform* camTransform, 
