@@ -5,4 +5,5 @@
 #include "InputManager.h"
 #include "ResourceManager.h"
 #include "UIEventsManager.h"
+#include "AudioManager.h"
 #include "UpgradeManager.h"

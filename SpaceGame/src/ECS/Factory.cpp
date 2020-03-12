@@ -36,7 +36,7 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, WeaponMode::range));
-		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.5f));
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.4f));
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
@@ -211,6 +211,8 @@ namespace Factory
 			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET_PLAYER;
 		else 
 			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
+
+		AudioManager::PlayOneShot("res/SFX/Confirm.wav");
 
 		return bullet;
 	}
