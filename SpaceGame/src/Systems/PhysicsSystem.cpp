@@ -57,11 +57,11 @@ void PhysicsSystem::Update()
 		}*/
 
 		// Apply "air friction"
-		rb->_velocity *= 0.995f;
+		rb->_velocity *= 0.999f;
 
 		// if the velocity hits the velocity cap
 		if (rb->_velocity > rb->_velocityCap)
-			rb->_velocity *= 0.97f;
+			rb->_velocity *= 0.99f;
 
 		// Calculate current velocity vector based on velocity and direction
 		AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity * g_dt);
