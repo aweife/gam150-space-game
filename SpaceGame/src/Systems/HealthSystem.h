@@ -12,4 +12,6 @@ public:
 	void Render() override {};
 	void OnComponentAdd(ENTITY) override {};
 	void OnComponentRemove(ENTITY) override {};
+
+	void TakeDamage(ENTITY entity);
 };
