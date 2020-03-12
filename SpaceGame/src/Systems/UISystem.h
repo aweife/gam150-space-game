@@ -28,7 +28,7 @@ public:
 	void OnComponentRemove(ENTITY) {};
 
 	void EditText(ENTITY target, const char* newText);
-	void Check_AIIndicatorExist(ENTITY ai, float xDir, float yDir);
+	void Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir);
 };
 
 AEVec2 ScreenBasedCoords(float x, float y, UI_ANCHOR anchor, bool percentage = false);

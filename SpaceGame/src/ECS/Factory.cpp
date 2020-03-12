@@ -466,40 +466,42 @@ namespace Factory_UI
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade), 0.45f, -0.5f );
 	}
 
-	ENTITY Create_AIIndicator(ENTITY ai, float xDir, float yDir)
+	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir)
 	{
 		AEVec2 aiPos = Core::Get().GetComponent<cTransform>(ai)->_position;
 		float screenGradiant = g_WorldMaxY / g_WorldMaxX;
-		float aiDirectionMagnitude = sqrtf(xDir * xDir + yDir * yDir);
+		AEVec2 aiDir_Normalise;
+		AEVec2Normalize(&aiDir_Normalise, &aiDir);
 
-		if (xDir < FLT_EPSILON && xDir > -FLT_EPSILON) //Horizontal axis
+		if (aiDir.x < FLT_EPSILON && aiDir.x > -FLT_EPSILON) //Horizontal axis
 		{
-			xDir = xDir / aiDirectionMagnitude * (g_WorldMaxY * 0.9f);
-			yDir = yDir / aiDirectionMagnitude * (g_WorldMaxY * 0.9f);
+			aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+			aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
 		}
-		else if (yDir < FLT_EPSILON && yDir > -FLT_EPSILON) //Vertical axis
+		else if (aiDir.y < FLT_EPSILON && aiDir.y > -FLT_EPSILON) //Vertical axis
 		{
-			xDir = xDir / aiDirectionMagnitude * (g_WorldMaxX * 0.9f);
-			yDir = yDir / aiDirectionMagnitude * (g_WorldMaxX * 0.9f);
+			aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+			aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
 		}
 		else
 		{
-			float aiGradiant = yDir / xDir;
+			float aiGradiant = aiDir.y / aiDir.x;
 			if (fabs(aiGradiant) < screenGradiant)		//Vertical Axis
 			{
-				xDir = xDir / aiDirectionMagnitude * (g_WorldMaxX * 0.9f);
-				yDir = yDir / aiDirectionMagnitude * (g_WorldMaxX * 0.9f);
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
 			}
 			else if (fabs(aiGradiant) > screenGradiant)	//Horizontal Axis
 			{
-				xDir = xDir / aiDirectionMagnitude * (g_WorldMaxY * 0.9f);
-				yDir = yDir / aiDirectionMagnitude * (g_WorldMaxY * 0.9f);
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
 			}
 		}
-		
+		//Calculate angle
+		float angle = atan2f(aiDir.y, aiDir.x);
 
 		ENTITY aiUI = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(aiUI, new cTransform({ xDir , yDir}, 0, { 100,100 }));
+		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 100,100 }));
 		Core::Get().AddComponent<cSprite>(aiUI, new cSprite(aiUI, "Square Mesh", "AI_Indicator", 0));
 		Core::Get().AddComponent<cUIElement>(aiUI, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INDICATE_AI, ai));
 		return aiUI;

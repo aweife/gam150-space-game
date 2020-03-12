@@ -96,6 +96,6 @@ void AISystem::CheckOutOfScreen(ENTITY id)
 		AEVec2Sub(&relativeDirection, &self->_position, &cameraPosition);
 		std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));	
 		
-		uiSys->Check_AIIndicatorExist(id, relativeDirection.x, relativeDirection.y); //Under UI System
+		uiSys->Check_AIIndicatorExist(id, relativeDirection); //Under UI System
 	}
 }

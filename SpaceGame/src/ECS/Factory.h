@@ -47,7 +47,7 @@ namespace Factory_UI
 	ENTITY Create_ThrusterUI(AEVec2 position);
 	void Create_ChooseThree(AEVec2 centralPos, ENTITY(&group)[9]);
 	void Create_ChoosableUpgrade(ENTITY entity);
-	ENTITY Create_AIIndicator(ENTITY ai, float xDir, float yDir);
+	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir);
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 
 	ENTITY CreateBackground_Load();
