@@ -57,6 +57,8 @@
     <ClCompile Include="src\AI\aiRetreat.cpp" />
     <ClCompile Include="src\Managers\AIBehaviors.cpp" />
     <ClCompile Include="src\Managers\AudioManager.cpp" />
+    <ClCompile Include="src\Components\cProjectile.cpp" />
+    <ClCompile Include="src\Systems\ProjectileSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -125,6 +127,8 @@
     <ClInclude Include="src\AI\aiRetreat.h" />
     <ClInclude Include="src\Managers\AIBehaviors.h" />
     <ClInclude Include="src\Managers\AudioManager.h" />
+    <ClInclude Include="src\Components\cProjectile.h" />
+    <ClInclude Include="src\Systems\ProjectileSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

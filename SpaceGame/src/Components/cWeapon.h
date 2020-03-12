@@ -44,11 +44,11 @@ public:
 	float		_fireCooldown;
 	float		_reloadRate;
 	bool		_isReloading;
-	bool		_isFiring;				//?????
 	int			_ammo;					//ammo count
 	float		_shootingSpread;
 	float		_bulletSize;
 	float		_bulletSpeed;
+	float		_chargeTime;
 
 	// Temporary
 	float	_attackCooldown;
@@ -62,7 +62,7 @@ public:
 
 	cRangeWeapon() = delete;
 	cRangeWeapon(OWNERTAG tag, float attackCooldown, float delayBetweenAttacks = 0.0f, int numberOfAttacks = 1);
-	cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, bool isReloading, bool isFiring, int ammo, float shootingSpread, float bulletSize, float bulletSpeed);
+	cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, bool isReloading, bool isFiring, int ammo, float shootingSpread, float bulletSize, float bulletSpeed, float chargeTime);
 	~cRangeWeapon() {};
 };
 

@@ -23,8 +23,12 @@ public:
 	float	_healthMax;				
 	float	_shieldCurr;
 	float	_healthCurr;
+	float	_shieldRegenCooldown;
+	float	_shieldRegenTime;
+	float   _invulnerabilityWindow;
+	bool	_isInvulnerable;
 
 	cHealth() = delete;
-	cHealth(float shieldMax, float healthMax, float shieldCurr, float healthCurr, bool activateShield);
+	cHealth( float shieldMax, float healthMax, float shieldCurr, float healthCurr,  float shieldRegenCooldown, float shieldRegenTime, float invulnerabilityWindow);
 	~cHealth() = default;
 };

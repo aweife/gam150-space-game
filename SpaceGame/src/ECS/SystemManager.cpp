@@ -13,6 +13,7 @@ void SystemManager::Init()
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<AISystem>();
 	RegisterSystem<HealthSystem>();
+	RegisterSystem<ProjectileSystem>();
 	RegisterSystem<ParticleEmitterSystem>();
 
 	// Rendering

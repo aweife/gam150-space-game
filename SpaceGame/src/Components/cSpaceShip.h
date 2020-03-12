@@ -27,13 +27,13 @@ public:
 	// Spaceship Thruster (Movements)
 	bool	_isThrusting;			// Check for thruster use from player/AI input
 	float	_thrustDelay;			// Countdown timer when thruster overheats
-	float	_thrustSpeedAddition;	// ????? need to double comfirm
+	float	_thrustAcceleration;	// ????? need to double comfirm
 
 	int		_lives;					// 
 	
 	WeaponMode _currWeaponMode = WeaponMode::range;	//We can know if the spaceship has any weapon features
 
 	cSpaceShip() = delete;
-	cSpaceShip(bool isThrusting, float thrustDelay, int lives, float _thrustSpeedAddition, WeaponMode currWeaponMode);
+	cSpaceShip(bool isThrusting, float thrustDelay, int lives, WeaponMode currWeaponMode);
 	~cSpaceShip() = default;
 };

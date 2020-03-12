@@ -13,7 +13,7 @@ namespace Factory
 		cTransform* playerTransform = Core::Get().GetComponent<cTransform>(player);
 		cRigidBody* playerRigidBody = Core::Get().GetComponent<cRigidBody>(player);
 
-		float followSpeed = 300;
+		float followSpeed = 300.0f;
 		if (playerRigidBody)
 		{
 			if (playerRigidBody->_velocityCap > 50.0f)
@@ -22,7 +22,7 @@ namespace Factory
 			}
 		}
 		Core::Get().AddComponent<cTransform>(cameraID, new cTransform());
-		Core::Get().AddComponent<cCamera>(cameraID, new cCamera(playerTransform, followSpeed));
+		Core::Get().AddComponent<cCamera>(cameraID, new cCamera(playerTransform, 400.0f));
 		CameraManager::AssignNewCam(cameraID);
 
 		return cameraID;
@@ -35,14 +35,14 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
-		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, 0.0, WeaponMode::range));
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, WeaponMode::range));
 		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.5f));
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 
-		UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
-			, WeaponType::pistol, UpgradePackages::Range_Pistol);
+		/* UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
+			, WeaponType::pistol, UpgradePackages::Range_Pistol); */
 
 		// Debug
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
@@ -168,6 +168,7 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(bullet, new cSprite(bullet, "Square Mesh", "Bullet_1", 2));
 		Core::Get().AddComponent<cRigidBody>(bullet, new cRigidBody(30.0f, 500.0f, 500.0f));
 		Core::Get().AddComponent<cCollision>(bullet, new cCollision);
+		Core::Get().AddComponent<cProjectile>(bullet, new cProjectile(2.0f, 2.0f, bulletType::normal));
 		Core::Get().GetComponent<cCollision>(bullet)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
 
