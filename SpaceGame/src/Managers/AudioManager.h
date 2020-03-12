@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fmod.hpp"
+#include <string>
 
 namespace AudioManager
 {
@@ -9,7 +10,8 @@ namespace AudioManager
     void Shutdown();
     void ErrorCheck(FMOD_RESULT result);
 
-    void Loadsound(const char*);
-    void UnLoadSound();
-    void PlayOneShot();
+    void LoadSound(const std::string& path, bool loop = false);
+    void UnLoadSound(const std::string& path);
+    void UnLoadAllSounds();
+    void PlayOneShot(const std::string& path, float volume = 1.0f);
 }

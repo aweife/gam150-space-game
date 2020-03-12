@@ -63,7 +63,7 @@ void Level1_Load()
 	Factory_UI::Create_PlayerUserInterface();
 
 	// FOR NOW, audio
-	//AudioManager::Loadsound();
+	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);
 }
 
 // ----------------------------------------------------------------------------
@@ -73,6 +73,7 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
+	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 }
 
 // ----------------------------------------------------------------------------
@@ -104,7 +105,7 @@ void Level1_Draw()
 // ----------------------------------------------------------------------------
 void Level1_Free()
 {
-
+	AudioManager::UnLoadAllSounds();
 }
 // ----------------------------------------------------------------------------
 // This function dumps all data loaded in Level 1
