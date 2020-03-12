@@ -43,15 +43,15 @@ public:
 	float		_currfireRate;
 	float		_reloadRate;
 	bool		_isReloading;
-	bool		_isFiring;				//?????
 	int			_ammo;					//ammo count
 	float		_shootingSpread;
 	float		_bulletSize;
 	float		_bulletSpeed;
+	float		_chargeTime;
 
 	cRangeWeapon() = default;
-	cRangeWeapon(bool isShooting, float fireRate, float currFireRate, float reloadRate, bool isReloading, bool isFiring, int ammo,
-				float shootingSpread, float bulletSize, float bulletSpeed);
+	cRangeWeapon(float fireRate, float currFireRate, float reloadRate, int ammo,
+				float shootingSpread, float bulletSize, float bulletSpeed, float chargeTime);
 	~cRangeWeapon() {};
 };
 
