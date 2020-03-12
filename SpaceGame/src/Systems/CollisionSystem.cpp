@@ -449,7 +449,7 @@ void CollisionSystem::Update()
 				// angular velocity will apply
 				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
 				{
-					//CameraManager::StartCameraShake();
+					CameraManager::StartCameraShake();
 					printf("Enemy health decrease lmao\n");
 
 					// for player's bounce off
