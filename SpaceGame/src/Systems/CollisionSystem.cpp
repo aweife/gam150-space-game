@@ -475,6 +475,7 @@ void CollisionSystem::Update()
 					//CameraManager::StartCameraShake();
 					printf("ENEMY HEALTH DECREASE\n");
 					markedForDestruction.insert(entity1);
+					healthSys->TakeDamage(entity2);
 				}
 				// if bullet collide with Player
 				else if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)

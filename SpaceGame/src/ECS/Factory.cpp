@@ -38,6 +38,8 @@ namespace Factory
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, WeaponMode::range));
 		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.4f));
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
+		Core::Get().AddComponent<cHealth>(player, new cHealth(2,3,5.0f,2.0f));
+
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 
@@ -61,7 +63,8 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 1));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -400.0f;
@@ -95,6 +98,7 @@ namespace Factory
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
 		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 400.0f;
