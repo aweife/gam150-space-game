@@ -217,6 +217,7 @@
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />
     <Image Include="res\Enemy_1.png" />
+    <Image Include="res\Enemy_2.png" />
     <Image Include="res\GameLogo.png" />
     <Image Include="res\Loading.png" />
     <Image Include="res\machinegun.png" />
