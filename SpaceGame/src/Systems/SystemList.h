@@ -13,6 +13,7 @@
 #include "WeaponSystemMelee.h"
 #include "WeaponSystemRange.h"
 #include "HealthSystem.h"
+#include "ProjectileSystem.h"
 #include "DebugToolsSystem.h"
 #include "ParticleSystem.h"
 #include "ParticleEmitterSystem.h"

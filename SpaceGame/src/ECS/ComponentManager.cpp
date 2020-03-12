@@ -17,6 +17,7 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cRangeWeapon>(ID_RangeWeaponComponent);
 	RegisterComponentCollection<cMeleeWeapon>(ID_MeleeWeaponComponent);
 	RegisterComponentCollection<cHealth>(ID_HealthComponent);
+	RegisterComponentCollection<cProjectile>(ID_ProjectileComponent);
 	RegisterComponentCollection<cDebugTools>(ID_DebugToolsComponent);
 	RegisterComponentCollection<cParticle>(ID_ParticleComponent);
 	RegisterComponentCollection<cParticleEmitter>(ID_ParticleEmitterComponent);

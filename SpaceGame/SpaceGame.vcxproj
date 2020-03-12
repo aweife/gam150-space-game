@@ -100,6 +100,7 @@
     <ClCompile Include="src\Components\cDebugTools.cpp" />
     <ClCompile Include="src\Components\cParticle.cpp" />
     <ClCompile Include="src\Components\cParticleEmitter.cpp" />
+    <ClCompile Include="src\Components\cProjectile.cpp" />
     <ClCompile Include="src\Components\cSpaceShip.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
     <ClCompile Include="src\Components\cWeapon.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="src\Systems\ProjectileSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
     <ClCompile Include="src\Systems\UISystem.cpp" />
@@ -159,6 +161,7 @@
     <ClInclude Include="src\Components\ComponentList.h" />
     <ClInclude Include="src\Components\cParticle.h" />
     <ClInclude Include="src\Components\cParticleEmitter.h" />
+    <ClInclude Include="src\Components\cProjectile.h" />
     <ClInclude Include="src\Components\cSpaceShip.h" />
     <ClInclude Include="src\Components\cUIElement.h" />
     <ClInclude Include="src\Components\cWeapon.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="src\Systems\ParticleEmitterSystem.h" />
     <ClInclude Include="src\Systems\ParticleSystem.h" />
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
+    <ClInclude Include="src\Systems\ProjectileSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
     <ClInclude Include="src\Systems\SpaceShipLogicSystem.h" />
     <ClInclude Include="src\Systems\System.h" />

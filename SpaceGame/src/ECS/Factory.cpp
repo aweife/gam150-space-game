@@ -37,11 +37,13 @@ namespace Factory
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
-		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, 0.0, WeaponMode::range));
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, WeaponMode::range));
+		Core::Get().AddComponent<cHealth>(player, new cHealth(3.0f, 3.0f, 3.0f, 3.0f, 5.0f, 5.0f, 5.0f));
 		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon());
-		UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
-			, WeaponType::pistol, UpgradePackages::Range_Pistol);
+	/*	UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
+			, WeaponType::pistol, UpgradePackages::Range_Pistol);*/
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
+		
 
 		return player;
 	}
@@ -117,6 +119,7 @@ namespace Factory
 		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(3.0f, 3.0f, 3.0f, 3.0f, 5.0f, 5.0f, 5.0f));
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -200.0f;
@@ -160,7 +163,7 @@ namespace Factory
 
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
-
+		Core::Get().AddComponent<cProjectile>(bullet, new cProjectile(0.5f, 0.5f, bulletType::normal));
 		return bullet;
 	}
 
