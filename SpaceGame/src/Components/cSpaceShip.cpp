@@ -13,11 +13,9 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "cSpaceShip.h"		//Component class declaration
 
 
-cSpaceShip::cSpaceShip(bool isThrusting, float thrustDelay, int lives, float thrustSpeedAddition, WeaponMode currWeaponMode)
+cSpaceShip::cSpaceShip(bool isThrusting, float thrustDelay, int lives, WeaponMode currWeaponMode)
 	:_isThrusting{ isThrusting }, 
 	_thrustDelay{ thrustDelay },
-	_lives{ lives },
-	_thrustSpeedAddition{thrustSpeedAddition},
 	_currWeaponMode{currWeaponMode}
 {
 
