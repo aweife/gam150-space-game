@@ -14,6 +14,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #pragma once
 #include "Component.h"
+#include "cRigidBody.h"
 
 enum class WeaponType
 {
@@ -35,7 +36,7 @@ public:
 	virtual ~Weapon() = 0 {};
 };
 
-class cRangeWeapon : public Weapon, Component
+class cRangeWeapon : public Weapon, public Component
 {
 public:
 	bool		_isShooting;			//Player input
@@ -57,13 +58,15 @@ public:
 	float	_delayBetweenAttacks;
 	int		_numberOfAttacks;
 
+	OWNERTAG _tag;
+
 	cRangeWeapon() = delete;
-	cRangeWeapon(float attackCooldown, float delayBetweenAttacks = 0.0f, int numberOfAttacks = 1);
+	cRangeWeapon(OWNERTAG tag, float attackCooldown, float delayBetweenAttacks = 0.0f, int numberOfAttacks = 1);
 	cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, bool isReloading, bool isFiring, int ammo, float shootingSpread, float bulletSize, float bulletSpeed);
 	~cRangeWeapon() {};
 };
 
-class cMeleeWeapon : public Weapon, Component
+class cMeleeWeapon : public Weapon, public Component
 {
 public:
 	float		_meleeRange;

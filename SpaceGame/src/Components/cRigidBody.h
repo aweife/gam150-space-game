@@ -3,13 +3,21 @@
 #include "Component.h"
 #include "AEEngine.h"
 
+enum class OWNERTAG
+{
+	PLAYER = 0,
+	AI = 1,
+};
+
+
 enum class COLLISIONTAG
 {
 	PLAYER = 0, 
 	BULLET = 1,
-	ENEMY = 2,
-	PLANET = 3,
-	NONE = 4
+	BULLET_PLAYER = 2,
+	ENEMY = 3,
+	PLANET = 4,
+	NONE = 5
 };
 
 class cRigidBody:public Component

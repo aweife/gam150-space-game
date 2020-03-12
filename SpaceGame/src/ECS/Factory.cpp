@@ -36,7 +36,7 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, 0.0, WeaponMode::range));
-		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(0.5f));
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.5f));
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
@@ -61,12 +61,12 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -400.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 150.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 100.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 50.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
@@ -157,7 +157,7 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
 	}
 
-	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation)
+	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag)
 	{
 		AEVec2 newPostion, newScale;
 		AEVec2Set(&newPostion, posX, posY);
@@ -173,8 +173,10 @@ namespace Factory
 
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityDirection = dir;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
-		Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
-
+		if (tag == OWNERTAG::PLAYER)
+			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET_PLAYER;
+		else 
+			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
 
 		return bullet;
 	}

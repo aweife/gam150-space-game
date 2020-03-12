@@ -465,13 +465,15 @@ void CollisionSystem::Update()
 				}
 				
 				// if bullet collide with enemy
-				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
+				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
+
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					//CameraManager::StartCameraShake();
 					printf("ENEMY HEALTH DECREASE\n");
 					markedForDestruction.insert(entity1);
 				}
+
 
 				// if bullet collide with planet
 				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLANET)

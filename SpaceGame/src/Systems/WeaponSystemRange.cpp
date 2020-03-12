@@ -68,7 +68,7 @@ void WeaponSystemRange::Update()
 					rangeweapon->_delayTimer = rangeweapon->_delayBetweenAttacks;
 
 					// Fire
-					NormalShoot(transform);
+					NormalShoot(transform,rangeweapon->_tag);
 					--rangeweapon->_attacksLeft;
 					rangeweapon->_isShooting = false;
 				}
@@ -83,7 +83,7 @@ void WeaponSystemRange::Update()
 	}
 }
 
-void NormalShoot(cTransform* transform)
+void NormalShoot(cTransform* transform, OWNERTAG tag)
 {
 	AEVec2 bulletDirection;
 	AEVec2 bulletVelocity;
@@ -93,8 +93,12 @@ void NormalShoot(cTransform* transform)
 	// Bullet velocity
 	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
 	// Spawn the bullet at the tip of player
-	Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
-		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, bulletDirection, transform->_rotation + PI / 2);
+	if (tag == OWNERTAG::PLAYER)
+		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * (transform->_scale.x/2.0f),
+			transform->_position.y + AESin(transform->_rotation) * (transform->_scale.y/2.0f), bulletVelocity, bulletDirection, transform->_rotation + PI / 2, OWNERTAG::PLAYER);
+	else if (tag == OWNERTAG::AI)
+		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * (transform->_scale.x / 2.0f),
+			transform->_position.y + AESin(transform->_rotation) * (transform->_scale.y / 2.0f), bulletVelocity, bulletDirection, transform->_rotation + PI / 2, OWNERTAG::AI);
 }
 
 void HomingShoot(cTransform* transform)
@@ -113,7 +117,7 @@ void MachineGunShoot(cTransform* transform)
 	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
 	// Spawn the bullet at the tip of player
 	Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
-		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, bulletDirection, transform->_rotation + PI / 2);
+		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, bulletDirection, transform->_rotation + PI / 2, OWNERTAG::PLAYER);
 }
 
 //void TripleShot(cTransform* transform)

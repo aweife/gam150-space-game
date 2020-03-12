@@ -17,7 +17,7 @@ namespace Factory
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet4(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	void CreateBackground();
-	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation);
+	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
 
 	//Debug graphics
 	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale);
