@@ -33,7 +33,7 @@ namespace Factory
 		ENTITY player = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(player, new cTransform);
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
-		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 300.0, 3.0f, 2.0f));
+		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
@@ -43,6 +43,9 @@ namespace Factory
 			, WeaponType::pistol, UpgradePackages::Range_Pistol);
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
+
+		Core::Get().GetComponent<cTransform>(player)->_scale.x = 50.0f;
+		Core::Get().GetComponent<cTransform>(player)->_scale.y = 50.0f;
 
 		return player;
 	}
@@ -121,8 +124,8 @@ namespace Factory
 
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -400.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 150.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 100.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 50.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
@@ -149,7 +152,7 @@ namespace Factory
 	{
 		AEVec2 newPostion, newScale;
 		AEVec2Set(&newPostion, posX, posY);
-		AEVec2Set(&newScale, 20, 80);
+		AEVec2Set(&newScale, 10, 40);
 
 		ENTITY bullet = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(bullet, new cTransform(newPostion, rotation, newScale));
@@ -162,6 +165,7 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityDirection = dir;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
 		Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
+
 
 		return bullet;
 	}

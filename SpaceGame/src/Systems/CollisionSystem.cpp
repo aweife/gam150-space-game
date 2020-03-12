@@ -23,6 +23,7 @@
 #include "../Math/Math.h"                   // Additional Math functions
 #include "../Global.h"                      // g_dt
 #include "../ECS/Core.h"                    // For ECS
+#include "../Tools/Editor.h"                    // For ECS
 #include "../ECS/Factory.h"                 // For Particle System
 #include "../Components/ComponentList.h"    // For component list
 
@@ -443,33 +444,46 @@ void CollisionSystem::Update()
 				               rigidbody->_velocityVector, collider2->_boundingBox,
 				               collider2->_bbShape,rigidbody2->_velocityVector) == true)
 			{
-
 				// if player and enemy collide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
 				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
 				{
-					CameraManager::StartCameraShake();
+					//CameraManager::StartCameraShake();
 					printf("Enemy health decrease lmao\n");
 
 					// for player's bounce off
-					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.5f), -(rigidbody->_velocityVector.y * 1.5f));
-					/*rigidbody->_collisionVector.x = -20.0f;
-					rigidbody->_collisionVector.y = -20.0f;*/
-					rigidbody->_velocityVector.x += rigidbody->_collisionVector.x;
-					rigidbody->_velocityVector.y += rigidbody->_collisionVector.y;
+					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
+					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), - (rigidbody->_velocityVector.y * 1.2f));
+					AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
 
 					// for enemy's bounce off
-					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.5f), -(rigidbody->_velocityVector.y * 1.5f));
-					rigidbody2->_velocityChangeVector = rigidbody2->_collisionVector;
+					AEVec2Set(&rigidbody2->_velocityDirection, -(rigidbody2->_velocityVector.x), -(rigidbody2->_velocityVector.y));
+					AEVec2Set(&rigidbody2->_collisionVector, -(rigidbody2->_velocityVector.x * 1.5f), -(rigidbody2->_velocityVector.y * 1.5f));
+					AEVec2Add(&rigidbody2->_collisionVector, &rigidbody2->_collisionVector, &rigidbody2->_velocityDirection);
+
 				}
 				
 				// if bullet collide with enemy
 				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-					CameraManager::StartCameraShake();
+					//CameraManager::StartCameraShake();
 					printf("ENEMY HEALTH DECREASE\n");
+					markedForDestruction.insert(entity1);
+				}
+
+				// if bullet collide with planet
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLANET)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					markedForDestruction.insert(entity2);
+				}
+
+				// if player near planet
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::PLANET)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					markedForDestruction.insert(entity1);
 				}
 

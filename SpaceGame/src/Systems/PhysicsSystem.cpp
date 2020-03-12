@@ -57,11 +57,11 @@ void PhysicsSystem::Update()
 		}*/
 
 		// Apply "air friction"
-		rb->_velocity *= 0.999f;
+		rb->_velocity *= 0.99f;
 
 		// if the velocity hits the velocity cap
 		if (rb->_velocity > rb->_velocityCap)
-			rb->_velocity *= 0.995f;
+			rb->_velocity *= 0.97f;
 
 		// Calculate current velocity vector based on velocity and direction
 		AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity * g_dt);
@@ -70,15 +70,11 @@ void PhysicsSystem::Update()
 		//	Physics calculation: Sum of all extra forces
 		// -----------------------------------------------------------------------
 
-		// check if the collision is bigger than the other vectors (should this be in collisionsystem?)
-		if (rb->_collisionVector.x > rb->_velocityVector.x&&
-			rb->_collisionVector.y > rb->_velocityVector.y)
-		{
-			// to set the current velocity vector to the collision vector, and decrement the collision vector 
-			--rb->_collisionVector.x;
-			--rb->_collisionVector.y;
-		}
-
+		// Add collision vector into the velocity vector
+		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_collisionVector);
+		//Smootly reduce velocity
+		AEVec2Scale(&rb->_collisionVector, &rb->_collisionVector, 0.9f);
+				
 		// Affect steering force by mass
 		//AEVec2Scale(&rb->_steeringVector, &rb->_steeringVector, 1.0f/rb->_mass);
 
