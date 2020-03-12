@@ -19,6 +19,7 @@
 #include <limits>                           // limits
 
 #include "../Managers/CameraManager.h"		// For screen shake
+#include "../Systems/HealthSystem.h"		// For Damage Taken
 #include "../Math/Math.h"                   // Additional Math functions
 #include "../Global.h"                      // g_dt
 #include "../ECS/Core.h"                    // For ECS
@@ -375,6 +376,7 @@ void CollisionSystem::Init()
 	signature.set(Core::Get().GetComponentType<cTransform>());
 	signature.set(Core::Get().GetComponentType<cRigidBody>());
 	signature.set(Core::Get().GetComponentType<cCollision>());
+	signature.set(Core::Get().GetComponentType<cHealth>());
 	Core::Get().SetSystemSignature<CollisionSystem>(signature);
 }
 
@@ -383,6 +385,7 @@ void CollisionSystem::Update()
 	cCollision* collider;
 	cRigidBody* rigidbody;
 	cTransform* transform;
+	cHealth* health;
 
 	cCollision* collider2;
 	cRigidBody* rigidbody2;
@@ -409,6 +412,7 @@ void CollisionSystem::Update()
 		collider = Core::Get().GetComponent<cCollision>(entity1);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity1);
 		transform = Core::Get().GetComponent<cTransform>(entity1);
+		std::shared_ptr<HealthSystem> healthSys(std::static_pointer_cast<HealthSystem>(Core::Get().GetSystem<HealthSystem>()));
 
 
 		for (auto const& entity2 : entitiesList)
@@ -452,9 +456,20 @@ void CollisionSystem::Update()
 				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-					CameraManager::StartCameraShake();
+					//CameraManager::StartCameraShake();
 					printf("ENEMY HEALTH DECREASE\n");
 					markedForDestruction.insert(entity1);
+				}
+				// if bullet collide with Player
+				else if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					//CameraManager::StartCameraShake();
+					printf("PLAYER HEALTH DECREASE\n");
+					markedForDestruction.insert(entity1);
+
+					//Check invulnerablity frames
+					healthSys->TakeDamage(entity2);
 				}
 
 			}
