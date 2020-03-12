@@ -1,9 +1,9 @@
 #include "cTimeline.h"
-
+#include "../Global.h"
 #include "../Tools/Console.h"
 
 cTimeline::cTimeline(float startTime, float endTime)
-	:_startTime{ startTime }, _currTime{ startTime }, _endTime{endTime}
+	:_startTime{ startTime }, _currTime{ g_appTime }, _endTime{endTime}
 {
 
 }
@@ -54,7 +54,23 @@ void AddNewTimeline_Int(int* reference, cTimeline* timelineComp)
 	std::vector <std::pair<float, TimelineNode*>>* innerTimeline = new std::vector <std::pair<float, TimelineNode*>>;
 	TimelineReference* timelineID = new TimelineReference;
 	timelineID->_intRef = reference;
-	auto iterator = timelineComp->timelineTable.emplace(new TimelineReference, innerTimeline);
+	auto iterator = timelineComp->timelineTable.emplace(timelineID, innerTimeline);
+}
+
+void AddNewTimeline_Void(void(*reference)(ENTITY), cTimeline* timelineComp)
+{
+	//Check if timeline already exist
+	for (auto it = timelineComp->timelineTable.begin(); it != timelineComp->timelineTable.end(); ++it)
+	{
+		if (it->first->_functionCall == reference)
+		{
+			return;
+		}
+	}
+	std::vector <std::pair<float, TimelineNode*>>* innerTimeline = new std::vector <std::pair<float, TimelineNode*>>;
+	TimelineReference* timelineID = new TimelineReference;
+	timelineID->_functionCall = reference;
+	auto iterator = timelineComp->timelineTable.emplace(timelineID, innerTimeline);
 }
 
 //NO SORTING AS OF YET...
@@ -67,7 +83,7 @@ void AddNewNode_Int(int* reference, cTimeline* timelineComp, float time, int val
 			TimelineNode* node = new TimelineNode;
 			node->_intValue = value;
 			node->_type = TimelineType::INT;
-			it->second->push_back({ timelineComp->_currTime + time, node });
+			it->second->push_back({ timelineComp->_startTime + time, node });
 		}
 	}
 }
@@ -81,7 +97,22 @@ void AddNewNode_Float(float* reference, cTimeline* timelineComp, float time, flo
 			TimelineNode* node = new TimelineNode;
 			node->_floatValue = value;
 			node->_type = TimelineType::FLOAT;
-			it->second->push_back({ timelineComp->_currTime + time, node });
+			it->second->push_back({ timelineComp->_startTime + time, node });
+		}
+	}
+}
+
+void AddNewNode_Void(void(*reference)(ENTITY), cTimeline* timelineComp, float time, ENTITY param1)
+{
+	for (auto it = timelineComp->timelineTable.begin(); it != timelineComp->timelineTable.end(); ++it)
+	{
+		if (it->first->_functionCall == reference)
+		{
+			TimelineNode* node = new TimelineNode;
+			node->_functionCall = reference;
+			node->_functionParam = param1;
+			node->_type = TimelineType::FUNCTION;
+			it->second->push_back({ timelineComp->_startTime + time, node });
 		}
 	}
 }

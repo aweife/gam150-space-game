@@ -8,6 +8,8 @@ public:
 	TimelineSystem() = default;					//Virtual Constructor...
 	~TimelineSystem() = default;					//...and destructor
 
+	std::set<ENTITY> markedForRemoval;
+
 	void Init() override;
 	void Update() override;
 	void Render() override {};

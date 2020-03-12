@@ -7,7 +7,7 @@
 
 enum class TimelineType
 {
-	FLOAT, INT
+	FLOAT, INT, FUNCTION
 };
 
 struct TimelineNode
@@ -15,12 +15,15 @@ struct TimelineNode
 	TimelineType _type;
 	float _floatValue;
 	int _intValue;
+	void(*_functionCall)(ENTITY);
+	ENTITY _functionParam;
 };
 
 union TimelineReference
 {
 	float* _floatRef;
 	int* _intRef;
+	void(*_functionCall)(ENTITY);
 };
 
 class cTimeline :public Component
@@ -39,5 +42,8 @@ public:
 
 void AddNewTimeline_Float(float* reference, cTimeline* timelineComp);
 void AddNewTimeline_Int(int* reference, cTimeline* timelineComp);
+void AddNewTimeline_Void(void(*reference)(ENTITY), cTimeline* timelineComp);
+
 void AddNewNode_Int(int* reference, cTimeline* timelineComp, float time, int value);
 void AddNewNode_Float(float* reference, cTimeline* timelineComp, float time, float value);
+void AddNewNode_Void(void(*reference)(ENTITY), cTimeline* timelineComp, float time, ENTITY param1);

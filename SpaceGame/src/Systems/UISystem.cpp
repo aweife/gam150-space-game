@@ -8,6 +8,7 @@
 #include "../Math/Math.h"								//lerping
 #include "../Global.h"									//Screen size
 #include "../Managers/GameStateManager.h"
+#include "../ECS/Factory.h"								//Create enemy indicator...careful of circular dependency
 
 #include "../Tools/Console.h"
 void UISystem::Init()
@@ -158,4 +159,64 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	}
 	GSM_LoadingTransition(GS_LEVEL1);
 	return true;
+}
+
+void UISystem::Check_AIIndicatorExist(ENTITY ai, float xDir, float yDir)
+{
+	cUIElement* uiComp = nullptr;
+	cTransform* uiTrans = nullptr;
+
+	for(ENTITY entity :aiIndicator_Set)
+	{
+		uiComp = Core::Get().GetComponent<cUIElement>(entity);
+		if (uiComp->_roleIndex == ai)			//the indicator already exists
+		{
+			//Update the position
+			uiTrans = Core::Get().GetComponent<cTransform>(entity);
+			float screenGradiant = g_WorldMaxY / g_WorldMaxX;
+			float aiDirectionMagnitude = sqrtf(xDir * xDir + yDir * yDir);
+
+			if (xDir < FLT_EPSILON && xDir > -FLT_EPSILON) //Horizontal axis
+			{
+				xDir = xDir / aiDirectionMagnitude * (g_WorldMaxY * 0.9f);
+				yDir = yDir / aiDirectionMagnitude * (g_WorldMaxY * 0.9f);
+			}
+			else if (yDir < FLT_EPSILON && yDir > -FLT_EPSILON) //Vertical axis
+			{
+				xDir = xDir / aiDirectionMagnitude * (g_WorldMaxX * 0.9f);
+				yDir = yDir / aiDirectionMagnitude * (g_WorldMaxX * 0.9f);
+			}
+			else
+			{
+				float aiGradiant = yDir / xDir;
+				if (fabs(aiGradiant) < screenGradiant)		//Vertical Axis
+				{
+					xDir = xDir / aiDirectionMagnitude * (g_WorldMaxX * 0.9f);
+					yDir = yDir / aiDirectionMagnitude * (g_WorldMaxX * 0.9f);
+				}
+				else if (fabs(aiGradiant) > screenGradiant)	//Horizontal Axis
+				{
+					xDir = xDir / aiDirectionMagnitude * (g_WorldMaxY * 0.9f);
+					yDir = yDir / aiDirectionMagnitude * (g_WorldMaxY * 0.9f);
+				}
+			}
+			uiTrans->_position.x = xDir;
+			uiTrans->_position.y = yDir;
+
+			return;
+		}
+	}
+	Factory_UI::Create_AIIndicator(ai, xDir, yDir);
+}
+
+void UISystem::OnComponentAdd(ENTITY entity)
+{
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+
+	switch (uiComp->_role)
+	{
+		case UI_ROLE::INDICATE_AI:
+			aiIndicator_Set.insert(entity);
+			break;
+	}
 }

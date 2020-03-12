@@ -72,9 +72,9 @@ void ParticleEmitterSystem::Update()
 	{
 		for (auto const& entity : markedForDestruction)
 		{
-
 			Core::Get().EntityDestroyed(entity);
 		}
+		markedForDestruction.clear();
 	}
 }
 

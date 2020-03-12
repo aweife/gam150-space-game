@@ -14,7 +14,7 @@ ENTITY EntityManager::CreateEntity(const char* name)
 
 	// Assert if we reached the cap
 	AE_ASSERT(_activeEntityCount < MAX_ENTITIES && "Too many entities created.");
-
+	
 	// Take from the front of the queue
 	ENTITY entity = _availableEntities.front();
 	//_entitiesNameSet.insert(std::pair<)

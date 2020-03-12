@@ -48,7 +48,14 @@ namespace InputManager
 		}
 		if (AEInputCheckTriggered(AEVK_ESCAPE))
 		{
-			GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+			if (currentState == GS_MAINMENU)
+			{
+				GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+			}
+			else
+			{
+				GSM_ChangeState(GS_MAINMENU);
+			}
 		}
 		if (AEInputCheckTriggered(AEVK_R))
 		{
