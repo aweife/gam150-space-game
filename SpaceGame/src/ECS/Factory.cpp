@@ -112,6 +112,104 @@ namespace Factory
 
 
 
+		// debug ai
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
+		//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
+		CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
+		return enemy;
+	}
+
+	ENTITY CreateEnemy3(ENTITY player, unsigned int layer)
+	{
+		ENTITY enemy = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
+		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
+		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
+		Core::Get().AddComponent<cAI>(enemy, new cAI);
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
+
+		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 1500.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 1800.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+
+		// debug ai
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
+		//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
+		CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
+		return enemy;
+	}
+
+	ENTITY CreateEnemy4(ENTITY player, unsigned int layer)
+	{
+		ENTITY enemy = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
+		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_2", layer));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
+		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
+		Core::Get().AddComponent<cAI>(enemy, new cAI);
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
+
+		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 1200.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 1500.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+
+
+
+		// debug ai
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
+		//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
+		CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
+		return enemy;
+	}
+
+	ENTITY CreateEnemy5(ENTITY player, unsigned int layer)
+	{
+		ENTITY enemy = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
+		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_2", layer));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
+		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
+		Core::Get().AddComponent<cAI>(enemy, new cAI);
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
+
+		Core::Get().GetComponent<cTransform>(enemy)->_position.x = -1800.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -2000.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+
 
 		// debug ai
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision

@@ -35,6 +35,16 @@ void HealthSystem::Update()
 			}
 		}
 		
+		
+		if (objToDestory.size() > 0)
+		{
+			for (auto const& id : objToDestory)
+			{
+				Core::Get().EntityDestroyed(id);
+			}
+			objToDestory.clear();
+		}
+		
 		//if (spaceship->_lives < 0)
 		//{
 		//	//game over screen, main menu
@@ -59,4 +69,6 @@ void HealthSystem::TakeDamage(ENTITY entity)
 		--health->_shieldCurr;
 	else if (health->_healthCurr > 0)
 		--health->_healthCurr;
+	else if(health->_healthCurr <= 0)
+		objToDestory.insert(entity);
 }

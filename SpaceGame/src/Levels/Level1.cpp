@@ -42,6 +42,9 @@ void Level1_Load()
 	//Create Enemy
 	enemy = Factory::CreateEnemy1(PlayerManager::player, 2);
 	enemy = Factory::CreateEnemy2(PlayerManager::player, 2);
+	enemy = Factory::CreateEnemy3(PlayerManager::player, 2);
+	enemy = Factory::CreateEnemy4(PlayerManager::player, 2);
+	enemy = Factory::CreateEnemy5(PlayerManager::player, 2);
 
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);

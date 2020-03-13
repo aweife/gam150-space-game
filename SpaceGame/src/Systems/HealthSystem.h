@@ -4,6 +4,7 @@
 class HealthSystem : public System
 {
 public:
+	std::set<ENTITY> objToDestory;
 	HealthSystem() = default;					//Virtual Constructor...
 	~HealthSystem() = default;					//...and destructor
 
