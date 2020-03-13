@@ -12,6 +12,7 @@
 #include "../Player/PlayerManager.h"
 
 #include "../Tools/Console.h"
+#include "../Tools/Editor.h"
 void UISystem::Init()
 {
 	// Sets the system signature for this system
@@ -23,6 +24,8 @@ void UISystem::Init()
 }
 void UISystem::Update()
 {
+	const ENTITY pid = PlayerManager::player;
+	if (pid == 0) return;
 	cUIElement* uiComp;
 	cTransform* transform;
 	for (std::set<ENTITY>::const_iterator it = aiIndicator_Set.begin(); it != aiIndicator_Set.end(); )
@@ -226,6 +229,16 @@ bool OnShieldActivate_ShieldBubble(ENTITY entity, Events::OnShieldActivate* mess
 	return true;			//successfuly execution
 }
 
+bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* message)
+{
+	float percentage = message->_newVelocity / message->_capVelocity;
+	percentage = AEWrap(percentage, 0, 1);
+
+	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+	sprite->_UVOffset.y = percentage * -0.1f;
+	return true;
+}
+
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
@@ -300,6 +313,14 @@ void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 		}
 	}
 	Factory_UI::Create_AIIndicator(ai, aiDir, aiType);
+}
+
+void UISystem::DeleteUpgradeWindow()
+{
+	while (choose3_Set.size() > 0)
+	{
+		Core::Get().EntityDestroyed(*choose3_Set.begin());
+	}
 }
 
 void UISystem::OnComponentAdd(ENTITY entity)

@@ -1,3 +1,16 @@
+/**********************************************************************************
+* \file			ResourceManager.h
+* \brief		Manages loading of assets such as mesh, texture, sound
+* \author		Jun Yi, Chong, 100% Code Contribution
+*
+*				Long Description
+*				- Allocates memory for mesh and texture under AEEngine
+*				- Breaks up the loading across each frame so game will not freeze
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 #include "AEEngine.h"
 #include <unordered_map>

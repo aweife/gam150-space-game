@@ -98,6 +98,7 @@ void RenderSystem::Render()
 			{
 				// Use textures
 				AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+
 				// Set texture
 				AEGfxTextureSet(sprite->_texture, sprite->_UVOffset.x, sprite->_UVOffset.y);
 

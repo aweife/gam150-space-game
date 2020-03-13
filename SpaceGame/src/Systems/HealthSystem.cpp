@@ -89,6 +89,7 @@ void HealthSystem::TakeDamage(ENTITY entity)
 	if (health->_shieldCurr > 0 && health->_activateShield)
 	{
 		health->_shieldCurr -= 10.0f;
+		if (health->_shieldCurr < 0.0f)	health->_shieldCurr = 0.0f;
 		UIEventsManager::Broadcast(new Events::OnShieldChange(health->_shieldCurr));
 		UIEventsManager::Broadcast(new Events::OnShieldActivate());
 		health->_shieldRegenCooldown = health->_shieldRegenTime;
@@ -102,6 +103,7 @@ void HealthSystem::TakeDamage(ENTITY entity)
 	else if (health->_healthCurr > 0)
 	{
 		health->_healthCurr -= 10.0f;
+		if (health->_healthCurr < 0.0f) health->_healthCurr = 0.0f;
 		UIEventsManager::Broadcast(new Events::OnHealthChange(health->_healthCurr));
 		health->_invulnerabilityTime = health->_invulnerabilityWindow;
 		health->_isInvulnerable = true;

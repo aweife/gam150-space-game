@@ -1,3 +1,4 @@
+
 #include "Factory.h"
 #include "Core.h"
 #include "../Global.h"
@@ -109,6 +110,7 @@ namespace Factory
 
 	ENTITY CreateEnemy2(ENTITY player, unsigned int layer)
 	{
+		UNREFERENCED_PARAMETER(player);
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_2", layer));
@@ -143,6 +145,7 @@ namespace Factory
 
 	ENTITY CreateEnemy3(ENTITY player, unsigned int layer)
 	{
+		UNREFERENCED_PARAMETER(player);
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
@@ -175,6 +178,7 @@ namespace Factory
 
 	ENTITY CreateEnemy4(ENTITY player, unsigned int layer)
 	{
+		UNREFERENCED_PARAMETER(player);
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_2", layer));
@@ -392,7 +396,7 @@ namespace Factory
 
 		AE_ASSERT(collisionComponent != nullptr && "No collision component on called object");
 
-		if (collisionComponent->_bbShape == ColliderShape::RECTANGLE)
+		if (collisionComponent->_bbShape == ColliderShape::RECTANGLE || collisionComponent->_bbShape == ColliderShape::RECTANGLE_OBB)
 		{
 			boundingBox = Factory::CreateDebug_Square(transformComponent->_position, transformComponent->_rotation,
 				transformComponent->_scale);
@@ -626,10 +630,10 @@ namespace Factory_UI
 	{
 		ENTITY thruster = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(thruster, new cTransform(position, 0, { 1, 1 }));			//mesh scale of 50
-		Core::Get().AddComponent<cSprite>(thruster, new cSprite(thruster, "UI_Thruster", "Texture_Fill", 0));
+		Core::Get().AddComponent<cSprite>(thruster, new cSprite(thruster, "UI_Thruster", "Texture_Fill3", 0));
 		Core::Get().GetComponent<cSprite>(thruster)->_colorTint = { 1.0f,1.0f, 0.0f,0.8f };
 		Core::Get().AddComponent<cUIElement>(thruster, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::THRUSTER));
-		//UIEventsManager::Subscribe(hpBar, &OnHealthChange_HPUI);
+		UIEventsManager::Subscribe(thruster, &OnThrusterChange_ThrusterUI);
 
 		return thruster;
 	}
@@ -792,6 +796,33 @@ namespace Factory_Map
 		}
 	}
 
+	void Generate_PlanetField()
+	{
+		int numOfPlanet = 50;
+		for (int i = 0; i < numOfPlanet; ++i)
+		{
+			int planetType = static_cast<int>(AERandFloat() * 3);
+
+			float scale = AERandFloat() * 100 + 50;
+
+			switch (planetType)
+			{
+			case 0:
+				Factory::CreatePlanet1(2, AERandFloat() * 8000 - g_WorldMaxX*2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				break;
+			case 1:
+				Factory::CreatePlanet2(2, AERandFloat() * 8000 - g_WorldMaxX*2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				break;
+			case 2:
+				Factory::CreatePlanet3(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				break;
+			case 3:
+				Factory::CreatePlanet4(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				break;
+			}
+		}
+	}
+	
 	void Generate_StarField()
 	{
 

@@ -30,6 +30,7 @@ public:
 	void OnComponentRemove(ENTITY);
 
 	void Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType);
+	void DeleteUpgradeWindow();
 };
 void EditText(ENTITY target, const char* newText);
 void EditText(ENTITY target, const char* newText, int atBack);
@@ -38,4 +39,5 @@ AEVec2 ScreenBasedCoords(float x, float y, UI_ANCHOR anchor, bool percentage = f
 bool OnHealthChange_HPUI(ENTITY entity, Events::OnHealthChange* message);
 bool OnShieldChange_ShieldUI(ENTITY entity, Events::OnShieldChange* message);
 bool OnShieldActivate_ShieldBubble(ENTITY entity, Events::OnShieldActivate* message);
+bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* message);
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message);

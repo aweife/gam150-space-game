@@ -68,5 +68,6 @@ namespace Factory_UI
 namespace Factory_Map
 {
 	void Generate_StarField_Menu();
+	void Generate_PlanetField();
 	void Generate_StarField();
 }

@@ -244,7 +244,7 @@ namespace ResourceManager
 
 		//modifiables
 		float segments = 7.0f;
-		float innerRadius = 1.001f;			//not sure why it has a limit...
+		float innerRadius = 10.001f;			//not sure why it has a limit...
 		float circularRange = PI * 2 * 24 / 36;			//300 degree
 
 		//Do not modify	
@@ -333,10 +333,6 @@ namespace ResourceManager
 					if (textureLibrary.find("BG_1") != textureLibrary.end()) break;
 					textureLibrary.insert({ "BG_1", AEGfxTextureLoad("res/BG_Space1.png") });
 					break;
-				//case 8:
-				/*	if (textureLibrary.find("Particle_Default") != textureLibrary.end()) break;
-					textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });*/
-				//	break;
 				case 9:
 					if (textureLibrary.find("Random_Upgrade") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Random_Upgrade", AEGfxTextureLoad("res/QuestionMarkPlacehold.png") });
@@ -360,10 +356,13 @@ namespace ResourceManager
 				case 14:
 					if (textureLibrary.find("Texture_Fill2") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Texture_Fill2", AEGfxTextureLoad("res/Texture_Fill2.png") });
+				case 15:
+					if (textureLibrary.find("Texture_Fill3") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Texture_Fill3", AEGfxTextureLoad("res/Texture_Fill3.png") });
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 15): *progress += 0;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 16): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

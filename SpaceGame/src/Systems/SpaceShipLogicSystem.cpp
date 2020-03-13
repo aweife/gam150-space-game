@@ -6,6 +6,8 @@
 #include "../ECS/Factory.h"
 
 #include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
+#include "../Managers/UIEventsManager.h"
+#include "../Player/PlayerManager.h"
 /******************************************************************************/
 /*!
 	Global Variables
@@ -49,6 +51,10 @@ void SpaceShipLogicSystem::Update()
 		else
 			rigidbody->_velocityCap = 60.0f;
 
+		if (entity == PlayerManager::player)
+		{
+			UIEventsManager::Broadcast(new Events::OnThrusterChange(rigidbody->_velocity, rigidbody->_velocityCap));
+		}
 	}
 }
 

@@ -11,7 +11,7 @@ ENTITY loadingText = 0;
 void LoadingLvl_Load()
 {
 	loadingText = Factory_UI::CreateUI_Text(0, -150, "Loading Level...");
-	Factory_UI::CreateBackground_Load();
+	//Factory_UI::CreateBackground_Load();
 }
 
 void LoadingLvl_Init()

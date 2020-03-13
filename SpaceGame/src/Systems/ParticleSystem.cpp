@@ -26,6 +26,13 @@ void ParticleSystem::Update()
 
 	AEGfxGetCamPosition(&cameraLastFramePostion.x, &cameraLastFramePostion.y);
 
+	//Temporaray Hack
+	float originalDeltaTime = g_dt;
+	if (g_dt > 1/60.0f)
+	{
+		g_dt = 1 / 60.0f;
+	}
+
 	for (auto const& particles : entitiesList)
 	{
 		transformComp = Core::Get().GetComponent<cTransform>(particles);
@@ -131,6 +138,8 @@ void ParticleSystem::Update()
 		}
 		particleComp->_isVisible = true;
 	}
+
+	g_dt = originalDeltaTime;
 }
 
 void ParticleSystem::RenderLayer(unsigned int layer, float parallaxOffX, float parallaxOffY)

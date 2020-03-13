@@ -20,6 +20,13 @@ namespace Events
 		OnShieldActivate(){};
 	};
 
+	struct OnThrusterChange : public EventsBase
+	{
+		OnThrusterChange(float newVelocity, float capVelocity) : _newVelocity{ newVelocity }, _capVelocity{ capVelocity } {}
+		float _newVelocity;
+		float _capVelocity;
+	};
+
 	struct OnMouseClick :public EventsBase
 	{
 		OnMouseClick(float x, float y) :_xPos{ x }, _yPos{ y } {};

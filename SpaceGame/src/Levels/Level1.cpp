@@ -62,6 +62,8 @@ void Level1_Load()
 	Factory::CreatePlanet1(5, -820.0f, -100.0f, 200.0f, 200.0f);
 	Factory::CreatePlanet1(5, 1300.0f, -90.0f, 100.0f, 100.0f);
 
+	Factory_Map::Generate_PlanetField();
+
 	Factory::CreateBackground();
 	Factory_UI::Create_PlayerUserInterface();
 
