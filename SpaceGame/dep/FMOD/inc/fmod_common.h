@@ -211,7 +211,7 @@ typedef unsigned int FMOD_CHANNELMASK;
 #define FMOD_REVERB_MAXINSTANCES                    4
 #define FMOD_PORT_INDEX_NONE                        0xFFFFFFFFFFFFFFFF
 
-typedef enum class FMOD_RESULT
+typedef enum FMOD_RESULT
 {
     FMOD_OK,
     FMOD_ERR_BADCOMMAND,

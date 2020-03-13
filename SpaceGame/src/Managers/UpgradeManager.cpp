@@ -47,7 +47,6 @@ namespace UpgradeManager
 		PlayerUpgrade_Base* data = database_playerUpgrade[upgradePack];
 		
 		spaceship->_thrustDelay			+= data->Get_ThrustAcceleration();
-		spaceship->_lives				+= data->Get_LifeIncrease();
 		health->_healthMax				+= data->Get_ShieldIncrease();
 		health->_shieldMax				+= data->Get_HealthIncrease();
 

@@ -50,7 +50,7 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
-		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, 3, WeaponMode::range));
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, WeaponMode::WEAPONMODE_RANGE));
 		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.4f));
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 		//Core::Get().AddComponent<cHealth>(player, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f,2.0f));
@@ -213,6 +213,8 @@ namespace Factory
 
 	ENTITY CreateEnemy5(ENTITY player, unsigned int layer)
 	{
+		UNREFERENCED_PARAMETER(player);
+
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_2", layer));
@@ -334,7 +336,7 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
 		if (tag == OWNERTAG::PLAYER)
 			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET_PLAYER;
-		else 
+		else
 			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
 
 		AudioManager::PlayOneShot("res/SFX/Confirm.wav");
@@ -486,7 +488,7 @@ namespace Factory
 	{
 		ENTITY emitter = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ tar->_position.x, tar->_position.y }, 0.0f, { 1,1 }));
-		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ -10.0f,-2.0f }, 10.0f, 0.1f, 0.2f, 999.0f, 3, 
+		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ -10.0f,-2.0f }, 10.0f, 0.1f, 0.2f, 999.0f, 3,
 			0.0f, 0.0f, 2.0f));
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 90;
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", { 1.0f, 0.5f, 0.0f, 0.5f },
@@ -616,7 +618,7 @@ namespace Factory_UI
 	ENTITY Create_ShieldBubble()
 	{
 		ENTITY shieldBubble = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(shieldBubble, new cTransform({0,0}, 0, { 100, 100 }));
+		Core::Get().AddComponent<cTransform>(shieldBubble, new cTransform({ 0,0 }, 0, { 100, 100 }));
 		Core::Get().AddComponent<cSprite>(shieldBubble, new cSprite(shieldBubble, "Square Mesh", "Player_Shield", 2));
 		Core::Get().GetComponent<cSprite>(shieldBubble)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
 		Core::Get().AddComponent<cUIElement>(shieldBubble, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::SHIELDBUBBLE));
@@ -657,14 +659,14 @@ namespace Factory_UI
 
 			AEVec2Set(&startingPos, startingPos.x, centralPos.y);
 			fakeupgrade = Core::Get().CreateEntity();
-			Core::Get().AddComponent<cTransform>(fakeupgrade, new cTransform(startingPos, 0.0f, {borderSize * 0.9f, borderSize * 0.9f}));
+			Core::Get().AddComponent<cTransform>(fakeupgrade, new cTransform(startingPos, 0.0f, { borderSize * 0.9f, borderSize * 0.9f }));
 			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh2", "Random_Upgrade", 0));
 			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 			Core::Get().AddComponent<cUIElement>(fakeupgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FAKEUPGRADE));
 
 			Core::Get().AddComponent<cTimeline>(fakeupgrade, new cTimeline(g_appTime, g_appTime + 0.5f + (i * 0.5f), false));
 			AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade));
-			AddNewNode_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.45f + (i * 0.5f), -1.5f * (i+2));
+			AddNewNode_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.45f + (i * 0.5f), -1.5f * (i + 2));
 			AddNewTimeline_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade));
 			AddNewNode_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.49f + (i * 0.5f), fakeupgrade);
 		}
@@ -681,7 +683,7 @@ namespace Factory_UI
 
 		Core::Get().AddComponent<cTimeline>(realUpgrade, new cTimeline(g_appTime, g_appTime + 0.5f, false));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade));
-		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade), 0.45f, -0.5f );
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade), 0.45f, -0.5f);
 	}
 
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType)
@@ -736,13 +738,13 @@ namespace Factory_UI
 	void CreateUI_GameOver()
 	{
 		ENTITY panel = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(panel, new cTransform({0,0}, 0, { 800,300 }));
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 800,300 }));
 		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Texture_Default", 0));
 		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::GAMEOVER, 0));
 		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 		ENTITY text = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(text, new cTransform({ 0,50 }, 0, { 1, 1}));
+		Core::Get().AddComponent<cTransform>(text, new cTransform({ 0,50 }, 0, { 1, 1 }));
 		Core::Get().AddComponent<cUIElement>(text, new cUIElement("GAME OVER"));
 		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 1;
@@ -789,10 +791,10 @@ namespace Factory_Map
 			, 0, { randSize, randSize }));
 			Core::Get().AddComponent<cSprite>(star, new cSprite(star, "Octagon Mesh", "Texture_Default", 6));
 			Core::Get().AddComponent<cRigidBody>(star, new cRigidBody(100, AERandFloat() * 50 + 10, 100));
-			Core::Get().GetComponent<cRigidBody>(star)->_velocityDirection = {-1,0};
+			Core::Get().GetComponent<cRigidBody>(star)->_velocityDirection = { -1,0 };
 			Core::Get().GetComponent<cRigidBody>(star)->_airResistance = 1.0f;		//no air resitatnce
-			Core::Get().AddComponent<cWarping>(star, new cWarping({ -2000, g_WorldMaxX}, { 0,0 }));
-		
+			Core::Get().AddComponent<cWarping>(star, new cWarping({ -2000, g_WorldMaxX }, { 0,0 }));
+
 		}
 	}
 
@@ -808,10 +810,10 @@ namespace Factory_Map
 			switch (planetType)
 			{
 			case 0:
-				Factory::CreatePlanet1(2, AERandFloat() * 8000 - g_WorldMaxX*2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				Factory::CreatePlanet1(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
 				break;
 			case 1:
-				Factory::CreatePlanet2(2, AERandFloat() * 8000 - g_WorldMaxX*2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				Factory::CreatePlanet2(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
 				break;
 			case 2:
 				Factory::CreatePlanet3(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
@@ -822,7 +824,7 @@ namespace Factory_Map
 			}
 		}
 	}
-	
+
 	void Generate_StarField()
 	{
 
