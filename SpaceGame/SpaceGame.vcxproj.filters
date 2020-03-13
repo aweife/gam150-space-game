@@ -60,6 +60,8 @@
     <ClCompile Include="src\Components\cProjectile.cpp" />
     <ClCompile Include="src\Systems\ProjectileSystem.cpp" />
     <ClCompile Include="src\AI\aiPursuit.cpp" />
+    <ClCompile Include="src\Components\cTimeline.cpp" />
+    <ClCompile Include="src\Systems\TimelineSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -131,6 +133,8 @@
     <ClInclude Include="src\Components\cProjectile.h" />
     <ClInclude Include="src\Systems\ProjectileSystem.h" />
     <ClInclude Include="src\AI\aiPursuit.h" />
+    <ClInclude Include="src\Components\cTimeline.h" />
+    <ClInclude Include="src\Systems\TimelineSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

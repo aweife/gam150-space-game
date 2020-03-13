@@ -115,6 +115,7 @@ void Level1_Free()
 void Level1_Unload()
 {
 	UIEventsManager::Cleanup();
+	Factory::RemoveCamera();
 	Core::Get().DestroyAllEntity();
 }
 

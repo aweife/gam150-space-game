@@ -20,4 +20,5 @@ public:
 
 private:
 	void UpdateBlackboard(aiBlackBoard&, ENTITY);
+	void CheckOutOfScreen(ENTITY id);
 };

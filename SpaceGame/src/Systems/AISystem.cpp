@@ -17,7 +17,7 @@
 #include "../Global.h"
 #include <variant>
 #include "../ECS/Factory.h"
-
+#include "UISystem.h"							//Spawn Ai Indicators
 /******************************************************************************/
 /*!
   \brief	Sets the system signature for this system based on components required
@@ -52,6 +52,9 @@ void AISystem::Update()
 		{
 			state.Run( ai->_blackboard, ai->_currentState );
 		}, ai->_currentState.m_Varient );
+
+		CheckOutOfScreen(entity);
+
 	}
 }
 
@@ -74,6 +77,25 @@ void AISystem::UpdateBlackboard(aiBlackBoard& bb, ENTITY id)
 	// Calculate vector towards player
 	AEVec2 temp;
 	AEVec2Sub(&temp, &player->_position, &self->_position);
+	bb.directionToPlayer = temp;
 	AEVec2Normalize(&temp, &temp);
 	bb.directionToPlayerN = temp;
+}
+
+void AISystem::CheckOutOfScreen(ENTITY id)
+{
+	cTransform* self = Core::Get().GetComponent<cTransform>(id);
+
+	AEVec2 cameraPosition = { 0 };
+	AEGfxGetCamPosition(&cameraPosition.x, &cameraPosition.y);
+
+	if (!(self->_position.x > cameraPosition.x - g_WorldMaxX && self->_position.x < cameraPosition.x + g_WorldMaxX
+		&& self->_position.y > cameraPosition.y - g_WorldMaxY && self->_position.y < cameraPosition.y + g_WorldMaxY))
+	{
+		AEVec2 relativeDirection;
+		AEVec2Sub(&relativeDirection, &self->_position, &cameraPosition);
+		std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));	
+		
+		uiSys->Check_AIIndicatorExist(id, relativeDirection); //Under UI System
+	}
 }

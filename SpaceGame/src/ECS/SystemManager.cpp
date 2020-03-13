@@ -15,6 +15,7 @@ void SystemManager::Init()
 	RegisterSystem<HealthSystem>();
 	RegisterSystem<ProjectileSystem>();
 	RegisterSystem<ParticleEmitterSystem>();
+	RegisterSystem<TimelineSystem>();
 
 	// Rendering
 	RegisterSystem<RenderSystem>();

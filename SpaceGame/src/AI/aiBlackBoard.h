@@ -7,5 +7,6 @@ struct aiBlackBoard
 {
 	ENTITY id;
 	float distanceFromPlayer;
+	AEVec2 directionToPlayer;
 	AEVec2 directionToPlayerN;
 };

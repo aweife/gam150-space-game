@@ -83,6 +83,26 @@ namespace ResourceManager
 		meshLibrary.insert({ "Square Mesh", mesh });
 
 		// -----------------------------------------------------------------------
+		// Square Mesh half UV
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		// This shape has 2 triangles
+		AEGfxTriAdd(
+			-0.5f, -0.5f, 0xFFFF0000, 0.0f, 0.5f,				// 3
+			0.5f, -0.5f, 0xFFFF0000, 1.0f, 0.5f,				//
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				// 1		2
+		AEGfxTriAdd(											//
+			0.5f, -0.5f, 0xFFFF0000, 1.0f, 0.5f,				// 3        2
+			0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,					//
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				//          1
+
+		// Saving the mesh (list of triangles) in mesh
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+		meshLibrary.insert({ "Square Mesh2", mesh });
+
+		// -----------------------------------------------------------------------
 		// Octagon Mesh
 		// -----------------------------------------------------------------------
 		AEGfxMeshStart();
@@ -319,10 +339,22 @@ namespace ResourceManager
 				case 9:
 					if (textureLibrary.find("Particle_Default") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });
+					break;
+				case 9:
+					if (textureLibrary.find("Random_Upgrade") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Random_Upgrade", AEGfxTextureLoad("res/QuestionMarkPlacehold.png") });
+					break;
+				case 10:
+					if (textureLibrary.find("Upgrade_1") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Upgrade_1", AEGfxTextureLoad("res/UpgradePlacehold.png") });
+					break;
+				case 11:
+					if (textureLibrary.find("AI_Indicator") != textureLibrary.end()) break;
+					textureLibrary.insert({ "AI_Indicator", AEGfxTextureLoad("res/AI_Indicator.png") });
 					*progress = 100;
 					break;
 			}
-			*progress += static_cast<unsigned int>(100 / 9);
+			*progress += static_cast<unsigned int>(100 / 11);
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

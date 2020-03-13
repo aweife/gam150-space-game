@@ -28,6 +28,11 @@ namespace Factory
 		return cameraID;
 	}
 
+	void RemoveCamera()
+	{
+		CameraManager::RemoveCurrCam();
+	}
+
 	ENTITY CreatePlayer(unsigned int layer)
 	{
 		ENTITY player = Core::Get().CreateEntity();
@@ -435,7 +440,7 @@ namespace Factory_UI
 
 		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::CENTER);
 		ENTITY group[9] = { 0 };
-		//Create_ChooseThree(spritePos, group);
+		Create_ChooseThree(spritePos, group);
 	}
 
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
@@ -483,26 +488,80 @@ namespace Factory_UI
 			border = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(border, new cTransform(startingPos, 0.0f, { borderSize , borderSize }));
 			Core::Get().AddComponent<cSprite>(border, new cSprite(border, "Square Mesh", "Texture_Default", 0));
+			Core::Get().GetComponent<cSprite>(border)->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
 			Core::Get().AddComponent<cUIElement>(border, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FRAME));
 			group[i] = border;
 
-			AEVec2Set(&startingPos, startingPos.x, centralPos.y + (borderSize * 0.9f) / 2 - (borderSize * 0.9f) * (1.0f / 10)); //start small and expand
-			upgrade = Core::Get().CreateEntity();
-			Core::Get().AddComponent<cTransform>(upgrade, new cTransform(startingPos, 0.0f, { borderSize * 0.9f, (2.0f / 10) * borderSize }));
-			Core::Get().AddComponent<cSprite>(upgrade, new cSprite(upgrade, "Square Mesh", "Texture_Default", 0));
-			Core::Get().GetComponent<cSprite>(upgrade)->_colorTint = { 1.0f,0.0f, 0.0f,1.0f };
-			Core::Get().AddComponent<cUIElement>(upgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
-			group[i + 1] = upgrade;
-
-			AEVec2Set(&startingPos, startingPos.x, centralPos.y + (borderSize * 0.9f) / 2 - (borderSize * 0.9f) * (6.0f / 10));
+			AEVec2Set(&startingPos, startingPos.x, centralPos.y);
 			fakeupgrade = Core::Get().CreateEntity();
-			Core::Get().AddComponent<cTransform>(fakeupgrade, new cTransform(startingPos, 0.0f, { borderSize * 0.9f, (8.0f / 10) * borderSize }));
-			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh", "Texture_Default", 0));
-			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 0.0f,0.0f, 1.0f,1.0f };
+			Core::Get().AddComponent<cTransform>(fakeupgrade, new cTransform(startingPos, 0.0f, {borderSize * 0.9f, borderSize * 0.9f}));
+			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh2", "Random_Upgrade", 0));
+			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 			Core::Get().AddComponent<cUIElement>(fakeupgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FAKEUPGRADE));
-			group[i + 2] = fakeupgrade;
 
+			Core::Get().AddComponent<cTimeline>(fakeupgrade, new cTimeline(g_appTime, g_appTime + 0.5f + (i * 0.5f)));
+			AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade));
+			AddNewNode_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.45f + (i * 0.5f), -1.5f * (i+2));
+			AddNewTimeline_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade));
+			AddNewNode_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.49f + (i * 0.5f), fakeupgrade);
+
+			group[i + 1] = fakeupgrade;
 		}
+	}
+
+	void Create_ChoosableUpgrade(ENTITY entity)
+	{
+		AEVec2 position = Core::Get().GetComponent<cTransform>(entity)->_position;
+		ENTITY realUpgrade = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(realUpgrade, new cTransform(position, 0.0f, { 100 * 0.9f, 100 * 0.9f }));
+		Core::Get().AddComponent<cSprite>(realUpgrade, new cSprite(realUpgrade, "Square Mesh2", "Upgrade_1", 0));
+		Core::Get().GetComponent<cSprite>(realUpgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(realUpgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
+
+		Core::Get().AddComponent<cTimeline>(realUpgrade, new cTimeline(g_appTime, g_appTime + 0.5f));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade), 0.45f, -0.5f );
+	}
+
+	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir)
+	{
+		AEVec2 aiPos = Core::Get().GetComponent<cTransform>(ai)->_position;
+		float screenGradiant = g_WorldMaxY / g_WorldMaxX;
+		AEVec2 aiDir_Normalise;
+		AEVec2Normalize(&aiDir_Normalise, &aiDir);
+
+		if (aiDir.x < FLT_EPSILON && aiDir.x > -FLT_EPSILON) //Horizontal axis
+		{
+			aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+			aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+		}
+		else if (aiDir.y < FLT_EPSILON && aiDir.y > -FLT_EPSILON) //Vertical axis
+		{
+			aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+			aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+		}
+		else
+		{
+			float aiGradiant = aiDir.y / aiDir.x;
+			if (fabs(aiGradiant) < screenGradiant)		//Vertical Axis
+			{
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+			}
+			else if (fabs(aiGradiant) > screenGradiant)	//Horizontal Axis
+			{
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+			}
+		}
+		//Calculate angle
+		float angle = atan2f(aiDir.y, aiDir.x);
+
+		ENTITY aiUI = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 100,100 }));
+		Core::Get().AddComponent<cSprite>(aiUI, new cSprite(aiUI, "Square Mesh", "AI_Indicator", 0));
+		Core::Get().AddComponent<cUIElement>(aiUI, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INDICATE_AI, ai));
+		return aiUI;
 	}
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text)

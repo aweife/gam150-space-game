@@ -21,6 +21,7 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cDebugTools>(ID_DebugToolsComponent);
 	RegisterComponentCollection<cParticle>(ID_ParticleComponent);
 	RegisterComponentCollection<cParticleEmitter>(ID_ParticleEmitterComponent);
+	RegisterComponentCollection<cTimeline>(ID_TimelineComponent);
 }
 
 template<typename T>

@@ -8,6 +8,7 @@
 #include "../Math/Math.h"								//lerping
 #include "../Global.h"									//Screen size
 #include "../Managers/GameStateManager.h"
+#include "../ECS/Factory.h"								//Create enemy indicator...careful of circular dependency
 
 #include "../Tools/Console.h"
 void UISystem::Init()
@@ -158,4 +159,69 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	}
 	GSM_LoadingTransition(GS_LEVEL1);
 	return true;
+}
+
+void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir)
+{
+	cUIElement* uiComp = nullptr;
+	cTransform* uiTrans = nullptr;
+
+	for(ENTITY entity :aiIndicator_Set)
+	{
+		uiComp = Core::Get().GetComponent<cUIElement>(entity);
+		if (uiComp->_roleIndex == ai)			//the indicator already exists
+		{
+			//Update the position
+			uiTrans = Core::Get().GetComponent<cTransform>(entity);
+			float screenGradiant = g_WorldMaxY / g_WorldMaxX;
+			AEVec2 aiDir_Normalise;
+			AEVec2Normalize(&aiDir_Normalise, &aiDir);
+
+			if (aiDir.x < FLT_EPSILON && aiDir.x > -FLT_EPSILON) //Horizontal axis
+			{
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+			}
+			else if (aiDir.y < FLT_EPSILON && aiDir.y > -FLT_EPSILON) //Vertical axis
+			{
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+			}
+			else
+			{
+				float aiGradiant = aiDir.y / aiDir.x;
+				if (fabs(aiGradiant) < screenGradiant)		//Vertical Axis
+				{
+					aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+					aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+				}
+				else if (fabs(aiGradiant) > screenGradiant)	//Horizontal Axis
+				{
+					aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+					aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+				}
+			}
+			//Calculate angle
+			float angle = atan2f(aiDir.y, aiDir.x);
+
+			uiTrans->_position.x = aiDir.x;
+			uiTrans->_position.y = aiDir.y;
+			uiTrans->_rotation = angle;
+
+			return;
+		}
+	}
+	Factory_UI::Create_AIIndicator(ai, aiDir);
+}
+
+void UISystem::OnComponentAdd(ENTITY entity)
+{
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+
+	switch (uiComp->_role)
+	{
+		case UI_ROLE::INDICATE_AI:
+			aiIndicator_Set.insert(entity);
+			break;
+	}
 }
