@@ -56,7 +56,7 @@ void SpaceShipLogicSystem::Update()
 
 void SpaceShipThrust(cRigidBody* rb, cTransform* transform)
 {
-	AEVec2 thrustDir, thrustVector;
+	//AEVec2 thrustDir, thrustVector;
 
 	// New Thrust direction to apply ontop of ship current velocity
 	AEVec2Set(&rb->_velocityDirection, AECos(transform->_rotation), AESin(transform->_rotation));

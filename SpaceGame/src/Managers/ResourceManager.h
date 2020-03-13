@@ -14,7 +14,6 @@ namespace ResourceManager
 	void Init();
 	void Update(unsigned int loadingCode);
 
-
 	void GenerateMeshLibrary_Essentials();
 	void GenerateMeshLibrary_1();
 

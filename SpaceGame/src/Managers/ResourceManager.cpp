@@ -34,7 +34,7 @@ namespace ResourceManager
 	void Init()					
 	{
 		fontId = AEGfxCreateFont("Tahoma", 24, true, false);
-		GenerateMeshLibrary_1();						//CHANGE THIS to essentials !!!!
+		GenerateMeshLibrary_Essentials();				//CHANGE THIS to essentials !!!!
 		LoadTextureLibrary_Essential();
 	}
 
@@ -46,6 +46,7 @@ namespace ResourceManager
 		case GS_MAINMENU:
 			break;
 		case GS_LEVEL1:
+			GenerateMeshLibrary_1();
 			LoadTextureLibrary_1(&loadingStage, &loadingProgress);
 			break;
 		default:
@@ -55,13 +56,7 @@ namespace ResourceManager
 
 	void GenerateMeshLibrary_Essentials()
 	{
-
-	}
-
-	void GenerateMeshLibrary_1()
-	{
 		AEGfxVertexList* mesh;
-
 		// -----------------------------------------------------------------------
 		// Square Mesh
 		// -----------------------------------------------------------------------
@@ -83,26 +78,6 @@ namespace ResourceManager
 		meshLibrary.insert({ "Square Mesh", mesh });
 
 		// -----------------------------------------------------------------------
-		// Square Mesh half UV
-		// -----------------------------------------------------------------------
-		AEGfxMeshStart();
-
-		// This shape has 2 triangles
-		AEGfxTriAdd(
-			-0.5f, -0.5f, 0xFFFF0000, 0.0f, 0.5f,				// 3
-			0.5f, -0.5f, 0xFFFF0000, 1.0f, 0.5f,				//
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				// 1		2
-		AEGfxTriAdd(											//
-			0.5f, -0.5f, 0xFFFF0000, 1.0f, 0.5f,				// 3        2
-			0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,					//
-			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				//          1
-
-		// Saving the mesh (list of triangles) in mesh
-		mesh = AEGfxMeshEnd();
-		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
-		meshLibrary.insert({ "Square Mesh2", mesh });
-
-		// -----------------------------------------------------------------------
 		// Octagon Mesh
 		// -----------------------------------------------------------------------
 		AEGfxMeshStart();
@@ -112,10 +87,10 @@ namespace ResourceManager
 			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//2-3 o CLOCK triangle
 			0.5f, 0.0f, 0xFFFF0000, 1.0f, 0.5f,
 			0.353553f, 0.353553f, 0xFFFF0000, 0.853553f, 0.853553f);
-		AEGfxTriAdd(											
+		AEGfxTriAdd(
 			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//12-1 o CLOCK triangle
 			0.353553f, 0.353553f, 0xFFFF0000, 0.853553f, 0.853553f,
-			0.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f);	
+			0.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f);
 		AEGfxTriAdd(
 			0.0f, 0.0f, 0xFFFF0000, 0.5f, 0.5f,					//11-12 o CLOCK triangle
 			0.0f, 0.5f, 0xFFFFFFFF, 0.5f, 1.0f,
@@ -146,6 +121,31 @@ namespace ResourceManager
 		mesh = AEGfxMeshEnd();
 		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
 		meshLibrary.insert({ "Octagon Mesh", mesh });
+	}
+
+	void GenerateMeshLibrary_1()
+	{
+		AEGfxVertexList* mesh;
+
+		// -----------------------------------------------------------------------
+		// Square Mesh half UV
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		// This shape has 2 triangles
+		AEGfxTriAdd(
+			-0.5f, -0.5f, 0xFFFF0000, 0.0f, 0.5f,				// 3
+			0.5f, -0.5f, 0xFFFF0000, 1.0f, 0.5f,				//
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				// 1		2
+		AEGfxTriAdd(											//
+			0.5f, -0.5f, 0xFFFF0000, 1.0f, 0.5f,				// 3        2
+			0.5f, 0.5f, 0xFFFF0000, 1.0f, 0.0f,					//
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);				//          1
+
+		// Saving the mesh (list of triangles) in mesh
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+		meshLibrary.insert({ "Square Mesh2", mesh });
 
 		// -----------------------------------------------------------------------
 		// Arrow Line Mesh
@@ -280,14 +280,11 @@ namespace ResourceManager
 	void LoadTextureLibrary_Essential()
 	{
 		//SHOULD BE AS LIGHT WEIGHT AS POSSIBLE
-		textureLibrary.insert({"GameLogo", AEGfxTextureLoad("res/GameLogo.png") });
-		textureLibrary.insert({"BG_MainMenu", AEGfxTextureLoad("res/Loading.png") });
-
-		//not very impt...
+		textureLibrary.insert({ "GameLogo", AEGfxTextureLoad("res/GameLogo.png") });
+		textureLibrary.insert({ "BG_MainMenu", AEGfxTextureLoad("res/Loading.png") });
 		textureLibrary.insert({ "Texture_Default", AEGfxTextureLoad("res/Texture_Default.png") });
-		textureLibrary.insert({ "Texture_Fill", AEGfxTextureLoad("res/Texture_Fill.png") });
-		textureLibrary.insert({ "Texture_Fill2", AEGfxTextureLoad("res/Texture_Fill2.png") });
-		textureLibrary.insert({ "HP_FILL", AEGfxTextureLoad("res/HP_Fill.png") });
+		textureLibrary.insert({ "Player_1", AEGfxTextureLoad("res/Player_MachineGun.png") });
+		textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });
 	}
 
 	void LoadTextureLibrary_1(unsigned int* stage, unsigned int * progress)
@@ -301,8 +298,8 @@ namespace ResourceManager
 			switch (*stage)
 			{
 				case 0:
-					if (textureLibrary.find("Player_1") != textureLibrary.end()) break;
-					textureLibrary.insert({"Player_1", AEGfxTextureLoad("res/Player_MachineGun.png") });
+					if (textureLibrary.find("Player_Shield") != textureLibrary.end()) break;
+					textureLibrary.insert({"Player_Shield", AEGfxTextureLoad("res/Player_Shield.png") });
 					break;
 				case 1:
 					if (textureLibrary.find("Enemy_1") != textureLibrary.end()) break;
@@ -336,9 +333,9 @@ namespace ResourceManager
 					if (textureLibrary.find("BG_1") != textureLibrary.end()) break;
 					textureLibrary.insert({ "BG_1", AEGfxTextureLoad("res/BG_Space1.png") });
 					break;
-				case 9:
-					if (textureLibrary.find("Particle_Default") != textureLibrary.end()) break;
-					textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });
+				case 8:
+				/*	if (textureLibrary.find("Particle_Default") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });*/
 					break;
 				case 10:
 					if (textureLibrary.find("Random_Upgrade") != textureLibrary.end()) break;
@@ -351,10 +348,22 @@ namespace ResourceManager
 				case 12:
 					if (textureLibrary.find("AI_Indicator") != textureLibrary.end()) break;
 					textureLibrary.insert({ "AI_Indicator", AEGfxTextureLoad("res/AI_Indicator.png") });
+					break;
+				case 12:
+					if (textureLibrary.find("HP_FILL") != textureLibrary.end()) break;
+					textureLibrary.insert({ "HP_FILL", AEGfxTextureLoad("res/HP_Fill.png") });
+					break;
+				case 13:
+					if (textureLibrary.find("Texture_Fill") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Texture_Fill", AEGfxTextureLoad("res/Texture_Fill.png") });
+					break;
+				case 14:
+					if (textureLibrary.find("Texture_Fill2") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Texture_Fill2", AEGfxTextureLoad("res/Texture_Fill2.png") });
 					*progress = 100;
 					break;
 			}
-			*progress += static_cast<unsigned int>(100 / 11);
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 15): *progress += 0;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

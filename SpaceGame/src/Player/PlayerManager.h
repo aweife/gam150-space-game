@@ -13,4 +13,5 @@ namespace PlayerManager
 		cTransform* playerTransform, cRigidBody* playerRigidBody);
 
 	void ResetPlayer();	
+	void PlayerDeath();
 }

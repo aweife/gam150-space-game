@@ -3,7 +3,9 @@
 #include "../ECS/Core.h"
 #include "../Components/cHealth.h"
 #include "../Global.h"
-
+#include "../Managers/UIEventsManager.h"					//Broadcasting
+#include "../Player/PlayerManager.h"
+#include "../ECS/Factory.h"
 
 void HealthSystem::Init()
 {
@@ -17,7 +19,6 @@ void HealthSystem::Init()
 
 void HealthSystem::Update()
 {
-
 	cHealth* health;
 
 	for (auto const& entity : entitiesList)
@@ -26,25 +27,55 @@ void HealthSystem::Update()
 
 		if(health->_shieldCurr < health->_shieldMax)
 		{
-			health->_shieldRegenTimer -= g_dt;
-
-			if (health->_shieldRegenTimer <= 0.0f)
+			//Soley to regen
+			if (health->_shieldRegenCooldown <= 0)
 			{
-				health->_shieldCurr = health->_shieldMax;
-				health->_shieldRegenTimer = health->_shieldRegenCooldown;
+				health->_shieldCurr +=  10.0f * g_dt;			
+				UIEventsManager::Broadcast(new Events::OnShieldChange(health->_shieldCurr));
+				
+			}
+			else
+			{
+				health->_shieldRegenCooldown -= g_dt;
+			}	
+
+			// Change activation
+			if (health->_shieldRegenCooldown <= 0 && !health->_activateShield)
+			{
+				health->_activateShield = true;
 			}
 		}
 		
-		//if (spaceship->_lives < 0)
-		//{
-		//	//game over screen, main menu
-		//}
-		//
-		//if(health->_healthCurr <= 0 && spaceship->_lives > 0)
-		//{
-		//	--spaceship->_lives;
-		//	//restart level
-		//}
+		if (health->_isInvulnerable)
+		{
+			health->_invulnerabilityTime -= g_dt;
+			if (health->_invulnerabilityTime <= 0)
+			{
+				health->_isInvulnerable = false;
+			}
+		}
+
+		if(health->_healthCurr <= 0)
+		{
+			//restart level
+			markedForDestruction.insert(entity);
+		}
+
+	}
+
+	if (markedForDestruction.size() > 0)
+	{
+		for (auto const& entity : markedForDestruction)
+		{
+			if (entity == PlayerManager::player)
+			{
+				Factory::RemoveCamera();
+				PlayerManager::ResetPlayer();
+				PlayerManager::PlayerDeath();
+			}
+			Core::Get().EntityDestroyed(entity);
+		}
+		markedForDestruction.clear();
 	}
 }
 
@@ -53,10 +84,27 @@ void HealthSystem::TakeDamage(ENTITY entity)
 	cHealth* health;
 	health = Core::Get().GetComponent<cHealth>(entity);
 
-	if (!health) return;
+	if (health == nullptr) return;
 
-	if (health->_shieldCurr > 0)
-		--health->_shieldCurr;
+	if (health->_shieldCurr > 0 && health->_activateShield)
+	{
+		health->_shieldCurr -= 10.0f;
+		UIEventsManager::Broadcast(new Events::OnShieldChange(health->_shieldCurr));
+		UIEventsManager::Broadcast(new Events::OnShieldActivate());
+		health->_shieldRegenCooldown = health->_shieldRegenTime;
+		health->_invulnerabilityTime = health->_invulnerabilityWindow;
+		health->_isInvulnerable = true;
+		if (health->_shieldCurr <= 0)
+		{			
+			health->_activateShield = false;//cannot use shield for awhile
+		}
+	}
 	else if (health->_healthCurr > 0)
-		--health->_healthCurr;
+	{
+		health->_healthCurr -= 10.0f;
+		UIEventsManager::Broadcast(new Events::OnHealthChange(health->_healthCurr));
+		health->_invulnerabilityTime = health->_invulnerabilityWindow;
+		health->_isInvulnerable = true;
+	}
+
 }

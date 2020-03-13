@@ -8,7 +8,7 @@
 #include "../Components/cWeapon.h"
 
 #include "../Tools/Editor.h"					//Debugging
-
+#include "../ECS/Factory.h"
 namespace PlayerManager
 {
 	ENTITY		player			= 0;
@@ -25,9 +25,9 @@ namespace PlayerManager
 		cTransform* camTransform = CameraManager::GetCameraTransform();
 		int mousePosX = InputManager::mousePosX;
 		int mousePosY = InputManager::mousePosY;
-
+			
 		RotateWithMouse(mousePosX, mousePosY, camTransform, playerTransform, playerRigidBody);
-		
+
 		playerSpaceShip->_isThrusting = InputManager::mouseRTrigger;
 		if (playerSpaceShip->_currWeaponMode == WeaponMode::range)
 			playerWeapon->_isShooting = InputManager::mouseLTrigger;
@@ -76,5 +76,9 @@ namespace PlayerManager
 	void ResetPlayer()
 	{
 		player = 0;
+	}
+	void PlayerDeath()
+	{
+		Factory_UI::CreateUI_GameOver();
 	}
 }

@@ -29,7 +29,7 @@ void RenderSystem::Render()
 
 	//Update particle system based on layers after finished 
 	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
-	unsigned int currentLayer = 6;
+	unsigned int currentLayer = 7;
 
 	// -----------------------------------------------------------------------
 	// Update all entities that has the components we want
@@ -77,7 +77,7 @@ void RenderSystem::Render()
 				parallaxOffsetX = cameraX * 0.1f * sprite->_layer;
 				parallaxOffsetY = cameraY * 0.1f * sprite->_layer;
 			}
-			else if (sprite->_layer == 0)											//UI Layer should remain relative to screen
+			else if (sprite->_layer == 0 || sprite->_layer == 7)			//UI Layer should remain relative to screen
 			{
 				parallaxOffsetX = cameraX;
 				parallaxOffsetY = cameraY;
@@ -158,6 +158,9 @@ void RenderSystem::OnComponentAdd(ENTITY entity)
 	case 6:
 		entityLayer6.insert(entity);
 		break;
+	case 7:
+		entityLayer7.insert(entity);
+		break;
 	default:
 		break;
 	}
@@ -189,6 +192,9 @@ void RenderSystem::OnComponentRemove(ENTITY entity)
 	case 6:
 		entityLayer6.erase(entity);
 		break;
+	case 7:
+		entityLayer7.erase(entity);
+		break;
 	default:
 		break;
 	}
@@ -199,6 +205,7 @@ void RenderSystem::OnComponentRemove(ENTITY entity)
 	entityLayer3.erase(entity);
 	entityLayer4.erase(entity);
 	entityLayer5.erase(entity);
-	entityLayer6.erase(entity);*/
+	entityLayer6.erase(entity);
+	entityLayer7.erase(entity); */
 
 }

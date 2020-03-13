@@ -9,6 +9,17 @@ namespace Events
 		float _newHealth;
 	};
 
+	struct OnShieldChange :public EventsBase
+	{
+		OnShieldChange(float newShield) :_newShield{ newShield } {};
+		float _newShield;
+	};
+
+	struct OnShieldActivate :public EventsBase
+	{
+		OnShieldActivate(){};
+	};
+
 	struct OnMouseClick :public EventsBase
 	{
 		OnMouseClick(float x, float y) :_xPos{ x }, _yPos{ y } {};

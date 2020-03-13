@@ -94,6 +94,8 @@
   <ItemGroup>
     <ClCompile Include="src\AI\aiAttack.cpp" />
     <ClCompile Include="src\AI\aiPursuit.cpp" />
+    <ClCompile Include="src\Components\cWarping.cpp" />
+    <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\Managers\AIBehaviors.cpp" />
     <ClCompile Include="src\AI\aiRetreat.cpp" />
     <ClCompile Include="src\AI\aiChase.cpp" />
@@ -107,7 +109,6 @@
     <ClCompile Include="src\Components\cSpaceShip.cpp" />
     <ClCompile Include="src\Components\cTimeline.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
-    <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\ECS\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\ECS\Factory.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
     <ClCompile Include="src\Systems\TimelineSystem.cpp" />
     <ClCompile Include="src\Systems\UISystem.cpp" />
+    <ClCompile Include="src\Systems\WarpingSystem.cpp" />
     <ClCompile Include="src\Systems\WeaponSystemMelee.cpp" />
     <ClCompile Include="src\Systems\WeaponSystemRange.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
@@ -159,6 +161,7 @@
     <ClInclude Include="src\AI\aiState.h" />
     <ClInclude Include="src\AI\aiBlackBoard.h" />
     <ClInclude Include="src\AI\aiBase.h" />
+    <ClInclude Include="src\Components\cWarping.h" />
     <ClInclude Include="src\Managers\AIBehaviors.h" />
     <ClInclude Include="src\Components\cAI.h" />
     <ClInclude Include="src\Components\cCamera.h" />
@@ -218,6 +221,7 @@
     <ClInclude Include="src\Systems\SystemList.h" />
     <ClInclude Include="src\Systems\TimelineSystem.h" />
     <ClInclude Include="src\Systems\UISystem.h" />
+    <ClInclude Include="src\Systems\WarpingSystem.h" />
     <ClInclude Include="src\Systems\WeaponSystemMelee.h" />
     <ClInclude Include="src\Systems\WeaponSystemRange.h" />
     <ClInclude Include="src\Tools\Console.h" />

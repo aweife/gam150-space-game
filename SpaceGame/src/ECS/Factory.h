@@ -11,6 +11,7 @@ namespace Factory
 	void RemoveCamera();
 
 	//GameObjects
+	ENTITY CreateMenuPlayer();
 	ENTITY CreatePlayer(unsigned int layer);
 	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
 	ENTITY CreateEnemy2(ENTITY player, unsigned int layer);
@@ -32,6 +33,7 @@ namespace Factory
 	ENTITY CreateParticleEmitter_MYFIRST();
 	ENTITY CreateParticleEmitter_UPONIMPACT(cTransform* target);
 	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar);
+	ENTITY CreateParticleEmitter_TRAILSTATIC(cTransform* tar);
 }
 
 namespace Factory_UI
@@ -45,12 +47,23 @@ namespace Factory_UI
 
 	void Create_PlayerUserInterface();
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i);
+	ENTITY Create_SingleShieldBar(AEVec2 position, int i);
+	ENTITY Create_ShieldBubble();
 	ENTITY Create_ThrusterUI(AEVec2 position);
-	void Create_ChooseThree(AEVec2 centralPos, ENTITY(&group)[9]);
+	void Create_ChooseThree(AEVec2 centralPos);
 	void Create_ChoosableUpgrade(ENTITY entity);
-	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir);
+	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);
+
+	void CreateUI_GameOver();
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 
 	ENTITY CreateBackground_Load();
 
+}
+
+
+namespace Factory_Map
+{
+	void Generate_StarField_Menu();
+	void Generate_StarField();
 }

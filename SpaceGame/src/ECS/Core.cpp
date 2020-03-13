@@ -69,9 +69,9 @@ void Core::EntityDestroyed(ENTITY entity)
 void Core::DestroyAllEntity()
 {
 	//Loop through a copy 
-	for (auto const& i : coreEntityManager->GetActiveSet())
+	while(coreEntityManager->GetActiveSet().size() > 0)
 	{
-		EntityDestroyed(i);
+		EntityDestroyed(*coreEntityManager->GetActiveSet().begin());
 	}
 }
 

@@ -73,10 +73,6 @@ namespace InputManager
 		{
 			CameraManager::StartCameraShake();
 		}
-		if (AEInputCheckTriggered(AEVK_E))
-		{
-			UIEventsManager::Broadcast(new Events::OnHealthChange(22.0f));
-		}
 
 		// -----------------------------------------------------------------------
 		// Mouse Controls

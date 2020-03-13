@@ -2,8 +2,8 @@
 #include "../Global.h"
 #include "../Tools/Console.h"
 
-cTimeline::cTimeline(float startTime, float endTime)
-	:_startTime{ startTime }, _currTime{ g_appTime }, _endTime{endTime}
+cTimeline::cTimeline(float startTime, float endTime, bool looping)
+	:_startTime{ startTime }, _currTime{ g_appTime }, _endTime{endTime}, _isLooping{ looping }
 {
 
 }
@@ -73,6 +73,25 @@ void AddNewTimeline_Void(void(*reference)(ENTITY), cTimeline* timelineComp)
 	auto iterator = timelineComp->timelineTable.emplace(timelineID, innerTimeline);
 }
 
+void AddNewTimeline_Bool(bool* reference, cTimeline* timelineComp)
+{
+	//Check if timeline already exist
+	for (auto it = timelineComp->timelineTable.begin(); it != timelineComp->timelineTable.end(); ++it)
+	{
+		if (it->first->_boolRef == reference)
+		{
+			return;
+		}
+	}
+	std::vector <std::pair<float, TimelineNode*>>* innerTimeline = new std::vector <std::pair<float, TimelineNode*>>;
+	TimelineReference* timelineID = new TimelineReference;
+	timelineID->_boolRef = reference;
+	auto iterator = timelineComp->timelineTable.emplace(timelineID, innerTimeline);
+}
+
+
+
+
 //NO SORTING AS OF YET...
 void AddNewNode_Int(int* reference, cTimeline* timelineComp, float time, int value)
 {
@@ -112,6 +131,20 @@ void AddNewNode_Void(void(*reference)(ENTITY), cTimeline* timelineComp, float ti
 			node->_functionCall = reference;
 			node->_functionParam = param1;
 			node->_type = TimelineType::FUNCTION;
+			it->second->push_back({ timelineComp->_startTime + time, node });
+		}
+	}
+}
+
+void AddNewNode_Bool(bool* reference, cTimeline* timelineComp, float time, bool value)
+{
+	for (auto it = timelineComp->timelineTable.begin(); it != timelineComp->timelineTable.end(); ++it)
+	{
+		if (it->first->_boolRef == reference)
+		{
+			TimelineNode* node = new TimelineNode;
+			node->_boolValue = value;
+			node->_type = TimelineType::BOOL;
 			it->second->push_back({ timelineComp->_startTime + time, node });
 		}
 	}

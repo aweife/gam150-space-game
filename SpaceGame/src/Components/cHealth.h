@@ -19,16 +19,17 @@ class cHealth:public Component
 {
 public:
 	bool	_activateShield;		// Check for shield activation
-	int	_shieldMax;				// Shield max amount
-	int	_healthMax;				
-	int	_shieldCurr;
-	int	_healthCurr;
-	float	_shieldRegenCooldown;
-	float	_shieldRegenTimer;
-	float   _invulnerabilityWindow;
+	float	_shieldMax;				// Shield max amount
+	float	_healthMax;				
+	float	_shieldCurr;
+	float	_healthCurr;
+	float	_shieldRegenCooldown;	// Timer
+	float	_shieldRegenTime;		// The fixed interval
+	float   _invulnerabilityTime;	// Timer
+	float   _invulnerabilityWindow;	// The fixed interval
 	bool	_isInvulnerable;
 
 	cHealth() = delete;
-	cHealth( int shieldMax, int healthMax, float shieldRegenCooldown, float invulnerabilityWindow);
+	cHealth( float shieldMax, float healthMax, float shieldCurr, float healthCurr,  float shieldRegenTime, float invulnerabilityWindow);
 	~cHealth() = default;
 };

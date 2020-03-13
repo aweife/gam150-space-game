@@ -1,6 +1,6 @@
 #include "cUIElement.h"
 
-cUIElement::cUIElement(UI_TYPE type, UI_ROLE role, int roleIndex)
+cUIElement::cUIElement(UI_TYPE type, UI_ROLE role, unsigned int roleIndex)
 	: _text{ {0} }, _type{ type }, _role{ role }, _roleIndex{ roleIndex }, _isHovered{ false }, _isClicked{ false },
 	_isSelectable{ false }, _updateFP{ nullptr }
 {

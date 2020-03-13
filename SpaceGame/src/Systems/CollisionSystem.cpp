@@ -42,22 +42,27 @@ float max = -std::numeric_limits<float>::infinity();
 // Finding the minimum and maximum projections of each array on the axis 
 AEVec2 vectorProjections(const RectVertexArray& vertices, const AEVec2& axis)
 {
-	// to check all the vertices for projection 
-	for (auto& vertex : vertices)
-	{
-		float proj = MBMath_DotProduct(vertex, axis);
-		if (proj < min)
-		{
-			min = proj;
-		}
+	UNREFERENCED_PARAMETER(vertices);
+	UNREFERENCED_PARAMETER(axis);
+	//UNREACHABLE CODE ERROR!!
 
-		if (proj > max)
-		{
-			max = proj;
-		}
+	//// to check all the vertices for projection 
+	//for (auto& vertex : vertices)
+	//{
+	//	float proj = MBMath_DotProduct(vertex, axis);
+	//	if (proj < min)
+	//	{
+	//		min = proj;
+	//	}
 
-		return AEVec2{ min, max };
-	}
+	//	if (proj > max)
+	//	{
+	//		max = proj;
+	//	}
+
+	//	return AEVec2{ min, max };
+	//}
+	return { 0 };
 }
 
 // to check whether both vectors are overlapping
@@ -401,11 +406,11 @@ void CollisionSystem::Update()
 	cCollision* collider;
 	cRigidBody* rigidbody;
 	cTransform* transform;
-	cHealth* health;
 
 	cCollision* collider2;
 	cRigidBody* rigidbody2;
 	cTransform* transform2;
+	cHealth* health2;
 
 	// To set all the bounding boxes of each entity
 	for (auto const& entity : entitiesList)
@@ -441,6 +446,7 @@ void CollisionSystem::Update()
 			collider2 = Core::Get().GetComponent<cCollision>(entity2);
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
+			health2 = Core::Get().GetComponent<cHealth>(entity2);
 
 			// For to check which collision
 			if (CollisionCheck(collider->_boundingBox, collider->_bbShape, 
@@ -470,23 +476,33 @@ void CollisionSystem::Update()
 				// if bullet collide with enemy
 				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
-
-					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-					//CameraManager::StartCameraShake();
-					printf("ENEMY HEALTH DECREASE\n");
 					markedForDestruction.insert(entity1);
-					healthSys->TakeDamage(entity2);
+
+					if (health2 != nullptr && health2->_isInvulnerable == false)
+					{
+						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						CameraManager::StartCameraShake();
+						healthSys->TakeDamage(entity2);
+					}
 				}
 				// if bullet collide with Player
 				else if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)
 				{
-					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-					//CameraManager::StartCameraShake();
-					printf("PLAYER HEALTH DECREASE\n");
+					
 					markedForDestruction.insert(entity1);
 
 					//Check invulnerablity frames
-					healthSys->TakeDamage(entity2);
+					if (health2 != nullptr && health2->_isInvulnerable == false)
+					{
+						if (!health2->_activateShield)
+						{
+							Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						}
+						
+						CameraManager::StartCameraShake();
+						healthSys->TakeDamage(entity2);
+					}
+					
 				}
 
 

@@ -27,6 +27,7 @@ public:
 
 	// Returns a COPY of the active Entity Set
 	const std::set<ENTITY> GetActiveSet() const;
+	void ClearActiveSet();
 
 private:
 	// Map the entity to a human readable name

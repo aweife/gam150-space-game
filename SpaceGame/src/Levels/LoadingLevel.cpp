@@ -4,12 +4,13 @@
 #include "../Managers/ResourceManager.h"
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/GameStateManager.h"
+#include "../Systems/UISystem.h"							//edit text
 
 unsigned int loadingForState = GS_NULL;
-
+ENTITY loadingText = 0;
 void LoadingLvl_Load()
 {
-	Factory_UI::CreateUI_Text(100, -150, "Loading Level...");
+	loadingText = Factory_UI::CreateUI_Text(0, -150, "Loading Level...");
 	Factory_UI::CreateBackground_Load();
 }
 
@@ -23,6 +24,7 @@ void LoadingLvl_Init()
 void LoadingLvl_Update()
 {
 	ResourceManager::Update(loadingForState);
+	EditText(loadingText, "Loading Level...", ResourceManager::loadingProgress);
 	if (ResourceManager::loadingProgress >= 100)
 	{
 		GSM_ChangeState(loadingForState);

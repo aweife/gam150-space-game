@@ -66,6 +66,7 @@ void AISystem::UpdateBlackboard(aiBlackBoard& bb, ENTITY id)
 	// Set ids
 	bb.id = id;
 	const ENTITY pid = PlayerManager::player;
+	if (pid == 0)	return;				//NO ACTIVE PLAYER
 
 	// Get components
 	cTransform* self = Core::Get().GetComponent<cTransform>(id);
@@ -96,6 +97,7 @@ void AISystem::CheckOutOfScreen(ENTITY id)
 		AEVec2Sub(&relativeDirection, &self->_position, &cameraPosition);
 		std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));	
 		
-		uiSys->Check_AIIndicatorExist(id, relativeDirection); //Under UI System
+		//@TED later just change the last variable for different enemy type
+		uiSys->Check_AIIndicatorExist(id, relativeDirection, 0); //Under UI System
 	}
 }

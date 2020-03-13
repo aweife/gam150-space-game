@@ -26,9 +26,9 @@ void TimelineSystem::Update()
 		{
 			for (auto it2 = it->second->begin(); it2 != it->second->end(); ++it2)
 			{
-				if (it2->first > g_appTime) 
+				if (it2->first > timelineComp->_currTime)
 				{
-					float timeDiff = it2->first - g_appTime;
+					float timeDiff = it2->first - timelineComp->_currTime;
 					float valueDiff1 = 0.0f;
 					int valueDiff2 = 0;
 					switch (it2->second->_type)
@@ -62,6 +62,12 @@ void TimelineSystem::Update()
 								(*it->first->_functionCall)(it2->second->_functionParam);
 							}
 							break;
+						case TimelineType::BOOL:
+							if (timeDiff < g_dt)
+							{
+								*it->first->_boolRef = it2->second->_boolValue;
+							}
+							break;
 					}
 				}
 			}
@@ -71,8 +77,16 @@ void TimelineSystem::Update()
 
 		if (timelineComp->_currTime >= timelineComp->_endTime)
 		{
-			markedForRemoval.insert(entity);
-			continue;
+			if (timelineComp->_isLooping)
+			{
+				//float interval = timelineComp->_endTime - timelineComp->_startTime;
+				timelineComp->_currTime = timelineComp->_startTime;
+			}
+			else
+			{
+				markedForRemoval.insert(entity);
+				continue;
+			}
 		}
 	}
 

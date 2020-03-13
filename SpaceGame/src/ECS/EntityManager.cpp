@@ -61,3 +61,8 @@ const std::set<ENTITY> EntityManager::GetActiveSet() const
 {
 	return _activeEntity;
 }
+
+void EntityManager::ClearActiveSet()
+{
+	_activeEntity.clear();
+}
