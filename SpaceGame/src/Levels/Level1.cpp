@@ -41,6 +41,7 @@ void Level1_Load()
 
 	//Create Enemy
 	enemy = Factory::CreateEnemy1(PlayerManager::player, 2);
+	enemy = Factory::CreateEnemy2(PlayerManager::player, 2);
 
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
@@ -62,7 +63,7 @@ void Level1_Load()
 	Factory_UI::Create_PlayerUserInterface();
 
 	// FOR NOW, audio
-	//AudioManager::Loadsound();
+	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);
 }
 
 // ----------------------------------------------------------------------------
@@ -72,6 +73,7 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
+	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 }
 
 // ----------------------------------------------------------------------------
@@ -80,6 +82,7 @@ void Level1_Init()
 // ----------------------------------------------------------------------------
 void Level1_Update()
 {
+	AudioManager::Update();
 	PlayerManager::Update();
 	Core::Get().Core_Update();
 	if (AEInputCheckTriggered(AEVK_1))
@@ -103,7 +106,7 @@ void Level1_Draw()
 // ----------------------------------------------------------------------------
 void Level1_Free()
 {
-
+	AudioManager::UnLoadAllSounds();
 }
 // ----------------------------------------------------------------------------
 // This function dumps all data loaded in Level 1

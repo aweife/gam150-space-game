@@ -44,10 +44,10 @@ void SpaceShipLogicSystem::Update()
 			Factory::CreateParticleEmitter_TRAIL(transform);
 
 			// Increase terminal velocity
-			rigidbody->_velocityCap = 200.0f;
+			rigidbody->_velocityCap = 120.0f;
 		}
 		else
-			rigidbody->_velocityCap = 75.0f;
+			rigidbody->_velocityCap = 60.0f;
 
 	}
 }

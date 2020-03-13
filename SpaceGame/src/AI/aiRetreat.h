@@ -16,6 +16,7 @@ private:
 	AEVec2 _targetPosition;
 	float _safeDistance;
 	float rotationSpeed;
+	float wanderAngle;
 
 	void FindSafePosition(const aiBlackBoard& bb);
 };

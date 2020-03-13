@@ -12,7 +12,6 @@ void HealthSystem::Init()
 	// Sets the system signature for this system
 	SIGNATURE signature;
 	signature.set(Core::Get().GetComponentType<cHealth>());
-	signature.set(Core::Get().GetComponentType<cSpaceShip>());
 	Core::Get().SetSystemSignature<HealthSystem>(signature);
 
 }

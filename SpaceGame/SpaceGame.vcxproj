@@ -93,6 +93,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AI\aiAttack.cpp" />
+    <ClCompile Include="src\AI\aiPursuit.cpp" />
     <ClCompile Include="src\Components\cWarping.cpp" />
     <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\Managers\AIBehaviors.cpp" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiAttack.h" />
+    <ClInclude Include="src\AI\aiPursuit.h" />
     <ClInclude Include="src\AI\aiRetreat.h" />
     <ClInclude Include="src\AI\aiChase.h" />
     <ClInclude Include="src\AI\aiState.h" />
@@ -227,6 +229,7 @@
     <ClInclude Include="src\Tools\MemoryLeak.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\AI_Indicator.png" />
     <Image Include="res\BG_Background1.png" />
     <Image Include="res\Enemy_1.png" />
     <Image Include="res\Enemy_2.png" />

@@ -14,8 +14,9 @@ void aiRetreat::Run(const aiBlackBoard& bb, the_variant& var)
 		rb = Core::Get().GetComponent<cRigidBody>(bb.id);
 
 		// Initialize state
-		_safeDistance = 600.0f;
+		_safeDistance = 800.0f;
 		rotationSpeed = 10.0f;
+		wanderAngle = 0.0f;
 		FindSafePosition(bb);
 
 
@@ -33,6 +34,7 @@ void aiRetreat::Run(const aiBlackBoard& bb, the_variant& var)
 		{
 			rb->_velocity += rb->_acceleration;
 			Steering::SeekTarget(rb->_steeringVector, trans->_position, _targetPosition, rb->_velocity * g_dt, rb->_velocityVector);
+			Steering::Wander(rb->_steeringVector, rb->_velocityDirection, 1.0f, rotationSpeed, wanderAngle, 2.0f);
 			Transform::RotateToTarget(trans->_rotation, trans->_position, _targetPosition, rotationSpeed * g_dt);
 		}
 		else 
