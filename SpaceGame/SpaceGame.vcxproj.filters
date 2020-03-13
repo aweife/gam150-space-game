@@ -17,7 +17,6 @@
     <ClCompile Include="src\Components\cTimeline.cpp" />
     <ClCompile Include="src\Components\cUIElement.cpp" />
     <ClCompile Include="src\Components\cWeapon.cpp" />
-    <ClCompile Include="src\ECS\ComponentStorage.cpp" />
     <ClCompile Include="src\Components\cSprite.cpp" />
     <ClCompile Include="src\ECS\Factory.cpp" />
     <ClCompile Include="src\Components\cTransform.cpp" />
@@ -202,6 +201,7 @@
     <ClInclude Include="src\Systems\TimelineSystem.h" />
     <ClInclude Include="src\Systems\WarpingSystem.h" />
     <ClInclude Include="src\Components\cWarping.h" />
+    <ClInclude Include="src\Systems\HealthSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />
