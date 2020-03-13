@@ -150,8 +150,8 @@ namespace Factory
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
 		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
-		Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
-
+		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 1500.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 1800.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
@@ -182,8 +182,8 @@ namespace Factory
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
 		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
-		Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
-
+		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 1200.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 1500.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
@@ -216,8 +216,8 @@ namespace Factory
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
 		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
-		Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
-
+		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = -1800.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = -2000.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
