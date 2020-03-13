@@ -225,6 +225,7 @@
     <ClInclude Include="src\Tools\MemoryLeak.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\AI_Indicator.png" />
     <Image Include="res\BG_Background1.png" />
     <Image Include="res\Enemy_1.png" />
     <Image Include="res\Enemy_2.png" />
