@@ -1,3 +1,17 @@
+/**********************************************************************************
+* \file			Math.h
+* \brief		Abstraction of math functions
+* \author		Jun Yi,			Chong,		50% Code Contribution
+*				Farzaana Binte, Roslan,		50% Code Contribution
+*
+*				Long Description
+*				- Smooth increment (lerp, step)
+*				- Vector2D maths
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 struct AEVec2;

@@ -211,7 +211,7 @@ typedef unsigned int FMOD_CHANNELMASK;
 #define FMOD_REVERB_MAXINSTANCES                    4
 #define FMOD_PORT_INDEX_NONE                        0xFFFFFFFFFFFFFFFF
 
-typedef enum class FMOD_RESULT
+typedef enum FMOD_RESULT
 {
     FMOD_OK,
     FMOD_ERR_BADCOMMAND,
@@ -334,7 +334,7 @@ typedef enum FMOD_OUTPUTTYPE
     FMOD_OUTPUTTYPE_FORCEINT = 65536
 } FMOD_OUTPUTTYPE;
 
-typedef enum class FMOD_DEBUG_MODE
+typedef enum FMOD_DEBUG_MODE
 {
     FMOD_DEBUG_MODE_TTY,
     FMOD_DEBUG_MODE_FILE,

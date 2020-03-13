@@ -1,3 +1,16 @@
+/**********************************************************************************
+* \file			HealthSystem.h
+* \brief		Game State for Splash Screen
+* \author		Jin Kiat,		Chong,		70% Code Contribution
+*				Jun Yi,			Chong,		30% Code Contribution
+*				
+*				Long Description
+*				- Health and Shield
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 #include "System.h"
 #include <set>

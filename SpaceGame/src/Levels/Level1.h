@@ -1,3 +1,19 @@
+/**********************************************************************************
+* \file			Level1.h
+* \brief		Game State for Level 1
+* \author		Wei Feng,		Ang,		20% Code Contribution
+*				Jun Yi,			Chong,		60% Code Contribution
+*				Jin Kiat,		Chong,		20% Code Contribution
+*
+*				Long Description
+*				- Initalise game objects into the level
+*				- Update - Render Loop
+*				- Memory Cleanup
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 #ifndef LEVEL1_H
 #define LEVEL1_H

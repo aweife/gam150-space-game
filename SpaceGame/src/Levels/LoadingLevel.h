@@ -1,3 +1,16 @@
+/**********************************************************************************
+* \file			LoadingLevel.h
+* \brief		Game State for Loading Level
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+*				Long Description
+*				- Provide a loading screen
+*				- While loading assets within the delta time of each frame
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 extern unsigned int loadingForState;

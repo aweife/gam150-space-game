@@ -3,7 +3,6 @@
 #include "../Levels/SplashScreen.h"
 #include "../Levels/MainMenu.h"
 #include "../Levels/Level1.h"
-#include "../Levels/MapGenerator.h"
 
 #include "../Tools/Console.h"
 unsigned int currentState, previousState, nextState;
@@ -57,15 +56,6 @@ void GSM_Update()
 		fpDraw		=	Level1_Draw;
 		fpFree		=	Level1_Free;
 		fpUnload	=	Level1_Unload;
-		break;
-
-	case GS_MAPGEN:
-		fpLoad		=	MapGen_Load;
-		fpInit		=	MapGen_Init;
-		fpUpdate	=	MapGen_Update;
-		fpDraw		=	MapGen_Draw;
-		fpFree		=	MapGen_Free;
-		fpUnload	=	MapGen_Unload;
 		break;
 	case GS_RESTART:
 		break;
