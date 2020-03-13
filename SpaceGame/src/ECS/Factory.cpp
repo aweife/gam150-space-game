@@ -33,6 +33,15 @@ namespace Factory
 		CameraManager::RemoveCurrCam();
 	}
 
+	ENTITY CreateMenuPlayer()
+	{
+		ENTITY player = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(player, new cTransform({ -360, -100 }, PI * 1 / 9, { 50,50 }));
+		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", 2));
+		CreateParticleEmitter_TRAILSTATIC(Core::Get().GetComponent<cTransform>(player));
+		return player;
+	}
+
 	ENTITY CreatePlayer(unsigned int layer)
 	{
 		ENTITY player = Core::Get().CreateEntity();
@@ -48,7 +57,8 @@ namespace Factory
 
 		/* UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
 			, WeaponType::pistol, UpgradePackages::Range_Pistol); */
-
+		Core::Get().AddComponent<cHealth>(player, new cHealth(30.0f, 30.0f, 30.0f, 30.0f, 4.0f, 1.0f));
+		Factory_UI::Create_ShieldBubble();
 		// Debug
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
 
@@ -60,6 +70,8 @@ namespace Factory
 
 	ENTITY CreateEnemy1(ENTITY player, unsigned int layer)
 	{
+		UNREFERENCED_PARAMETER(player);
+
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_1", layer));
@@ -159,7 +171,7 @@ namespace Factory
 		AEVec2Set(&newScale, 1300, 1000);
 		ENTITY background = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(background, new cTransform(newPostion, 0, newScale));
-		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 6));
+		Core::Get().AddComponent<cSprite>(background, new cSprite(background, "Square Mesh", "BG_1", 7));
 	}
 
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag)
@@ -326,6 +338,31 @@ namespace Factory
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 5, 5 });
 		return emitter;
 	}
+
+	ENTITY CreateParticleEmitter_TRAILSTATIC(cTransform* tar)
+	{
+		ENTITY emitter = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ tar->_position.x, tar->_position.y }, 0.0f, { 1,1 }));
+		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ -10.0f,-2.0f }, 10.0f, 0.1f, 0.2f, 999.0f, 3, 
+			0.0f, 0.0f, 2.0f));
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 90;
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", { 1.0f, 0.5f, 0.0f, 0.5f },
+			{ 20,20 }, 2.0f, { 0.0f,0.0f }, { -1.0f, -0.3f }, 100.0f, 0.0f, 2);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
+			VARIANCETYPE::NONE, { 2,2 }, { 28, 28 }, VARIANCETYPE::RANDOM_UNIFORM);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 0.0f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 0.0f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 0.0f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(50.0f);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(0.0f);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 28, 28 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 20, 20 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 10, 10 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 5, 5 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 1, 1 });
+		return emitter;
+	}
 }
 
 namespace Factory_UI
@@ -381,7 +418,7 @@ namespace Factory_UI
 	{
 		ENTITY gameLogo = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(gameLogo, new cTransform(position, 0, scale));
-		Core::Get().AddComponent<cSprite>(gameLogo, new cSprite(gameLogo, "Square Mesh", "GameLogo", 6));
+		Core::Get().AddComponent<cSprite>(gameLogo, new cSprite(gameLogo, "Square Mesh", "GameLogo", 0));
 		return gameLogo;
 	}
 
@@ -396,12 +433,17 @@ namespace Factory_UI
 			Create_SingleHealthBar(spritePos, i);
 		}
 
+		for (int i = 0; i < 3; ++i)
+		{
+			spritePos = ScreenBasedCoords(250.0f + 50.0f * i, -75.0f, UI_ANCHOR::TOPLEFT);
+			Create_SingleShieldBar(spritePos, i);
+		}
+
 		spritePos = ScreenBasedCoords(-150.0f, -75.0f, UI_ANCHOR::TOPRIGHT);
 		Create_ThrusterUI(spritePos);
 
 		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::CENTER);
-		ENTITY group[9] = { 0 };
-		Create_ChooseThree(spritePos, group);
+		//Create_ChooseThree(spritePos);
 	}
 
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
@@ -412,15 +454,33 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(hpBar)->_colorTint = { 1.0f,0, 0.2f,0.8f };
 		Core::Get().AddComponent<cUIElement>(hpBar, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::HEALTH, i));
 		UIEventsManager::Subscribe(hpBar, &OnHealthChange_HPUI);
-		//UIEventsManager::UnSubscribe<Events::OnHealthChange>(hpBar);
-
-		/*ENTITY effect = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(effect, new cTransform(position, 0, { 50, 50 }));
-		Core::Get().AddComponent<cSprite>(effect, new cSprite(effect, "UI_HP bar", "Planet_1", 0));
-		Core::Get().GetComponent<cSprite>(effect)->_colorTint = { 1.0f, 1.0, 1.0f,0.2f };
-		Core::Get().GetComponent<cSprite>(effect)->_blend = AE_GFX_BM_ADD;*/
 
 		return hpBar;
+	}
+
+	ENTITY Create_SingleShieldBar(AEVec2 position, int i)
+	{
+		ENTITY shieldBar = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(shieldBar, new cTransform(position, 0, { 50, 50 }));
+		Core::Get().AddComponent<cSprite>(shieldBar, new cSprite(shieldBar, "UI_HP bar", "HP_FILL", 0));
+		Core::Get().GetComponent<cSprite>(shieldBar)->_colorTint = { 0.0f,0.0f, 1.0f,0.8f };
+		Core::Get().AddComponent<cUIElement>(shieldBar, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::SHIELD, i));
+		UIEventsManager::Subscribe(shieldBar, &OnShieldChange_ShieldUI);
+
+		return shieldBar;
+	}
+
+	ENTITY Create_ShieldBubble()
+	{
+		ENTITY shieldBubble = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(shieldBubble, new cTransform({0,0}, 0, { 100, 100 }));
+		Core::Get().AddComponent<cSprite>(shieldBubble, new cSprite(shieldBubble, "Square Mesh", "Player_Shield", 2));
+		Core::Get().GetComponent<cSprite>(shieldBubble)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(shieldBubble, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::SHIELDBUBBLE));
+		Core::Get().GetComponent<cUIElement>(shieldBubble)->_isActive = false;			//invisible
+		UIEventsManager::Subscribe(shieldBubble, &OnShieldActivate_ShieldBubble);
+
+		return shieldBubble;
 	}
 
 	ENTITY Create_ThrusterUI(AEVec2 position)
@@ -436,9 +496,9 @@ namespace Factory_UI
 	}
 
 
-	void Create_ChooseThree(AEVec2 centralPos, ENTITY(&group)[9])
+	void Create_ChooseThree(AEVec2 centralPos)
 	{
-		ENTITY border = 0, fakeupgrade, upgrade = 0, title = 0, text = 0, comfirm;
+		ENTITY border = 0, fakeupgrade = 0;
 		float borderSize = 100, borderSpace = 10;
 		AEVec2 startingPos;
 		AEVec2Set(&centralPos, centralPos.x - borderSize - borderSpace, centralPos.y);
@@ -451,7 +511,6 @@ namespace Factory_UI
 			Core::Get().AddComponent<cSprite>(border, new cSprite(border, "Square Mesh", "Texture_Default", 0));
 			Core::Get().GetComponent<cSprite>(border)->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
 			Core::Get().AddComponent<cUIElement>(border, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FRAME));
-			group[i] = border;
 
 			AEVec2Set(&startingPos, startingPos.x, centralPos.y);
 			fakeupgrade = Core::Get().CreateEntity();
@@ -460,13 +519,11 @@ namespace Factory_UI
 			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 			Core::Get().AddComponent<cUIElement>(fakeupgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FAKEUPGRADE));
 
-			Core::Get().AddComponent<cTimeline>(fakeupgrade, new cTimeline(g_appTime, g_appTime + 0.5f + (i * 0.5f)));
+			Core::Get().AddComponent<cTimeline>(fakeupgrade, new cTimeline(g_appTime, g_appTime + 0.5f + (i * 0.5f), false));
 			AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade));
 			AddNewNode_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.45f + (i * 0.5f), -1.5f * (i+2));
 			AddNewTimeline_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade));
 			AddNewNode_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.49f + (i * 0.5f), fakeupgrade);
-
-			group[i + 1] = fakeupgrade;
 		}
 	}
 
@@ -479,12 +536,12 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(realUpgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(realUpgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
 
-		Core::Get().AddComponent<cTimeline>(realUpgrade, new cTimeline(g_appTime, g_appTime + 0.5f));
+		Core::Get().AddComponent<cTimeline>(realUpgrade, new cTimeline(g_appTime, g_appTime + 0.5f, false));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade));
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade), 0.45f, -0.5f );
 	}
 
-	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir)
+	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType)
 	{
 		AEVec2 aiPos = Core::Get().GetComponent<cTransform>(ai)->_position;
 		float screenGradiant = g_WorldMaxY / g_WorldMaxX;
@@ -521,8 +578,39 @@ namespace Factory_UI
 		ENTITY aiUI = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 100,100 }));
 		Core::Get().AddComponent<cSprite>(aiUI, new cSprite(aiUI, "Square Mesh", "AI_Indicator", 0));
+		if (aiType == 0)
+		{
+		}
+		else if (aiType == 1)
+		{
+			Core::Get().GetComponent<cSprite>(aiUI)->_colorTint.g = 0.0f;
+			Core::Get().GetComponent<cSprite>(aiUI)->_colorTint.b = 0.0f;
+		}
 		Core::Get().AddComponent<cUIElement>(aiUI, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INDICATE_AI, ai));
 		return aiUI;
+	}
+
+	void CreateUI_GameOver()
+	{
+		ENTITY panel = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({0,0}, 0, { 800,300 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Texture_Default", 0));
+		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::GAMEOVER, 0));
+		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+		ENTITY text = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(text, new cTransform({ 0,50 }, 0, { 1, 1}));
+		Core::Get().AddComponent<cUIElement>(text, new cUIElement("GAME OVER"));
+		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::GAMEOVER;
+		Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 1;
+		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
+
+		ENTITY text2 = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(text2, new cTransform({ 0,-100 }, 0, { 1, 1 }));
+		Core::Get().AddComponent<cUIElement>(text2, new cUIElement("Press Esc To Return to Main Menu"));
+		Core::Get().GetComponent<cUIElement>(text2)->_role = UI_ROLE::GAMEOVER;
+		Core::Get().GetComponent<cUIElement>(text2)->_roleIndex = 2;
+		Core::Get().GetComponent<cUIElement>(text2)->_text._anchor = TEXT_ANCHOR::CENTER;
 	}
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text)
@@ -540,5 +628,33 @@ namespace Factory_UI
 	{
 		ENTITY gamelogo = Create_GameLogo({ 0,100 }, { 500, 300 });
 		return gamelogo;
+	}
+}
+
+namespace Factory_Map
+{
+	void Generate_StarField_Menu()
+	{
+		int numOfStars = 120;
+		for (int i = 0; i < numOfStars; ++i)
+		{
+			float randSize = AERandFloat() * 6;
+			float posX = AERandFloat() * 2000 - g_WorldMaxX;
+
+			ENTITY star = Core::Get().CreateEntity();
+			Core::Get().AddComponent<cTransform>(star, new cTransform({ posX, AERandFloat() * g_WorldMaxY * 2 - g_WorldMaxY }
+			, 0, { randSize, randSize }));
+			Core::Get().AddComponent<cSprite>(star, new cSprite(star, "Octagon Mesh", "Texture_Default", 6));
+			Core::Get().AddComponent<cRigidBody>(star, new cRigidBody(100, AERandFloat() * 50 + 10, 100));
+			Core::Get().GetComponent<cRigidBody>(star)->_velocityDirection = {-1,0};
+			Core::Get().GetComponent<cRigidBody>(star)->_airResistance = 1.0f;		//no air resitatnce
+			Core::Get().AddComponent<cWarping>(star, new cWarping({ -2000, g_WorldMaxX}, { 0,0 }));
+		
+		}
+	}
+
+	void Generate_StarField()
+	{
+
 	}
 }

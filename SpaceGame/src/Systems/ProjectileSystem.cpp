@@ -20,7 +20,7 @@ void ProjectileSystem::Init()
 
 void ProjectileSystem::Update()
 {
-	cTransform* transform;
+	//cTransform* transform;
 	cProjectile* projectile;
 
 	for (auto const& entity : entitiesList)

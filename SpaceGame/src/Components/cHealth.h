@@ -23,12 +23,13 @@ public:
 	float	_healthMax;				
 	float	_shieldCurr;
 	float	_healthCurr;
-	float	_shieldRegenCooldown;
-	float	_shieldRegenTime;
-	float   _invulnerabilityWindow;
+	float	_shieldRegenCooldown;	// Timer
+	float	_shieldRegenTime;		// The fixed interval
+	float   _invulnerabilityTime;	// Timer
+	float   _invulnerabilityWindow;	// The fixed interval
 	bool	_isInvulnerable;
 
 	cHealth() = delete;
-	cHealth( float shieldMax, float healthMax, float shieldCurr, float healthCurr,  float shieldRegenCooldown, float shieldRegenTime, float invulnerabilityWindow);
+	cHealth( float shieldMax, float healthMax, float shieldCurr, float healthCurr,  float shieldRegenTime, float invulnerabilityWindow);
 	~cHealth() = default;
 };

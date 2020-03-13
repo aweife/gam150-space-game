@@ -30,8 +30,8 @@ enum class WeaponType
 class Weapon				//Pure Virtual Class
 {
 public:
-	WeaponType	_currWeapon;
-	float		_damage;
+	WeaponType	_currWeapon		= WeaponType::none;
+	float		_damage			= 0.0f;
 
 	virtual ~Weapon() = 0 {};
 };
@@ -62,7 +62,8 @@ public:
 
 	cRangeWeapon() = delete;
 	cRangeWeapon(OWNERTAG tag, float attackCooldown, float delayBetweenAttacks = 0.0f, int numberOfAttacks = 1);
-	cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, bool isReloading, bool isFiring, int ammo, float shootingSpread, float bulletSize, float bulletSpeed, float chargeTime);
+	cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, int ammo, float shootingSpread
+		, float bulletSize, float bulletSpeed, float chargeTime);
 	~cRangeWeapon() {};
 };
 

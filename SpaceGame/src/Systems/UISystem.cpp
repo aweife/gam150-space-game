@@ -9,6 +9,7 @@
 #include "../Global.h"									//Screen size
 #include "../Managers/GameStateManager.h"
 #include "../ECS/Factory.h"								//Create enemy indicator...careful of circular dependency
+#include "../Player/PlayerManager.h"
 
 #include "../Tools/Console.h"
 void UISystem::Init()
@@ -20,7 +21,38 @@ void UISystem::Init()
 	Core::Get().SetSystemSignature<UISystem>(signature);
 
 }
+void UISystem::Update()
+{
+	cUIElement* uiComp;
+	cTransform* transform;
+	for (std::set<ENTITY>::const_iterator it = aiIndicator_Set.begin(); it != aiIndicator_Set.end(); )
+	{
+		uiComp = Core::Get().GetComponent<cUIElement>(*it);
+		if (!uiComp->_isActive)		//if indicator is no longer being used..delete it
+		{
+			ENTITY destroy = *it;
+			++it;
+			Core::Get().EntityDestroyed(destroy);
+		}
+		else
+		{
+			uiComp->_isActive = false;		//reset for next frame
+			++it;
+		}
+	}
 
+	for (std::set<ENTITY>::const_iterator it = shieldBubble_Set.begin(); it != shieldBubble_Set.end(); ++it)
+	{
+		uiComp = Core::Get().GetComponent<cUIElement>(*it);
+		if (uiComp->_isActive)
+		{
+			transform = Core::Get().GetComponent<cTransform>(*it);
+			transform->_position.x = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position.x;
+			transform->_position.y = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position.y;
+
+		}
+	}
+}
 void UISystem::Render()
 {
 	cUIElement* uiComponent;
@@ -50,7 +82,7 @@ void UISystem::Render()
 			}
 			else if (uiComponent->_text._anchor == TEXT_ANCHOR::CENTER)
 			{
-				AEVec2Set(&textPosition, uiTransform->_position.x - (14.5f * uiComponent->_text._bufferCount/2)
+				AEVec2Set(&textPosition, uiTransform->_position.x - (14.0f * uiComponent->_text._bufferCount/2)
 					, uiTransform->_position.y - 8);
 			}
 
@@ -62,13 +94,26 @@ void UISystem::Render()
 	}
 }
 
-void UISystem::EditText(ENTITY target, const char* newText)
+void EditText(ENTITY target, const char* newText)
 {
-	AE_ASSERT(entitiesList.find(target) != entitiesList.end() && "UI not found");
-
 	cUIElement* uiComponent = Core::Get().GetComponent<cUIElement>(target);
+	if (!uiComponent) return;
 	sprintf_s(uiComponent->_text._textBuffer, newText);
 	uiComponent->_text._bufferCount = strlen(newText);
+}
+
+void EditText(ENTITY target, const char* newText, int atBack)
+{
+	cUIElement* uiComponent = Core::Get().GetComponent<cUIElement>(target);
+	if (!uiComponent) return;
+	char buffer[200] = { 0 };
+	char intBuffer[5] = { 0 };
+	sprintf_s(intBuffer, "%d", atBack);
+	strcat_s(buffer, newText);
+	strcat_s(buffer, intBuffer);
+
+	sprintf_s(uiComponent->_text._textBuffer, buffer);
+	uiComponent->_text._bufferCount = strlen(buffer);
 }
 
 //Percentage upon 1.0f
@@ -112,30 +157,73 @@ AEVec2 ScreenBasedCoords(float x, float y, UI_ANCHOR anchor, bool percentage)
 	return screenVector;
 }
 
-int globalHealth = 30;
 
 bool OnHealthChange_HPUI(ENTITY entity, Events::OnHealthChange* message)
 {
 	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
 	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
 
-	globalHealth = static_cast<int>(MBMath_Lerp(static_cast<float>(globalHealth), message->_newHealth, 1.0f));
-	printf("globalHealth %d entity %d \n", globalHealth, uiComp->_roleIndex);
-	if (globalHealth / 10 > uiComp->_roleIndex)
+	unsigned int tenths = static_cast<int>(message->_newHealth) / 10;
+
+	if (tenths > uiComp->_roleIndex)
 	{
 		sprite->_UVOffset.x = 0.0f;
 	}
-	else if (globalHealth / 10 == uiComp->_roleIndex)
+	else if (tenths == uiComp->_roleIndex)
 	{
-		sprite->_UVOffset.x = 0.5f * (10 - (globalHealth % 10))/10;
+		sprite->_UVOffset.x = 0.5f * (10 - (static_cast<int>(message->_newHealth) % 10))/10;
 
 	}
-	else if (globalHealth / 10 < uiComp->_roleIndex)
+	else if (tenths < uiComp->_roleIndex)
 	{
 		sprite->_UVOffset.x = 0.5f;
 	}
 
 	return true;
+}
+
+bool OnShieldChange_ShieldUI(ENTITY entity, Events::OnShieldChange* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
+
+	unsigned int tenths = static_cast<int>(message->_newShield) / 10;
+
+	if (tenths > uiComp->_roleIndex)
+	{
+		sprite->_UVOffset.x = 0.0f;
+	}
+	else if (tenths == uiComp->_roleIndex)
+	{
+		sprite->_UVOffset.x = 0.5f * (10 - (static_cast<int>(message->_newShield) % 10)) / 10;
+
+	}
+	else if (tenths < uiComp->_roleIndex)
+	{
+		sprite->_UVOffset.x = 0.5f;
+	}
+
+	return true;
+}
+
+bool OnShieldActivate_ShieldBubble(ENTITY entity, Events::OnShieldActivate* message)
+{
+	UNREFERENCED_PARAMETER(message);
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (!uiComp->_isActive)
+	{
+		uiComp->_isActive = true;
+
+		Core::Get().AddComponent<cTimeline>(entity, new cTimeline(g_appTime, g_appTime + 1.5f, false));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(entity)->_colorTint.a, Core::Get().GetComponent<cTimeline>(entity));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(entity)->_colorTint.a, Core::Get().GetComponent<cTimeline>(entity), 0.50f, 1.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(entity)->_colorTint.a, Core::Get().GetComponent<cTimeline>(entity), 1.00f, 1.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(entity)->_colorTint.a, Core::Get().GetComponent<cTimeline>(entity), 1.49f, 0.0f);
+		AddNewTimeline_Bool(&Core::Get().GetComponent<cUIElement>(entity)->_isActive, Core::Get().GetComponent<cTimeline>(entity));
+		AddNewNode_Bool(&Core::Get().GetComponent<cUIElement>(entity)->_isActive, Core::Get().GetComponent<cTimeline>(entity), 1.49f, false);
+	}
+	
+	return true;			//successfuly execution
 }
 
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
@@ -161,7 +249,7 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	return true;
 }
 
-void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir)
+void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 {
 	cUIElement* uiComp = nullptr;
 	cTransform* uiTrans = nullptr;
@@ -207,11 +295,11 @@ void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir)
 			uiTrans->_position.x = aiDir.x;
 			uiTrans->_position.y = aiDir.y;
 			uiTrans->_rotation = angle;
-
+			uiComp->_isActive = true;
 			return;
 		}
 	}
-	Factory_UI::Create_AIIndicator(ai, aiDir);
+	Factory_UI::Create_AIIndicator(ai, aiDir, aiType);
 }
 
 void UISystem::OnComponentAdd(ENTITY entity)
@@ -223,5 +311,41 @@ void UISystem::OnComponentAdd(ENTITY entity)
 		case UI_ROLE::INDICATE_AI:
 			aiIndicator_Set.insert(entity);
 			break;
+		case UI_ROLE::C3_FAKEUPGRADE:
+		case UI_ROLE::C3_FRAME:
+		case UI_ROLE::C3_TEXT:
+		case UI_ROLE::C3_UPGRADE:
+			choose3_Set.insert(entity);
+			break;
+		case UI_ROLE::GAMEOVER:
+			gameOver_Set.insert(entity);
+			break;
+		case UI_ROLE::SHIELDBUBBLE:
+			shieldBubble_Set.insert(entity);
+			break;
+	}
+}
+
+void UISystem::OnComponentRemove(ENTITY entity)
+{
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+
+	switch (uiComp->_role)
+	{
+	case UI_ROLE::INDICATE_AI:
+		aiIndicator_Set.erase(entity);
+		break;
+	case UI_ROLE::C3_FAKEUPGRADE:
+	case UI_ROLE::C3_FRAME:
+	case UI_ROLE::C3_TEXT:
+	case UI_ROLE::C3_UPGRADE:
+		choose3_Set.erase(entity);
+		break;
+	case UI_ROLE::GAMEOVER:
+		gameOver_Set.erase(entity);
+		break;
+	case UI_ROLE::SHIELDBUBBLE:
+		shieldBubble_Set.erase(entity);
+		break;
 	}
 }

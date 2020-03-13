@@ -1,9 +1,11 @@
 #pragma once
 #include "System.h"
-
+#include <set>
 class HealthSystem : public System
 {
 public:
+	std::set<ENTITY> markedForDestruction;
+
 	HealthSystem() = default;					//Virtual Constructor...
 	~HealthSystem() = default;					//...and destructor
 

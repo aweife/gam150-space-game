@@ -40,7 +40,6 @@
     <ClCompile Include="src\Systems\ParticleSystem.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
-    <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\Components\cHealth.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
@@ -61,6 +60,9 @@
     <ClCompile Include="src\Systems\ProjectileSystem.cpp" />
     <ClCompile Include="src\Components\cTimeline.cpp" />
     <ClCompile Include="src\Systems\TimelineSystem.cpp" />
+    <ClCompile Include="src\Systems\WarpingSystem.cpp" />
+    <ClCompile Include="src\Components\cWarping.cpp" />
+    <ClCompile Include="src\Components\cWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Components\cAI.h" />
@@ -133,6 +135,8 @@
     <ClInclude Include="src\Systems\ProjectileSystem.h" />
     <ClInclude Include="src\Components\cTimeline.h" />
     <ClInclude Include="src\Systems\TimelineSystem.h" />
+    <ClInclude Include="src\Systems\WarpingSystem.h" />
+    <ClInclude Include="src\Components\cWarping.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

@@ -32,3 +32,4 @@ public:
 	void OnComponentAdd(ENTITY entity) override;
 	void OnComponentRemove(ENTITY entity) override;
 };
+

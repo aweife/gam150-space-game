@@ -57,7 +57,7 @@ void PhysicsSystem::Update()
 		}*/
 
 		// Apply "air friction"
-		rb->_velocity *= 0.999f;
+		rb->_velocity *= rb->_airResistance;
 
 		// if the velocity hits the velocity cap
 		if (rb->_velocity > rb->_velocityCap)
@@ -162,3 +162,4 @@ void PhysicsSystem::Update()
 }
 void PhysicsSystem::OnComponentAdd(ENTITY) {};
 void PhysicsSystem::OnComponentRemove(ENTITY) {};
+

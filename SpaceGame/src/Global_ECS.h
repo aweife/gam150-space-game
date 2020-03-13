@@ -19,7 +19,7 @@
 
 //ENTITY
 typedef unsigned int ENTITY;					// ID for each entity, components will be tagged to an ID
-const ENTITY MAX_ENTITIES = 1000;				// Maximum number of entity in game
+const ENTITY MAX_ENTITIES = 2000;				// Maximum number of entity in game
 
 //COMPONENT
 typedef unsigned short ComponentType;			// ID for component
@@ -47,6 +47,7 @@ enum COMPONENTID								//ID for each component, to be used to organise systems 
 	ID_DebugToolsComponent,
 	ID_ParticleComponent,
 	ID_ParticleEmitterComponent,
-	ID_TimelineComponent
+	ID_TimelineComponent,
+	ID_WarpingComponent
 };					
 

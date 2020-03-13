@@ -6,6 +6,7 @@ class RenderSystem : public System
 {
 private:
 	//Order here affects sequence of set
+	std::set<ENTITY> entityLayer7;	//Static Background
 	std::set<ENTITY> entityLayer6;	//Background
 	std::set<ENTITY> entityLayer5;	//Parallax3
 	std::set<ENTITY> entityLayer4;	//Parallax2
@@ -16,7 +17,7 @@ private:
 
 	std::set<std::set<ENTITY>*> allLayer = 
 	{
-		&entityLayer6, &entityLayer5, &entityLayer4, &entityLayer3, &entityLayer2, &entityLayer1, &entityLayer0,
+		&entityLayer7, &entityLayer6, &entityLayer5, &entityLayer4, &entityLayer3, &entityLayer2, &entityLayer1, &entityLayer0,
 	};
 
 public:

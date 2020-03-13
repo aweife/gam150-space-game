@@ -18,3 +18,4 @@
 #include "ParticleSystem.h"
 #include "ParticleEmitterSystem.h"
 #include "TimelineSystem.h"
+#include "WarpingSystem.h"

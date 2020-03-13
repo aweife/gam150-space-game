@@ -24,3 +24,5 @@
 #include "cParticle.h"
 #include "cParticleEmitter.h"
 #include "cTimeline.h"
+
+#include "cWarping.h"

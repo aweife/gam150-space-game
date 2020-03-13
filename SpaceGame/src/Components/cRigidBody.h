@@ -28,6 +28,7 @@ public:
 	float _velocityCap;                       // Max velocity Value of the ship
 	float _acceleration;					  // Acceleration
 	float _rotateVelocity;					  // How fast the ship rotate
+	float _airResistance = 0.999f;
 
 	AEVec2 _velocityVector;					  // The current velocity since the last frame (updated by the physics system)
 	AEVec2 _velocityChangeVector;             // Velocity change in the current frame (before physics system) 

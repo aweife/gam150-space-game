@@ -9,6 +9,7 @@ void SystemManager::Init()
 	RegisterSystem<WeaponSystemRange>();
 	RegisterSystem<WeaponSystemMelee>();
 	RegisterSystem<SpaceShipLogicSystem>();
+	RegisterSystem<WarpingSystem>();
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<AISystem>();

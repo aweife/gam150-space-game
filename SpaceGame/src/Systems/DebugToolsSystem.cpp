@@ -63,10 +63,13 @@ void DebugToolsSystem::Render()
 
 		if (debugTComponent->_specifier == DEBUGTYPE::DEBUG_ARROW || debugTComponent->_specifier == DEBUGTYPE::DEBUG_LINE)
 		{
-			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-			AEGfxSetTransform(transformM.m);
-			AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);					//White and Opaque
-			AEGfxMeshDraw(debugTComponent->_mesh, AE_GFX_MDM_LINES_STRIP);
+			if (g_BBShowMode)
+			{
+				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+				AEGfxSetTransform(transformM.m);
+				AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);					//White and Opaque
+				AEGfxMeshDraw(debugTComponent->_mesh, AE_GFX_MDM_LINES_STRIP);
+			}
 		}
 		else if (debugTComponent->_specifier == DEBUGTYPE::DEBUG_SQUARE)
 		{

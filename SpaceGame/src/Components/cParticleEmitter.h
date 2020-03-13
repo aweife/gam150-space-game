@@ -63,6 +63,7 @@ public:
 		, float velocity1 = 0.0f, float velocity2 = 0.0f, VARIANCETYPE velocityVarType = VARIANCETYPE::NONE
 		,float spawnRate1 = 0.0f, float spawnRate2 = 0.0f, VARIANCETYPE spawnRateVarType = VARIANCETYPE::RANDOM
 		,float lifeTime1 = 0.0f, float lifeTime2 = 0.0f, VARIANCETYPE spawnLifeTimeVarType = VARIANCETYPE::NONE);
+	
 	~cParticleEmitter() = default;										// Virtual Destructor
 
 	void AddOverLifetime_Color(ColorInfo colorVar);
