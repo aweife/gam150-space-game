@@ -1,3 +1,14 @@
+/*********************************************************************************
+* \file			AIBehaviors.h
+* \brief		Commonly used functions to calculate steering behaviors
+* \author		Ang Wei Feng, 100% Code Contribution
+*
+*				Allows multiple ai states to share commonly-used functions
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 #include "AEEngine.h"

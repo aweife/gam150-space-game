@@ -1,3 +1,19 @@
+/*********************************************************************************
+* \file			ComponentStorage.h
+* \brief		A tightly compact storage for a single component (templated)
+* \author		Chong Jun Yi, 50% Code Contribution
+* \author		Ang Wei Feng, 50% Code Contribution
+*
+*				This component storage uses an array to densely pack components
+*				together, allowing for linear access using index. To do this,
+*				everytime a component is removed, the last component will be swapped
+*				fill up the space. This storage also contains two direct mapping for
+*				entity < -- > index of array, providing easy access using entity id
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 #include <unordered_map>				//storage type
@@ -20,7 +36,12 @@ public:
 	//Data
 	std::array<std::unique_ptr<T>, MAX_ENTITIES> componentArray;		//A list of components based on entity
 
-	//Functions
+	/******************************************************************************/
+	/*!
+		\brief	Adds a component to its respective component storage,
+				called by ComponentManager
+	*/
+	/******************************************************************************/
 	void RegisterComponent(ENTITY entity, T* component)					//Adds a component to its component storage, tagged to its entity
 	{
 		AE_ASSERT(entityToIndexMap.find(entity) == entityToIndexMap.end());		//Component already exists
@@ -36,6 +57,13 @@ public:
 		++currSize;
 	}
 
+
+	/******************************************************************************/
+	/*!
+		\brief	Remove a component to its respective component storage,
+				called by ComponentManager
+	*/
+	/******************************************************************************/
 	void UnregisterComponent(ENTITY entity)							//Remove a component from its respective component storage
 	{
 		AE_ASSERT(entityToIndexMap.find(entity) != entityToIndexMap.end());		//Component already does not exist
@@ -58,6 +86,14 @@ public:
 		// Decrement count
 		--currSize;
 	}
+
+	/******************************************************************************/
+	/*!
+		\brief	Returns a component to its that belong to an entity,
+				Return nullptr if no such component found to that entity
+				called by ComponentManager
+	*/
+	/******************************************************************************/
 	T* RetrieveComponent(ENTITY entity)								//Return a pointer to the component that belongs to an entity
 	{
 		if (entityToIndexMap.find(entity) != entityToIndexMap.end()) //Check if the component exists in the array
@@ -66,6 +102,13 @@ public:
 		}
 		return nullptr; // Specified Component does not exist 
 	}
+
+	/******************************************************************************/
+	/*!
+		\brief	Whenever an entity is destroyed, check all the component List within
+				componentArray and delete components that belong to that entity
+	*/
+	/******************************************************************************/
 	void EntityDestroyed(ENTITY entity) override						//All Component Storage must react when a entity is destroyed
 	{
 		if (entityToIndexMap.find(entity) != entityToIndexMap.end())

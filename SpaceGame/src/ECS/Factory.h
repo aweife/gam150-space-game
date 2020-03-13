@@ -1,4 +1,20 @@
+/*********************************************************************************
+* \file			Factory.h
+* \brief		Factory for creating entities in the game
+* \author		Chong Jun Yi,			70% Code Contribution
+* \author		Ang Wei Feng,			10% Code Contribution
+* \author		Chong Jin Kiat,			10% Code Contribution
+* \author		Farzaana Binte Roslan,	10% Code Contribution
+*
+*				Provide definitions of entities in the game. Responsible for
+*				adding components to entities and initialising them.
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
+
 #include "../Global_ECS.h"
 #include "AEEngine.h"
 #include "../Tools/MemoryLeak.h"
