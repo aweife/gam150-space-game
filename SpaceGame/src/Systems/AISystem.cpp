@@ -38,6 +38,9 @@ void AISystem::Update()
 {
 	cAI* ai;
 
+	const ENTITY pid = PlayerManager::player;
+	if (pid == 0)	return;				//NO ACTIVE PLAYER
+
 	// Update all entities that has the components we want
 	for (auto const& entity : entitiesList)
 	{
