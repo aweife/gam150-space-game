@@ -1,14 +1,29 @@
-#include "PlayerManager.h"						//Self Header
-#include "../Global.h"
-#include "../Managers/InputManager.h"			//Recieve inputs
-#include "../ECS/Core.h"
-#include "../Managers/CameraManager.h"
+/**********************************************************************************
+* \file			PlayerManager.cpp
+* \brief		Logic for player features from input
+* \author		Jin Kiat,		Chong,		90% Code Contribution
+*				Jun Yi,			Chong,		10% Code Contribution
+*				
+*				Long Description
+*				- facing direction
+*				- mouse clicks on UI
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+#include "PlayerManager.h"						// Self Header
+#include "../Global.h"							// Screensize 
+#include "../Managers/InputManager.h"			// Recieve inputs
+#include "../ECS/Core.h"						// Get Component
+#include "../Managers/CameraManager.h"			// Get the position of a moving camera 
 #include "../Math/Math.h"						// Rotation Lerp
-#include "../Components/cSpaceShip.h"
-#include "../Components/cWeapon.h"
+#include "../Components/cSpaceShip.h"			// Mouse click ->shooting
+#include "../Components/cWeapon.h"				// Mouse click ->shooting
 
-#include "../Tools/Editor.h"					//Debugging
-#include "../ECS/Factory.h"
+#include "../Tools/Editor.h"					// Debugging
+#include "../ECS/Factory.h"						// Gameover UI
+
 namespace PlayerManager
 {
 	ENTITY		player			= 0;
@@ -77,6 +92,8 @@ namespace PlayerManager
 	{
 		player = 0;
 	}
+
+	
 	void PlayerDeath()
 	{
 		Factory_UI::CreateUI_GameOver();

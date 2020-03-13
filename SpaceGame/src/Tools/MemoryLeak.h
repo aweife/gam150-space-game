@@ -1,5 +1,13 @@
-//Include This header in individual cpp files to check which linke is causing MemLeak
-
+/**********************************************************************************
+* \file			MemoryLeak.h
+* \brief		Include this in individual cpp files to check which line is causing MemLeak
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 //#include "../Tools/MemoryLeak.h"
 
 #pragma once

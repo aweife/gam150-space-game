@@ -1,17 +1,15 @@
 #pragma once
 
-#include "System.h"					//Inheritance
+#include "System.h"									// Inheritance
 #include "../Components/cTransform.h"
 #include "../Components/cRigidBody.h"
 #include "../Components/cWeapon.h"
 
-
-
 class WeaponSystemRange : public System
 {
 public:
-	WeaponSystemRange() = default;					//Virtual Constructor...
-	~WeaponSystemRange() = default;					//...and destructor
+	WeaponSystemRange() = default;					// Virtual Constructor...
+	~WeaponSystemRange() = default;					// ...and destructor
 
 	void Init() override;
 	void Update() override;

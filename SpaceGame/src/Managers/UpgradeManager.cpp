@@ -1,3 +1,13 @@
+/**********************************************************************************
+* \file			UpgradeManager.cpp
+* \brief		Stores all upgrade values for weapon
+* \author		Jin Kiat,		Chong,		100% Code Contribution
+*
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "UpgradeManager.h"
 #include <unordered_map>
 
@@ -115,33 +125,6 @@ namespace UpgradeManager
 		upgrade2 = -1;
 		upgrade3 = -1;
 	}
-
-	
-
-	//void WeaponUpgradeMelee(cMeleeWeapon* meleeWeapon, UpgradePackages upgradePack, int level)
-	//{
-	//	WeaponUpgrade_BaseMelee* data = database_meleeUpgrade[upgradePack];
-
-	//	switch (level)
-	//	{
-	//	case 1:
-	//		meleeWeapon->_meleeRange		+= data->Get_U1_MeleeRange();
-	//		meleeWeapon->_damage			+= data->Get_U1_Damage();
-	//		break;
-	//	}
-	//}
-
-	//void WeaponChange(cRangeWeapon* rangeWeapon, WeaponType weaponType, UpgradePackages upgradePack)
-	//{
-	//	rangeWeapon->_currWeapon = weaponType;
-	//	//Reset the upgrade values
-	//	WeaponUpgrade_BaseRange* data = database_rangeUpgrade[upgradePack];
-
-	//	rangeWeapon->_fireRate				= data->Get_U0_FireRate();
-	//	rangeWeapon->_reloadRate			= data->Get_U0_ReloadRate();
-	//	rangeWeapon->_ammo					= data->Get_U0_Ammo();
-	//	rangeWeapon->_damage				= data->Get_U0_Damage();
-	//}
 
 	void Cleanup_UpgradeDatabase()
 	{

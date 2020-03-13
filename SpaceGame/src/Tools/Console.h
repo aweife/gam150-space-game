@@ -1,3 +1,16 @@
+/**********************************************************************************
+* \file			Console.h
+* \brief		Abstraction for console window
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+*				Long Description
+*				- print custom outputs with debug logger
+*				- Text Alignment
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 #ifndef CONSOLE_H
 #define CONSOLE_H

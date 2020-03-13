@@ -1,23 +1,20 @@
-/*********************************************************************************
-* \file			Editor.cpp
-* \author		Chong Jun Yi
-* \version		1.0
-* \date			18/01/2019
-* \par			Engine Code
-* \note			Course: GAM150
+/**********************************************************************************
+* \file			Console.cpp
 * \brief		Abstraction for console window
-				- print custom outputs with debug logger
-				- check AE_Assert statements
-				-
-
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
-				or disclosure of this file or its contents without the prior
-				written consent of DigiPen Institute of Technology is prohibited.
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+*				Long Description
+*				- print custom outputs with debug logger
+*				- Text Alignment
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "AEEngine.h"   //Time
-#include "Console.h"		
-#include <Windows.h>	//Most console api - HANDLE, 
-#include <iostream>		//cout Text
+#include "AEEngine.h"							//Time
+#include "Console.h"							//function declaration
+#include <Windows.h>							//Most console api - HANDLE, 
+#include <iostream>								//cout Text
 #include "../Global.h"  
 
 static HANDLE sConsoleOutHandle = 0x00;			//Handle for console screen
@@ -227,17 +224,18 @@ COORD Console_GetConsoleSize()
 /******************************************************************************/
 void Console_ClearArea(short topX, short topY, short width, short height)
 {
-	COORD topLeft = {topX, topY};	//Starting coordinate to Clear
-	COORD oldPos;					//Console Cursor
+	COORD topLeft = {topX, topY};				//Starting coordinate to Clear
+	COORD oldPos;								//Console Cursor
 	DWORD writtenCells;
 	short clearWidth = width + topX >= sConsoleSize.X? sConsoleSize.X - topX: width;
 
-	oldPos = Console_GetCursorPos();		//Get the current cursor location
+	oldPos = Console_GetCursorPos();			//Get the current cursor location
 
 	for (short i = 0; i < height; ++i)
 	{
 		++topLeft.Y;
-		FillConsoleOutputCharacterA(sConsoleOutHandle, ' ', clearWidth, topLeft, &writtenCells);	//Fill char ANSI style
+		//Fill char ANSI style
+		FillConsoleOutputCharacterA(sConsoleOutHandle, ' ', clearWidth, topLeft, &writtenCells);	
 		FillConsoleOutputAttribute(sConsoleOutHandle, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
 			clearWidth, topLeft, &writtenCells);
 	}
@@ -253,12 +251,14 @@ void Console_ClearAll()
 	
 	CONSOLE_SCREEN_BUFFER_INFO screenInfoBuffer;
 	GetConsoleScreenBufferInfo(sConsoleOutHandle, &screenInfoBuffer);
-	const int cellCount = screenInfoBuffer.dwSize.X * screenInfoBuffer.dwSize.Y; /*Count of all the cells in the window*/
+	/* Count of all the cells in the window*/
+	const int cellCount = screenInfoBuffer.dwSize.X * screenInfoBuffer.dwSize.Y;	
 	const COORD firstCell = { 0, 0 };
 	DWORD writtenCells = 0;
 
 	/* Fills the whole console with a space character*/
-	FillConsoleOutputCharacterA(sConsoleOutHandle, ' ', cellCount, firstCell, &writtenCells);/*Fill all the memory with ' '*/
+	/* Fill all the memory with ' '*/
+	FillConsoleOutputCharacterA(sConsoleOutHandle, ' ', cellCount, firstCell, &writtenCells);	
 	//Clean out properly the colors if you decide to use colors
 	FillConsoleOutputAttribute(sConsoleOutHandle, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
 		cellCount, firstCell, &writtenCells);

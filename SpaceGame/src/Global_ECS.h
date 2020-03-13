@@ -1,19 +1,14 @@
-#pragma once
-/*********************************************************************************
+/**********************************************************************************
 * \file			Global_ECS.h
-* \author		Chong Jun Yi
-* \version		1.0
-* \date			30/01/2019
-* \par			Data storage Code
-* \note			Course: GAM150
 * \brief		Stores global variables/allias about the ECS architechure
-				- 
-				-
-
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
-				or disclosure of this file or its contents without the prior
-				written consent of DigiPen Institute of Technology is prohibited.
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
+
+#pragma once
 #include <cstdint>
 #include <bitset>
 

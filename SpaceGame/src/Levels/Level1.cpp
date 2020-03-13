@@ -1,17 +1,18 @@
-/*********************************************************************************
-* \file			Editor.cpp
-* \author		Chong Jun Yi, Ang Wei Feng, Chong Jin Kiat, Farzaana Binte Roslan
-* \version		1.0
-* \date			25/01/2020
-* \par			Level Game State
-* \note			Course: GAM150
-* \brief		Level 1 Game State
-				-
-				-
-
-* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
-				or disclosure of this file or its contents without the prior
-				written consent of DigiPen Institute of Technology is prohibited.
+/**********************************************************************************
+* \file			Level1.cpp
+* \brief		Game State for Level 1
+* \author		Wei Feng,		Ang,		20% Code Contribution
+*				Jun Yi,			Chong,		60% Code Contribution
+*				Jin Kiat,		Chong,		20% Code Contribution
+*
+*				Long Description
+*				- Initalise game objects into the level
+*				- Update - Render Loop
+*				- Memory Cleanup
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #include "Level1.h"									//Self Header
 #include "../ECS/Core.h"							//Systems to Update
