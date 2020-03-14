@@ -1,3 +1,16 @@
+/*********************************************************************************
+* \file			EntityManager.cpp
+* \brief		Manager for entities in the game
+* \author		Chong Jun Yi, 50% Code Contribution
+* \author		Ang Wei Feng, 50% Code Contribution
+*
+*				Responsible for creating and destroying entities in the game. Also
+*				keep tracks of their signatures.
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "EntityManager.h"
 #include "AEEngine.h"
 

@@ -1,3 +1,16 @@
+/*********************************************************************************
+* \file			ComponentManager.h
+* \brief		Manager for components and component storages in the game
+* \author		Chong Jun Yi, 50% Code Contribution
+* \author		Ang Wei Feng, 50% Code Contribution
+*
+*				Responsible for adding components to their component storages
+*				and provides a pointer to the component storage
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 #include <unordered_map>						//unordered map

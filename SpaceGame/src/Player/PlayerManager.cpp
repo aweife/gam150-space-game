@@ -44,7 +44,7 @@ namespace PlayerManager
 		RotateWithMouse(mousePosX, mousePosY, camTransform, playerTransform, playerRigidBody);
 
 		playerSpaceShip->_isThrusting = InputManager::mouseRTrigger;
-		if (playerSpaceShip->_currWeaponMode == WeaponMode::range)
+		if (playerSpaceShip->_currWeaponMode == WeaponMode::WEAPONMODE_RANGE)
 			playerWeapon->_isShooting = InputManager::mouseLTrigger;
 	}
 

@@ -16,12 +16,12 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 enum class WeaponMode
 {
-	none,					//If the spaceship does not have weapon features
-	range,
-	melee
+	WEAPONMODE_NONE,					//If the spaceship does not have weapon features
+	WEAPONMODE_RANGE,
+	WEAPONMODE_MELEE,
 };
 
-class cSpaceShip:public Component
+class cSpaceShip :public Component
 {
 public:
 	// Spaceship Thruster (Movements)
@@ -29,11 +29,10 @@ public:
 	float	_thrustDelay;			// Countdown timer when thruster overheats
 	float	_thrustAcceleration;	// ????? need to double comfirm
 
-	int		_lives;					// 
-	
-	WeaponMode _currWeaponMode = WeaponMode::range;	//We can know if the spaceship has any weapon features
+	//We can know if the spaceship has any weapon features
+	WeaponMode _currWeaponMode;
 
 	cSpaceShip() = delete;
-	cSpaceShip(bool isThrusting, float thrustDelay, int lives, WeaponMode currWeaponMode);
+	cSpaceShip(bool isThrusting, float thrustDelay, WeaponMode currWeaponMode);
 	~cSpaceShip() = default;
 };
