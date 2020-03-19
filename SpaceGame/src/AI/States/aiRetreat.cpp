@@ -2,7 +2,7 @@
 
 #include "../../Math/Math.h"
 #include "../../Global.h"
-#include "../../Tools/Console.h"
+#include "../../Tools/Editor.h"
 
 void aiRetreat::OnEnter(aiBlackBoard& bb)
 {
@@ -19,7 +19,7 @@ void aiRetreat::OnUpdate(aiBlackBoard& bb)
 	if (AEVec2Distance(&_safePosition, &trans->_position) > 10.0f)
 	{
 		Transform::RotateToTarget(trans->_rotation, trans->_position, _safePosition, bb.rotationSpeed * g_dt);
-		rb->_velocity += rb->_acceleration;
+		rb->_velocity += bb.baseAcceleration;
 
 		Steering::SeekTarget(
 			rb->_steeringVector,
@@ -55,6 +55,7 @@ float aiRetreat::TurnToTarget(const float& self, const AEVec2& target)
 	AEVec2Normalize(&targetRot, &targetRot);
 
 	float dotAngle = AEVec2DotProduct(&selfRot, &targetRot);
+	Editor_TrackVariable("dotproduct: ", dotAngle);
 
-	return (dotAngle < 0.0f ? 0.0f : dotAngle);
+	return (dotAngle < 0.0f ? 0.25f : dotAngle);
 }

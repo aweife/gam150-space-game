@@ -86,7 +86,7 @@ void AISystem::UpdateBlackboard(aiBlackBoard& bb, ENTITY id)
 
 	// Update player last known position
 	bb.positionUpdateTimer += g_dt;
-	if (bb.positionUpdateTimer > 1.0f)
+	if (bb.positionUpdateTimer > 2.0f)
 	{
 		bb.positionUpdateTimer = 0.0f;
 

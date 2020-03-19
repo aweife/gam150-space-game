@@ -16,7 +16,7 @@ void aiChase::OnEnter(aiBlackBoard& bb)
 
 void aiChase::OnUpdate(aiBlackBoard& bb)
 {
-	rb->_velocity += bb.baseAcceleration;
+	rb->_velocity += rb->_acceleration;
 	Steering::SeekTarget(rb->_steeringVector, bb.directionToPlayerN, rb->_velocity * g_dt, rb->_velocityVector);
 	Steering::Wander(rb->_steeringVector, rb->_velocityDirection, bb.wanderAngle, 1.0f);
 	Transform::RotateToTarget(trans->_rotation, bb.directionToPlayerN, bb.baseRotationSpeed * g_dt);
