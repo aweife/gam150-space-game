@@ -12,7 +12,7 @@ struct aiBlackBoard
 	float distanceFromPlayer;
 	AEVec2 directionToPlayer;
 	AEVec2 directionToPlayerN;
-	AEVec2 playerLastKnownPos;
+	AEVec2 playerLastKnownPosition;
 	float positionUpdateTimer;
 
 	// Const

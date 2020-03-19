@@ -38,7 +38,7 @@ struct aiStateList
 
 struct bossAttackList
 {
-	std::variant< bossIdle, bossNormal > attacks;
+	std::variant< bossSpawn, bossIdle, bossNormal > attacks;
 };
 
 #endif

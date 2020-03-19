@@ -32,7 +32,7 @@ void aiPursuit::OnUpdate(aiBlackBoard& bb)
 	Steering::Wander(rb->_steeringVector, rb->_velocityDirection, bb.wanderAngle, 0.5f);
 
 	// Look at target pos
-	Transform::RotateToTarget(trans->_rotation, bb.playerLastKnownPos, bb.baseRotationSpeed * g_dt);
+	Transform::RotateToTarget(trans->_rotation, bb.playerLastKnownPosition, bb.baseRotationSpeed * g_dt);
 
 	// Check close enough to attack or not
 	AEVec2Sub(&_targetPosition, &_futureTargetPosition, &trans->_position);

@@ -29,11 +29,6 @@ namespace Factory
 	//GameObjects
 	ENTITY CreateMenuPlayer();
 	ENTITY CreatePlayer(unsigned int layer);
-	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy2(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy3(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy4(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy5(ENTITY player, unsigned int layer);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
@@ -80,10 +75,19 @@ namespace Factory_UI
 
 }
 
-
 namespace Factory_Map
 {
 	void Generate_StarField_Menu();
 	void Generate_PlanetField();
 	void Generate_StarField();
+}
+
+namespace Factory_AI
+{
+	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy2(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy3(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy4(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy5(ENTITY player, unsigned int layer);
+	ENTITY CreateBoss(ENTITY player, unsigned int layer);
 }

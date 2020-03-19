@@ -6,8 +6,8 @@
 aiBlackBoard::aiBlackBoard():
 	positionUpdateTimer{0.0f},
 
-	baseAttackRange{ 350.0f },
-	baseDetectRange{450.0f},
+	baseAttackRange{ 300.0f },
+	baseDetectRange{400.0f},
 	baseMaxSpeed{ 80.0f },
 	baseAcceleration{ 5.0f },
 	baseRotationSpeed{ 5.0f },
@@ -38,11 +38,11 @@ void aiBlackBoard::UpdateBlackboard(ENTITY entity)
 
 	// Update player last known position
 	positionUpdateTimer += g_dt;
-	if (positionUpdateTimer > 2.0f)
+	if (positionUpdateTimer > 0.8f)
 	{
 		positionUpdateTimer = 0.0f;
 
 		// Store
-		playerLastKnownPos = player->_position;
+		playerLastKnownPosition = player->_position;
 	}
 }

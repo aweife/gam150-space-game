@@ -25,6 +25,7 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cCollision>(ID_CollisionComponent);
 	RegisterComponentCollection<cCamera>(ID_CameraComponent);
 	RegisterComponentCollection<cAI>(ID_AIComponent);
+	RegisterComponentCollection<cBoss>(ID_BossComponent);
 	RegisterComponentCollection<cSpaceShip>(ID_SpaceShip);
 	RegisterComponentCollection<cUIElement>(ID_UIComponent);
 	RegisterComponentCollection<cRangeWeapon>(ID_RangeWeaponComponent);

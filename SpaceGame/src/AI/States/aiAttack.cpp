@@ -41,12 +41,12 @@ void aiAttack::OnUpdate(aiBlackBoard& bb)
 
 void aiAttack::OnExit(aiStateList& var)
 {
-	rwp->_isShooting = false;
+	rwp->_enemyIsShooting = false;
 
 	aiBase::OnExit(var);
 }
 
 void aiAttack::Attack()
 {
-	rwp->_isShooting = true;
+	rwp->_enemyIsShooting = true;
 }

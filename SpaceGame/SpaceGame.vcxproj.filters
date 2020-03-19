@@ -91,6 +91,7 @@
     <ClCompile Include="src\AI\Boss\bossIdle.cpp" />
     <ClCompile Include="src\AI\Boss\bossNormal.cpp" />
     <ClCompile Include="src\AI\Boss\bossSpawn.cpp" />
+    <ClCompile Include="src\Systems\BossSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiState.h" />
@@ -203,6 +204,8 @@
     <ClInclude Include="src\AI\Boss\bossIdle.h" />
     <ClInclude Include="src\AI\Boss\bossNormal.h" />
     <ClInclude Include="src\AI\Boss\bossSpawn.h" />
+    <ClInclude Include="src\Components\cBoss.h" />
+    <ClInclude Include="src\Systems\BossSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />
@@ -220,5 +223,6 @@
     <Image Include="res\Prop_Planet4.png" />
     <Image Include="res\Weapon_Bullet1.png" />
     <Image Include="res\AI_Indicator.png" />
+    <Image Include="res\Boss.png" />
   </ItemGroup>
 </Project>

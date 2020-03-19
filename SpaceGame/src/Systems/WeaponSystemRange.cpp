@@ -16,6 +16,7 @@
 #include "../ECS/Core.h"
 #include "../Global.h"
 #include <iostream>
+#include "../Tools/Editor.h"
 
 #include "../ECS/Factory.h"
 /******************************************************************************/
@@ -42,8 +43,8 @@ void WeaponSystemRange::Update()
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rangeweapon = Core::Get().GetComponent<cRangeWeapon>(entity);
 
-		if (!rangeweapon->_isShooting) continue;
-		{
+		//if (!rangeweapon->_isShooting) continue;
+		//{
 			//if (/*spaceship->_currWeaponMode == WeaponMode::range &&*/
 			//	rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireCooldownTimer*/)
 			//{
@@ -63,35 +64,58 @@ void WeaponSystemRange::Update()
 			//		break;
 			//	}
 			//}
-		}
+		//}
 
-		// Decrement timer if on cooldown
-		if (rangeweapon->_attackCooldownTimer > 0.0f)
+		// ENEMY
+		if (rangeweapon->_enemyIsShooting)
 		{
-			rangeweapon->_attackCooldownTimer -= g_dt;
-
-			if (rangeweapon->_attacksLeft > 0)
+			if (rangeweapon->_attackCooldownTimer > 0.0f)
 			{
-				// Currently attacking, set delay between attacks
-				if (rangeweapon->_delayTimer > 0.0f)
-					rangeweapon->_delayTimer -= g_dt;
-				else
-				{
-					// Set delay
-					rangeweapon->_delayTimer = rangeweapon->_delayBetweenAttacks;
+				rangeweapon->_attackCooldownTimer -= g_dt;
 
-					// Fire
-					NormalShoot(transform,rangeweapon->_tag);
-					--rangeweapon->_attacksLeft;
-					rangeweapon->_isShooting = false;
+				if (rangeweapon->_attacksLeft > 0)
+				{
+					// Currently attacking, set delay between attacks
+					if (rangeweapon->_delayTimer > 0.0f)
+						rangeweapon->_delayTimer -= g_dt;
+					else
+					{
+						// Set delay
+						rangeweapon->_delayTimer = rangeweapon->_delayBetweenAttacks;
+
+						// Fire
+						if (rangeweapon->_bossIsShooting)
+							TargetShoot(transform, rangeweapon->_tag, rangeweapon->_targetPosition);
+						else
+							NormalShoot(transform, rangeweapon->_tag);
+						--rangeweapon->_attacksLeft;
+					}
 				}
+				else
+					rangeweapon->_enemyIsShooting = false;
+			}
+			else
+			{
+				// Set cooldown
+				rangeweapon->_attackCooldownTimer = rangeweapon->_attackCooldown;
+				rangeweapon->_attacksLeft = rangeweapon->_numberOfAttacks;
 			}
 		}
 		else
 		{
-			// Set cooldown
-			rangeweapon->_attackCooldownTimer = rangeweapon->_attackCooldown;
-			rangeweapon->_attacksLeft = rangeweapon->_numberOfAttacks;
+			// PLAYER
+			if (rangeweapon->_playerIsShooting)
+			{
+				if (rangeweapon->_delayTimer > 0.0f)
+					rangeweapon->_delayTimer -= g_dt;
+				else
+				{
+					rangeweapon->_delayTimer = rangeweapon->_delayBetweenAttacks;
+					NormalShoot(transform, rangeweapon->_tag);
+				}
+			}
+			else
+				rangeweapon->_delayTimer = 0.0f;
 		}
 	}
 }
@@ -107,11 +131,29 @@ void NormalShoot(cTransform* transform, OWNERTAG tag)
 	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
 	// Spawn the bullet at the tip of player
 	if (tag == OWNERTAG::PLAYER)
-		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * (transform->_scale.x/2.0f),
-			transform->_position.y + AESin(transform->_rotation) * (transform->_scale.y/2.0f), bulletVelocity, bulletDirection, transform->_rotation + PI / 2, OWNERTAG::PLAYER);
+		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * (transform->_scale.x / 2.0f),
+			transform->_position.y + AESin(transform->_rotation) * (transform->_scale.y / 2.0f), bulletVelocity, bulletDirection, transform->_rotation + PI / 2, OWNERTAG::PLAYER);
 	else if (tag == OWNERTAG::AI)
 		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * (transform->_scale.x / 2.0f),
 			transform->_position.y + AESin(transform->_rotation) * (transform->_scale.y / 2.0f), bulletVelocity, bulletDirection, transform->_rotation + PI / 2, OWNERTAG::AI);
+}
+
+void TargetShoot(cTransform* transform, OWNERTAG tag, AEVec2& targetPos)
+{
+	AEVec2 bulletDirection;
+	AEVec2 bulletVelocity;
+
+	// Setting the direction of bullet spawn
+	AEVec2Sub(&bulletDirection, &targetPos, &transform->_position);
+	AEVec2Normalize(&bulletDirection, &bulletDirection);
+	// Bullet velocity
+	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
+
+	Factory::CreateBullet(transform->_position.x,
+		transform->_position.y, bulletVelocity, bulletDirection, atan2f(bulletDirection.y, bulletDirection.x) + PI / 2, OWNERTAG::AI);
+
+	Editor_TrackVariable("spawnX: ", transform->_position.x);
+	Editor_TrackVariable("spawnY: ", transform->_position.y);
 }
 
 void HomingShoot(cTransform* transform)

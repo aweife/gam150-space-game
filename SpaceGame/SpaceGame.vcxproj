@@ -143,6 +143,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\NotInUse\MemoryPool.cpp" />
     <ClCompile Include="src\Player\PlayerManager.cpp" />
     <ClCompile Include="src\Systems\AISystem.cpp" />
+    <ClCompile Include="src\Systems\BossSystem.cpp" />
     <ClCompile Include="src\Systems\CollisionSystem.cpp" />
     <ClCompile Include="src\Systems\DebugToolsSystem.cpp" />
     <ClCompile Include="src\Systems\HealthSystem.cpp" />
@@ -173,6 +174,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClInclude Include="src\AI\States\aiRetreat.h" />
     <ClInclude Include="src\AI\aiState.h" />
     <ClInclude Include="src\AI\aiBlackBoard.h" />
+    <ClInclude Include="src\Components\cBoss.h" />
     <ClInclude Include="src\Components\cWarping.h" />
     <ClInclude Include="src\Managers\AIBehaviors.h" />
     <ClInclude Include="src\Components\cAI.h" />
@@ -220,6 +222,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClInclude Include="src\NotInUse\MemoryPool.h" />
     <ClInclude Include="src\Player\PlayerManager.h" />
     <ClInclude Include="src\Systems\AISystem.h" />
+    <ClInclude Include="src\Systems\BossSystem.h" />
     <ClInclude Include="src\Systems\CollisionSystem.h" />
     <ClInclude Include="src\Systems\DebugToolsSystem.h" />
     <ClInclude Include="src\Systems\HealthSystem.h" />
@@ -243,6 +246,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
   <ItemGroup>
     <Image Include="res\AI_Indicator.png" />
     <Image Include="res\BG_Background1.png" />
+    <Image Include="res\Boss.png" />
     <Image Include="res\Enemy_1.png" />
     <Image Include="res\Enemy_2.png" />
     <Image Include="res\GameLogo.png" />

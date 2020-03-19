@@ -9,7 +9,10 @@ private:
 	void OnUpdate(aiBlackBoard&) override;
 	void OnExit(bossAttackList&) override;
 
+	void Attack(aiBlackBoard& );
+
 	// Extra components this state needs
+	cRangeWeapon* rwp;
 
 	// State variables
 };

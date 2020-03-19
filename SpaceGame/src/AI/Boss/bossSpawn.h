@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bossBase.h"
+#include "AEVec2.h"
 
 class bossSpawn : public bossBase
 {
@@ -12,4 +13,5 @@ private:
 	// Extra components this state needs
 
 	// State variables
+	AEVec2 _initialScale;
 };

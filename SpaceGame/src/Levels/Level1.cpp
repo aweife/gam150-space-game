@@ -24,6 +24,9 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
 ENTITY enemy;
+const float bossSpawn = 5.0f;
+float bossSpawnTimer = 0.0f;
+bool spawnedBoss = false;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -38,14 +41,14 @@ void Level1_Load()
 	Factory::DebugVector_Velocity(PlayerManager::player);
 
 	// Create camera
-	Factory::CreateCamera(PlayerManager::player);		
+	Factory::CreateCamera(PlayerManager::player);
 
 	//Create Enemy
-	enemy = Factory::CreateEnemy1(PlayerManager::player, 2);
-	enemy = Factory::CreateEnemy2(PlayerManager::player, 2);
-	enemy = Factory::CreateEnemy3(PlayerManager::player, 2);
-	enemy = Factory::CreateEnemy4(PlayerManager::player, 2);
-	enemy = Factory::CreateEnemy5(PlayerManager::player, 2);
+	enemy = Factory_AI::CreateEnemy1(PlayerManager::player, 2);
+	//enemy = Factory_AI::CreateEnemy2(PlayerManager::player, 2);
+	//enemy = Factory_AI::CreateEnemy3(PlayerManager::player, 2);
+	//enemy = Factory_AI::CreateEnemy4(PlayerManager::player, 2);
+	//enemy = Factory_AI::CreateEnemy5(PlayerManager::player, 2);
 
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
@@ -58,7 +61,7 @@ void Level1_Load()
 	Factory::CreatePlanet3(4, -300.0f, -400.0f, 400.0f, 400.0f);
 	Factory::CreatePlanet3(4, 1000.0f, 240.0f, 100.0f, 100.0f);
 
-	Factory::CreatePlanet1(3, -400.0f, 200.0f, 100.0f, 100.0f );
+	Factory::CreatePlanet1(3, -400.0f, 200.0f, 100.0f, 100.0f);
 	Factory::CreatePlanet4(5, 730.0f, 30.0f, 80.0f, 80.0f);
 	Factory::CreatePlanet1(5, -820.0f, -100.0f, 200.0f, 200.0f);
 	Factory::CreatePlanet1(5, 1300.0f, -90.0f, 100.0f, 100.0f);
@@ -94,6 +97,18 @@ void Level1_Update()
 	if (AEInputCheckTriggered(AEVK_1))
 	{
 		Core::Get().EntityDestroyed(enemy);
+	}
+
+	// Test boss
+	if (!spawnedBoss)
+	{
+		bossSpawnTimer += g_dt;
+
+		if (bossSpawnTimer >= bossSpawn)
+		{
+			spawnedBoss = true;
+			enemy = Factory_AI::CreateBoss(PlayerManager::player, 2);
+		}
 	}
 }
 

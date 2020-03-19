@@ -33,5 +33,6 @@ public:
 
 
 void NormalShoot(cTransform* transform, OWNERTAG tag);
+void TargetShoot(cTransform* transform, OWNERTAG tag, AEVec2& targetPos);
 void HomingShoot(cTransform* transform);
 void MachineGunShoot(cTransform* transform);

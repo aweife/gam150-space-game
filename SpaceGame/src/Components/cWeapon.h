@@ -39,7 +39,9 @@ public:
 class cRangeWeapon : public Weapon, public Component
 {
 public:
-	bool		_isShooting;			//Player input
+	bool		_playerIsShooting;		//Player input
+	bool		_enemyIsShooting;			
+
 	float		_fireCooldownTimer;
 	float		_fireCooldown;
 	float		_reloadRate;
@@ -57,6 +59,10 @@ public:
 	float	_delayTimer;
 	float	_delayBetweenAttacks;
 	int		_numberOfAttacks;
+
+	// Boss
+	bool	_bossIsShooting;
+	AEVec2	_targetPosition;
 
 	OWNERTAG _tag;
 
