@@ -18,17 +18,18 @@
 #include <variant>
 
 // All AI states
-#include "aiChase.h"
-#include "aiAttack.h"
-#include "aiRetreat.h"
-#include "aiPursuit.h"
+#include "States/aiChase.h"
+#include "States/aiAttack.h"
+#include "States/aiRetreat.h"
+#include "States/aiPursuit.h"
+#include "States/aiIdle.h"
 
 // For commonly used ai functions
 #include "../Managers/AIBehaviors.h"
 
-struct the_variant
+struct aiStateList
 {
-	std::variant< aiChase, aiAttack, aiRetreat, aiPursuit > m_Varient;
+	std::variant< aiChase, aiPursuit, aiAttack, aiRetreat, aiIdle > states;
 };
 
 #endif

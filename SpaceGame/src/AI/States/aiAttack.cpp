@@ -1,10 +1,11 @@
-#include "aiState.h"
-#include "../ECS/Core.h"
-#include "../Math/Math.h"
-#include "../Global.h"
-#include "../Tools/Console.h"
+#include "../aiState.h"
 
-void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
+#include "../../ECS/Core.h"
+#include "../../Math/Math.h"
+#include "../../Global.h"
+#include "../../Tools/Console.h"
+
+void aiAttack::Run(aiBlackBoard& bb, aiStateList& var)
 {
 	switch (innerState)
 	{
@@ -15,15 +16,12 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 		rb = Core::Get().GetComponent<cRigidBody>(bb.id);
 		rwp = Core::Get().GetComponent<cRangeWeapon>(bb.id);
 
-		// Initialise state
-		rotationSpeed = 10.0f;
-
-		maxDistance = 500.0f;
-		minDistance = 100.0f;
+		// Set distances for state transiton
+		_minDistance = bb.attackRange / 2.0f;
+		_maxDistance = bb.attackRange * 2.0f;
 
 		// Change inner state
 		innerState = INNER_STATE_ONUPDATE;
-
 		printf("AI is attacking\n");
 
 		break;
@@ -42,13 +40,13 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 			Attack();
 
 			// If too close to player
-			if (bb.distanceFromPlayer < minDistance)
+			if (TargetTooClose(bb))
 			{
 				// Change inner state
 				innerState = INNER_STATE_ONEXIT;
 
 				// Change state to seek
-				var.m_Varient.emplace<aiRetreat>();
+				var.states.emplace<aiRetreat>();
 			}
 		}
 		else
@@ -57,7 +55,7 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 			innerState = INNER_STATE_ONEXIT;
 
 			// Change state to seek
-			var.m_Varient.emplace<aiChase>();
+			var.states.emplace<aiChase>();
 		}
 
 
@@ -72,13 +70,19 @@ void aiAttack::Run(const aiBlackBoard& bb, the_variant& var)
 
 void aiAttack::AimAtTarget(const aiBlackBoard& bb)
 {
-	Transform::RotateToTarget(trans->_rotation, bb.directionToPlayerN, rotationSpeed * g_dt);
+	Transform::RotateToTarget(trans->_rotation, bb.directionToPlayerN, bb.rotationSpeed * g_dt);
 }
 
 bool aiAttack::TargetInRange(const aiBlackBoard& bb)
 {
 	// If player is still in range
-	return (bb.distanceFromPlayer < maxDistance);
+	return (bb.distanceFromPlayer < _maxDistance);
+}
+
+bool aiAttack::TargetTooClose(const aiBlackBoard& bb)
+{
+	// If player is still in range
+	return (bb.distanceFromPlayer < _minDistance);
 }
 
 void aiAttack::Attack()

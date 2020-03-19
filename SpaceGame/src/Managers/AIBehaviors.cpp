@@ -47,15 +47,15 @@ namespace Steering
 		vector.y = sinf(value) * length;
 	}
 
-	void Wander(AEVec2& steering, const AEVec2& currentDir, const float circleDistance, const float circleRadius, float& wanderAngle, const float angleChange)
+	void Wander(AEVec2& steering, const AEVec2& currentDir, float& wanderAngle, const float angleChange)
 	{
 		// Calculate the circle's position
 		AEVec2 circleCenter = currentDir;
-		AEVec2Scale(&circleCenter, &circleCenter, circleDistance);
+		AEVec2Scale(&circleCenter, &circleCenter, 10.0f);
 
 		// Calculate displacement force
 		AEVec2 displacement = { 0.0f, -1.0f };
-		AEVec2Scale(&circleCenter, &circleCenter, circleRadius);
+		AEVec2Scale(&circleCenter, &circleCenter, 1.0f);
 
 		// Change wanderAngle just a bit, so it
 		// won't have the same value in the next game frame.

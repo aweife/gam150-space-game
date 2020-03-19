@@ -1,13 +1,12 @@
 #pragma once
 
-#include "../Global.h"
+#include "Component.h"
 #include "../AI/aiBlackBoard.h"
 #include "../AI/aiState.h"
-
 
 class cAI : public Component
 {
 public:
 	aiBlackBoard _blackboard;
-	the_variant  _currentState;
+	aiStateList  _currentState;
 };

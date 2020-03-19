@@ -94,13 +94,15 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\AI\aiAttack.cpp" />
-    <ClCompile Include="src\AI\aiPursuit.cpp" />
+    <ClCompile Include="src\AI\States\aiAttack.cpp" />
+    <ClCompile Include="src\AI\aiBlackBoard.cpp" />
+    <ClCompile Include="src\AI\States\aiIdle.cpp" />
+    <ClCompile Include="src\AI\States\aiPursuit.cpp" />
     <ClCompile Include="src\Components\cWarping.cpp" />
     <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\Managers\AIBehaviors.cpp" />
-    <ClCompile Include="src\AI\aiRetreat.cpp" />
-    <ClCompile Include="src\AI\aiChase.cpp" />
+    <ClCompile Include="src\AI\States\aiRetreat.cpp" />
+    <ClCompile Include="src\AI\States\aiChase.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
     <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Components\cHealth.cpp" />
@@ -118,7 +120,6 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
     <ClCompile Include="src\Levels\MainMenu.cpp" />
-    <ClCompile Include="src\Levels\MapGenerator.cpp" />
     <ClCompile Include="src\Levels\SplashScreen.cpp" />
     <ClCompile Include="src\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Managers\CameraManager.cpp" />
@@ -155,13 +156,14 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AI\aiAttack.h" />
-    <ClInclude Include="src\AI\aiPursuit.h" />
-    <ClInclude Include="src\AI\aiRetreat.h" />
-    <ClInclude Include="src\AI\aiChase.h" />
+    <ClInclude Include="src\AI\States\aiAttack.h" />
+    <ClInclude Include="src\AI\States\aiBase.h" />
+    <ClInclude Include="src\AI\States\aiChase.h" />
+    <ClInclude Include="src\AI\States\aiIdle.h" />
+    <ClInclude Include="src\AI\States\aiPursuit.h" />
+    <ClInclude Include="src\AI\States\aiRetreat.h" />
     <ClInclude Include="src\AI\aiState.h" />
     <ClInclude Include="src\AI\aiBlackBoard.h" />
-    <ClInclude Include="src\AI\aiBase.h" />
     <ClInclude Include="src\Components\cWarping.h" />
     <ClInclude Include="src\Managers\AIBehaviors.h" />
     <ClInclude Include="src\Components\cAI.h" />
@@ -190,7 +192,6 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClInclude Include="src\Global_Graphics.h" />
     <ClInclude Include="src\Levels\LoadingLevel.h" />
     <ClInclude Include="src\Levels\MainMenu.h" />
-    <ClInclude Include="src\Levels\MapGenerator.h" />
     <ClInclude Include="src\Levels\SplashScreen.h" />
     <ClInclude Include="src\Managers\AudioManager.h" />
     <ClInclude Include="src\Managers\CameraManager.h" />

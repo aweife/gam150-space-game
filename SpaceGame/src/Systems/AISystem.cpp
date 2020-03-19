@@ -53,7 +53,7 @@ void AISystem::Update()
 		std::visit([&]( auto& state ) 
 		{
 			state.Run( ai->_blackboard, ai->_currentState );
-		}, ai->_currentState.m_Varient );
+		}, ai->_currentState.states );
 
 		CheckOutOfScreen(entity);
 
@@ -83,6 +83,16 @@ void AISystem::UpdateBlackboard(aiBlackBoard& bb, ENTITY id)
 	bb.directionToPlayer = temp;
 	AEVec2Normalize(&temp, &temp);
 	bb.directionToPlayerN = temp;
+
+	// Update player last known position
+	bb.positionUpdateTimer += g_dt;
+	if (bb.positionUpdateTimer > 1.0f)
+	{
+		bb.positionUpdateTimer = 0.0f;
+
+		// Store
+		bb.playerLastKnownPos = player->_position;
+	}
 }
 
 void AISystem::CheckOutOfScreen(ENTITY id)
