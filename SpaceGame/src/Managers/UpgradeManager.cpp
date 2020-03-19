@@ -33,7 +33,6 @@ namespace UpgradeManager
 			database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_ThrustAccelUp1, new PlayerUpgrade_ThrustAccelUp1);
 
 
-
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_FireRateDown1, new RangeWeaponUpgrade_FireRateDown1);
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_ReloadRateDown1, new RangeWeaponUpgrade_ReloadRateDown1);
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_AmmoUp1, new RangeWeaponUpgrade_AmmoUp1);
@@ -41,6 +40,7 @@ namespace UpgradeManager
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_SpreadDown1, new RangeWeaponUpgrade_SpreadDown1);
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_BulletSizeUp1, new RangeWeaponUpgrade_BulletSizeUp1);
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_BulletSpeedUp1, new RangeWeaponUpgrade_BulletSpeedUp1);
+
 
 			database_meleeUpgrade.emplace(UpgradePackages::MeleeWeaponUpgrade_RangeUp1, new MeleeWeaponUpgrade_RangeUp1);
 			database_meleeUpgrade.emplace(UpgradePackages::MeleeWeaponUpgrade_DamageUp1, new MeleeWeaponUpgrade_DamageUp1);
