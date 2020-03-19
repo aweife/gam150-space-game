@@ -38,6 +38,7 @@ AEVec2 ScreenBasedCoords(float x, float y, UI_ANCHOR anchor, bool percentage = f
 
 bool OnHealthChange_HPUI(ENTITY entity, Events::OnHealthChange* message);
 bool OnLowHealth_HPIndicator(ENTITY entity, Events::OnLowHealth* message);
+bool OnBossIncoming_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* message);
 bool OnShieldDown_ShieldIndicator(ENTITY entity, Events::OnShieldDown* message);
 bool OnShieldChange_ShieldUI(ENTITY entity, Events::OnShieldChange* message);
 bool OnShieldActivate_ShieldBubble(ENTITY entity, Events::OnShieldActivate* message);

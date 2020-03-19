@@ -202,6 +202,22 @@ bool OnLowHealth_HPIndicator(ENTITY entity, Events::OnLowHealth* message)
 	return true;
 }
 
+bool OnBossIncoming_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
+
+	if (!uiComp) return false;
+	// For destroy
+	if (uiComp->_role == UI_ROLE::BOSS_INCOMING_UI && message->_state == false)
+	{
+		//UIEventsManager::UnSubscribe<Events::OnShieldDown>(entity);
+		Core::Get().EntityDestroyed(entity);
+	}
+
+	return true;
+}
+
 bool OnShieldDown_ShieldIndicator(ENTITY entity, Events::OnShieldDown* message)
 {
 	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
@@ -211,7 +227,7 @@ bool OnShieldDown_ShieldIndicator(ENTITY entity, Events::OnShieldDown* message)
 	// For destroy
 	if (uiComp->_role == UI_ROLE::SHIELD_DOWN_UI && message->_state == false)
 	{
-		UIEventsManager::UnSubscribe<Events::OnShieldDown>(entity);
+		//UIEventsManager::UnSubscribe<Events::OnShieldDown>(entity);
 		Core::Get().EntityDestroyed(entity);
 	}
 

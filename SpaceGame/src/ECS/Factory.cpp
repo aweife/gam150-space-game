@@ -260,6 +260,41 @@ namespace Factory
 		return enemy;
 	}
 
+	ENTITY CreateBoss(ENTITY player, unsigned int layer)
+	{
+		UNREFERENCED_PARAMETER(player);
+
+		// The values to be changed
+		ENTITY boss = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(boss, new cTransform);
+		Core::Get().AddComponent<cSprite>(boss, new cSprite(boss, "Square Mesh", "Boss", layer));
+		Core::Get().AddComponent<cRigidBody>(boss, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
+		Core::Get().AddComponent<cCollision>(boss, new cCollision);
+		Core::Get().AddComponent<cAI>(boss, new cAI);
+		Core::Get().AddComponent<cRangeWeapon>(boss, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
+		Core::Get().AddComponent<cHealth>(boss, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
+		Core::Get().GetComponent<cTransform>(boss)->_position.x = -1800.0f;
+		Core::Get().GetComponent<cTransform>(boss)->_position.y = -2000.0f;
+		Core::Get().GetComponent<cTransform>(boss)->_scale.x = 75.0f;
+		Core::Get().GetComponent<cTransform>(boss)->_scale.y = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(boss)->_velocityVector.x = -0.5f;
+		Core::Get().GetComponent<cRigidBody>(boss)->_velocityVector.y = 0.5f;
+		Core::Get().GetComponent<cRigidBody>(boss)->_tag = COLLISIONTAG::ENEMY; // testing collision
+		Core::Get().GetComponent<cCollision>(boss)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+
+
+		// debug ai
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(boss);					//For Collision
+		cTransform* aiT = Core::Get().GetComponent<cTransform>(boss);
+		//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
+		//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
+		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(boss);
+		CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
+		return boss;
+	}
+
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
 	{
 		AEVec2 newPostion, newScale;
@@ -654,6 +689,13 @@ namespace Factory_UI
 		Create_ShieldsDownUI(spritePos);
 	}
 
+	void CreateBossIncomingInterface()
+	{
+		AEVec2 spritePos;
+		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		Create_BossIncomingUI(spritePos);
+	}
+
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
 	{
 		ENTITY hpBar = Core::Get().CreateEntity();
@@ -742,6 +784,26 @@ namespace Factory_UI
 		UIEventsManager::Subscribe(shieldDown, &OnShieldDown_ShieldIndicator); //Appear When shield
 
 		return shieldDown;
+	}
+
+	ENTITY Create_BossIncomingUI(AEVec2 position)
+	{
+		ENTITY boss = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(boss, new cTransform(position, 0, { 380, 50 }));
+		Core::Get().AddComponent<cSprite>(boss, new cSprite(boss, "Square Mesh", "Boss_Incoming", 0));
+		Core::Get().GetComponent<cSprite>(boss)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(boss, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::BOSS_INCOMING_UI));
+		Core::Get().GetComponent<cUIElement>(boss)->_isActive = false;			//invisible
+
+		Core::Get().AddComponent<cTimeline>(boss, new cTimeline(g_appTime, g_appTime + 1.8f, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 0.0f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 0.5f, 1.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.5f, 0.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.80f, 0.0f);
+		UIEventsManager::Subscribe(boss, &OnBossIncoming_EnemyIndicator); //Appear When boss comes
+
+		return boss;
 	}
 
 	void Create_ChooseThree(AEVec2 centralPos)

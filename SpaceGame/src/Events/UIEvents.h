@@ -15,6 +15,12 @@ namespace Events
 		bool _state;
 	};
 
+	struct OnBossIncoming :public EventsBase
+	{
+		OnBossIncoming(bool state) : _state{ state } {};
+		bool _state;
+	};
+
 	struct OnShieldDown :public EventsBase
 	{
 		OnShieldDown(bool state) : _state{ state } {};

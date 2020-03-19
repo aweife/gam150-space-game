@@ -34,6 +34,7 @@ namespace Factory
 	ENTITY CreateEnemy3(ENTITY player, unsigned int layer);
 	ENTITY CreateEnemy4(ENTITY player, unsigned int layer);
 	ENTITY CreateEnemy5(ENTITY player, unsigned int layer);
+	ENTITY CreateBoss(ENTITY player, unsigned int layer);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
@@ -69,12 +70,14 @@ namespace Factory_UI
 	void Create_PlayerUserInterface();
 	void CreateLowHealthInterface();
 	void CreateShieldsDownInterface();
+	void CreateBossIncomingInterface();
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i);
 	ENTITY Create_SingleShieldBar(AEVec2 position, int i);
 	ENTITY Create_ShieldBubble();
 	ENTITY Create_ThrusterUI(AEVec2 position);
 	ENTITY Create_LowHealthUI(AEVec2 position);
 	ENTITY Create_ShieldsDownUI(AEVec2 position);
+	ENTITY Create_BossIncomingUI(AEVec2 position);
 	void Create_ChooseThree(AEVec2 centralPos);
 	void Create_ChoosableUpgrade(ENTITY entity);
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);
