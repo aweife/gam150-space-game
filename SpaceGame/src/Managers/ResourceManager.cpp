@@ -363,6 +363,22 @@ namespace ResourceManager
 				case 16:
 					if (textureLibrary.find("Low_Health") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Low_Health", AEGfxTextureLoad("res/Low_Health.png") });
+					break;
+				case 17: 
+					if (textureLibrary.find("Asteroid_1") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Asteroid_1", AEGfxTextureLoad("res/Asteroid_1.png") });
+					break;
+				case 18: 
+					if (textureLibrary.find("Asteroid_2") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Asteroid_2", AEGfxTextureLoad("res/Asteroid_2.png") });
+					break;
+				case 19: 
+					if (textureLibrary.find("Boss_Incoming") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Boss_Incoming", AEGfxTextureLoad("res/Boss_Incoming.png") });
+					break;
+				case 20: 
+					if (textureLibrary.find("Shield_Down") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Shield_Down", AEGfxTextureLoad("res/Shield_Down.png") });
 					*progress = 100;
 					break;
 			}

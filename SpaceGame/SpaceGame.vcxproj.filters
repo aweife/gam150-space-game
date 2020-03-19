@@ -217,5 +217,9 @@
     <Image Include="res\Weapon_Bullet1.png" />
     <Image Include="res\AI_Indicator.png" />
     <Image Include="res\Low_Health.png" />
+    <Image Include="res\Asteroid_1.png" />
+    <Image Include="res\Asteroid_2.png" />
+    <Image Include="res\Boss_Incoming.png" />
+    <Image Include="res\Shield_Down.png" />
   </ItemGroup>
 </Project>

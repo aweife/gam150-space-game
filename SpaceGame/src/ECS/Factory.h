@@ -38,6 +38,8 @@ namespace Factory
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet4(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
+	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
+	ENTITY CreateAsteroid2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	void CreateBackground();
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
 

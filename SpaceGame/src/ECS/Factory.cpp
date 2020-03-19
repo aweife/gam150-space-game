@@ -321,6 +321,41 @@ namespace Factory
 		return planet;
 	}
 
+	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
+	{
+		AEVec2 newPosition, newScale; 
+		AEVec2Set(&newPosition, posX, posY);
+		AEVec2Set(&newScale, scaleX, scaleY);
+
+		ENTITY asteroid = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(asteroid, new cTransform(newPosition, 0, newScale));
+		Core::Get().AddComponent<cSprite>(asteroid, new cSprite(asteroid, "Square Mesh", "Asteroid_1", layer));
+		Core::Get().AddComponent<cRigidBody>(asteroid, new cRigidBody(500.f, 0.0f, 0.0f, 0.0f));
+		Core::Get().AddComponent<cCollision>(asteroid, new cCollision);
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_velocity = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_tag = COLLISIONTAG::PLANET_ASTEROID;
+
+
+		return asteroid;
+	}
+
+	ENTITY CreateAsteroid2(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
+	{
+		AEVec2 newPosition, newScale; 
+		AEVec2Set(&newPosition, posX, posY);
+		AEVec2Set(&newScale, scaleX, scaleY);
+
+		ENTITY asteroid = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(asteroid, new cTransform(newPosition, 0, newScale));
+		Core::Get().AddComponent<cSprite>(asteroid, new cSprite(asteroid, "Square Mesh", "Asteroid_2", layer));
+		Core::Get().AddComponent<cRigidBody>(asteroid, new cRigidBody(500.f, 0.0f, 0.0f, 0.0f));
+		Core::Get().AddComponent<cCollision>(asteroid, new cCollision);
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_velocity = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_tag = COLLISIONTAG::PLANET_ASTEROID;
+
+		return asteroid;
+	}
+
 	void CreateBackground()
 	{
 		AEVec2 newPostion, newScale;
@@ -840,10 +875,10 @@ namespace Factory_Map
 
 	void Generate_PlanetField()
 	{
-		int numOfPlanet = 50;
+		int numOfPlanet = 100;
 		for (int i = 0; i < numOfPlanet; ++i)
 		{
-			int planetType = static_cast<int>(AERandFloat() * 3);
+			int planetType = static_cast<int>(AERandFloat() * 5);
 
 			float scale = AERandFloat() * 100 + 50;
 
@@ -860,6 +895,12 @@ namespace Factory_Map
 				break;
 			case 3:
 				Factory::CreatePlanet4(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				break;
+			case 4: 
+				Factory::CreateAsteroid1(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				break;
+			case 5: 
+				Factory::CreateAsteroid2(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
 				break;
 			}
 		}

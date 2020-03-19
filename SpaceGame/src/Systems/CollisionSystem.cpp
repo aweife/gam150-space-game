@@ -461,6 +461,14 @@ void CollisionSystem::Update()
 					CameraManager::StartCameraShake();
 					//printf("Enemy health decrease lmao\n");
 
+					// when the player's velocity is more than the velocity cap
+					if (rigidbody->_velocity > rigidbody->_velocityCap)
+					{
+						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						CameraManager::StartCameraShake();
+						markedForDestruction.insert(entity2);
+					}
+
 					// for player's bounce off
 					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
 					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), - (rigidbody->_velocityVector.y * 1.2f));
@@ -507,7 +515,7 @@ void CollisionSystem::Update()
 
 
 				// if bullet collide with planet
-				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLANET)
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
 				{
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					markedForDestruction.insert(entity2);

@@ -230,7 +230,10 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\AI_Indicator.png" />
+    <Image Include="res\Asteroid_1.png" />
+    <Image Include="res\Asteroid_2.png" />
     <Image Include="res\BG_Background1.png" />
+    <Image Include="res\Boss_Incoming.png" />
     <Image Include="res\Enemy_1.png" />
     <Image Include="res\Enemy_2.png" />
     <Image Include="res\GameLogo.png" />
@@ -244,6 +247,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <Image Include="res\Prop_Planet2.png" />
     <Image Include="res\Prop_Planet3.png" />
     <Image Include="res\Prop_Planet4.png" />
+    <Image Include="res\Shield_Down.png" />
     <Image Include="res\Weapon_Bullet1.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
