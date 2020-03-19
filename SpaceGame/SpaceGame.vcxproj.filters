@@ -64,15 +64,11 @@
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
     <ClCompile Include="src\Managers\UIEventsManager.cpp" />
     <ClCompile Include="src\Levels\MainMenu.cpp" />
-    <ClCompile Include="src\Levels\MapGenerator.cpp" />
     <ClCompile Include="src\Levels\SplashScreen.cpp" />
     <ClCompile Include="src\Managers\UpgradeManager.cpp" />
     <ClCompile Include="src\Systems\HealthSystem.cpp" />
     <ClCompile Include="src\Systems\WeaponSystemMelee.cpp" />
     <ClCompile Include="src\Systems\WeaponSystemRange.cpp" />
-    <ClCompile Include="src\AI\aiAttack.cpp" />
-    <ClCompile Include="src\AI\aiChase.cpp" />
-    <ClCompile Include="src\AI\aiRetreat.cpp" />
     <ClCompile Include="src\Managers\AIBehaviors.cpp" />
     <ClCompile Include="src\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Components\cProjectile.cpp" />
@@ -90,6 +86,7 @@
     <ClCompile Include="src\AI\States\aiIdle.cpp" />
     <ClCompile Include="src\AI\States\aiPursuit.cpp" />
     <ClCompile Include="src\AI\States\aiRetreat.cpp" />
+    <ClCompile Include="src\AI\States\aiBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiState.h" />
@@ -178,7 +175,6 @@
     <ClInclude Include="src\Events\Events.h" />
     <ClInclude Include="src\Managers\UIEventsManager.h" />
     <ClInclude Include="src\Levels\MainMenu.h" />
-    <ClInclude Include="src\Levels\MapGenerator.h" />
     <ClInclude Include="src\Levels\SplashScreen.h" />
     <ClInclude Include="src\Managers\ManagerList.h" />
     <ClInclude Include="src\Managers\UpgradeManager.h" />
@@ -193,10 +189,6 @@
     <ClInclude Include="src\Systems\WarpingSystem.h" />
     <ClInclude Include="src\Components\cWarping.h" />
     <ClInclude Include="src\Systems\HealthSystem.h" />
-    <ClInclude Include="src\AI\aiRetreat.h" />
-    <ClInclude Include="src\AI\aiAttack.h" />
-    <ClInclude Include="src\AI\aiBase.h" />
-    <ClInclude Include="src\AI\aiChase.h" />
     <ClInclude Include="src\AI\States\aiAttack.h" />
     <ClInclude Include="src\AI\States\aiChase.h" />
     <ClInclude Include="src\AI\States\aiIdle.h" />

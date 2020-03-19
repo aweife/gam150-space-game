@@ -27,3 +27,8 @@ namespace Transform
 	void RotateToTarget(float& rotation, AEVec2& selfPos, AEVec2& targetPos, const float& speed);
 	void RotateToTarget(float& rotation, const AEVec2& desired, const float& speed);
 }
+
+namespace Check
+{
+	bool LessThanRange(const float& playerDistance, const float& range);
+}

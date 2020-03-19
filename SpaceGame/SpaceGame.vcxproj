@@ -96,6 +96,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
   <ItemGroup>
     <ClCompile Include="src\AI\States\aiAttack.cpp" />
     <ClCompile Include="src\AI\aiBlackBoard.cpp" />
+    <ClCompile Include="src\AI\States\aiBase.cpp" />
     <ClCompile Include="src\AI\States\aiIdle.cpp" />
     <ClCompile Include="src\AI\States\aiPursuit.cpp" />
     <ClCompile Include="src\Components\cWarping.cpp" />

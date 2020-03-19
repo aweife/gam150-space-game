@@ -1,22 +1,19 @@
 #pragma once
 
 #include "aiBase.h"
-#include "../../Components/cTransform.h"
-#include "../../Components/cRigidBody.h"
 
 class aiPursuit : public aiBase
 {
-public:
-	virtual void Run(aiBlackBoard&, aiStateList&) override;
 private:
+	void OnEnter(aiBlackBoard&) override;
+	void OnUpdate(aiBlackBoard&) override;
+	void OnExit(aiStateList&) override;
 
-	// Component this state needs
-	cTransform* trans;
-	cRigidBody* rb;
-
+	// Extra components this state needs
 	cTransform* ptrans;
 	cRigidBody* prb;
 
+	// State variables
 	float _pursuitTimer;
 	float _positionPrediction;
 

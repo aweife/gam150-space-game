@@ -1,27 +1,21 @@
 #pragma once
 
 #include "aiBase.h"
-#include "../../Components/cTransform.h"
-#include "../../Components/cRigidBody.h"
 #include "../../Components/cWeapon.h"
 
 class aiAttack : public aiBase
 {
-public:
-	virtual void Run(aiBlackBoard&, aiStateList&) override;
 private:
+	void OnEnter(aiBlackBoard&) override;
+	void OnUpdate(aiBlackBoard&) override;
+	void OnExit(aiStateList&) override;
 
-	// Component this state needs
-	cTransform* trans;
-	cRigidBody* rb;
+	// Extra components this state needs
 	cRangeWeapon* rwp;
 
 	// State transition checks
 	float _minDistance;
 	float _maxDistance;
 
-	void AimAtTarget(const aiBlackBoard&);
-	bool TargetInRange(const aiBlackBoard&);
-	bool TargetTooClose(const aiBlackBoard& bb);
 	void Attack();
 };

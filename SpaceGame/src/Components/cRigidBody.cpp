@@ -23,8 +23,8 @@
 *
 **********************************************************************************/
 // Constructor
-cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float acceleration, float rotateVelocity, COLLISIONTAG tag)
-	: _mass{mass}, _velocity { velocity }, _velocityCap{ velocityCap }, _acceleration{ acceleration }, _rotateVelocity{ rotateVelocity },
+cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float baseAcceleration, float rotateVelocity, COLLISIONTAG tag)
+	: _mass{mass}, _velocity { velocity }, _velocityCap{ velocityCap }, _acceleration{ baseAcceleration }, _rotateVelocity{ rotateVelocity },
 	_velocityVector{ 0,0 }, _angularVelocity{ 0,0 }, _velocityChangeVector{ 0,0 }, _velocityDirection{ 0,0 }, 
 	_gravityVelocity{ 0,0 }, _steeringVector{ 0,0 }, _collisionVector{ 0,0 }, _rotationVector{0,0}, _tag{ tag }
 {
@@ -34,8 +34,8 @@ cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float acce
 //Please move this to system
 float cRigidBody::CalculateVelwithAcc(float velocity)
 {
-	float acceleration = velocity / g_dt;
-	float newVelocity = (acceleration * g_dt) + velocity; 
+	float baseAcceleration = velocity / g_dt;
+	float newVelocity = (baseAcceleration * g_dt) + velocity; 
 	newVelocity = newVelocity * 0.99f; 
 
 	return newVelocity;

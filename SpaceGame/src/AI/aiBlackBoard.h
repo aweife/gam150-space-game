@@ -14,10 +14,14 @@ struct aiBlackBoard
 	AEVec2 playerLastKnownPos;
 	float positionUpdateTimer;
 
-	// Self variables
-	float attackRange;
-	float maxSpeed;
-	float acceleration;
-	float rotationSpeed;
+	// Const
+	const float baseAttackRange;
+	const float baseDetectRange;
+	const float baseMaxSpeed;
+	const float baseAcceleration;
+	const float baseRotationSpeed;
+
+	// These are used by states
 	float wanderAngle;
+	float rotationSpeed;
 };

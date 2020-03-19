@@ -12,6 +12,8 @@
 #include "AIBehaviors.h"
 #include "../Math/Math.h"
 
+/**** Transform *****************************************************************/
+
 namespace Steering
 {
 	void SeekTarget(AEVec2& steering, const AEVec2& playerDir, const f32& velocity, const AEVec2& currentVel)
@@ -82,7 +84,7 @@ namespace Steering
 	}
 }
 
-/* Transform *****************************************************************/
+/**** Transform *****************************************************************/
 
 namespace Transform
 {
@@ -107,5 +109,13 @@ namespace Transform
 
 		// Face target
 		rotation = MBMath_LerpRotation(rotation, angle, speed);
+	}
+}
+
+namespace Check 
+{
+	bool LessThanRange(const float& playerDistance, const float& range)
+	{
+		return playerDistance < range;
 	}
 }

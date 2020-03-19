@@ -1,54 +1,41 @@
 #include "../aiState.h"
 
-#include "../../ECS/Core.h"
 #include "../../Math/Math.h"
 #include "../../Global.h"
 #include "../../Tools/Console.h"
 
-void aiRetreat::Run(aiBlackBoard& bb, aiStateList& var)
+void aiRetreat::OnEnter(aiBlackBoard& bb)
 {
-	switch (innerState)
+	aiBase::OnEnter(bb);
+
+	// Initialise state
+	bb.rotationSpeed = bb.baseRotationSpeed / 2.0f;
+	_safeDistance = 500.0f + bb.baseAttackRange;
+	FindSafePosition(bb);
+}
+
+void aiRetreat::OnUpdate(aiBlackBoard& bb)
+{
+	if (AEVec2Distance(&_safePosition, &trans->_position) > 10.0f)
 	{
-	case INNER_STATE_ONENTER:
+		Transform::RotateToTarget(trans->_rotation, trans->_position, _safePosition, bb.rotationSpeed * g_dt);
+		rb->_velocity += rb->_acceleration;
 
-		// Cache self components
-		trans = Core::Get().GetComponent<cTransform>(bb.id);
-		rb = Core::Get().GetComponent<cRigidBody>(bb.id);
+		Steering::SeekTarget(
+			rb->_steeringVector,
+			trans->_position, _safePosition,
+			rb->_velocity * g_dt * TurnToTarget(trans->_rotation, _safePosition),
+			rb->_velocityVector);
 
-		_safeDistance = 500.0f + bb.attackRange;
-		FindSafePosition(bb);
-
-
-		// Change inner state
-		innerState = INNER_STATE_ONUPDATE;
-		printf("AI is retreating\n");
-
-		break;
-	case INNER_STATE_ONUPDATE:
-
-		if (AEVec2Distance(&_safePosition, &trans->_position) > 10.0f)
-		{
-			rb->_velocity += rb->_acceleration;
-			Steering::SeekTarget(rb->_steeringVector, trans->_position, _safePosition, rb->_velocity * g_dt, rb->_velocityVector);
-			Steering::Wander(rb->_steeringVector, rb->_velocityDirection, bb.wanderAngle, 2.0f);
-			Transform::RotateToTarget(trans->_rotation, trans->_position, _safePosition, bb.rotationSpeed * g_dt);
-		}
-		else
-		{
-			// Change inner state
-			innerState = INNER_STATE_ONEXIT;
-
-			// Change state to seek
-			var.states.emplace<aiChase>();
-		}
-
-		break;
-	case INNER_STATE_ONEXIT:
-
-
-
-		break;
+		Steering::Wander(rb->_steeringVector, rb->_velocityDirection, bb.wanderAngle, 2.0f);
 	}
+	else
+		ChangeState(STATE_CHASE);
+}
+
+void aiRetreat::OnExit(aiStateList& var) 
+{ 
+	aiBase::OnExit(var); 
 }
 
 void aiRetreat::FindSafePosition(const aiBlackBoard& bb)
@@ -57,5 +44,17 @@ void aiRetreat::FindSafePosition(const aiBlackBoard& bb)
 	AEVec2Neg(&desired, &desired);
 	AEVec2Scale(&desired, &desired, _safeDistance);
 	AEVec2Add(&_safePosition, &trans->_position, &desired);
-	//AEVec2Set(&_targetPosition, -400.0f, 50.0f);
+}
+
+float aiRetreat::TurnToTarget(const float& self, const AEVec2& target)
+{
+	AEVec2 selfRot{ cosf(self), sinf(self) };
+	AEVec2 targetRot{ target };
+
+	AEVec2Normalize(&selfRot, &selfRot);
+	AEVec2Normalize(&targetRot, &targetRot);
+
+	float dotAngle = AEVec2DotProduct(&selfRot, &targetRot);
+
+	return (dotAngle < 0.0f ? 0.0f : dotAngle);
 }

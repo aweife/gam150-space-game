@@ -1,21 +1,21 @@
 #pragma once
 
 #include "aiBase.h"
-#include "../../Components/cTransform.h"
-#include "../../Components/cRigidBody.h"
 #include "AEVec2.h"
 
 class aiRetreat : public aiBase
 {
-public:
-	virtual void Run( aiBlackBoard&, aiStateList& ) override;
 private:
+	void OnEnter(aiBlackBoard&) override;
+	void OnUpdate(aiBlackBoard&) override;
+	void OnExit(aiStateList&) override;
 
-	// Component this state needs
-	cTransform* trans;
-	cRigidBody* rb;
+	// Extra components this state needs
 
+	// State checks
 	float _safeDistance;
 	AEVec2 _safePosition;
+
 	void FindSafePosition(const aiBlackBoard& bb);
+	float TurnToTarget(const float& self, const AEVec2& target);
 };

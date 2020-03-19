@@ -2,9 +2,12 @@
 
 aiBlackBoard::aiBlackBoard():
 	positionUpdateTimer{0.0f},
-	attackRange{ 350.0f },
-	maxSpeed{ 80.0f },
-	acceleration{ 2.0f },
-	rotationSpeed{ 10.0f },
+
+	baseAttackRange{ 350.0f },
+	baseDetectRange{450.0f},
+	baseMaxSpeed{ 80.0f },
+	baseAcceleration{ 2.0f },
+	baseRotationSpeed{ 5.0f },
+
 	wanderAngle{ 0.0f }
 {}
