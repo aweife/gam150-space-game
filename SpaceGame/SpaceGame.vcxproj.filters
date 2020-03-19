@@ -87,6 +87,10 @@
     <ClCompile Include="src\AI\States\aiPursuit.cpp" />
     <ClCompile Include="src\AI\States\aiRetreat.cpp" />
     <ClCompile Include="src\AI\States\aiBase.cpp" />
+    <ClCompile Include="src\AI\Boss\bossBase.cpp" />
+    <ClCompile Include="src\AI\Boss\bossIdle.cpp" />
+    <ClCompile Include="src\AI\Boss\bossNormal.cpp" />
+    <ClCompile Include="src\AI\Boss\bossSpawn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiState.h" />
@@ -195,6 +199,10 @@
     <ClInclude Include="src\AI\States\aiPursuit.h" />
     <ClInclude Include="src\AI\States\aiRetreat.h" />
     <ClInclude Include="src\AI\States\aiBase.h" />
+    <ClInclude Include="src\AI\Boss\bossBase.h" />
+    <ClInclude Include="src\AI\Boss\bossIdle.h" />
+    <ClInclude Include="src\AI\Boss\bossNormal.h" />
+    <ClInclude Include="src\AI\Boss\bossSpawn.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

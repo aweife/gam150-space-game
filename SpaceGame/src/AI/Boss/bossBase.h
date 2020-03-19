@@ -5,30 +5,27 @@
 #include "../../Components/cTransform.h"
 #include "../../Components/cRigidBody.h"
 
-struct aiStateList;
+struct bossAttackList;
 
-enum STATE
+enum ATTACK
 {
-	STATE_ATTACK,
-	STATE_CHASE,
-	STATE_IDLE,
-	STATE_PURSUIT,
-	STATE_RETREAT,
+	BOSS_IDLE,
+	BOSS_NORMAL,
 };
 
-class aiBase
+class bossBase
 {
 public:
-	void Run(aiBlackBoard&, aiStateList&);
+	void Run(aiBlackBoard&, bossAttackList&);
 protected:
 	virtual void OnEnter(aiBlackBoard&);
 	virtual void OnUpdate(aiBlackBoard&) = 0;
-	virtual void OnExit(aiStateList&);
+	virtual void OnExit(bossAttackList&);
 
-	void ChangeState(STATE);
+	void ChangeAttack(ATTACK);
 
 	INNER_STATE innerState;
-	STATE nextState;
+	ATTACK nextAttack;
 
 	cTransform* trans;
 	cRigidBody* rb;

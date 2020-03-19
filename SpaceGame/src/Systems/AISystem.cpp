@@ -3,7 +3,7 @@
 * \brief		Controls the behaviour for AI (FSM)
 * \author		Ang Wei Feng, 100% Code Contribution
 *
-*				This system loops through all ai components in the game and calls 
+*				This system loops through all ai components in the game and calls
 *				their Run function, updating the state of every ai agent.
 *
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
@@ -17,6 +17,7 @@
 #include <variant>
 #include "../ECS/Factory.h"
 #include "UISystem.h"							//Spawn Ai Indicators
+#include "../Player/PlayerManager.h"			// Update ai on player
 /******************************************************************************/
 /*!
   \brief	Sets the system signature for this system based on components required
@@ -47,13 +48,13 @@ void AISystem::Update()
 		ai = Core::Get().GetComponent<cAI>(entity);
 
 		// Update this ai's blackboard
-		UpdateBlackboard(ai->_blackboard, entity);
+		ai->_blackboard.UpdateBlackboard(entity);
 
 		// Run this ai's current state
-		std::visit([&]( auto& state ) 
-		{
-			state.Run( ai->_blackboard, ai->_currentState );
-		}, ai->_currentState.states );
+		std::visit([&](auto& state)
+			{
+				state.Run(ai->_blackboard, ai->_currentState);
+			}, ai->_currentState.states);
 
 		CheckOutOfScreen(entity);
 
@@ -62,38 +63,6 @@ void AISystem::Update()
 
 void AISystem::OnComponentAdd(ENTITY) {};
 void AISystem::OnComponentRemove(ENTITY) {};
-
-void AISystem::UpdateBlackboard(aiBlackBoard& bb, ENTITY id)
-{
-	// Set ids
-	bb.id = id;
-	const ENTITY pid = PlayerManager::player;
-	if (pid == 0)	return;				//NO ACTIVE PLAYER
-
-	// Get components
-	cTransform* self = Core::Get().GetComponent<cTransform>(id);
-	cTransform* player = Core::Get().GetComponent<cTransform>(pid);
-	
-	// Calculate distance
-	bb.distanceFromPlayer = AEVec2Distance(&player->_position, &self->_position);
-
-	// Calculate vector towards player
-	AEVec2 temp;
-	AEVec2Sub(&temp, &player->_position, &self->_position);
-	bb.directionToPlayer = temp;
-	AEVec2Normalize(&temp, &temp);
-	bb.directionToPlayerN = temp;
-
-	// Update player last known position
-	bb.positionUpdateTimer += g_dt;
-	if (bb.positionUpdateTimer > 2.0f)
-	{
-		bb.positionUpdateTimer = 0.0f;
-
-		// Store
-		bb.playerLastKnownPos = player->_position;
-	}
-}
 
 void AISystem::CheckOutOfScreen(ENTITY id)
 {
@@ -107,8 +76,8 @@ void AISystem::CheckOutOfScreen(ENTITY id)
 	{
 		AEVec2 relativeDirection;
 		AEVec2Sub(&relativeDirection, &self->_position, &cameraPosition);
-		std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));	
-		
+		std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+
 		//@TED later just change the last variable for different enemy type
 		uiSys->Check_AIIndicatorExist(id, relativeDirection, 0); //Under UI System
 	}

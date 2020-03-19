@@ -6,6 +6,7 @@
 struct aiBlackBoard
 {
 	aiBlackBoard();
+	void UpdateBlackboard(ENTITY id);
 
 	ENTITY id;
 	float distanceFromPlayer;
@@ -24,4 +25,11 @@ struct aiBlackBoard
 	// These are used by states
 	float wanderAngle;
 	float rotationSpeed;
+};
+
+enum INNER_STATE
+{
+	INNER_STATE_ONENTER,
+	INNER_STATE_ONUPDATE,
+	INNER_STATE_ONEXIT,
 };

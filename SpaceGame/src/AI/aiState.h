@@ -1,8 +1,7 @@
 /*********************************************************************************
 * \file			aiState.h
 * \brief		Stores all states and variants of our ai
-* \author		Chong Jun Yi, 50% Code Contribution
-* \author		Ang Wei Feng, 50% Code Contribution
+* \author		Ang Wei Feng, 100% Code Contribution
 *
 *				Responsible for adding components to their component storages
 *				and provides a pointer to the component storage
@@ -24,12 +23,22 @@
 #include "States/aiPursuit.h"
 #include "States/aiIdle.h"
 
+// Boss attacks
+#include "Boss/bossSpawn.h"
+#include "Boss/bossIdle.h"
+#include "Boss/bossNormal.h"
+
 // For commonly used ai functions
 #include "../Managers/AIBehaviors.h"
 
 struct aiStateList
 {
 	std::variant< aiChase, aiPursuit, aiAttack, aiRetreat, aiIdle > states;
+};
+
+struct bossAttackList
+{
+	std::variant< bossIdle, bossNormal > attacks;
 };
 
 #endif

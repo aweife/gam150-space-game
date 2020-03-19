@@ -94,6 +94,10 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AI\Boss\bossBase.cpp" />
+    <ClCompile Include="src\AI\Boss\bossIdle.cpp" />
+    <ClCompile Include="src\AI\Boss\bossNormal.cpp" />
+    <ClCompile Include="src\AI\Boss\bossSpawn.cpp" />
     <ClCompile Include="src\AI\States\aiAttack.cpp" />
     <ClCompile Include="src\AI\aiBlackBoard.cpp" />
     <ClCompile Include="src\AI\States\aiBase.cpp" />
@@ -157,6 +161,10 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\Tools\Editor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AI\Boss\bossBase.h" />
+    <ClInclude Include="src\AI\Boss\bossIdle.h" />
+    <ClInclude Include="src\AI\Boss\bossNormal.h" />
+    <ClInclude Include="src\AI\Boss\bossSpawn.h" />
     <ClInclude Include="src\AI\States\aiAttack.h" />
     <ClInclude Include="src\AI\States\aiBase.h" />
     <ClInclude Include="src\AI\States\aiChase.h" />
