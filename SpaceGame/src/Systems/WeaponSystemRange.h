@@ -17,6 +17,7 @@
 #include "../Components/cTransform.h"
 #include "../Components/cRigidBody.h"
 #include "../Components/cWeapon.h"
+#include "../Global_ECS.h"
 
 class WeaponSystemRange : public System
 {
@@ -34,5 +35,5 @@ public:
 
 void NormalShoot(cTransform* transform, OWNERTAG tag);
 void TargetShoot(cTransform* transform, OWNERTAG tag, AEVec2& targetPos);
-void HomingShoot(cTransform* transform);
+void HomingShoot(cTransform* transform, OWNERTAG tag, ENTITY target);
 void MachineGunShoot(cTransform* transform);

@@ -183,6 +183,34 @@ namespace Factory
 		return bullet;
 	}
 
+	ENTITY CreateHomingMissile(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag, ENTITY target)
+	{
+		AEVec2 newPostion, newScale;
+		AEVec2Set(&newPostion, posX, posY);
+		AEVec2Set(&newScale, 10, 40);
+
+		ENTITY bullet = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(bullet, new cTransform(newPostion, rotation, newScale));
+		Core::Get().AddComponent<cSprite>(bullet, new cSprite(bullet, "Square Mesh", "Bullet_1", 2));
+		Core::Get().AddComponent<cRigidBody>(bullet, new cRigidBody(30.0f, 500.0f, 500.0f));
+		Core::Get().AddComponent<cCollision>(bullet, new cCollision);
+		Core::Get().AddComponent<cProjectile>(bullet, new cProjectile(2.0f, 2.0f, bulletType::normal, true));
+		Core::Get().GetComponent<cCollision>(bullet)->_bbShape = ColliderShape::RECTANGLE_OBB;
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
+
+		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityDirection = dir;
+		Core::Get().GetComponent<cRigidBody>(bullet)->_velocityVector = velocityVector;
+		if (tag == OWNERTAG::PLAYER)
+			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET_PLAYER;
+		else
+			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
+		AudioManager::PlayOneShot("res/SFX/Confirm.wav");
+
+		Core::Get().GetComponent<cProjectile>(bullet)->_targetId = target;
+
+		return bullet;
+	}
+
 	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale)
 	{
 		ENTITY debug = Core::Get().CreateEntity();

@@ -24,7 +24,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
 ENTITY enemy;
-const float bossSpawn = 5.0f;
+const float bossSpawn = 1.0f;
 float bossSpawnTimer = 0.0f;
 bool spawnedBoss = false;
 // ----------------------------------------------------------------------------

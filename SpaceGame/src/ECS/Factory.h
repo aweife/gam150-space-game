@@ -35,6 +35,7 @@ namespace Factory
 	ENTITY CreatePlanet4(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	void CreateBackground();
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
+	ENTITY CreateHomingMissile(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag, ENTITY target);
 
 	//Debug graphics
 	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale);

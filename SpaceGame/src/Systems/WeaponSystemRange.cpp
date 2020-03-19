@@ -19,6 +19,7 @@
 #include "../Tools/Editor.h"
 
 #include "../ECS/Factory.h"
+#include "../Player/PlayerManager.h"
 /******************************************************************************/
 /*!
 	Global Variables
@@ -37,6 +38,9 @@ void WeaponSystemRange::Update()
 {
 	cTransform* transform;
 	cRangeWeapon* rangeweapon;
+
+	const ENTITY pid = PlayerManager::player;
+	if (pid == 0)	return;
 
 	for (auto const& entity : entitiesList)
 	{
@@ -85,7 +89,12 @@ void WeaponSystemRange::Update()
 
 						// Fire
 						if (rangeweapon->_bossIsShooting)
-							TargetShoot(transform, rangeweapon->_tag, rangeweapon->_targetPosition);
+						{
+							if (rangeweapon->_homing)
+								HomingShoot(transform, rangeweapon->_tag, PlayerManager::player);
+							else
+								TargetShoot(transform, rangeweapon->_tag, rangeweapon->_targetPosition);
+						}
 						else
 							NormalShoot(transform, rangeweapon->_tag);
 						--rangeweapon->_attacksLeft;
@@ -151,14 +160,22 @@ void TargetShoot(cTransform* transform, OWNERTAG tag, AEVec2& targetPos)
 
 	Factory::CreateBullet(transform->_position.x,
 		transform->_position.y, bulletVelocity, bulletDirection, atan2f(bulletDirection.y, bulletDirection.x) + PI / 2, OWNERTAG::AI);
-
-	Editor_TrackVariable("spawnX: ", transform->_position.x);
-	Editor_TrackVariable("spawnY: ", transform->_position.y);
 }
 
-void HomingShoot(cTransform* transform)
+void HomingShoot(cTransform* transform, OWNERTAG tag, ENTITY target)
 {
-	(void)transform;
+
+	AEVec2 bulletDirection = Core::Get().GetComponent<cTransform>(target)->_position;
+	AEVec2 bulletVelocity;
+
+	// Setting the direction of bullet spawn
+	AEVec2Sub(&bulletDirection, &bulletDirection, &transform->_position);
+	AEVec2Normalize(&bulletDirection, &bulletDirection);
+	// Bullet velocity
+	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
+
+	Factory::CreateHomingMissile(transform->_position.x,
+		transform->_position.y, bulletVelocity, bulletDirection, atan2f(bulletDirection.y, bulletDirection.x) + PI / 2, OWNERTAG::AI, target);
 }
 
 void MachineGunShoot(cTransform* transform)

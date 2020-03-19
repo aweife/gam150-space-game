@@ -63,6 +63,7 @@ public:
 	// Boss
 	bool	_bossIsShooting;
 	AEVec2	_targetPosition;
+	bool	_homing;
 
 	OWNERTAG _tag;
 
