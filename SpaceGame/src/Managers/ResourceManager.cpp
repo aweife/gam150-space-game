@@ -382,7 +382,7 @@ namespace ResourceManager
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 17): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 21): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

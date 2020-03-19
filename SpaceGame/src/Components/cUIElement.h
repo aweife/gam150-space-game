@@ -29,6 +29,7 @@ enum class UI_ROLE
 	OPTIONS_BTN,
 	QUIT_BTN, 
 	LOW_HEALTH_UI,
+	SHIELD_DOWN_UI,
 };
 
 class cUIElement :public Component

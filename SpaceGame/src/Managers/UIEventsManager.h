@@ -36,6 +36,11 @@ namespace UIEventsManager
 		}
 		bool result = false;
 
+		if (handlers->size() <= 0)
+		{
+			delete message;
+			return result;
+		}
 		for (typename handlerList::value_type& i : *handlers)
 		{
 			if (i != nullptr)

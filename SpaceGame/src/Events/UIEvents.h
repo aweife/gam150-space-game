@@ -11,7 +11,14 @@ namespace Events
 
 	struct OnLowHealth :public EventsBase
 	{
-		OnLowHealth(){};
+		OnLowHealth(bool state) : _state{ state } {};
+		bool _state;
+	};
+
+	struct OnShieldDown :public EventsBase
+	{
+		OnShieldDown(bool state) : _state{ state } {};
+		bool _state;
 	};
 
 	struct OnShieldChange :public EventsBase

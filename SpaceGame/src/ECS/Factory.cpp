@@ -647,6 +647,13 @@ namespace Factory_UI
 		Create_LowHealthUI(spritePos);
 	}
 
+	void CreateShieldsDownInterface()
+	{
+		AEVec2 spritePos;
+		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		Create_ShieldsDownUI(spritePos);
+	}
+
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
 	{
 		ENTITY hpBar = Core::Get().CreateEntity();
@@ -701,19 +708,40 @@ namespace Factory_UI
 		ENTITY lowHealth = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(lowHealth, new cTransform(position, 0, { 350, 50 }));
 		Core::Get().AddComponent<cSprite>(lowHealth, new cSprite(lowHealth, "Square Mesh", "Low_Health", 0));
-		Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint = { 1.0f,1.0f, 1.0f, 1.0f };			//invisible
+		Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
 		Core::Get().AddComponent<cUIElement>(lowHealth, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::LOW_HEALTH_UI));
 		Core::Get().GetComponent<cUIElement>(lowHealth)->_isActive = false;			//invisible
 		
-		Core::Get().AddComponent<cTimeline>(lowHealth, new cTimeline(g_appTime, g_appTime + 0.85f, true));
+		Core::Get().AddComponent<cTimeline>(lowHealth, new cTimeline(g_appTime, g_appTime + 1.8f, true));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth));
-		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth), 0.00f, 0.0f);
-		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth), 0.50f, 1.0f);
-		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth), 0.99f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 0.00f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 0.5f, 1.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 1.5f, 0.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 1.8f, 0.0f);
 		UIEventsManager::Subscribe(lowHealth, &OnLowHealth_HPIndicator); //Appear When low health
 
 		return lowHealth;
 
+	}
+
+	ENTITY Create_ShieldsDownUI(AEVec2 position)
+	{
+		ENTITY shieldDown = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(shieldDown, new cTransform(position, 0, { 380, 50 }));
+		Core::Get().AddComponent<cSprite>(shieldDown, new cSprite(shieldDown, "Square Mesh", "Shield_Down", 0));
+		Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(shieldDown, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::SHIELD_DOWN_UI));
+		Core::Get().GetComponent<cUIElement>(shieldDown)->_isActive = false;			//invisible
+
+		Core::Get().AddComponent<cTimeline>(shieldDown, new cTimeline(g_appTime, g_appTime + 1.8f, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown), 0.0f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown), 0.5f, 1.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown), 1.5f, 0.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown), 1.80f, 0.0f);
+		UIEventsManager::Subscribe(shieldDown, &OnShieldDown_ShieldIndicator); //Appear When shield
+
+		return shieldDown;
 	}
 
 	void Create_ChooseThree(AEVec2 centralPos)
@@ -875,7 +903,7 @@ namespace Factory_Map
 
 	void Generate_PlanetField()
 	{
-		int numOfPlanet = 100;
+		int numOfPlanet = 60;
 		for (int i = 0; i < numOfPlanet; ++i)
 		{
 			int planetType = static_cast<int>(AERandFloat() * 5);

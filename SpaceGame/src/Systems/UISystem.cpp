@@ -10,6 +10,7 @@
 #include "../Managers/GameStateManager.h"
 #include "../ECS/Factory.h"								//Create enemy indicator...careful of circular dependency
 #include "../Player/PlayerManager.h"
+#include "../Managers/UIEventsManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -185,13 +186,34 @@ bool OnHealthChange_HPUI(ENTITY entity, Events::OnHealthChange* message)
 	return true;
 }
 
-bool OnLowHealth_HPIndicator(ENTITY entity, Events::OnLowHealth* )
+bool OnLowHealth_HPIndicator(ENTITY entity, Events::OnLowHealth* message)
 {
 	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
 	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
 
-	//destroy]
-	Core::Get().EntityDestroyed(entity);
+	if (!uiComp) return false;
+	// For destroy
+	if (uiComp->_role == UI_ROLE::LOW_HEALTH_UI && message->_state == false)
+	{
+		//UIEventsManager::UnSubscribe<Events::OnLowHealth>(entity);
+		//Core::Get().EntityDestroyed(entity);
+	}
+
+	return true;
+}
+
+bool OnShieldDown_ShieldIndicator(ENTITY entity, Events::OnShieldDown* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
+
+	if (!uiComp) return false;
+	// For destroy
+	if (uiComp->_role == UI_ROLE::SHIELD_DOWN_UI && message->_state == false)
+	{
+		UIEventsManager::UnSubscribe<Events::OnShieldDown>(entity);
+		Core::Get().EntityDestroyed(entity);
+	}
 
 	return true;
 }

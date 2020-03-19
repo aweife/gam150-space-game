@@ -513,7 +513,6 @@ void CollisionSystem::Update()
 					
 				}
 
-
 				// if bullet collide with planet
 				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
 				{

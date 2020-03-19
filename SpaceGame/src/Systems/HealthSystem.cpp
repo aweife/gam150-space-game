@@ -1,8 +1,9 @@
 /**********************************************************************************
 * \file			HealthSystem.cpp
 * \brief		Game State for Splash Screen
-* \author		Jin Kiat,		Chong,		70% Code Contribution
+* \author		Jin Kiat,		Chong,		60% Code Contribution
 *				Jun Yi,			Chong,		30% Code Contribution
+*				Farzaana Binte, Roslan,     10% Code Contribution
 *
 *				Long Description
 *				- Health and Shield
@@ -19,6 +20,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"					//Broadcasting
 #include "../Player/PlayerManager.h"
 #include "../ECS/Factory.h"
+#include "../Tools/Console.h"
 
 void HealthSystem::Init()
 {
@@ -68,14 +70,34 @@ void HealthSystem::Update()
 			}
 		}
 
-		if (entity == PlayerManager::player && health->_healthCurr <= 10.0f)
+		// If the current shield is 0
+		if (entity == PlayerManager::player)
 		{
-			Factory_UI::CreateLowHealthInterface();
-		}
-		else if (entity == PlayerManager::player && health->_healthCurr > 10.0f)
-		{
-			UIEventsManager::Broadcast(new Events::OnLowHealth());
 
+			if (health->_shieldCurr <= 0.1f)
+			{
+				if (UIEventsManager::Broadcast(new Events::OnShieldDown(true)) == false)
+				{
+					Factory_UI::CreateShieldsDownInterface();
+				}
+			}
+			else if (health->_shieldCurr >= 10.0f)
+			{
+				UIEventsManager::Broadcast(new Events::OnShieldDown(false));
+			}
+			
+			if (health->_healthCurr <= 10.0f)
+			{
+				if (UIEventsManager::Broadcast(new Events::OnLowHealth(true)) == false)
+				{
+					Factory_UI::CreateLowHealthInterface();
+				}
+
+			}
+			else if (health->_healthCurr > 10.0f)
+			{
+				UIEventsManager::Broadcast(new Events::OnLowHealth(false));
+			}
 		}
 
 		if(health->_healthCurr <= 0)
