@@ -29,12 +29,14 @@ void SpaceShipLogicSystem::Update()
 	cTransform* transform;
 	cRigidBody* rigidbody;
 	cSpaceShip* spaceship;
+	cHealth*    health;
 
 	for (auto const& entity : entitiesList)
 	{
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
 		spaceship = Core::Get().GetComponent<cSpaceShip>(entity);
+		health    = Core::Get().GetComponent<cHealth>(entity);
 
 		//Time update
 		spaceship->_thrustDelay += g_dt;
@@ -55,6 +57,8 @@ void SpaceShipLogicSystem::Update()
 		{
 			UIEventsManager::Broadcast(new Events::OnThrusterChange(rigidbody->_velocity, rigidbody->_velocityCap));
 		}
+
+
 	}
 }
 

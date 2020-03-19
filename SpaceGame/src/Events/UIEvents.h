@@ -9,6 +9,11 @@ namespace Events
 		float _newHealth;
 	};
 
+	struct OnLowHealth :public EventsBase
+	{
+		OnLowHealth(){};
+	};
+
 	struct OnShieldChange :public EventsBase
 	{
 		OnShieldChange(float newShield) :_newShield{ newShield } {};

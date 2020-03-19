@@ -185,6 +185,17 @@ bool OnHealthChange_HPUI(ENTITY entity, Events::OnHealthChange* message)
 	return true;
 }
 
+bool OnLowHealth_HPIndicator(ENTITY entity, Events::OnLowHealth* )
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
+
+	//destroy]
+	Core::Get().EntityDestroyed(entity);
+
+	return true;
+}
+
 bool OnShieldChange_ShieldUI(ENTITY entity, Events::OnShieldChange* message)
 {
 	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);

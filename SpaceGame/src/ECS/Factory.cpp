@@ -581,7 +581,7 @@ namespace Factory_UI
 		return gameLogo;
 	}
 
-	//Placed here so that all the leves UI will be standardised in case of change
+	//Placed here so that all the levels UI will be standardised in case of change
 	//This includes health bar, shield bar and thruster fuel
 	void Create_PlayerUserInterface()
 	{
@@ -603,6 +603,13 @@ namespace Factory_UI
 
 		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::CENTER);
 		//Create_ChooseThree(spritePos);
+	}
+
+	void CreateLowHealthInterface()
+	{
+		AEVec2 spritePos;
+		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		Create_LowHealthUI(spritePos);
 	}
 
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
@@ -654,6 +661,25 @@ namespace Factory_UI
 		return thruster;
 	}
 
+	ENTITY Create_LowHealthUI(AEVec2 position)
+	{
+		ENTITY lowHealth = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(lowHealth, new cTransform(position, 0, { 350, 50 }));
+		Core::Get().AddComponent<cSprite>(lowHealth, new cSprite(lowHealth, "Square Mesh", "Low_Health", 0));
+		Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint = { 1.0f,1.0f, 1.0f, 1.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(lowHealth, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::LOW_HEALTH_UI));
+		Core::Get().GetComponent<cUIElement>(lowHealth)->_isActive = false;			//invisible
+		
+		Core::Get().AddComponent<cTimeline>(lowHealth, new cTimeline(g_appTime, g_appTime + 0.85f, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth), 0.00f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth), 0.50f, 1.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth), 0.99f, 0.0f);
+		UIEventsManager::Subscribe(lowHealth, &OnLowHealth_HPIndicator); //Appear When low health
+
+		return lowHealth;
+
+	}
 
 	void Create_ChooseThree(AEVec2 centralPos)
 	{
@@ -735,7 +761,7 @@ namespace Factory_UI
 		float angle = atan2f(aiDir.y, aiDir.x);
 
 		ENTITY aiUI = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 100,100 }));
+		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 30,50 }));
 		Core::Get().AddComponent<cSprite>(aiUI, new cSprite(aiUI, "Square Mesh", "AI_Indicator", 0));
 		if (aiType == 0)
 		{

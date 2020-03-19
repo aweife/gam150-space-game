@@ -65,10 +65,12 @@ namespace Factory_UI
 	ENTITY Create_MM_Quit(AEVec2 position);
 
 	void Create_PlayerUserInterface();
+	void CreateLowHealthInterface();
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i);
 	ENTITY Create_SingleShieldBar(AEVec2 position, int i);
 	ENTITY Create_ShieldBubble();
 	ENTITY Create_ThrusterUI(AEVec2 position);
+	ENTITY Create_LowHealthUI(AEVec2 position);
 	void Create_ChooseThree(AEVec2 centralPos);
 	void Create_ChoosableUpgrade(ENTITY entity);
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);

@@ -68,6 +68,16 @@ void HealthSystem::Update()
 			}
 		}
 
+		if (entity == PlayerManager::player && health->_healthCurr <= 10.0f)
+		{
+			Factory_UI::CreateLowHealthInterface();
+		}
+		else if (entity == PlayerManager::player && health->_healthCurr > 10.0f)
+		{
+			UIEventsManager::Broadcast(new Events::OnLowHealth());
+
+		}
+
 		if(health->_healthCurr <= 0)
 		{
 			//restart level

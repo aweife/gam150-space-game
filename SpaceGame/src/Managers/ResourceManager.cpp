@@ -359,10 +359,14 @@ namespace ResourceManager
 				case 15:
 					if (textureLibrary.find("Texture_Fill3") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Texture_Fill3", AEGfxTextureLoad("res/Texture_Fill3.png") });
+					break;
+				case 16:
+					if (textureLibrary.find("Low_Health") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Low_Health", AEGfxTextureLoad("res/Low_Health.png") });
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 16): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 17): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

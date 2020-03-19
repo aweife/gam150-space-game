@@ -24,7 +24,6 @@
     <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
     <ClCompile Include="src\Levels\MainMenu.cpp" />
-    <ClCompile Include="src\Levels\MapGenerator.cpp" />
     <ClCompile Include="src\Levels\SplashScreen.cpp" />
     <ClCompile Include="src\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Managers\CameraManager.cpp" />
@@ -69,7 +68,6 @@
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
     <ClCompile Include="src\Managers\UIEventsManager.cpp" />
     <ClCompile Include="src\Levels\MainMenu.cpp" />
-    <ClCompile Include="src\Levels\MapGenerator.cpp" />
     <ClCompile Include="src\Levels\SplashScreen.cpp" />
     <ClCompile Include="src\Managers\UpgradeManager.cpp" />
     <ClCompile Include="src\Systems\HealthSystem.cpp" />
@@ -125,7 +123,6 @@
     <ClInclude Include="src\Global_Graphics.h" />
     <ClInclude Include="src\Levels\LoadingLevel.h" />
     <ClInclude Include="src\Levels\MainMenu.h" />
-    <ClInclude Include="src\Levels\MapGenerator.h" />
     <ClInclude Include="src\Levels\SplashScreen.h" />
     <ClInclude Include="src\Managers\AudioManager.h" />
     <ClInclude Include="src\Managers\CameraManager.h" />
@@ -219,5 +216,6 @@
     <Image Include="res\Prop_Planet4.png" />
     <Image Include="res\Weapon_Bullet1.png" />
     <Image Include="res\AI_Indicator.png" />
+    <Image Include="res\Low_Health.png" />
   </ItemGroup>
 </Project>

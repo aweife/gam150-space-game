@@ -37,6 +37,7 @@ void EditText(ENTITY target, const char* newText, int atBack);
 AEVec2 ScreenBasedCoords(float x, float y, UI_ANCHOR anchor, bool percentage = false);
 
 bool OnHealthChange_HPUI(ENTITY entity, Events::OnHealthChange* message);
+bool OnLowHealth_HPIndicator(ENTITY entity, Events::OnLowHealth* message);
 bool OnShieldChange_ShieldUI(ENTITY entity, Events::OnShieldChange* message);
 bool OnShieldActivate_ShieldBubble(ENTITY entity, Events::OnShieldActivate* message);
 bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* message);
