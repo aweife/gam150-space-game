@@ -56,6 +56,10 @@ namespace ResourceManager
 
 	void GenerateMeshLibrary_Essentials()
 	{
+		//Check if loaded this function before
+		if (meshLibrary.find("Square Mesh") != meshLibrary.end()) return;
+
+
 		AEGfxVertexList* mesh;
 		// -----------------------------------------------------------------------
 		// Square Mesh
@@ -125,6 +129,7 @@ namespace ResourceManager
 
 	void GenerateMeshLibrary_1()
 	{
+		if (meshLibrary.find("Square Mesh2") != meshLibrary.end()) return;
 		AEGfxVertexList* mesh;
 
 		// -----------------------------------------------------------------------
@@ -280,11 +285,26 @@ namespace ResourceManager
 	void LoadTextureLibrary_Essential()
 	{
 		//SHOULD BE AS LIGHT WEIGHT AS POSSIBLE
-		textureLibrary.insert({ "GameLogo", AEGfxTextureLoad("res/GameLogo.png") });
-		textureLibrary.insert({ "BG_MainMenu", AEGfxTextureLoad("res/Loading.png") });
-		textureLibrary.insert({ "Texture_Default", AEGfxTextureLoad("res/Texture_Default.png") });
-		textureLibrary.insert({ "Player_1", AEGfxTextureLoad("res/Player_MachineGun.png") });
-		textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });
+		if (textureLibrary.find("GameLogo") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "GameLogo", AEGfxTextureLoad("res/GameLogo.png") });
+		}	
+		if (textureLibrary.find("BG_MainMenu") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "BG_MainMenu", AEGfxTextureLoad("res/Loading.png") });
+		}
+		if (textureLibrary.find("Texture_Default") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Texture_Default", AEGfxTextureLoad("res/Texture_Default.png") });
+		}
+		if (textureLibrary.find("Particle_Default") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Particle_Default", AEGfxTextureLoad("res/Particle_Default.png") });
+		}
+		if (textureLibrary.find("Player_1") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Player_1", AEGfxTextureLoad("res/Player_MachineGun.png") });
+		}
 	}
 
 	void LoadTextureLibrary_1(unsigned int* stage, unsigned int * progress)
@@ -356,6 +376,7 @@ namespace ResourceManager
 				case 14:
 					if (textureLibrary.find("Texture_Fill2") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Texture_Fill2", AEGfxTextureLoad("res/Texture_Fill2.png") });
+					break;
 				case 15:
 					if (textureLibrary.find("Texture_Fill3") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Texture_Fill3", AEGfxTextureLoad("res/Texture_Fill3.png") });

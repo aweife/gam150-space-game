@@ -44,7 +44,7 @@ public:
 	/******************************************************************************/
 	void RegisterComponent(ENTITY entity, T* component)					//Adds a component to its component storage, tagged to its entity
 	{
-		AE_ASSERT(entityToIndexMap.find(entity) == entityToIndexMap.end());		//Component already exists
+		AE_ASSERT(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component already exists");		//Component already exists
 
 		//Update the index-entity relation map
 		entityToIndexMap[entity] = currSize;

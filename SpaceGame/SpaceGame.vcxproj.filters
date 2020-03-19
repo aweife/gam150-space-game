@@ -24,7 +24,6 @@
     <ClCompile Include="src\Components\cRigidBody.cpp" />
     <ClCompile Include="src\Levels\LoadingLevel.cpp" />
     <ClCompile Include="src\Levels\MainMenu.cpp" />
-    <ClCompile Include="src\Levels\MapGenerator.cpp" />
     <ClCompile Include="src\Levels\SplashScreen.cpp" />
     <ClCompile Include="src\Managers\AudioManager.cpp" />
     <ClCompile Include="src\Managers\CameraManager.cpp" />
@@ -125,7 +124,6 @@
     <ClInclude Include="src\Global_Graphics.h" />
     <ClInclude Include="src\Levels\LoadingLevel.h" />
     <ClInclude Include="src\Levels\MainMenu.h" />
-    <ClInclude Include="src\Levels\MapGenerator.h" />
     <ClInclude Include="src\Levels\SplashScreen.h" />
     <ClInclude Include="src\Managers\AudioManager.h" />
     <ClInclude Include="src\Managers\CameraManager.h" />
