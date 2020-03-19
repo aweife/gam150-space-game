@@ -5,7 +5,7 @@
 #include "../Components/cTransform.h"
 #include "../Components/cSprite.h"
 #include "../Managers/ResourceManager.h"				//FontId
-#include "../Math/Math.h"								//lerping
+#include "../Math/Math.h"								//Lerping
 #include "../Global.h"									//Screen size
 #include "../Managers/GameStateManager.h"
 #include "../ECS/Factory.h"								//Create enemy indicator...careful of circular dependency
@@ -28,18 +28,22 @@ void UISystem::Update()
 	if (pid == 0) return;
 	cUIElement* uiComp;
 	cTransform* transform;
+
+	//Enemy indicator update - Check if the enemy is still calling it (Still OOB)
+	//Otherwise destroy it
 	for (std::set<ENTITY>::const_iterator it = aiIndicator_Set.begin(); it != aiIndicator_Set.end(); )
 	{
 		uiComp = Core::Get().GetComponent<cUIElement>(*it);
-		if (!uiComp->_isActive)		//if indicator is no longer being used..delete it
+		//if indicator is no longer being used..delete it
+		if (!uiComp->_isActive)		
 		{
 			ENTITY destroy = *it;
-			++it;
+			++it;									//Avoid iterator invalidation
 			Core::Get().EntityDestroyed(destroy);
 		}
 		else
 		{
-			uiComp->_isActive = false;		//reset for next frame
+			uiComp->_isActive = false;				//reset for next frame
 			++it;
 		}
 	}
@@ -217,25 +221,31 @@ bool OnShieldActivate_ShieldBubble(ENTITY entity, Events::OnShieldActivate* mess
 	{
 		uiComp->_isActive = true;
 
+		//Create a shield that fades out after 1.5s
 		Core::Get().AddComponent<cTimeline>(entity, new cTimeline(g_appTime, g_appTime + 1.5f, false));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(entity)->_colorTint.a, Core::Get().GetComponent<cTimeline>(entity));
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(entity)->_colorTint.a, Core::Get().GetComponent<cTimeline>(entity), 0.50f, 1.0f);
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(entity)->_colorTint.a, Core::Get().GetComponent<cTimeline>(entity), 1.00f, 1.0f);
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(entity)->_colorTint.a, Core::Get().GetComponent<cTimeline>(entity), 1.49f, 0.0f);
+		//Set the shield to inactive after fading out
 		AddNewTimeline_Bool(&Core::Get().GetComponent<cUIElement>(entity)->_isActive, Core::Get().GetComponent<cTimeline>(entity));
-		AddNewNode_Bool(&Core::Get().GetComponent<cUIElement>(entity)->_isActive, Core::Get().GetComponent<cTimeline>(entity), 1.49f, false);
+		AddNewNode_Bool(&Core::Get().GetComponent<cUIElement>(entity)->_isActive, Core::Get().GetComponent<cTimeline>(entity), 1.5f, false);
 	}
-	
 	return true;			//successfuly execution
 }
 
 bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* message)
 {
-	float percentage = message->_newVelocity / message->_capVelocity;
-	percentage = AEWrap(percentage, 0, 1);
+	float percentage = (message->_newVelocity - 75.0f)/ (message->_capVelocity - 75.0f);
+	percentage = MBMath_Clamp(percentage, 0.0f, 5/8.0f);
+	percentage += (message->_overheatTime / message->_overheatLimit) * 3 /8.0f;
+
+	Editor_TrackVariable("Percentage", percentage);
 
 	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
-	sprite->_UVOffset.y = percentage * -0.1f;
+	sprite->_UVOffset.y = percentage * -0.5f;
+	//Overheat
+	sprite->_colorTint.g = 1.0f - (message->_overheatTime / message->_overheatLimit);
 	return true;
 }
 

@@ -22,9 +22,12 @@ namespace Events
 
 	struct OnThrusterChange : public EventsBase
 	{
-		OnThrusterChange(float newVelocity, float capVelocity) : _newVelocity{ newVelocity }, _capVelocity{ capVelocity } {}
+		OnThrusterChange(float newVelocity, float capVelocity, float overheat, float overheatLimit)
+			: _newVelocity{ newVelocity }, _capVelocity{ capVelocity }, _overheatTime{ overheat }, _overheatLimit{ overheatLimit } {}
 		float _newVelocity;
 		float _capVelocity;
+		float _overheatTime;
+		float _overheatLimit;
 	};
 
 	struct OnMouseClick :public EventsBase

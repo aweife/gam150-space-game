@@ -36,7 +36,7 @@ public:
 	//Data
 	UI_TYPE _type = UI_TYPE::NONE;
 	UI_ROLE _role = UI_ROLE::NONE;
-	unsigned int _roleIndex = 0;
+	unsigned int _roleIndex = 0;			//Normally map to ui Role or its entity
 
 	//Text
 	TextInfo _text;

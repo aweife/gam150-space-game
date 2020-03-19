@@ -9,7 +9,6 @@ enum class OWNERTAG
 	AI = 1,
 };
 
-
 enum class COLLISIONTAG
 {
 	PLAYER = 0, 
@@ -26,6 +25,8 @@ public:
 	float _mass;
 	float _velocity;                          // Velocity Value of the ship
 	float _velocityCap;                       // Max velocity Value of the ship
+	float _velocitySoftCap;                   // Main velocity cap
+	float _velocityHardCap;                   // Secondary Mode for boosting speed
 	float _acceleration;					  // Acceleration
 	float _rotateVelocity;					  // How fast the ship rotate
 	float _airResistance = 0.999f;
@@ -39,16 +40,15 @@ public:
 	AEVec2 _collisionVector;                  // Vector that forces the object to move in that direction when collided
 	AEVec2 _rotationVector;                   // Rotation vector to rotate the planet.
 
-	COLLISIONTAG _tag;
+	COLLISIONTAG _tag;						  // Indicate what objects are colliding
 
 	// Constructor
 	cRigidBody() = delete;
 	cRigidBody(float mass, float velocity, float velocityCap = 2.0f, float acceleration = 0.0f,
 		float rotateVelocity = 0.0f, COLLISIONTAG tag = COLLISIONTAG::NONE);
-
-
-	float CalculateVelwithAcc(float velocity);
-
 	// Destructor
 	~cRigidBody() = default;
+
+	// Helper Functions
+	float CalculateVelwithAcc(float velocity);
 };

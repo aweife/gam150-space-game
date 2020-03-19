@@ -63,8 +63,9 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(player, new cTransform);
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
+		Core::Get().GetComponent<cRigidBody>(player)->_velocityHardCap = 200;
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
-		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 0.5f, WeaponMode::WEAPONMODE_RANGE));
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 2.0f, WeaponMode::WEAPONMODE_RANGE));
 		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.4f));
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 		//Core::Get().AddComponent<cHealth>(player, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f,2.0f));
@@ -76,6 +77,7 @@ namespace Factory
 			, WeaponType::pistol, UpgradePackages::Range_Pistol); */
 		Core::Get().AddComponent<cHealth>(player, new cHealth(30.0f, 30.0f, 30.0f, 30.0f, 4.0f, 1.0f));
 		Factory_UI::Create_ShieldBubble();
+
 		// Debug
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
 
@@ -534,6 +536,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(begin)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(begin, new cUIElement("Play"));
 		Core::Get().GetComponent<cUIElement>(begin)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(begin)->_text._colorTint = {1.0f, 1.0f, 1.0f, 1.0f};
 		UIEventsManager::Subscribe(begin, &OnButtonClick_MainMenuUI);
 
 		return begin;
@@ -546,6 +549,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(options)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(options, new cUIElement("Options"));
 		Core::Get().GetComponent<cUIElement>(options)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(options)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//UIEventsManager::Subscribe(options, &OnButtonClick_MainMenuUI);
 		return 0;
 
@@ -558,6 +562,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(credits)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(credits, new cUIElement("Credits"));
 		Core::Get().GetComponent<cUIElement>(credits)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(credits)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//UIEventsManager::Subscribe(credits, &OnButtonClick_MainMenuUI);
 		return 0;
 	}
@@ -569,6 +574,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(quit)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(quit, new cUIElement("Quit"));
 		Core::Get().GetComponent<cUIElement>(quit)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(quit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//UIEventsManager::Subscribe(quit, &OnButtonClick_MainMenuUI);
 		return 0;
 	}
@@ -645,7 +651,7 @@ namespace Factory_UI
 	ENTITY Create_ThrusterUI(AEVec2 position)
 	{
 		ENTITY thruster = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(thruster, new cTransform(position, 0, { 1, 1 }));			//mesh scale of 50
+		Core::Get().AddComponent<cTransform>(thruster, new cTransform(position, 0, { 50, 50}));			//mesh scale of 50
 		Core::Get().AddComponent<cSprite>(thruster, new cSprite(thruster, "UI_Thruster", "Texture_Fill3", 0));
 		Core::Get().GetComponent<cSprite>(thruster)->_colorTint = { 1.0f,1.0f, 0.0f,0.8f };
 		Core::Get().AddComponent<cUIElement>(thruster, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::THRUSTER));
@@ -767,6 +773,7 @@ namespace Factory_UI
 		ENTITY text2 = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(text2, new cTransform({ 0,-100 }, 0, { 1, 1 }));
 		Core::Get().AddComponent<cUIElement>(text2, new cUIElement("Press Esc To Return to Main Menu"));
+		Core::Get().GetComponent<cUIElement>(text2)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		Core::Get().GetComponent<cUIElement>(text2)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(text2)->_roleIndex = 2;
 		Core::Get().GetComponent<cUIElement>(text2)->_text._anchor = TEXT_ANCHOR::CENTER;

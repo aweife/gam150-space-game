@@ -15,6 +15,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 cSpaceShip::cSpaceShip(bool isThrusting, float thrustDelay, WeaponMode currWeaponMode) :
 	_isThrusting{ isThrusting },
-	_thrustDelay{ thrustDelay },
-	_currWeaponMode{ currWeaponMode }{}
+	_thrustDelayCurr{ 0.0f }, _thrustDelay{ thrustDelay },
+	_currWeaponMode{ currWeaponMode }, _overheatThrusterCurr{0.0f}
+{
+}
 

@@ -40,7 +40,7 @@ void HealthSystem::Update()
 
 		if(health->_shieldCurr < health->_shieldMax)
 		{
-			//Soley to regen
+			//Solely to regen
 			if (health->_shieldRegenCooldown <= 0)
 			{
 				health->_shieldCurr +=  10.0f * g_dt;			

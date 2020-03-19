@@ -26,8 +26,10 @@ class cSpaceShip :public Component
 public:
 	// Spaceship Thruster (Movements)
 	bool	_isThrusting;			// Check for thruster use from player/AI input
-	float	_thrustDelay;			// Countdown timer when thruster overheats
-	float	_thrustAcceleration;	// ????? need to double comfirm
+	float	_thrustDelayCurr;		// Countdown timer when thruster overheats
+	float	_thrustDelay;			// Duration of thruster overheat
+	float	_overheatThrusterCurr;	// If player thrust at maxSpeed for too long
+	float	_overheatThruster = 2.4f;		// Duration to achieve overheat
 
 	//We can know if the spaceship has any weapon features
 	WeaponMode _currWeaponMode;

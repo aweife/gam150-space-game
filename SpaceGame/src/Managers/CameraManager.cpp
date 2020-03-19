@@ -60,6 +60,8 @@ namespace CameraManager
 
 	void StartCameraShake()
 	{
+		if (!currCameraComp) return;
+		
 		currCameraComp->_isCameraShake = true;
 		currCameraComp->_camEffectStartTime = g_appTime;
 		currCameraComp->_camEffectSpeed = AERandFloat() * (SHAKESPEED_MAX - SHAKESPEED_MIN) + SHAKESPEED_MIN;

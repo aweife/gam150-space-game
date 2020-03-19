@@ -12,19 +12,21 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "PhysicsSystem.h"
+#include "PhysicsSystem.h"							
 #include <AEVec2.h>
-#include "../Math/Math.h"
 #include <math.h>
+#include "../Math/Math.h"
 #include "../Global.h"
 #include "../ECS/Core.h"
 #include "../Components/ComponentList.h"
+
 #include "../Tools/Editor.h"
 
 
 bool foranglecheck(const AEVec2 currdir, const AEVec2 newdir)
 {
 	float angle = AERadToDeg(acosf(MBMath_DotProduct(currdir, newdir)));
+
 	//Editor_TrackVariable("player angle ", angle);
 	return (angle > PI / 2.0f);
 }
@@ -61,7 +63,7 @@ void PhysicsSystem::Update()
 
 		// if the velocity hits the velocity cap
 		if (rb->_velocity > rb->_velocityCap)
-			rb->_velocity *= 0.99f;
+			rb->_velocity *= 0.985f;
 
 		// Calculate current velocity vector based on velocity and direction
 		AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity * g_dt);
@@ -72,7 +74,7 @@ void PhysicsSystem::Update()
 
 		// Add collision vector into the velocity vector
 		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_collisionVector);
-		//Smootly reduce velocity
+		//Smoothly reduce velocity from collision
 		AEVec2Scale(&rb->_collisionVector, &rb->_collisionVector, 0.9f);
 				
 		// Affect steering force by mass
@@ -94,38 +96,13 @@ void PhysicsSystem::Update()
 		if (fabs(rb->_velocityVector.x + rb->_velocityVector.y) > FLT_EPSILON)
 			AEVec2Normalize(&rb->_velocityDirection, &rb->_velocityVector);
 
-		//// -----------------------------------------------------------------------
-		//// Currently whats working
-		//// -----------------------------------------------------------------------
+		// -----------------------------------------------------------------------
+		// Non-essential Calculation, mainly for exposing values to check by AI or player
+		// -----------------------------------------------------------------------
 
-		//// Add the new frame velocity change onto the current velocity
-		//AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_velocityChangeVector);
-		//// Reset the change in velocity for next frame
-		//AEVec2Zero(&rb->_velocityChangeVector);
+		// Calculate velocity magnitude
+		//rb->_velocity = AEVec2Length(&rb->_velocityVector);
 
-		//// Set a cap onto the current velocity
-		////if (AEVec2Length(&rigidbody->_velocityVector) >= rigidbody->_velocityCap)
-		////{
-		//	
-		////}
-
-		//// Calculate velocity magnitude
-		////rigidbody->_velocity = AEVec2Length(&rigidbody->_velocityVector);
-		////Editor_TrackVariable("Velocity: ", rigidbody->_velocity)
-
-		//// Calculate normalised velocity vector.....Check if the _velocityVector not (0,0) 
-		//if (!(rb->_velocityVector.x < FLT_EPSILON && rb->_velocityVector.x > -FLT_EPSILON &&
-		//	rb->_velocityVector.y < FLT_EPSILON && rb->_velocityVector.y > -FLT_EPSILON))
-		//{
-		//	AEVec2Normalize(&rb->_velocityDirection, &rb->_velocityVector);
-		//}
-
-		//// if the velocity hits the velocity cap
-		//if (rb->_velocity > rb->_velocityCap)
-		//	rb->_velocity *= 0.99f;
-
-		//// Add onto the velocity
-		//AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity);
 
 		///***************
 		//* AI
@@ -146,20 +123,9 @@ void PhysicsSystem::Update()
 		//	--rb->_collisionVector.x;
 		//	--rb->_collisionVector.y;
 		//}
-
-		////add the gravitational vector into the velocity vector
-		//AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_gravityVelocity);
-
-		////Smootly reduce velocity
-		//AEVec2Scale(&rb->_velocityVector, &rb->_velocityVector, 0.9f);
-
-		//// Apply displacement on current position
-		//trans->_position.x += rb->_velocityVector.x * g_dt;
-		//trans->_position.y += rb->_velocityVector.y * g_dt;
 	}
-
-
 }
+
 void PhysicsSystem::OnComponentAdd(ENTITY) {};
 void PhysicsSystem::OnComponentRemove(ENTITY) {};
 

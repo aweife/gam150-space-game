@@ -248,9 +248,9 @@ namespace ResourceManager
 		AEGfxMeshStart();
 
 		//modifiables
-		float segments = 7.0f;
-		float innerRadius = 10.001f;			//not sure why it has a limit...
-		float circularRange = PI * 2 * 24 / 36;			//300 degree
+		float segments = 8.0f;
+		float innerRadius = 0.2f;			//not sure why it has a limit...
+		float circularRange = PI * 2 * 25 / 36;			//300 degree
 
 		//Do not modify	
 		float deltaAngle = circularRange / segments;
@@ -260,18 +260,18 @@ namespace ResourceManager
 		{
 			AEGfxTriAdd(								
 				innerRadius*cos(startAngle - (i * deltaAngle)), innerRadius * sin(startAngle - (i * deltaAngle))
-				,0xFFFF0000, 1.0f, i /segments * 0.25f,		
-				innerRadius * cos(startAngle - ((i + 0.75f) * deltaAngle)), innerRadius * sin(startAngle - ((i + 0.75f) * deltaAngle))
-				, 0xFFFFFFFF, 1.0f, (i + 0.75f) / segments * 0.25f,
-				50.0f * cos(startAngle - ((i + 0.75f) * deltaAngle)), 50.0f * sin(startAngle - ((i + 0.75f) * deltaAngle))
-				, 0xFFFFFFFF, 0.0f, (i + 0.75f) / segments * 0.25f);
+				,0xFFFF0000, 1.0f, i /segments * 0.5f,		
+				innerRadius * cos(startAngle - ((i + 0.8f) * deltaAngle)), innerRadius * sin(startAngle - ((i + 0.8f) * deltaAngle))
+				, 0xFFFFFFFF, 1.0f, (i + 1.0f) / segments * 0.5f,
+				1.0f * cos(startAngle - ((i + 0.8f) * deltaAngle)), 1.0f * sin(startAngle - ((i + 0.8f) * deltaAngle))
+				, 0xFFFFFFFF, 0.0f, (i + 1.0f) / segments * 0.5f);
 			AEGfxTriAdd(								//8-9 o CLOCK triangle
-				50.0f * cos(startAngle - ((i + 0.75f) * deltaAngle)), 50.0f * sin(startAngle - ((i + 0.75f) * deltaAngle))
-				, 0xFFFFFFFF, 0.0f, (i + 0.75f) / segments * 0.25f,
-				50.0f * cos(startAngle - (i * deltaAngle)), 50.0f * sin(startAngle -( i * deltaAngle))
-				, 0xFFFF0000, 0.0f, i / segments * 0.25f,
+				1.0f * cos(startAngle - ((i + 0.8f) * deltaAngle)), 1.0f * sin(startAngle - ((i + 0.8f) * deltaAngle))
+				, 0xFFFFFFFF, 0.0f, (i + 1.0f) / segments * 0.5f,
+				1.0f * cos(startAngle - (i * deltaAngle)), 1.0f * sin(startAngle -( i * deltaAngle))
+				, 0xFFFF0000, 0.0f, i / segments * 0.5f,
 				innerRadius * cos(startAngle - (i * deltaAngle)), innerRadius * sin(startAngle - (i * deltaAngle))
-				, 0xFFFF0000, 1.0f, i / segments * 0.25f);
+				, 0xFFFF0000, 1.0f, i / segments * 0.5f);
 		}
 		
 
