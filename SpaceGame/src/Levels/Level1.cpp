@@ -20,6 +20,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Player/PlayerManager.h"				//Control over the player
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/AudioManager.h"
+#include "../Managers/LevelManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -41,12 +42,13 @@ void Level1_Load()
 	Factory::CreateCamera(PlayerManager::player);		
 
 	//Create Enemy
-	enemy = Factory::CreateEnemy1(PlayerManager::player, 2);
-	enemy = Factory::CreateEnemy2(PlayerManager::player, 2);
-	enemy = Factory::CreateEnemy3(PlayerManager::player, 2);
-	enemy = Factory::CreateEnemy4(PlayerManager::player, 2);
-	enemy = Factory::CreateEnemy5(PlayerManager::player, 2);
+	//enemy = Factory::CreateEnemy1(PlayerManager::player, 2);
+	//enemy = Factory::CreateEnemy2(PlayerManager::player, 2);
+	//enemy = Factory::CreateEnemy3(PlayerManager::player, 2);
+	//enemy = Factory::CreateEnemy4(PlayerManager::player, 2);
+	//enemy = Factory::CreateEnemy5(PlayerManager::player, 2);
 
+	LevelManager::Level1_Map();
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
 	Factory::CreatePlanet2(3, 200.0f, 179.0f, 200.0f, 200.0f);

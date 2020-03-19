@@ -34,6 +34,8 @@ namespace Factory
 	ENTITY CreateEnemy3(ENTITY player, unsigned int layer);
 	ENTITY CreateEnemy4(ENTITY player, unsigned int layer);
 	ENTITY CreateEnemy5(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position);
+	ENTITY SpawnObjective_Comrade(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
