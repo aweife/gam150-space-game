@@ -100,5 +100,6 @@ namespace PlayerManager
 	void PlayerDeath()
 	{
 		Factory_UI::CreateUI_GameOver();
+		LevelManager::ClearObjectiveAll();
 	}
 }

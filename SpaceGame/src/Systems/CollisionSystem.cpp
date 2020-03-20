@@ -27,6 +27,7 @@
 #include "../Tools/Editor.h"                    // For ECS
 #include "../ECS/Factory.h"                 // For Particle System
 #include "../Components/ComponentList.h"    // For component list
+#include "../Managers/LevelManager.h"
 
 #include "../Tools/Console.h"
 /*********************************************************************************
@@ -464,10 +465,10 @@ void CollisionSystem::Update()
 		transform = Core::Get().GetComponent<cTransform>(entity);
 
 		
-		collider->_boundingBox.max.x = 0.5f * transform->_scale.x + transform->_position.x;
-		collider->_boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
-		collider->_boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
-		collider->_boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
+		collider->_boundingBox.max.x = 0.4f * transform->_scale.x + transform->_position.x;
+		collider->_boundingBox.max.y = 0.4f * transform->_scale.y + transform->_position.y;
+		collider->_boundingBox.min.x = -0.4f * transform->_scale.x + transform->_position.x;
+		collider->_boundingBox.min.y = -0.4f * transform->_scale.y + transform->_position.y;
 		//Playtest JY
 		if (collider->_bbShape == ColliderShape::RAYCAST)
 		{
@@ -520,22 +521,23 @@ void CollisionSystem::Update()
 				// if player and enemy collide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
-				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY || 
+																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
 				{
 					CameraManager::StartCameraShake();
 					//printf("Enemy health decrease lmao\n");
 
 					// when the player's velocity is more than the velocity cap
-					if (rigidbody->_velocity > rigidbody->_velocityCap)
+					if (rigidbody->_velocity > (rigidbody->_velocityCap/2.0f))
 					{
 						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-						CameraManager::StartCameraShake();
+						//CameraManager::StartCameraShake();
 						markedForDestruction.insert(entity2);
 					}
 
 					// for player's bounce off
 					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
-					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), - (rigidbody->_velocityVector.y * 1.2f));
+					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), -(rigidbody->_velocityVector.y * 1.2f));
 					AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
 
 					// for enemy's bounce off
@@ -544,9 +546,30 @@ void CollisionSystem::Update()
 					AEVec2Add(&rigidbody2->_collisionVector, &rigidbody2->_collisionVector, &rigidbody2->_velocityDirection);
 
 				}
+
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::OBJECTIVE)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					//CameraManager::StartCameraShake();
+					markedForDestruction.insert(entity2);
+					LevelManager::ClearObjective(entity2);
+				}
+
+
+				// Player collide with boss
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::BOSS)
+				{
+					CameraManager::StartCameraShake();
+
+					// for player's bounce off
+					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
+					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), -(rigidbody->_velocityVector.y * 1.2f));
+					AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
+				}
 				
-				// if bullet collide with enemy
-				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY )
+				// if bullet collide with object
+				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY  ||
+																		rigidbody2->_tag == COLLISIONTAG::BOSS)
 				{
 					cProjectile* projectile = Core::Get().GetComponent<cProjectile>(entity1);
 					if (projectile && projectile->_bulletType == bulletType::laser)

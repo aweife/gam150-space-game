@@ -132,8 +132,14 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(objective, new cSprite(objective, "Square Mesh", "Planet_1", 2));
 
 		Core::Get().AddComponent<cTimeline>(objective, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
+		Core::Get().AddComponent<cRigidBody>(objective, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().AddComponent<cCollision>(objective, new cCollision);
+
 		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(objective)->_rotation, Core::Get().GetComponent<cTimeline>(objective));
 		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(objective)->_rotation, Core::Get().GetComponent<cTimeline>(objective), 5.0f, Core::Get().GetComponent<cTransform>(objective)->_rotation + 2 * PI);
+
+		Core::Get().GetComponent<cRigidBody>(objective)->_tag = COLLISIONTAG::OBJECTIVE; // testing collision
+		Core::Get().GetComponent<cCollision>(objective)->_bbShape = ColliderShape::RECTANGLE_OBB;
 
 		return objective;
 	}
@@ -559,13 +565,13 @@ namespace Factory_UI
 		AEVec2 spritePos;
 		for (int i = 0; i < 3; ++i)
 		{
-			spritePos = ScreenBasedCoords(100.0f + 50.0f * i, -75.0f, UI_ANCHOR::TOPLEFT);
+			spritePos = ScreenBasedCoords(100.0f + 50.0f * i, 75.0f, UI_ANCHOR::BOTTOMLEFT);
 			Create_SingleHealthBar(spritePos, i);
 		}
 
 		for (int i = 0; i < 3; ++i)
 		{
-			spritePos = ScreenBasedCoords(250.0f + 50.0f * i, -75.0f, UI_ANCHOR::TOPLEFT);
+			spritePos = ScreenBasedCoords(250.0f + 50.0f * i, 75.0f, UI_ANCHOR::BOTTOMLEFT);
 			Create_SingleShieldBar(spritePos, i);
 		}
 
@@ -574,6 +580,10 @@ namespace Factory_UI
 
 		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::CENTER);
 		//Create_ChooseThree(spritePos);
+
+		// Objectives UI
+		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::TOPLEFT);
+		CreateUI_Text(spritePos.x, spritePos.y, "Objectives");
 	}
 
 	void CreateLowHealthInterface()
@@ -933,7 +943,7 @@ namespace Factory_AI
 		Core::Get().AddComponent<cBoss>(enemy, new cBoss);
 		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 5.0f, 0.3f, 5));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
-		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 300.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 300.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_rotation = 0.0f;
@@ -942,7 +952,7 @@ namespace Factory_AI
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.0f;
-		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::BOSS; // testing collision
 		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		Core::Get().GetComponent<cBoss>(enemy)->_currentAttack.attacks.emplace<bossSpawn>();
 

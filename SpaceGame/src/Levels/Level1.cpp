@@ -144,6 +144,7 @@ void Level1_Draw()
 void Level1_Free()
 {
 	AudioManager::UnLoadAllSounds();
+	LevelManager::ClearObjectiveAll;
 }
 // ----------------------------------------------------------------------------
 // This function dumps all data loaded in Level 1
