@@ -35,15 +35,16 @@ enum class UpgradePackages
 	RangeWeaponUpgrade_BulletSpeedUp1,
 
 	MeleeWeaponUpgrade_RangeUp1,
-	MeleeWeaponUpgrade_DamageUp1
+	MeleeWeaponUpgrade_DamageUp1,
+	NONE
 };
 
 namespace UpgradeManager
 {
 	void Init_UpgradeDatabase();
 	void Cleanup_UpgradeDatabase();
-
 	int RandomUpgrade();
+	void ApplyUpgrade(int upgradeIndex);
 	bool CheckUnique(int randomUpgrade);
 	void AddActiveUpgrade(int randomUpgrade);
 	void ClearAllUpgradeChoice();
@@ -67,7 +68,7 @@ struct PlayerUpgrade_Base
 	inline virtual float Get_HealthIncrease()		{ return 0.0f; };
 	inline virtual int   Get_LifeIncrease()			{ return 0; };
 
-	virtual ~PlayerUpgrade_Base() = 0 {};
+	//virtual ~PlayerUpgrade_Base() = 0 {};
 };
 
 struct PlayerUpgrade_HpUp1: public PlayerUpgrade_Base
@@ -108,7 +109,7 @@ struct WeaponUpgradeRange_BaseRange
 	inline virtual float Get_BulletSizeIncrease()		{ return 0.0f; };
 	inline virtual float Get_BulletSpeedIncrease()		{ return 0.0f; };
 
-	virtual ~WeaponUpgradeRange_BaseRange() = 0 {};
+	//virtual ~WeaponUpgradeRange_BaseRange() = 0 {};
 };
 
 struct RangeWeaponUpgrade_FireRateDown1 : public WeaponUpgradeRange_BaseRange
@@ -162,7 +163,7 @@ struct WeaponUpgradeMelee_BaseMelee
 	inline virtual float Get_RangeIncrease()  { return 0.0f; };
 	inline virtual float Get_DamageIncrease()  { return 0.0f; };
 
-	virtual ~WeaponUpgradeMelee_BaseMelee() = 0 {};
+	//virtual ~WeaponUpgradeMelee_BaseMelee() = 0 {};
 };
 
 struct MeleeWeaponUpgrade_RangeUp1 : public WeaponUpgradeMelee_BaseMelee

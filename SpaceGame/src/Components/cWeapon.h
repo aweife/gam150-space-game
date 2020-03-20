@@ -36,6 +36,7 @@ public:
 	virtual ~Weapon() = 0 {};
 };
 
+
 class cRangeWeapon : public Weapon, public Component
 {
 public:
@@ -69,7 +70,7 @@ public:
 
 	OWNERTAG _tag;
 
-	cRangeWeapon() = delete;
+	cRangeWeapon() = default;
 	cRangeWeapon(OWNERTAG tag, WeaponType weaponType, float attackCooldown, float delayBetweenAttacks = 0.0f, int numberOfAttacks = 1);
 	cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, int ammo, float shootingSpread
 		, float bulletSize, float bulletSpeed, float chargeTime);
