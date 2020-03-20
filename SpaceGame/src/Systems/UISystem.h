@@ -47,3 +47,4 @@ bool OnShieldActivate_ShieldBubble(ENTITY entity, Events::OnShieldActivate* mess
 bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* message);
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message);
 bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message);
+bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message);

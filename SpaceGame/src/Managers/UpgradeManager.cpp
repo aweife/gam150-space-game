@@ -11,6 +11,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "UpgradeManager.h"
 #include <unordered_map>
 #include <array>
+#include "../Player/PlayerManager.h"
+#include "../Tools/Console.h"
 
 namespace UpgradeManager
 {
@@ -24,11 +26,15 @@ namespace UpgradeManager
 	int upgrade1 = -1;
 	int upgrade2 = -1;
 	int upgrade3 = -1;
+	UpgradePackages upgrade1Pack = UpgradePackages::NONE;
+	UpgradePackages upgrade2Pack = UpgradePackages::NONE;
+	UpgradePackages upgrade3Pack = UpgradePackages::NONE;
 
 	void Init_UpgradeDatabase()
 	{
 		if (!isLoaded)
 		{
+			//4
 			database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_HpUp1, new PlayerUpgrade_HpUp1);
 			textureNames[0] = "PlayerUpgrade_HpUp1";
 			database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_LifeUp1, new PlayerUpgrade_LifeUp1);
@@ -38,7 +44,7 @@ namespace UpgradeManager
 			database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_ThrustAccelUp1, new PlayerUpgrade_ThrustAccelUp1);
 			textureNames[3] = "PlayerUpgrade_ThrustAccelUp1";
 
-
+			//7
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_FireRateDown1, new RangeWeaponUpgrade_FireRateDown1);
 			textureNames[4] = "RangeWeaponUpgrade_FireRateDown1";
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_ReloadRateDown1, new RangeWeaponUpgrade_ReloadRateDown1);
@@ -54,10 +60,11 @@ namespace UpgradeManager
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_BulletSpeedUp1, new RangeWeaponUpgrade_BulletSpeedUp1);
 			textureNames[10] = "RangeWeaponUpgrade_BulletSpeedUp1";
 
+			//2
 			database_meleeUpgrade.emplace(UpgradePackages::MeleeWeaponUpgrade_RangeUp1, new MeleeWeaponUpgrade_RangeUp1);
-			textureNames[10] = "MeleeWeaponUpgrade_RangeUp1";
+			textureNames[11] = "MeleeWeaponUpgrade_RangeUp1";
 			database_meleeUpgrade.emplace(UpgradePackages::MeleeWeaponUpgrade_DamageUp1, new MeleeWeaponUpgrade_DamageUp1);
-			textureNames[10] = "MeleeWeaponUpgrade_DamageUp1";
+			textureNames[12] = "MeleeWeaponUpgrade_DamageUp1";
 
 			isLoaded = true;
 		}
@@ -67,6 +74,7 @@ namespace UpgradeManager
 	{
 		PlayerUpgrade_Base* data = database_playerUpgrade[upgradePack];
 		
+		Console_Cout("Player Upgrade");
 		spaceship->_thrustDelay			+= data->Get_ThrustAcceleration();
 		health->_healthMax				+= data->Get_ShieldIncrease();
 		health->_shieldMax				+= data->Get_HealthIncrease();
@@ -76,23 +84,40 @@ namespace UpgradeManager
 	void WeaponUpgradeRange(cRangeWeapon* rangeWeapon, UpgradePackages upgradePack)
 	{
 		WeaponUpgradeRange_BaseRange* data = database_rangeUpgrade[upgradePack];
-
-			rangeWeapon->_attackCooldown	-= data->Get_FireRateDecrease();
-			rangeWeapon->_reloadRate		-= data->Get_ReloadRateDecrease();
-			rangeWeapon->_ammo				+= data->Get_AmmoIncrease();
-			rangeWeapon->_damage			+= data->Get_DamageIncrease();
-			rangeWeapon->_shootingSpread	-= data->Get_SpreadDecrease();
-			rangeWeapon->_bulletSize		-= data->Get_BulletSizeIncrease();
-			rangeWeapon->_bulletSpeed		+= data->Get_BulletSpeedIncrease();
+		Console_Cout("Range Upgrade");
+		rangeWeapon->_attackCooldown	-= data->Get_FireRateDecrease();
+		rangeWeapon->_reloadRate		-= data->Get_ReloadRateDecrease();
+		rangeWeapon->_ammo				+= data->Get_AmmoIncrease();
+		rangeWeapon->_damage			+= data->Get_DamageIncrease();
+		rangeWeapon->_shootingSpread	-= data->Get_SpreadDecrease();
+		rangeWeapon->_bulletSize		-= data->Get_BulletSizeIncrease();
+		rangeWeapon->_bulletSpeed		+= data->Get_BulletSpeedIncrease();
 	}
 
 	void WeaponUpgradeMelee(cMeleeWeapon* meleeWeapon, UpgradePackages upgradePack)
 	{
 		WeaponUpgradeMelee_BaseMelee* data = database_meleeUpgrade[upgradePack];
+		Console_Cout("Melee Upgrade");
+		meleeWeapon->_meleeRange += data->Get_RangeIncrease();
+		meleeWeapon->_damage += data->Get_DamageIncrease();
 
-			meleeWeapon->_meleeRange += data->Get_RangeIncrease();
-			meleeWeapon->_damage += data->Get_DamageIncrease();
+	}
 
+	void ApplyUpgrade(int upgradeIndex)
+	{
+		if (upgradeIndex < 4)
+		{
+			PlayerUpgrade(&PlayerManager::playerSpaceshipProgression, &PlayerManager::playerHealthProgression
+				, upgrade1Pack);
+		}
+		else if (upgradeIndex < 11)
+		{
+			WeaponUpgradeRange(&PlayerManager::playerRangeProgression, upgrade2Pack);
+		}
+		else if (upgradeIndex < 13)
+		{
+			WeaponUpgradeMelee(&PlayerManager::playerMeleeProgression, upgrade3Pack);
+		}
 	}
 
 	int RandomUpgrade()
@@ -112,11 +137,11 @@ namespace UpgradeManager
 			}
 			else if (randomUpgradeType == 2) // Range Weapon Upgrade
 			{
-				randomUpgrade = rand() % NUMBER_OF_RANGEWEAPONUPGRADES + NUMBER_OF_PLAYERPGRADES;
+				randomUpgrade = rand() % NUMBER_OF_RANGEWEAPONUPGRADES + NUMBER_OF_PLAYERPGRADES-1;
 			}
 			else if (randomUpgradeType == 3) // Melee Weapon Upgrade
 			{
-				randomUpgrade = rand() % NUMBER_OF_MELEEWEAPONUPGRADES + NUMBER_OF_RANGEWEAPONUPGRADES + NUMBER_OF_PLAYERPGRADES;
+				randomUpgrade = rand() % NUMBER_OF_MELEEWEAPONUPGRADES + NUMBER_OF_RANGEWEAPONUPGRADES + NUMBER_OF_PLAYERPGRADES-1;
 			}
 		} while (!CheckUnique(randomUpgrade));
 		AddActiveUpgrade(randomUpgrade);
@@ -139,14 +164,73 @@ namespace UpgradeManager
 		if (upgrade1 == -1)
 		{
 			upgrade1 = randomUpgrade;
+			
+			const UpgradePackages enumValue = static_cast<UpgradePackages>(randomUpgrade);
+			auto iterator = database_playerUpgrade.find(enumValue);
+			auto iterator2 = database_rangeUpgrade.find(enumValue);
+			auto iterator3 = database_meleeUpgrade.find(enumValue);
+			if (iterator != database_playerUpgrade.end())
+			{
+				//found
+				upgrade1Pack = (*iterator).first;
+			}
+			else if (iterator2 != database_rangeUpgrade.end())
+			{
+				//found
+				upgrade1Pack = (*iterator2).first;
+			}
+			else if (iterator3 != database_meleeUpgrade.end())
+			{
+				//found
+				upgrade1Pack = (*iterator3).first;
+			}
+			
 		}
 		else if (upgrade2 == -1)
 		{
 			upgrade2 = randomUpgrade;
+			const UpgradePackages enumValue = static_cast<UpgradePackages>(randomUpgrade);
+			auto iterator = database_playerUpgrade.find(enumValue);
+			auto iterator2 = database_rangeUpgrade.find(enumValue);
+			auto iterator3 = database_meleeUpgrade.find(enumValue);
+			if (iterator != database_playerUpgrade.end())
+			{
+				//found
+				upgrade2Pack = (*iterator).first;
+			}
+			else if (iterator2 != database_rangeUpgrade.end())
+			{
+				//found
+				upgrade2Pack = (*iterator2).first;
+			}
+			else if (iterator3 != database_meleeUpgrade.end())
+			{
+				//found
+				upgrade2Pack = (*iterator3).first;
+			}
 		}
 		else if (upgrade3 == -1)
 		{
 			upgrade3 = randomUpgrade;
+			const UpgradePackages enumValue = static_cast<UpgradePackages>(randomUpgrade);
+			auto iterator = database_playerUpgrade.find(enumValue);
+			auto iterator2 = database_rangeUpgrade.find(enumValue);
+			auto iterator3 = database_meleeUpgrade.find(enumValue);
+			if (iterator != database_playerUpgrade.end())
+			{
+				//found
+				upgrade3Pack = (*iterator).first;
+			}
+			else if (iterator2 != database_rangeUpgrade.end())
+			{
+				//found
+				upgrade3Pack = (*iterator2).first;
+			}
+			else if (iterator3 != database_meleeUpgrade.end())
+			{
+				//found
+				upgrade3Pack = (*iterator3).first;
+			}
 		}
 	}
 	void ClearAllUpgradeChoice()
@@ -154,6 +238,9 @@ namespace UpgradeManager
 		upgrade1 = -1;
 		upgrade2 = -1;
 		upgrade3 = -1;
+		upgrade1Pack = UpgradePackages::NONE;
+		upgrade2Pack = UpgradePackages::NONE;
+		upgrade3Pack = UpgradePackages::NONE;
 	}
 
 	void Cleanup_UpgradeDatabase()
