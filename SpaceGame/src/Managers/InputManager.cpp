@@ -85,11 +85,21 @@ namespace InputManager
 		}*/
 		if (AEInputCheckTriggered(AEVK_1))
 		{
-			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
-			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.0f;
+			if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon != WeaponType::laser)
+			{
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.0f;
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_ammo = 1;
+			}
+			
 		}
 		if (AEInputCheckTriggered(AEVK_2))
 		{
+			if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile)
+			{
+				Core::Get().EntityDestroyed(Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile);
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile = 0;
+			}
 			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::pistol;
 			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.2f;
 		}

@@ -23,6 +23,8 @@
 #include "ComponentStorage_Generic.h"	//Base class
 #include "AEEngine.h"					//AE Assert
 
+#include<typeinfo>
+#include "../Tools/Console.h"
 template<typename T>
 class ComponentStorage :public ComponentStorage_Generic
 {
@@ -44,7 +46,14 @@ public:
 	/******************************************************************************/
 	void RegisterComponent(ENTITY entity, T* component)					//Adds a component to its component storage, tagged to its entity
 	{
+		if (entityToIndexMap.find(entity) != entityToIndexMap.end())
+		{
+			const char* buffer = typeid(T).name();
+			Console_Cout(buffer);
+		}
 		AE_ASSERT(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component already exists");		//Component already exists
+
+		
 
 		//Update the index-entity relation map
 		entityToIndexMap[entity] = currSize;

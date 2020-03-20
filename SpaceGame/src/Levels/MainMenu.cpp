@@ -24,7 +24,7 @@ void MainMenu_Load()
 }
 void MainMenu_Init()
 {
-
+	AEGfxSetCamPosition(0, 0);
 }
 void MainMenu_Update()
 {

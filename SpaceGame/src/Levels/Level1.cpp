@@ -113,10 +113,7 @@ void Level1_Update()
 	PlayerManager::Update();
 	Core::Get().Core_Update();
 	LevelManager::Update();
-	if (AEInputCheckTriggered(AEVK_1))
-	{
-		Core::Get().EntityDestroyed(enemy);
-	}
+
 
 	// Test boss
 	if (!spawnedBoss)
@@ -146,6 +143,7 @@ void Level1_Draw()
 // ----------------------------------------------------------------------------
 void Level1_Free()
 {
+	spawnedBoss = false;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }

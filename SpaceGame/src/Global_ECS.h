@@ -14,7 +14,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 //ENTITY
 typedef unsigned int ENTITY;					// ID for each entity, components will be tagged to an ID
-const ENTITY MAX_ENTITIES = 2000;				// Maximum number of entity in game
+const ENTITY MAX_ENTITIES = 500;				// Maximum number of entity in game
 
 //COMPONENT
 typedef unsigned short ComponentType;			// ID for component

@@ -439,7 +439,7 @@ namespace Factory
 		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f, 0.0f }, 60.0f, 0.2f, 0.4f, 1.0f, 1));
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 3;
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", { 1.0f, 1.0f, 1.0f, 0.35f },
-			{ 20,20 }, 1.0f, { 0.0f,0.0f }, { 0.0f, 1.0f }, 5.0f, 0.0f, 2);
+			{ 20,20 }, 1.0f, { 0.0f, 0.0f }, { 0.0f, 1.0f }, 5.0f, 0.0f, 2);
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
 			VARIANCETYPE::NONE, { 40,40 }, { 70, 70 }, VARIANCETYPE::RANDOM_UNIFORM, { -1,-1 }, { 1,1 }, VARIANCETYPE::RANDOM);
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 0.75f, 0.0f, 0.9f });
@@ -457,6 +457,7 @@ namespace Factory
 
 	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar)
 	{
+		//This one causes crash
 		ENTITY emitter = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ tar->_position.x, tar->_position.y }, 0.0f, { 1,1 }));
 		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f,0.0f }, 10.0f, 0.2f, 0.4f, 1.0f, 1));

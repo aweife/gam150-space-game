@@ -2,7 +2,8 @@
 
 #include "cParticle.h"
 #include "../Managers/ResourceManager.h"
-
+#include "../ECS/Core.h"
+#include "../Components/cParticleEmitter.h"
 
 cParticle::cParticle(const char* meshName, const char* textureName, ColorInfo color, AEVec2 scaleFactor
 	, float totalLifeTime, AEVec2 gravity, AEVec2 direction, float velocity, ENTITY emitterID, float rotation,  unsigned int layer)
@@ -50,4 +51,9 @@ void cParticle::LoadTexture(const char* textureName)
 	AE_ASSERT_MESG(ResourceManager::textureLibrary.find(textureName) != ResourceManager::textureLibrary.end(), "Failed to find Texture!");
 
 	_texture = ResourceManager::textureLibrary[textureName];
+}
+
+cParticle::~cParticle()
+{
+	cParticleEmitter* myEmitter =  Core::Get().GetComponent<cParticleEmitter>(_emitterID);
 }

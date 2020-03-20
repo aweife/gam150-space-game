@@ -87,7 +87,7 @@ namespace UpgradeManager
 	void PlayerUpgrade(cSpaceShip* spaceship, cHealth* health, UpgradePackages upgradePack)
 	{
 		PlayerUpgrade_Base* data = database_playerUpgrade[upgradePack];
-		
+		if (!data)	return;
 		Console_Cout("Player Upgrade");
 		spaceship->_thrustDelay			+= data->Get_ThrustAcceleration();
 		health->_healthMax				+= data->Get_ShieldIncrease();
@@ -99,6 +99,7 @@ namespace UpgradeManager
 	{
 		WeaponUpgradeRange_BaseRange* data = database_rangeUpgrade[upgradePack];
 		Console_Cout("Range Upgrade");
+		if (!data)return;
 		rangeWeapon->_attackCooldown	-= data->Get_FireRateDecrease();
 		rangeWeapon->_reloadRate		-= data->Get_ReloadRateDecrease();
 		rangeWeapon->_ammo				+= data->Get_AmmoIncrease();
@@ -112,6 +113,7 @@ namespace UpgradeManager
 	{
 		WeaponUpgradeMelee_BaseMelee* data = database_meleeUpgrade[upgradePack];
 		Console_Cout("Melee Upgrade");
+		if (!data) return;
 		meleeWeapon->_meleeRange += data->Get_RangeIncrease();
 		meleeWeapon->_damage += data->Get_DamageIncrease();
 
@@ -147,15 +149,15 @@ namespace UpgradeManager
 		{
 			if (randomUpgradeType == 1) // Player Upgrade
 			{
-				randomUpgrade = rand() % NUMBER_OF_PLAYERPGRADES - 1;
+				randomUpgrade = rand() % NUMBER_OF_PLAYERPGRADES;
 			}
 			else if (randomUpgradeType == 2) // Range Weapon Upgrade
 			{
-				randomUpgrade = rand() % NUMBER_OF_RANGEWEAPONUPGRADES + NUMBER_OF_PLAYERPGRADES-1;
+				randomUpgrade = (rand() % NUMBER_OF_RANGEWEAPONUPGRADES - 1) + NUMBER_OF_PLAYERPGRADES;
 			}
 			else if (randomUpgradeType == 3) // Melee Weapon Upgrade
 			{
-				randomUpgrade = rand() % NUMBER_OF_MELEEWEAPONUPGRADES + NUMBER_OF_RANGEWEAPONUPGRADES + NUMBER_OF_PLAYERPGRADES-1;
+				randomUpgrade = (rand() % NUMBER_OF_MELEEWEAPONUPGRADES - 1) + NUMBER_OF_RANGEWEAPONUPGRADES + NUMBER_OF_PLAYERPGRADES;
 			}
 		} while (!CheckUnique(randomUpgrade));
 		AddActiveUpgrade(randomUpgrade);
@@ -165,8 +167,8 @@ namespace UpgradeManager
 
 	bool CheckUnique(int randomUpgrade)
 	{
-		if (upgrade1 == randomUpgrade || upgrade2 == randomUpgrade
-			|| upgrade3 == randomUpgrade)
+		if (upgrade1 == randomUpgrade /*|| upgrade2 == randomUpgrade
+			|| upgrade3 == randomUpgrade*/)
 		{
 			return false;			//NOT UNIQUE
 		}
