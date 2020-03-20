@@ -19,7 +19,7 @@
 #include "../Systems/SystemList.h"
 #include "../Managers/ManagerList.h"		
 #include "../Global_Graphics.h"	
-
+#include "../Player/PlayerManager.h"
 namespace Factory
 {
 	ENTITY CreateCamera(ENTITY player)
@@ -65,17 +65,24 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().GetComponent<cRigidBody>(player)->_velocityHardCap = 200;
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
-		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 2.0f, WeaponMode::WEAPONMODE_RANGE));
-		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, WeaponType::pistol ,1.0f, 0.25f));
-		//Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, WeaponType::laser, 999.0f, 0.0f, 1));
 
-		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
+
+
+		if (!PlayerManager::playerProgressInit)
+		{
+			PlayerManager::CreatePlayerWeapon();
+		}
+
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip{ PlayerManager::playerSpaceshipProgression });
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon{ PlayerManager::playerRangeProgression });
+		//Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, WeaponType::laser, 999.0f, 0.0f, 1));
+		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon{ PlayerManager::playerMeleeProgression });
 		//Core::Get().AddComponent<cHealth>(player, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f,2.0f));
 
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 
-		Core::Get().AddComponent<cHealth>(player, new cHealth(30.0f, 30.0f, 30.0f, 30.0f, 4.0f, 1.0f));
+		Core::Get().AddComponent<cHealth>(player, new cHealth{PlayerManager::playerHealthProgression});
 		Factory_UI::Create_ShieldBubble();
 
 		// Debug
@@ -432,7 +439,7 @@ namespace Factory
 		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f, 0.0f }, 60.0f, 0.2f, 0.4f, 1.0f, 1));
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 3;
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", { 1.0f, 1.0f, 1.0f, 0.35f },
-			{ 20,20 }, 1.0f, { 0.0f,0.0f }, { 0.0f, 1.0f }, 5.0f, 0.0f, 2);
+			{ 20,20 }, 1.0f, { 0.0f, 0.0f }, { 0.0f, 1.0f }, 5.0f, 0.0f, 2);
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
 			VARIANCETYPE::NONE, { 40,40 }, { 70, 70 }, VARIANCETYPE::RANDOM_UNIFORM, { -1,-1 }, { 1,1 }, VARIANCETYPE::RANDOM);
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 0.75f, 0.0f, 0.9f });
@@ -450,6 +457,7 @@ namespace Factory
 
 	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar)
 	{
+		//This one causes crash
 		ENTITY emitter = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ tar->_position.x, tar->_position.y }, 0.0f, { 1,1 }));
 		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f,0.0f }, 10.0f, 0.2f, 0.4f, 1.0f, 1));
@@ -753,15 +761,21 @@ namespace Factory_UI
 		AEVec2 position = Core::Get().GetComponent<cTransform>(entity)->_position;
 		ENTITY realUpgrade = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(realUpgrade, new cTransform(position, 0.0f, { 100 * 0.9f, 100 * 0.9f }));
-		Core::Get().AddComponent<cSprite>(realUpgrade, new cSprite(realUpgrade, "Square Mesh2", "Upgrade_1", 0));
-		Core::Get().GetComponent<cSprite>(realUpgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(realUpgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
 		Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex = UpgradeManager::RandomUpgrade();
+		unsigned int upgradeIndex = Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex;
+		//Different sprite based on upgrade assigned
+		Core::Get().AddComponent<cSprite>(realUpgrade, new cSprite(realUpgrade, "Square Mesh2", UpgradeManager::GetUpgradeImage(upgradeIndex), 0));
+		Core::Get().GetComponent<cSprite>(realUpgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
+
+
+
 
 		Core::Get().AddComponent<cTimeline>(realUpgrade, new cTimeline(g_appTime, g_appTime + 0.5f, false));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade));
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade), 0.45f, -0.5f);
 		UIEventsManager::Subscribe(realUpgrade, &OnButtonClick_Upgrades);
+		UIEventsManager::Subscribe(realUpgrade, &OnButtonHover_Upgrades);
 	}
 
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType)

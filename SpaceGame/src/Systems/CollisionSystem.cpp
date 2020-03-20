@@ -524,7 +524,7 @@ void CollisionSystem::Update()
 				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY || 
 																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
 				{
-					CameraManager::StartCameraShake();
+					//CameraManager::StartCameraShake();
 					//printf("Enemy health decrease lmao\n");
 
 					// when the player's velocity is more than the velocity cap
@@ -573,7 +573,8 @@ void CollisionSystem::Update()
 					cProjectile* projectile = Core::Get().GetComponent<cProjectile>(entity1);
 					if (projectile && projectile->_bulletType == bulletType::laser)
 					{
-						if (AEVec2Distance(&transform->_position, &transform2->_position)<shortestDistance)
+						if (AEVec2Distance(&transform->_position, &transform2->_position) < shortestDistance && 
+							AEVec2Distance(&transform->_position, &transform2->_position) < 720.0f)
 						{
 							shortestDistance = AEVec2Distance(&transform->_position, &transform2->_position);
 							raycastEntity = entity2;
@@ -659,7 +660,8 @@ void CollisionSystem::Update()
 				//Laser 
 				if (sprite)
 				{
-					sprite->_UVOffset.x = 0.0f;
+					float raycastLength = transform->_scale.x;
+					sprite->_UVOffset.x = 0.5f - (720.0f / raycastLength) * 0.5f;
 				}
 			}
 		}

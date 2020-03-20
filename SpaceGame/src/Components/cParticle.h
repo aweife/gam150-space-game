@@ -41,7 +41,7 @@ public:
 	cParticle() = delete;
 	cParticle(const char* meshName, const char* textureName, ColorInfo color, AEVec2 scaleFactor
 		, float totalLifeTime, AEVec2 gravity, AEVec2 direction, float velocity, ENTITY emitterID, float rotation = 0, unsigned int layer = 2);
-	~cParticle() {};										// Virtual Destructor
+	~cParticle();										// Virtual Destructor
 
 	void LoadMesh(const char* meshName);
 	void LoadTexture(const char* textureName);

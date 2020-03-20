@@ -7,7 +7,8 @@
 #include "../ECS/Core.h"
 #include "../Systems/UISystem.h"							//Spawn Ai Indicators
 #include "../Tools/Editor.h"
-
+#include "../Levels/UpgradeLevel.h"
+#include "../Managers/GameStateManager.h"
 namespace LevelManager
 {
 	// Top Right, Top Left, Bottom Right, Bottom Left Spawn Areas
@@ -37,7 +38,9 @@ namespace LevelManager
 		//Hacks...by right need to check if enemy killed or collectable done
 		if (objectiveComplete)
 		{
-			Factory_UI::Create_ChooseThree({ 0,0 });
+			//Factory_UI::Create_ChooseThree({ 0,0 });
+			loadingForNextLevel = GS_LEVEL1;
+			GSM_ChangeState(GS_UPGRADE);
 			upgradePhase = true;
 		}
 	}
@@ -63,7 +66,7 @@ namespace LevelManager
 	//HACKS
 	void SetObjectiveComplete()
 	{
-		objectiveComplete = true;
+		//objectiveComplete = true;
 	}
 
 	float GetRandomPattern()

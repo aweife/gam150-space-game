@@ -48,7 +48,8 @@ namespace InputManager
 		// Non-Gameplay Keyboard Controls ... Pause, Exit
 		// -----------------------------------------------------------------------
 
-		if (AEInputCheckTriggered(AEVK_P)) {
+		if (AEInputCheckTriggered(AEVK_P)) 
+		{
 			TogglePause();
 		}
 		if (AEInputCheckTriggered(AEVK_ESCAPE))
@@ -74,7 +75,7 @@ namespace InputManager
 		}
 		if (AEInputCheckTriggered(AEVK_9))			
 		{
-			LevelManager::SetObjectiveComplete();
+			GSM_LoadingTransition(GS_UPGRADE);
 			//Factory_UI::Create_ChooseThree({ 0,0 });
 		}
 		/*if (AEInputCheckTriggered(AEVK_8))
@@ -84,11 +85,23 @@ namespace InputManager
 		}*/
 		if (AEInputCheckTriggered(AEVK_1))
 		{
-			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
+			if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon != WeaponType::laser)
+			{
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.0f;
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_ammo = 1;
+			}
+			
 		}
 		if (AEInputCheckTriggered(AEVK_2))
 		{
+			if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile)
+			{
+				Core::Get().EntityDestroyed(Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile);
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile = 0;
+			}
 			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::pistol;
+			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.2f;
 		}
 
 		//Testing...remove once done
@@ -105,6 +118,7 @@ namespace InputManager
 		Editor_TrackVariable("mouse Screen X", mousePosX);
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
 
+		UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY)));
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 		{
 			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY))))

@@ -109,6 +109,11 @@ public:
 	}
 
 	void GenerateWorldState();
+
+	unsigned int GetEntityCount()
+	{
+		return coreEntityManager->GetActiveCount();
+	}
 private:
 	// Singleton pattern
 	Core() {}                    // Constructor. The {} brackets are needed here

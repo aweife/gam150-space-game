@@ -2,8 +2,8 @@
 
 #include "AEEngine.h"	
 #include "../Global_ECS.h"
-const float MIN_SPAWN_X = 2000.0f;
-const float MIN_SPAWN_Y = 2000.0f;
+const float MIN_SPAWN_X = 20.0f;
+const float MIN_SPAWN_Y = 20.0f;
 
 
 

@@ -115,7 +115,6 @@ void HealthSystem::Update()
 			if (entity == PlayerManager::player)
 			{
 				Factory::RemoveCamera();
-				PlayerManager::ResetPlayer();
 				PlayerManager::PlayerDeath();
 			}
 			Core::Get().EntityDestroyed(entity);

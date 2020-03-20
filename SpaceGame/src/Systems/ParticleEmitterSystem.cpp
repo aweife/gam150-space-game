@@ -252,10 +252,17 @@ void ReuseParticle(ENTITY particle, AEVec2 position, float rotation, AEVec2 scal
 void ParticleEmitterSystem::OnComponentRemove(ENTITY entity)
 {
 	cParticleEmitter* emitterComponent = Core::Get().GetComponent<cParticleEmitter>(entity);
+	cParticle* particleChild;
 	while (emitterComponent->_particlePool.size() > 0)
 	{
 		ENTITY particle = emitterComponent->_particlePool.front();
-		Core::Get().EntityDestroyed(particle);					//Destroy all particles that are managed by the emitter
+		particleChild = Core::Get().GetComponent<cParticle>(particle);
+
+		if (particleChild)
+		{
+			Core::Get().EntityDestroyed(particle);					//Destroy all particles that are managed by the emitter
+		}
+	
 		emitterComponent->_particlePool.pop();
 	}
 }
