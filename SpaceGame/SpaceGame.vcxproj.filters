@@ -68,7 +68,6 @@
     <ClCompile Include="src\Systems\ParticleEmitterSystem.cpp" />
     <ClCompile Include="src\Managers\UIEventsManager.cpp" />
     <ClCompile Include="src\Levels\MainMenu.cpp" />
-    <ClCompile Include="src\Levels\MapGenerator.cpp" />
     <ClCompile Include="src\Levels\SplashScreen.cpp" />
     <ClCompile Include="src\Managers\UpgradeManager.cpp" />
     <ClCompile Include="src\Systems\HealthSystem.cpp" />
@@ -88,6 +87,7 @@
     <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\Tools\Console.cpp" />
     <ClCompile Include="src\Tools\Editor.cpp" />
+    <ClCompile Include="src\Managers\LevelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiAttack.h" />
@@ -184,7 +184,6 @@
     <ClInclude Include="src\Events\Events.h" />
     <ClInclude Include="src\Managers\UIEventsManager.h" />
     <ClInclude Include="src\Levels\MainMenu.h" />
-    <ClInclude Include="src\Levels\MapGenerator.h" />
     <ClInclude Include="src\Levels\SplashScreen.h" />
     <ClInclude Include="src\Managers\ManagerList.h" />
     <ClInclude Include="src\Managers\UpgradeManager.h" />
@@ -200,6 +199,7 @@
     <ClInclude Include="src\Systems\WarpingSystem.h" />
     <ClInclude Include="src\Components\cWarping.h" />
     <ClInclude Include="src\Systems\HealthSystem.h" />
+    <ClInclude Include="src\Managers\LevelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

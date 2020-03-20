@@ -7,3 +7,4 @@
 #include "UIEventsManager.h"
 #include "AudioManager.h"
 #include "UpgradeManager.h"
+#include "LevelManager.h"

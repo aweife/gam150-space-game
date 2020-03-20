@@ -129,6 +129,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\ECS\SystemManager.cpp" />
     <ClCompile Include="src\ECS\Core.cpp" />
     <ClCompile Include="src\Managers\InputManager.cpp" />
+    <ClCompile Include="src\Managers\LevelManager.cpp" />
     <ClCompile Include="src\Managers\ResourceManager.cpp" />
     <ClCompile Include="src\Managers\UIEventsManager.cpp" />
     <ClCompile Include="src\Managers\UpgradeManager.cpp" />
@@ -200,6 +201,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClInclude Include="src\Managers\GameStateManager.h" />
     <ClInclude Include="src\ECS\SystemManager.h" />
     <ClInclude Include="src\Managers\InputManager.h" />
+    <ClInclude Include="src\Managers\LevelManager.h" />
     <ClInclude Include="src\Managers\ManagerList.h" />
     <ClInclude Include="src\Managers\ResourceManager.h" />
     <ClInclude Include="src\Managers\UIEventsManager.h" />

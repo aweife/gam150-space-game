@@ -14,10 +14,10 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include"../Components/cSpaceShip.h"
 #include"../Components/cHealth.h"
 
-#define NUMBER_OF_PLAYERPGRADES 3
-#define NUMBER_OF_RANGEWEAPONUPGRADES 7
-#define NUMBER_OF_MELEEWEAPONUPGRADES 2
-#define NUMBER_OF_UPGRADES_TYPE 3
+const int NUMBER_OF_PLAYERPGRADES = 3;
+const int NUMBER_OF_RANGEWEAPONUPGRADES = 7;
+const int NUMBER_OF_MELEEWEAPONUPGRADES = 2;
+const int NUMBER_OF_UPGRADES_TYPE = 3;
 
 enum class UpgradePackages
 {
