@@ -938,7 +938,7 @@ namespace Factory_UI
 		float angle = atan2f(aiDir.y, aiDir.x);
 
 		ENTITY aiUI = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 30,50 }));
+		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 40.0,30.0 }));
 		Core::Get().AddComponent<cSprite>(aiUI, new cSprite(aiUI, "Square Mesh", "AI_Indicator", 0));
 		if (aiType == 0)
 		{
