@@ -97,6 +97,7 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
+	spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 }
 
@@ -144,6 +145,7 @@ void Level1_Draw()
 void Level1_Free()
 {
 	AudioManager::UnLoadAllSounds();
+	LevelManager::ClearObjectiveAll;
 }
 // ----------------------------------------------------------------------------
 // This function dumps all data loaded in Level 1

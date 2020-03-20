@@ -6,6 +6,7 @@
 
 #include "../ECS/Core.h"
 #include "../Systems/UISystem.h"							//Spawn Ai Indicators
+#include "../Tools/Editor.h"
 
 namespace LevelManager
 {
@@ -43,7 +44,7 @@ namespace LevelManager
 	void CheckOutOfScreen(ENTITY id)
 	{
 		cTransform* self = Core::Get().GetComponent<cTransform>(id);
-
+		
 		AEVec2 cameraPosition = { 0 };
 		AEGfxGetCamPosition(&cameraPosition.x, &cameraPosition.y);
 
@@ -284,8 +285,6 @@ namespace LevelManager
 		}
 	}
 
-
-
 	void SetSpawnArea()
 	{
 
@@ -372,7 +371,6 @@ namespace LevelManager
 		return randomPos;
 	}
 
-
 	/*
 	float randomOffSetX()
 	{
@@ -434,8 +432,20 @@ namespace LevelManager
 	}
 	*/
 
+	void ClearObjective(ENTITY collectable)
+	{
+		collectableList.erase(collectable);
 
+		if (collectableList.size() == 0)
+			objectiveComplete = true;
 
+		printf("Objectives Left: %d\n", collectableList.size());
+	}
+
+	void ClearObjectiveAll()
+	{
+		collectableList.clear();
+	}
 
 }
 

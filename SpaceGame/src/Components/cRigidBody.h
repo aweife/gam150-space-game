@@ -11,13 +11,15 @@ enum class OWNERTAG
 
 enum class COLLISIONTAG
 {
-	PLAYER = 0, 
-	BULLET = 1,
-	BULLET_PLAYER = 2,
-	ENEMY = 3,
-	PLANET = 4,
-	PLANET_ASTEROID = 5,
-	NONE = 6
+	NONE = 0,
+	PLAYER, 
+	BULLET,
+	BULLET_PLAYER,
+	ENEMY,
+	BOSS,
+	PLANET,
+	PLANET_ASTEROID,
+	OBJECTIVE
 };
 
 class cRigidBody:public Component

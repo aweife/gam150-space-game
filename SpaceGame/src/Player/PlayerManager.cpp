@@ -117,5 +117,6 @@ namespace PlayerManager
 		ResetPlayer();
 
 		Factory_UI::CreateUI_GameOver();
+		LevelManager::ClearObjectiveAll();
 	}
 }

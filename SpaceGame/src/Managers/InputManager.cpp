@@ -24,7 +24,7 @@
 
 #include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
 #include "UIEventsManager.h"							//Testing events calling
-
+#include "../Player/PlayerManager.h"
 #include "LevelManager.h"
 
 #include "../ECS/Factory.h"
@@ -82,6 +82,14 @@ namespace InputManager
 			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
 			uiSys->DeleteUpgradeWindow();
 		}*/
+		if (AEInputCheckTriggered(AEVK_1))
+		{
+			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
+		}
+		if (AEInputCheckTriggered(AEVK_2))
+		{
+			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::pistol;
+		}
 
 		//Testing...remove once done
 		if (AEInputCheckTriggered(AEVK_S))

@@ -26,6 +26,8 @@ namespace LevelManager
 	void SetEnemySpawn(float randomLevel);
 	void ClearSpawnArea();
 	void Level1_Map();
+	void ClearObjective(ENTITY collectable);
+	void ClearObjectiveAll();
 }
 
 
