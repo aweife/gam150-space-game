@@ -1,6 +1,6 @@
 #include "cWeapon.h"
 
-cRangeWeapon::cRangeWeapon(OWNERTAG tag, float attackCooldown, float delayBetweenAttacks, int numberOfAttacks) :
+cRangeWeapon::cRangeWeapon(OWNERTAG tag, WeaponType weaponType, float attackCooldown, float delayBetweenAttacks, int numberOfAttacks) :
 	_playerIsShooting{ false },
 	_enemyIsShooting{ false },
 	_attackCooldown{ attackCooldown },

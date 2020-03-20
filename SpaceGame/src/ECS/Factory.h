@@ -99,10 +99,7 @@ namespace Factory_Map
 
 namespace Factory_AI
 {
-	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy2(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy3(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy4(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy5(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy1(ENTITY player, unsigned int layer, AEVec2 spawnPos);
+	ENTITY CreateEnemy2(ENTITY player, unsigned int layer, AEVec2 spawnPos);
 	ENTITY CreateBoss(ENTITY player, unsigned int layer);
 }

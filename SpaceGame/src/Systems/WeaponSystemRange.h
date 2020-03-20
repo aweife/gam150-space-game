@@ -36,7 +36,5 @@ void ChooseShootingStyle(cRangeWeapon* rangeWeapComp, cTransform* transformComp)
 void StraightShoot(cTransform* transform, OWNERTAG tag);
 void HomingShoot(cTransform* transform);
 void LaserBeam(cTransform* transform, cRangeWeapon* rangeWeapComp);
-void NormalShoot(cTransform* transform, OWNERTAG tag);
 void TargetShoot(cTransform* transform, OWNERTAG tag, AEVec2& targetPos);
 void HomingShoot(cTransform* transform, OWNERTAG tag, ENTITY target);
-void MachineGunShoot(cTransform* transform);

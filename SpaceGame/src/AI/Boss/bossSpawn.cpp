@@ -21,7 +21,7 @@ void bossSpawn::OnUpdate(aiBlackBoard& bb)
 	else if (trans->_scale.y < _initialScale.y)
 		trans->_scale.y += g_dt * bb.baseMaxSpeed;
 	else
-		ChangeAttack(BOSS_HOMING);
+		ChangeAttack(BOSS_IDLE);
 
 	trans->_rotation += g_dt * bb.baseMaxSpeed * bb.baseRotationSpeed;
 }

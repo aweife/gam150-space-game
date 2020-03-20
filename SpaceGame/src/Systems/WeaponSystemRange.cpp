@@ -47,27 +47,15 @@ void WeaponSystemRange::Update()
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rangeweapon = Core::Get().GetComponent<cRangeWeapon>(entity);
 
-		if (!rangeweapon->_isShooting) continue;
+		if (!rangeweapon->_playerIsShooting)
 		{
-			//if (/*spaceship->_currWeaponMode == WeaponMode::range &&*/
-			//	rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireCooldownTimer*/)
-			//{
-			//	switch (rangeweapon->_currWeapon)
-			//	{
-			//	case WeaponType::pistol:
-			//		rangeweapon->_fireCooldownTimer = 0.0f;
-			//		NormalShoot(transform);
-			//		break;
-			//	case WeaponType::machineGun:
-			//		rangeweapon->_fireCooldownTimer = 0.0f;
-			//		MachineGunShoot(transform);
-			//		break;
-			//	case WeaponType::grenadeGun:
-			//		break;
-			//	case WeaponType::laser:
-			//		break;
-			//	}
-			//}
+			if (rangeweapon->_currWeapon == WeaponType::laser && rangeweapon->_permenanceProjectile)
+			{
+				Core::Get().EntityDestroyed(rangeweapon->_permenanceProjectile);
+				rangeweapon->_permenanceProjectile = 0;
+				rangeweapon->_ammo = 1;
+			}
+			//continue;
 		}
 
 		// ENEMY
@@ -96,8 +84,10 @@ void WeaponSystemRange::Update()
 								TargetShoot(transform, rangeweapon->_tag, rangeweapon->_targetPosition);
 						}
 						else
-							NormalShoot(transform, rangeweapon->_tag);
-						--rangeweapon->_attacksLeft;
+						{
+							StraightShoot(transform, rangeweapon->_tag);
+							--rangeweapon->_attacksLeft;
+						}
 					}
 				}
 				else
@@ -120,12 +110,29 @@ void WeaponSystemRange::Update()
 				else
 				{
 					rangeweapon->_delayTimer = rangeweapon->_delayBetweenAttacks;
-					NormalShoot(transform, rangeweapon->_tag);
+					ChooseShootingStyle(rangeweapon, transform);
 				}
 			}
 			else
 				rangeweapon->_delayTimer = 0.0f;
 		}
+	}
+}
+
+void ChooseShootingStyle(cRangeWeapon* rangeWeapComp, cTransform* transformComp)
+{
+	switch (rangeWeapComp->_currWeapon)
+	{
+	case WeaponType::pistol:
+		StraightShoot(transformComp, rangeWeapComp->_tag);
+		--rangeWeapComp->_attacksLeft;
+		rangeWeapComp->_playerIsShooting = false;
+		break;
+	case WeaponType::laser:
+		LaserBeam(transformComp, rangeWeapComp);
+		rangeWeapComp->_ammo = 0;
+		break;
+
 	}
 }
 
@@ -165,7 +172,6 @@ void TargetShoot(cTransform* transform, OWNERTAG tag, AEVec2& targetPos)
 
 void HomingShoot(cTransform* transform, OWNERTAG tag, ENTITY target)
 {
-
 	AEVec2 bulletDirection = Core::Get().GetComponent<cTransform>(target)->_position;
 	AEVec2 bulletVelocity;
 
@@ -178,7 +184,6 @@ void HomingShoot(cTransform* transform, OWNERTAG tag, ENTITY target)
 	Factory::CreateHomingMissile(transform->_position.x,
 		transform->_position.y, bulletVelocity, bulletDirection, atan2f(bulletDirection.y, bulletDirection.x) + PI / 2, OWNERTAG::AI, target);
 }
-
 
 void MultiShot(cTransform* transform)
 {

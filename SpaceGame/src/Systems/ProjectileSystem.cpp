@@ -2,6 +2,7 @@
 #include "../ECS/Core.h"
 #include "../Global.h"							//delta time
 #include "../Components/ComponentList.h"
+#include "../Player/PlayerManager.h"
 
 #include "../ECS/Factory.h"
 /******************************************************************************/
@@ -21,6 +22,9 @@ void ProjectileSystem::Init()
 
 void ProjectileSystem::Update()
 {
+	const ENTITY pid = PlayerManager::player;
+	if (pid == 0)	return;				//NO ACTIVE PLAYER
+
 	cTransform* trans;
 	cRigidBody* rb;
 	cProjectile* projectile;

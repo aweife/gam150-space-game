@@ -227,23 +227,23 @@ namespace LevelManager
 			spawnPos.x = topRightSpawnArea.x + RandomPos();
 			spawnPos.y = topRightSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy1(PlayerManager::player, 2, spawnPos);
 			spawnPos.x = topRightSpawnArea.x + RandomPos();
 			spawnPos.y = topRightSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy1(PlayerManager::player, 2, spawnPos);
 			spawnPos.x = topRightSpawnArea.x + RandomPos();
 			spawnPos.y = topRightSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy2(PlayerManager::player, 2, spawnPos);
 			spawnPos.x = topLeftSpawnArea.x + RandomPos();
 			spawnPos.y = topLeftSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy2(PlayerManager::player, 2, spawnPos);
 			spawnPos.x = bottomSpawnArea.x + RandomPos();
 			spawnPos.y = bottomSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy1(PlayerManager::player, 2, spawnPos);
 
 			ClearSpawnArea();
 			break;
@@ -252,15 +252,15 @@ namespace LevelManager
 			spawnPos.x = topRightSpawnArea.x + RandomPos();
 			spawnPos.y = topRightSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy1(PlayerManager::player, 2, spawnPos);
 			spawnPos.x = leftSpawnArea.x + RandomPos();
 			spawnPos.y = leftSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy2(PlayerManager::player, 2, spawnPos);
 			spawnPos.x = bottomRightSpawnArea.x + RandomPos();
 			spawnPos.y = bottomRightSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy1(PlayerManager::player, 2, spawnPos);
 
 			ClearSpawnArea();
 			break;
@@ -269,15 +269,15 @@ namespace LevelManager
 			spawnPos.x = bottomRightSpawnArea.x + RandomPos();
 			spawnPos.y = bottomRightSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy1(PlayerManager::player, 2, spawnPos);
 			spawnPos.x = bottomLeftSpawnArea.x + RandomPos();
 			spawnPos.y = bottomLeftSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy2(PlayerManager::player, 2, spawnPos);
 			spawnPos.x = topSpawnArea.x + RandomPos();
 			spawnPos.y = topSpawnArea.y + RandomPos();
 			// Spawn Enemy;
-			Factory::CreateEnemyObjective(PlayerManager::player, 2, spawnPos);
+			Factory_AI::CreateEnemy2(PlayerManager::player, 2, spawnPos);
 
 			ClearSpawnArea();
 			break;
