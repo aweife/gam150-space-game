@@ -97,6 +97,7 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
+	spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 }
 

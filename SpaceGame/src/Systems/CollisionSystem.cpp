@@ -568,8 +568,7 @@ void CollisionSystem::Update()
 				}
 				
 				// if bullet collide with object
-				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY  ||
-																		rigidbody2->_tag == COLLISIONTAG::BOSS)
+				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY)
 				{
 					cProjectile* projectile = Core::Get().GetComponent<cProjectile>(entity1);
 					if (projectile && projectile->_bulletType == bulletType::laser)
@@ -649,7 +648,7 @@ void CollisionSystem::Update()
 					if (health2 != nullptr && health2->_isInvulnerable == false)
 					{
 						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-						CameraManager::StartCameraShake();
+						//CameraManager::StartCameraShake();
 						healthSys->TakeDamage(raycastEntity);
 					}
 				}
