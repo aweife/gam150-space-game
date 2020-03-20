@@ -60,6 +60,8 @@ namespace CameraManager
 
 	void StartCameraShake()
 	{
+		if (!currCameraComp) return;
+		
 		currCameraComp->_isCameraShake = true;
 		currCameraComp->_camEffectStartTime = g_appTime;
 		currCameraComp->_camEffectSpeed = AERandFloat() * (SHAKESPEED_MAX - SHAKESPEED_MIN) + SHAKESPEED_MIN;
@@ -120,7 +122,7 @@ namespace CameraManager
 
 	void AssignNewCam(ENTITY currCamera)
 	{
-		AE_ASSERT(_cameraCount < _cameraMaxCount - 1 && "Too many camera created.");
+		//AE_ASSERT(_cameraCount < _cameraMaxCount - 1 && "Too many camera created.");
 
 		if (_currCamera != 0)		//if there is an existing camera
 		{
@@ -139,7 +141,7 @@ namespace CameraManager
 	void RemoveCurrCam()
 	{
 		_currCamera = 0;			//Remove the camera and dont assign a new one
-		--_cameraCount; 
+		_cameraCount = 0; 
 		currCameraTransform = nullptr;
 		currCameraComp = nullptr;
 	}

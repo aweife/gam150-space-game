@@ -1,25 +1,20 @@
-#pragma once
-/*********************************************************************************
+/**********************************************************************************
 * \file			Global_ECS.h
-* \author		Chong Jun Yi
-* \version		1.0
-* \date			30/01/2019
-* \par			Data storage Code
-* \note			Course: GAM150
 * \brief		Stores global variables/allias about the ECS architechure
-				- 
-				-
-
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
-				or disclosure of this file or its contents without the prior
-				written consent of DigiPen Institute of Technology is prohibited.
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
+
+#pragma once
 #include <cstdint>
 #include <bitset>
 
 //ENTITY
 typedef unsigned int ENTITY;					// ID for each entity, components will be tagged to an ID
-const ENTITY MAX_ENTITIES = 1000;				// Maximum number of entity in game
+const ENTITY MAX_ENTITIES = 2000;				// Maximum number of entity in game
 
 //COMPONENT
 typedef unsigned short ComponentType;			// ID for component
@@ -38,10 +33,17 @@ enum COMPONENTID								//ID for each component, to be used to organise systems 
 	ID_CameraComponent,
 	ID_PathFindingComponent,
 	ID_AIComponent,
+	ID_BossComponent,
 	ID_SpaceShip,
+	ID_RangeWeaponComponent,
+	ID_MeleeWeaponComponent,
+	ID_HealthComponent,
+	ID_ProjectileComponent,
 	ID_UIComponent,
 	ID_DebugToolsComponent,
 	ID_ParticleComponent,
-	ID_ParticleEmitterComponent
+	ID_ParticleEmitterComponent,
+	ID_TimelineComponent,
+	ID_WarpingComponent
 };					
 

@@ -10,13 +10,13 @@
 				- Control ???
 				- Clean up all system and manager
 
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "Core.h"			//Self Header
+#include "Core.h"								//Self Header
 #include "Factory.h"
-#include "../Managers/CameraManager.h"
+#include "../Managers/CameraManager.h"			//Late Update
 #include "../Tools/Console.h"
 
 void Core::Core_Init()
@@ -64,6 +64,15 @@ void Core::EntityDestroyed(ENTITY entity)
 	coreSystemManager->EntityDestroyed(entity); // Some system will perform functions on component when a object is destroyed
 
 	coreComponentManager->EntityDestroyed(entity);
+}
+
+void Core::DestroyAllEntity()
+{
+	//Loop through a copy 
+	while(coreEntityManager->GetActiveSet().size() > 0)
+	{
+		EntityDestroyed(*coreEntityManager->GetActiveSet().begin());
+	}
 }
 
 //Purely used for debuging

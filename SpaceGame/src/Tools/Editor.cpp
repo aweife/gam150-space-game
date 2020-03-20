@@ -1,27 +1,21 @@
-/*********************************************************************************
+/**********************************************************************************
 * \file			Editor.cpp
-* \author		Chong Jun Yi
-* \version		1.0
-* \date			18/01/2019
-* \par			Engine Code
-* \note			Course: GAM150
 * \brief		Low level editor using console to modify game variables
-				- 
-				- 
-
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
-				or disclosure of this file or its contents without the prior
-				written consent of DigiPen Institute of Technology is prohibited.
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #include "AEEngine.h"				//AESysGetWindowHandle
 #include <Windows.h>				//RECT
 #include <unordered_map>			//Variable Tracker
 #include "Editor.h"					//Self Header
-#include "Console.h"
+#include "Console.h"				//Cout Text
 
-
-std::unordered_map<const char*, float> variableList;
-
+//A list of variables to constantly print at the same position in the console window
+std::unordered_map<const char*, float> variableList;			
 
 /******************************************************************************/
 /*!
@@ -44,11 +38,21 @@ void Editor_Init()
 	
 }
 
+/******************************************************************************/
+/*!
+  \brief	Logic and data manipulation
+*/
+/******************************************************************************/
 void Editor_Update()
 {
 	variableList.clear();						//Clear variable Tracking List before GameStateUpdate
 }
 
+/******************************************************************************/
+/*!
+  \brief	Render text onto the console based on concepts of xtext buffer
+*/
+/******************************************************************************/
 void Editor_Render()
 {
 	COORD originMouse = Console_GetCursorPos();			//Get the mouse position before jumping around Console
@@ -66,6 +70,11 @@ void Editor_Render()
 	Console_SetCursorPos(originMouse.X, originMouse.Y);
 }
 
+/******************************************************************************/
+/*!
+  \brief	Print and refresh a certain spot to constantly track a int/float variable
+*/
+/******************************************************************************/
 void Editor_TrackVariable(const char* text, float value)
 {
 	//Check if variables is new

@@ -1,3 +1,17 @@
+/*********************************************************************************
+* \file			SystemManager.cpp
+* \brief		Manager for all systems in the game
+* \author		Chong Jun Yi, 50% Code Contribution
+* \author		Ang Wei Feng, 50% Code Contribution
+*
+*				Register all systems and set their signatures.
+*				The system manager is also responsible for updating the systems.
+*
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "SystemManager.h"
 #include "../Systems/SystemList.h"
 
@@ -6,11 +20,18 @@ void SystemManager::Init()
 	// Register systems
 	
 	// Logic 
+	RegisterSystem<WeaponSystemRange>();
+	RegisterSystem<WeaponSystemMelee>();
 	RegisterSystem<SpaceShipLogicSystem>();
+	RegisterSystem<WarpingSystem>();
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<AISystem>();
+	RegisterSystem<BossSystem>();
+	RegisterSystem<HealthSystem>();
+	RegisterSystem<ProjectileSystem>();
 	RegisterSystem<ParticleEmitterSystem>();
+	RegisterSystem<TimelineSystem>();
 
 	// Rendering
 	RegisterSystem<RenderSystem>();

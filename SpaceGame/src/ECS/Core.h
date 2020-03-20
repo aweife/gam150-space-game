@@ -1,9 +1,24 @@
+/*********************************************************************************
+* \file			Core.h
+* \brief		Middle man to the big 3 managers (ECS)
+* \author		Chong Jun Yi, 100% Code Contribution
+*
+*				Provides an interface for us to communicate with the managers. 
+*				This class is a singleton and can be accessed anywhere by anyone.
+*				Mostly used for easily adding and accessing components with an entity 
+*				id, registering systems and signatures.
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
-#include <memory>
+#include <memory>								//std::unique_ptr
 #include "ComponentManager.h"
 #include "EntityManager.h"
 #include "SystemManager.h"
 #include "../Tools/MemoryLeak.h"
+
 class Core
 {
 public:
@@ -26,6 +41,7 @@ public:
 	// ENTITY
 	ENTITY CreateEntity(const char* name = "");
 	void EntityDestroyed(ENTITY entity);
+	void DestroyAllEntity();
 
 	// COMPONENT
 	template<typename T>
@@ -46,9 +62,6 @@ public:
 		coreEntityManager->SetSignature(entity, signature);
 
 		coreSystemManager->UpdateEntitySignature(entity, signature, old_signature);
-
-		// Update base component
-		component->_entityParent = entity;
 	}
 
 	template<typename T>

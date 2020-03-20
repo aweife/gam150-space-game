@@ -23,7 +23,13 @@
 #include "../Tools/Editor.h"							// Track Variable + Mesh Show mode
 
 #include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
+#include "UIEventsManager.h"							//Testing events calling
+#include "../Player/PlayerManager.h"
+#include "LevelManager.h"
 
+#include "../ECS/Factory.h"
+#include "../ECS/Core.h"
+#include "../Systems/UISystem.h"
 namespace InputManager
 {
 	int			mousePosX			= 0;				// Computer mouse screen position in X coordinates
@@ -47,7 +53,14 @@ namespace InputManager
 		}
 		if (AEInputCheckTriggered(AEVK_ESCAPE))
 		{
-			GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+			if (currentState == GS_MAINMENU)
+			{
+				GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+			}
+			else
+			{
+				GSM_ChangeState(GS_MAINMENU);
+			}
 		}
 		if (AEInputCheckTriggered(AEVK_R))
 		{
@@ -59,6 +72,26 @@ namespace InputManager
 		{
 			ToggleShowBoundingBoxMode(); 
 		}
+		if (AEInputCheckTriggered(AEVK_9))			
+		{
+			LevelManager::SetObjectiveComplete();
+			//Factory_UI::Create_ChooseThree({ 0,0 });
+		}
+		/*if (AEInputCheckTriggered(AEVK_8))
+		{
+			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+			uiSys->DeleteUpgradeWindow();
+		}*/
+		if (AEInputCheckTriggered(AEVK_1))
+		{
+			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
+		}
+		if (AEInputCheckTriggered(AEVK_2))
+		{
+			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::pistol;
+		}
+
+		//Testing...remove once done
 		if (AEInputCheckTriggered(AEVK_S))
 		{
 			CameraManager::StartCameraShake();
@@ -72,8 +105,23 @@ namespace InputManager
 		Editor_TrackVariable("mouse Screen X", mousePosX);
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
 
+		if (AEInputCheckCurr(AEVK_LBUTTON))
+		{
+			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY))))
+			{
+				mouseLTrigger = true;
+			}
+			else
+			{
+				mouseLTrigger = false;
+			}
+		}
+		else
+		{
+			mouseLTrigger = false;
+		}
 		mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
-		mouseLTrigger = AEInputCheckCurr(AEVK_LBUTTON);
+	
 	}
 }
 	

@@ -4,7 +4,6 @@
 #include "../Components/cTransform.h"
 #include "../Global.h"
 
-
 void ParticleEmitterSystem::Init()
 {
 	// Sets the system signature for this system
@@ -73,9 +72,9 @@ void ParticleEmitterSystem::Update()
 	{
 		for (auto const& entity : markedForDestruction)
 		{
-
 			Core::Get().EntityDestroyed(entity);
 		}
+		markedForDestruction.clear();
 	}
 }
 

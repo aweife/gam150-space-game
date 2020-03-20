@@ -19,4 +19,3 @@ public:
 };
 
 void SpaceShipThrust(cRigidBody* rb, cTransform* transform);
-void SpaceShipShoot(cTransform* transform);

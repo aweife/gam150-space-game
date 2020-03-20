@@ -6,6 +6,8 @@
 #include "../ECS/Factory.h"
 
 #include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
+#include "../Managers/UIEventsManager.h"
+#include "../Player/PlayerManager.h"
 /******************************************************************************/
 /*!
 	Global Variables
@@ -21,67 +23,84 @@ void SpaceShipLogicSystem::Init()
 	Core::Get().SetSystemSignature<SpaceShipLogicSystem>(signature);
 }
 
-
 void SpaceShipLogicSystem::Update()
 {
 	cTransform* transform;
 	cRigidBody* rigidbody;
 	cSpaceShip* spaceship;
+	cHealth*    health;
 
 	for (auto const& entity : entitiesList)
 	{
-		transform = Core::Get().GetComponent<cTransform>(entity); 
-		rigidbody = Core::Get().GetComponent<cRigidBody>(entity); 
-		spaceship = Core::Get().GetComponent<cSpaceShip>(entity); 
+		transform = Core::Get().GetComponent<cTransform>(entity);
+		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
+		spaceship = Core::Get().GetComponent<cSpaceShip>(entity);
+		health    = Core::Get().GetComponent<cHealth>(entity);
 
 		//Time update
-		spaceship->_shootDelay += g_dt;
-		spaceship->_thrustDelay += g_dt;
-
-		if (spaceship->_isThrusting /*&& spaceship->_thrustDelay > 1.5f*/)
+		//Cooldown slower when overheat;
+		if (spaceship->_overheatThrusterCurr > 0.0f && spaceship->_thrustDelayCurr > 0.0f)
 		{
-			//spaceship->_thrustDelay = 0.0f;
+			spaceship->_thrustDelayCurr -= g_dt * 0.7f;
+			if (spaceship->_thrustDelayCurr < 0.0f)
+			{
+				spaceship->_overheatThrusterCurr = 0.0f;
+			}
+		}
+		//Normal cooldown rate
+		else
+		{
+			spaceship->_thrustDelayCurr -= g_dt;
+		}
+
+		// If spaceship is not overheating
+		if (spaceship->_isThrusting && spaceship->_thrustDelayCurr <= 0.0f)
+		{
 			SpaceShipThrust(rigidbody, transform);
 			Factory::CreateParticleEmitter_TRAIL(transform);
+			
+			// Increase terminal velocity
+			rigidbody->_velocityCap = rigidbody->_velocityHardCap;
+
+			if (rigidbody->_velocity >= rigidbody->_velocityHardCap)
+			{
+				spaceship->_overheatThrusterCurr += g_dt;
+			}
+
+			if (spaceship->_overheatThrusterCurr > spaceship->_overheatThruster)
+			{
+				spaceship->_thrustDelayCurr = spaceship->_thrustDelay;
+			}
+		}
+		else
+		{
+			// Main terminal velocity
+			rigidbody->_velocityCap = rigidbody->_velocitySoftCap;
+
+			//Cooldown thrusters
+			if (spaceship->_overheatThrusterCurr > 0.0f)
+			{
+				spaceship->_overheatThrusterCurr -= g_dt;
+			}
 		}
 
-		if (spaceship->_isShooting && spaceship->_shootDelay > 1.5f)
+		if (entity == PlayerManager::player)
 		{
-			spaceship->_shootDelay = 0.0f;
-			SpaceShipShoot(transform);
+			UIEventsManager::Broadcast(new Events::OnThrusterChange(rigidbody->_velocity, rigidbody->_velocityHardCap
+				, spaceship->_overheatThrusterCurr, spaceship->_overheatThruster));
+			Editor_TrackVariable("Player Velocity ", rigidbody->_velocity);
 		}
+
+
 	}
 }
 
-//OUTSIDE OF NAMESPACE for helper functions
-
 void SpaceShipThrust(cRigidBody* rb, cTransform* transform)
 {
-	AEVec2 thrustDir, thrustVector;
-
 	// New Thrust direction to apply ontop of ship current velocity
-	AEVec2Set(&thrustDir, AECos(transform->_rotation), AESin(transform->_rotation));
+	AEVec2Set(&rb->_velocityDirection, AECos(transform->_rotation), AESin(transform->_rotation));
+	AEVec2Set(&rb->_steeringVector, AECos(transform->_rotation), AESin(transform->_rotation));
 
-	// Thrust vector will be added onto velocity, based on rate of change (acceleration)
-	AEVec2Scale(&thrustVector, &thrustDir, rb->_acceleration);
-
-	// Add Thrust Vector to current velocity change
-	AEVec2Add(&rb->_velocityChangeVector, &rb->_velocityChangeVector, &thrustVector);
-
-}
-
-
-// This should move to weapons system
-void SpaceShipShoot(cTransform* transform)
-{
-		AEVec2 bulletDirection;
-		AEVec2 bulletVelocity;
-
-		// Setting the direction of bullet spawn
-		AEVec2Set(&bulletDirection, AECos(transform->_rotation), AESin(transform->_rotation));
-		// Bullet velocity
-		AEVec2Scale(&bulletVelocity, &bulletDirection, 500.0f);
-		// Spawn the bullet at the tip of player
-		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
-			transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);
+	// Accelerate
+	rb->_velocity += rb->_acceleration;
 }

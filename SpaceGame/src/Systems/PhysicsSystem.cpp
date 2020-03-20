@@ -12,39 +12,24 @@
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "PhysicsSystem.h"
+#include "PhysicsSystem.h"							
 #include <AEVec2.h>
-#include "../Math/Math.h"
 #include <math.h>
+#include "../Math/Math.h"
 #include "../Global.h"
 #include "../ECS/Core.h"
 #include "../Components/ComponentList.h"
 
-/*********************************************************************************
-*
-*  GLOBAL VARIABLES (FOR EULER'S METHOD <TEST>)
-*
-**********************************************************************************/
-float thrust = 300.0f;
-float drag = 5.0f;
-float displacement = 25.0f;
-float velocity = 30.0f;
-float mass = 30.0f;
+#include "../Tools/Editor.h"
 
-bool foranglecheck(AEVec2 currdir, AEVec2 newdir)
+
+bool foranglecheck(const AEVec2 currdir, const AEVec2 newdir)
 {
 	float angle = AERadToDeg(acosf(MBMath_DotProduct(currdir, newdir)));
 
-	if (angle > 90)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	//Editor_TrackVariable("player angle ", angle);
+	return (angle > PI / 2.0f);
 }
-
 
 void PhysicsSystem::Init()
 {
@@ -57,85 +42,90 @@ void PhysicsSystem::Init()
 
 void PhysicsSystem::Update()
 {
-	cTransform* transform;
-	cRigidBody* rigidbody;
+	cTransform* trans;
+	cRigidBody* rb;
 
 	for (auto const& entity : entitiesList)
 	{
-		transform = Core::Get().GetComponent<cTransform>(entity);
-		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
+		trans = Core::Get().GetComponent<cTransform>(entity);
+		rb = Core::Get().GetComponent<cRigidBody>(entity);
 
-		// Trying Runge-Kutta method with basic Euler's
-		//float force;				// total force
-		//float acceleration;			// acceleration of the ship
-		//float newVelocity;			// new velocity at the time t + dt
-		//float newDisplacement;		// new displacement at the time t + dt
-		//float k1, k2, k3, k4;
-
-		//// Calculate total force 
-		//force = (thrust - (drag * velocity));
-
-		//// Calculate the acceleration 
-		//acceleration = force / mass;
-		//k1 = g_dt * acceleration;
-
-		//force = (thrust - (drag * (velocity + k1 / 2)));
-		//acceleration = force / mass;
-		//k2 = g_dt * acceleration;
-
-		//force = (thrust - (drag * (velocity + k2 / 2)));
-		//acceleration = force / mass;
-		//k3 = g_dt * acceleration;
-
-		//force = (thrust - (drag * (velocity + k3)));
-		//acceleration = force / mass;
-		//k4 = g_dt * acceleration;
-
-		//// Calculate the new velocity at time t + dt 
-		//// V is the velocity at time t
-		//newVelocity = velocity + (k1 + 2 * k2 + 2 * k3 + k4) / 6;
-
-		//// Calculate the new displacement at time t + dt
-		//newDisplacement = displacement + newVelocity * g_dt;
-
-		//// Updating the old velocity
-		//velocity = newVelocity;
-		//displacement = newDisplacement;
-
-		// -----------------------------------------------------------------------
-		// Currently whats working
-		// -----------------------------------------------------------------------
-
-		
-
-		// Add the new frame velocity change onto the current velocity
-		AEVec2Add(&rigidbody->_velocityVector, &rigidbody->_velocityVector, &rigidbody->_velocityChangeVector);
-		// Reset the change in velocity for next frame
-		AEVec2Zero(&rigidbody->_velocityChangeVector);
-
-		// Set a cap onto the current velocity
-		if (AEVec2Length(&rigidbody->_velocityVector) >= rigidbody->_velocityCap)
+		/*if (foranglecheck(rb->_currentVelocityDirection, rb->_velocityDirection))
 		{
-			AEVec2Scale(&rigidbody->_velocityVector, &rigidbody->_velocityVector, 0.99f);		//Smootly reduce velocity
-		}
+			rb->_velocity *= 0.995f;
+
+			if (rb->_velocity < 1.0f)
+				rb->_currentVelocityDirection = rb->_velocityDirection;
+		}*/
+
+		// Apply "air friction"
+		rb->_velocity *= rb->_airResistance;
+
+		// if the velocity hits the velocity cap
+		if (rb->_velocity > rb->_velocityCap)
+			rb->_velocity *= 0.985f;
+
+		// Calculate current velocity vector based on velocity and direction
+		AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity * g_dt);
+
+		// -----------------------------------------------------------------------
+		//	Physics calculation: Sum of all extra forces
+		// -----------------------------------------------------------------------
+
+		// Add collision vector into the velocity vector
+		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_collisionVector);
+		//Smoothly reduce velocity from collision
+		AEVec2Scale(&rb->_collisionVector, &rb->_collisionVector, 0.9f);
+				
+		// Affect steering force by mass
+		//AEVec2Scale(&rb->_steeringVector, &rb->_steeringVector, 1.0f/rb->_mass);
+
+		// Add player force into the velocity vector
+		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_velocityChangeVector);
+
+		// Add steering force into the velocity vector
+		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_steeringVector);
+
+		// Add the gravitational force into the velocity vector
+		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_gravityVelocity);
+
+		// Finally, add velocity to transform
+		AEVec2Add(&trans->_position, &trans->_position, &rb->_velocityVector);
+
+		// Update directional vector
+		if (fabs(rb->_velocityVector.x + rb->_velocityVector.y) > FLT_EPSILON)
+			AEVec2Normalize(&rb->_velocityDirection, &rb->_velocityVector);
+
+		// -----------------------------------------------------------------------
+		// Non-essential Calculation, mainly for exposing values to check by AI or player
+		// -----------------------------------------------------------------------
 
 		// Calculate velocity magnitude
-		rigidbody->_velocity = AEVec2Length(&rigidbody->_velocityVector);
+		//rb->_velocity = AEVec2Length(&rb->_velocityVector);
 
-		// Calculate normalised velocity vector.....Check if the _velocityVector not (0,0) 
-		if (!(rigidbody->_velocityVector.x < FLT_EPSILON && rigidbody->_velocityVector.x > -FLT_EPSILON &&
-			rigidbody->_velocityVector.y < FLT_EPSILON && rigidbody->_velocityVector.y > -FLT_EPSILON))
-		{
-			AEVec2Normalize(&rigidbody->_velocityDirection, &rigidbody->_velocityVector);
-		}
 
-		// Apply displacement on current position
-		transform->_position.x += rigidbody->_velocityVector.x * g_dt;
-		transform->_position.y += rigidbody->_velocityVector.y * g_dt;
+		///***************
+		//* AI
+		//****************/
+		//// Addition of forces to final calculation
+		//rb->_aiSteeringVector.x = rb->_aiSteeringVector.x / rb->_mass;
+		//rb->_aiSteeringVector.y = rb->_aiSteeringVector.y / rb->_mass;
 
+
+		//// add steering vector into the velocity vector
+		//AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_aiSteeringVector);
+
+		//// check if the collision is bigger than the other vectors
+		//if (rb->_collisionVector.x > rb->_velocityVector.x &&
+		//	rb->_collisionVector.y > rb->_velocityVector.y)
+		//{
+		//	// to set the current velocity vector to the collision vector, and decrement the collision vector 
+		//	--rb->_collisionVector.x;
+		//	--rb->_collisionVector.y;
+		//}
 	}
-
-
 }
+
 void PhysicsSystem::OnComponentAdd(ENTITY) {};
 void PhysicsSystem::OnComponentRemove(ENTITY) {};
+

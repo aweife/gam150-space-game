@@ -29,7 +29,7 @@ void RenderSystem::Render()
 
 	//Update particle system based on layers after finished 
 	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
-	unsigned int currentLayer = 6;
+	unsigned int currentLayer = 7;
 
 	// -----------------------------------------------------------------------
 	// Update all entities that has the components we want
@@ -59,17 +59,28 @@ void RenderSystem::Render()
 			// -----------------------------------------------------------------------
 			parallaxOffsetX = 0.0f;
 			parallaxOffsetY = 0.0f;
-			if (sprite->_layer > 2 && sprite->_layer < 6)				//BACKGROUND <--
+			if (sprite->_layer >= 5 && sprite->_layer <= 6)					//BACKGROUND <--
 			{
 				//Render with parallax offset
-				parallaxOffsetX = cameraX * -0.1f * sprite->_layer;
-				parallaxOffsetY = cameraY * -0.1f * sprite->_layer;
+				parallaxOffsetX = cameraX * -0.001f * sprite->_layer;
+				parallaxOffsetY = cameraY * -0.001f * sprite->_layer;
 			}
-			if (sprite->_layer == 1)									//FOREGROUND -->
+			else if (sprite->_layer >= 3 && sprite->_layer <= 4)			//BACKGROUND <--
+			{
+				//Render with parallax offset
+				parallaxOffsetX = cameraX * -0.05f * sprite->_layer;
+				parallaxOffsetY = cameraY * -0.05f * sprite->_layer;
+			}
+			else if (sprite->_layer == 1)									//FOREGROUND -->
 			{
 				//Render with parallax offset
 				parallaxOffsetX = cameraX * 0.1f * sprite->_layer;
 				parallaxOffsetY = cameraY * 0.1f * sprite->_layer;
+			}
+			else if (sprite->_layer == 0 || sprite->_layer == 7)			//UI Layer should remain relative to screen
+			{
+				parallaxOffsetX = cameraX;
+				parallaxOffsetY = cameraY;
 			}
 
 			//  Compute the TRANSLATION matrix after PARALLAX
@@ -83,23 +94,38 @@ void RenderSystem::Render()
 			// -----------------------------------------------------------------------
 			// RENDERING EFFECTS
 			// -----------------------------------------------------------------------
-			// Use textures
-			AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-			// Set texture
-			AEGfxTextureSet(sprite->_texture, 0.0f, 0.0f);
+			if (sprite->_mode == SPRITE_RM::RM_SPRITE)
+			{
+				// Use textures
+				AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 
-			// Set blend mode to blend so we can render transparency
-			AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-			//Transparency
-			AEGfxSetTransparency(1.0f);
-			// No tint
-			AEGfxSetTintColor(1.0f, 1.0f, 1.0f, 1.0f);
+				// Set texture
+				AEGfxTextureSet(sprite->_texture, sprite->_UVOffset.x, sprite->_UVOffset.y);
 
-			// Render at _position
-			AEGfxSetTransform(transform->_transform.m);
+				// Set blend mode to blend so we can render transparency
+				AEGfxSetBlendMode(sprite->_blend);
+				//Transparency
+				AEGfxSetTransparency(1.0f);
+				// No tint
+				AEGfxSetTintColor(sprite->_colorTint.r, sprite->_colorTint.g, sprite->_colorTint.b, sprite->_colorTint.a);
+				AEGfxSetBlendColor(sprite->_colorBlend.r, sprite->_colorBlend.g, sprite->_colorBlend.b, sprite->_colorBlend.a);
+				// Render at _position
+				AEGfxSetTransform(transform->_transform.m);
 
-			//Draw
-			AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);
+				//Draw
+				AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);
+			}
+			else if (sprite->_mode == SPRITE_RM::RM_COLOR)
+			{
+				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+				AEGfxSetBlendMode(sprite->_blend);
+				AEGfxSetTransparency(1.0f);
+				AEGfxSetTintColor(sprite->_colorTint.r, sprite->_colorTint.g, sprite->_colorTint.b, sprite->_colorTint.a);
+				AEGfxSetBlendColor(sprite->_colorBlend.r, sprite->_colorBlend.g, sprite->_colorBlend.b, sprite->_colorBlend.a);
+				AEGfxSetTransform(transform->_transform.m);
+				AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);
+			}
+			
 		}
 		particleSystemInstance->RenderLayer(currentLayer, parallaxOffsetX, parallaxOffsetY);
 		--currentLayer;
@@ -133,6 +159,9 @@ void RenderSystem::OnComponentAdd(ENTITY entity)
 	case 6:
 		entityLayer6.insert(entity);
 		break;
+	case 7:
+		entityLayer7.insert(entity);
+		break;
 	default:
 		break;
 	}
@@ -164,6 +193,9 @@ void RenderSystem::OnComponentRemove(ENTITY entity)
 	case 6:
 		entityLayer6.erase(entity);
 		break;
+	case 7:
+		entityLayer7.erase(entity);
+		break;
 	default:
 		break;
 	}
@@ -174,6 +206,7 @@ void RenderSystem::OnComponentRemove(ENTITY entity)
 	entityLayer3.erase(entity);
 	entityLayer4.erase(entity);
 	entityLayer5.erase(entity);
-	entityLayer6.erase(entity);*/
+	entityLayer6.erase(entity);
+	entityLayer7.erase(entity); */
 
 }

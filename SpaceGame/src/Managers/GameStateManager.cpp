@@ -1,5 +1,7 @@
 #include "GameStateManager.h"
 #include "../Levels/LoadingLevel.h"
+#include "../Levels/SplashScreen.h"
+#include "../Levels/MainMenu.h"
 #include "../Levels/Level1.h"
 
 #include "../Tools/Console.h"
@@ -22,21 +24,38 @@ void GSM_Update()
 {
 	switch (nextState)
 	{
+	case GS_SPLASHSCREEN:
+		fpLoad		=	SplashScreen_Load;
+		fpInit		=	SplashScreen_Init;
+		fpUpdate	=	SplashScreen_Update;
+		fpDraw		=	SplashScreen_Draw;
+		fpFree		=	SplashScreen_Free;
+		fpUnload	=	SplashScreen_Unload;
+		break;
 	case GS_LOADINGLvl:
-		fpLoad =	LoadingLvl_Load;
-		fpInit =	LoadingLvl_Init;
-		fpUpdate =	LoadingLvl_Update;
-		fpDraw =	LoadingLvl_Draw;
-		fpFree =	LoadingLvl_Free;
-		fpUnload =	LoadingLvl_Unload;
+		fpLoad		=	LoadingLvl_Load;
+		fpInit		=	LoadingLvl_Init;
+		fpUpdate	=	LoadingLvl_Update;
+		fpDraw		=	LoadingLvl_Draw;
+		fpFree		=	LoadingLvl_Free;
+		fpUnload	=	LoadingLvl_Unload;
+		break;
+
+	case GS_MAINMENU:
+		fpLoad		=	MainMenu_Load;
+		fpInit		=	MainMenu_Init;
+		fpUpdate	=	MainMenu_Update;
+		fpDraw		=	MainMenu_Draw;
+		fpFree		=	MainMenu_Free;
+		fpUnload	=	MainMenu_Unload;
 		break;
 	case GS_LEVEL1:
-		fpLoad =	Level1_Load;
-		fpInit =	Level1_Init;
-		fpUpdate =	Level1_Update;
-		fpDraw =	Level1_Draw;
-		fpFree =	Level1_Free;
-		fpUnload =	Level1_Unload;
+		fpLoad		=	Level1_Load;
+		fpInit		=	Level1_Init;
+		fpUpdate	=	Level1_Update;
+		fpDraw		=	Level1_Draw;
+		fpFree		=	Level1_Free;
+		fpUnload	=	Level1_Unload;
 		break;
 	case GS_RESTART:
 		break;
@@ -55,7 +74,7 @@ void GSM_RestartLevel()
 
 void GSM_QuitGame()
 {
-	Console_Cout("Quite Game");
+	Console_Cout("Quit Game");
 	nextState = GS_QUIT;
 }
 

@@ -5,6 +5,7 @@
 #include "../Components/cParticleEmitter.h"
 #include "../Global.h"
 #include "../Math/Math.h"
+#include "AEEngine.h"
 
 void ParticleSystem::Init()
 {
@@ -24,6 +25,13 @@ void ParticleSystem::Update()
 	AEVec2 cameraLastFramePostion, velocityVector, displacement;
 
 	AEGfxGetCamPosition(&cameraLastFramePostion.x, &cameraLastFramePostion.y);
+
+	//Temporaray Hack
+	float originalDeltaTime = g_dt;
+	if (g_dt > 1/60.0f)
+	{
+		g_dt = 1 / 60.0f;
+	}
 
 	for (auto const& particles : entitiesList)
 	{
@@ -130,6 +138,8 @@ void ParticleSystem::Update()
 		}
 		particleComp->_isVisible = true;
 	}
+
+	g_dt = originalDeltaTime;
 }
 
 void ParticleSystem::RenderLayer(unsigned int layer, float parallaxOffX, float parallaxOffY)

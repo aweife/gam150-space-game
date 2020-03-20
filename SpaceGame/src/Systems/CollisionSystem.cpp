@@ -17,15 +17,19 @@
 #include <array>                            // array container
 #include <vector>                           // vector container
 #include <limits>                           // limits
+#include <cmath>                            // For abs
 
 #include "../Managers/CameraManager.h"		// For screen shake
+#include "../Systems/HealthSystem.h"		// For Damage Taken
 #include "../Math/Math.h"                   // Additional Math functions
 #include "../Global.h"                      // g_dt
 #include "../ECS/Core.h"                    // For ECS
+#include "../Tools/Editor.h"                    // For ECS
 #include "../ECS/Factory.h"                 // For Particle System
 #include "../Components/ComponentList.h"    // For component list
+#include "../Managers/LevelManager.h"
 
-
+#include "../Tools/Console.h"
 /*********************************************************************************
 *
 * HELPER FUNCTIONS
@@ -39,22 +43,27 @@ float max = -std::numeric_limits<float>::infinity();
 // Finding the minimum and maximum projections of each array on the axis 
 AEVec2 vectorProjections(const RectVertexArray& vertices, const AEVec2& axis)
 {
-	// to check all the vertices for projection 
-	for (auto& vertex : vertices)
-	{
-		float proj = MBMath_DotProduct(vertex, axis);
-		if (proj < min)
-		{
-			min = proj;
-		}
+	UNREFERENCED_PARAMETER(vertices);
+	UNREFERENCED_PARAMETER(axis);
+	//UNREACHABLE CODE ERROR!!
 
-		if (proj > max)
-		{
-			max = proj;
-		}
+	//// to check all the vertices for projection 
+	//for (auto& vertex : vertices)
+	//{
+	//	float proj = MBMath_DotProduct(vertex, axis);
+	//	if (proj < min)
+	//	{
+	//		min = proj;
+	//	}
 
-		return AEVec2{ min, max };
-	}
+	//	if (proj > max)
+	//	{
+	//		max = proj;
+	//	}
+
+	//	return AEVec2{ min, max };
+	//}
+	return { 0 };
 }
 
 // to check whether both vectors are overlapping
@@ -135,8 +144,15 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 	if (obj1.max.x < obj2.min.x || obj1.min.x > obj2.max.x ||
 		obj1.max.y < obj2.min.y || obj1.min.y > obj2.max.y)
 	{
+		// Check x-axis 
+		if (fabs(newVelocity_x) < FLT_EPSILON) // If vel is 0 
+		{
+			// If they do not overlap on the x-axis 
+			if ((obj2.max.x < obj1.min.x) || (obj2.min.x > obj1.max.x))
+				return false;
+		}
 		// Working with one-dimention (x-axis)
-		if (newVelocity_x < 0.0f)
+		else if (newVelocity_x < 0.0f)
 		{
 			// Case 1 
 			if (obj1.min.x > obj2.max.x)
@@ -156,7 +172,7 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			}
 		}
 
-		if (newVelocity_x > 0)
+		else if (newVelocity_x > 0)
 		{
 			// Case 2 
 			if (obj1.min.x > obj2.max.x)
@@ -182,8 +198,16 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			return false;
 		}
 
+		// Check y-axis 
+		if (fabs(newVelocity_y) < FLT_EPSILON) // If vel is 0 
+		{
+			// If they do not overlap on the x-axis 
+			if ((obj2.max.y < obj1.min.y) || (obj2.min.y > obj1.max.y))
+				return false;
+		}
+
 		// Working with one-dimention (y-axis)
-		if (newVelocity_y < 0)
+		else if (newVelocity_y < 0)
 		{
 			// Case 1 
 			if (obj1.max.y > obj2.min.y)
@@ -203,7 +227,7 @@ bool AABBCollision(const Colliders& obj1, const AEVec2& vel1,
 			}
 		}
 
-		if (newVelocity_y > 0)
+		else if (newVelocity_y > 0)
 		{
 			// Case 2 
 			if (obj1.min.y > obj2.max.y)
@@ -357,7 +381,52 @@ bool CollisionCheck(const Colliders& obj1, const ColliderShape shape1, const AEV
 			return false;
 		}
 	}
+	//for playtest
+	else if (shape1 == ColliderShape::RAYCAST && shape2 == ColliderShape::RECTANGLE)
+	{
+		AEVec2 pointToRect1, pointToRect2;
 
+		AEVec2 raycastDir;
+		raycastDir.x = obj1.max.x - obj1.min.x;
+		raycastDir.y = obj1.max.y - obj1.min.y;
+		if ((obj2.center.x < obj1.min.x && obj2.center.y < obj1.max.y) 
+			|| (obj2.center.x > obj1.min.x && obj2.center.y > obj1.max.y))
+		{
+			//Use top left and bottom right
+			pointToRect1.x = obj2.min.x - obj1.center.x;			//		X--------
+			pointToRect1.y = obj2.max.y - obj1.center.y;			//		|		|
+			pointToRect2.x = obj2.max.x - obj1.center.x;			//		|		|
+			pointToRect2.y = obj2.min.y - obj1.center.y;			//		--------X
+			AEVec2Normalize(&pointToRect1, &pointToRect1);
+			AEVec2Normalize(&pointToRect2, &pointToRect2);
+			float fovAngle = AEVec2DotProduct(&pointToRect1, &pointToRect2);
+			float angle1 = AEVec2DotProduct(&pointToRect1, &raycastDir);
+			float angle2 = AEVec2DotProduct(&pointToRect2, &raycastDir);
+			if (angle1 > fovAngle && angle2 > fovAngle)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			//Use bottom left and top right
+			pointToRect1.x = obj2.min.x - obj1.center.x;			//		--------X
+			pointToRect1.y = obj2.min.y - obj1.center.y;			//		|		|
+			pointToRect2.x = obj2.max.x - obj1.center.x;			//		|		|
+			pointToRect2.y = obj2.max.y - obj1.center.y;			//		X--------
+			AEVec2Normalize(&pointToRect1, &pointToRect1);
+			AEVec2Normalize(&pointToRect2, &pointToRect2);
+			float fovAngle = AEVec2DotProduct(&pointToRect1, &pointToRect2);
+			float angle1 = AEVec2DotProduct(&pointToRect1, &raycastDir);
+			float angle2 = AEVec2DotProduct(&pointToRect2, &raycastDir);
+			if (angle1 > fovAngle && angle2 > fovAngle)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 	// return no collision
 	return false; 
 }
@@ -387,6 +456,7 @@ void CollisionSystem::Update()
 	cCollision* collider2;
 	cRigidBody* rigidbody2;
 	cTransform* transform2;
+	cHealth* health2;
 
 	// To set all the bounding boxes of each entity
 	for (auto const& entity : entitiesList)
@@ -394,13 +464,29 @@ void CollisionSystem::Update()
 		collider = Core::Get().GetComponent<cCollision>(entity);
 		transform = Core::Get().GetComponent<cTransform>(entity);
 
-		collider->_boundingBox.max.x = 0.5f * transform->_scale.x + transform->_position.x;
-		collider->_boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
-		collider->_boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
-		collider->_boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
+		
+		collider->_boundingBox.max.x = 0.4f * transform->_scale.x + transform->_position.x;
+		collider->_boundingBox.max.y = 0.4f * transform->_scale.y + transform->_position.y;
+		collider->_boundingBox.min.x = -0.4f * transform->_scale.x + transform->_position.x;
+		collider->_boundingBox.min.y = -0.4f * transform->_scale.y + transform->_position.y;
+		//Playtest JY
+		if (collider->_bbShape == ColliderShape::RAYCAST)
+		{
+			collider->_boundingBox.center.x = transform->_position.x;
+			collider->_boundingBox.center.y = transform->_position.y;
+			//Temporary use this to calculate orientation
+			collider->_boundingBox.max.x = transform->_position.x + AECos(transform->_rotation);
+			collider->_boundingBox.max.y = transform->_position.y + AESin(transform->_rotation);
+			collider->_boundingBox.min.x = transform->_position.x;
+			collider->_boundingBox.min.y = transform->_position.y;
+		}
 
 		// Set the enum to rectangle
-		collider->_bbShape = ColliderShape::RECTANGLE;
+		if (collider->_bbShape != ColliderShape::RAYCAST)
+		{
+			collider->_bbShape = ColliderShape::RECTANGLE;
+		}
+		
 	}
 
 	// To check for collision for each entity in the list
@@ -409,7 +495,11 @@ void CollisionSystem::Update()
 		collider = Core::Get().GetComponent<cCollision>(entity1);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity1);
 		transform = Core::Get().GetComponent<cTransform>(entity1);
+		std::shared_ptr<HealthSystem> healthSys(std::static_pointer_cast<HealthSystem>(Core::Get().GetSystem<HealthSystem>()));
 
+		//for raycast
+		float shortestDistance = 999.0f;
+		ENTITY raycastEntity = 0;
 
 		for (auto const& entity2 : entitiesList)
 		{
@@ -421,44 +511,160 @@ void CollisionSystem::Update()
 			collider2 = Core::Get().GetComponent<cCollision>(entity2);
 			rigidbody2 = Core::Get().GetComponent<cRigidBody>(entity2);
 			transform2 = Core::Get().GetComponent<cTransform>(entity2);
+			health2 = Core::Get().GetComponent<cHealth>(entity2);
 
 			// For to check which collision
 			if (CollisionCheck(collider->_boundingBox, collider->_bbShape, 
 				               rigidbody->_velocityVector, collider2->_boundingBox,
 				               collider2->_bbShape,rigidbody2->_velocityVector) == true)
 			{
-
 				// if player and enemy collide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
-				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY || 
+																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
 				{
 					CameraManager::StartCameraShake();
-					printf("Enemy health decrease lmao\n");
+					//printf("Enemy health decrease lmao\n");
+
+					// when the player's velocity is more than the velocity cap
+					if (rigidbody->_velocity > (rigidbody->_velocityCap/2.0f))
+					{
+						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						//CameraManager::StartCameraShake();
+						markedForDestruction.insert(entity2);
+					}
 
 					// for player's bounce off
-					rigidbody->_angularVelocity.x = -20.0f;
-					rigidbody->_angularVelocity.y = -20.0f;
-					rigidbody->_velocityVector.x += rigidbody->_angularVelocity.x;
-					rigidbody->_velocityVector.y += rigidbody->_angularVelocity.y;
+					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
+					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), -(rigidbody->_velocityVector.y * 1.2f));
+					AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
 
 					// for enemy's bounce off
-					rigidbody2->_angularVelocity.x = -50.0f;
-					rigidbody2->_angularVelocity.y = -50.0f;
-					rigidbody2->_velocityChangeVector = rigidbody2->_angularVelocity;
-				}
-				
-				// if bullet collide with enemy
-				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::ENEMY )
-				{
-					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-					CameraManager::StartCameraShake();
-					printf("ENEMY HEALTH DECREASE\n");
-					markedForDestruction.insert(entity1);
+					AEVec2Set(&rigidbody2->_velocityDirection, -(rigidbody2->_velocityVector.x), -(rigidbody2->_velocityVector.y));
+					AEVec2Set(&rigidbody2->_collisionVector, -(rigidbody2->_velocityVector.x * 1.5f), -(rigidbody2->_velocityVector.y * 1.5f));
+					AEVec2Add(&rigidbody2->_collisionVector, &rigidbody2->_collisionVector, &rigidbody2->_velocityDirection);
+
 				}
 
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::OBJECTIVE)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					//CameraManager::StartCameraShake();
+					markedForDestruction.insert(entity2);
+					LevelManager::ClearObjective(entity2);
+				}
+
+
+				// Player collide with boss
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::BOSS)
+				{
+					//CameraManager::StartCameraShake();
+
+					// for player's bounce off
+					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
+					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), -(rigidbody->_velocityVector.y * 1.2f));
+					AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
+				}
+				
+				// if bullet collide with object
+				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY)
+				{
+					cProjectile* projectile = Core::Get().GetComponent<cProjectile>(entity1);
+					if (projectile && projectile->_bulletType == bulletType::laser)
+					{
+						if (AEVec2Distance(&transform->_position, &transform2->_position)<shortestDistance)
+						{
+							shortestDistance = AEVec2Distance(&transform->_position, &transform2->_position);
+							raycastEntity = entity2;
+						}
+						continue;
+					}
+
+
+					markedForDestruction.insert(entity1);
+
+					if (health2 != nullptr && health2->_isInvulnerable == false)
+					{
+						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						CameraManager::StartCameraShake();
+						healthSys->TakeDamage(entity2);
+					}
+				}
+				// if bullet collide with Player
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)
+				{
+					
+					markedForDestruction.insert(entity1);
+
+					//Check invulnerablity frames
+					if (health2 != nullptr && health2->_isInvulnerable == false)
+					{
+						if (!health2->_activateShield)
+						{
+							Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						}
+						
+						CameraManager::StartCameraShake();
+						healthSys->TakeDamage(entity2);
+					}
+					
+				}
+
+				// if bullet collide with planet
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					markedForDestruction.insert(entity2);
+				}
+
+				// if player near planet
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::PLANET)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					markedForDestruction.insert(entity1);
+				}
 			}
 		}
+		//Raycast resolution
+		if (collider->_bbShape == ColliderShape::RAYCAST)
+		{
+			if (raycastEntity)
+			{
+				collider2 = Core::Get().GetComponent<cCollision>(raycastEntity);
+				rigidbody2 = Core::Get().GetComponent<cRigidBody>(raycastEntity);
+				transform2 = Core::Get().GetComponent<cTransform>(raycastEntity);
+				health2 = Core::Get().GetComponent<cHealth>(raycastEntity);
+				if (rigidbody->_tag == COLLISIONTAG::BULLET_PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
+				{
+					float raycastLength = transform->_scale.x;
+					float strikeLength = shortestDistance - (transform2->_scale.x/2);
+					cSprite* sprite = Core::Get().GetComponent<cSprite>(entity1);
+					//Laser 
+					if (sprite)
+					{
+						sprite->_UVOffset.x = 0.5f - (strikeLength / raycastLength)*0.5f;
+					}
+					if (health2 != nullptr && health2->_isInvulnerable == false)
+					{
+						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						//CameraManager::StartCameraShake();
+						healthSys->TakeDamage(raycastEntity);
+					}
+				}
+			}
+			else
+			{
+				cSprite* sprite = Core::Get().GetComponent<cSprite>(entity1);
+				//Laser 
+				if (sprite)
+				{
+					sprite->_UVOffset.x = 0.0f;
+				}
+			}
+		}
+		
+		
 	}
 
 	//Collision Resolution

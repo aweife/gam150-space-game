@@ -1,32 +1,34 @@
-/*********************************************************************************
+/**********************************************************************************
 * \file			Main.cpp
-* \author		Ang Wei Feng, Chong Jin Kiat, Chong Jun Yi, Farzaana Binte Roslan
-* \version		1.0
-* \date			18/01/2019
-* \par			MAIN
-* \note			Course: GAM150
 * \brief		Entry point for Game executable "End Of Space" by Moon Base
-				- Initalise Window, Console, ECS Game Engine
-				- Game State Loop, Game loop
-				- Program Cleanup
-
-* \copyright	Copyright (c) 2019 DigiPen Institute of Technology. Reproduction
-				or disclosure of this file or its contents without the prior
-				written consent of DigiPen Institute of Technology is prohibited.
+* \author		Wei Feng,		Ang,		25% Code Contribution 
+*				Jun Yi,			Chong,		25% Code Contribution
+*				Jin Kiat,		Chong,		25% Code Contribution 
+*				Farzaana Binte, Roslan,		25% Code Contribution 
+*
+*				Long Description
+*				- Initalise Window, Console, ECS Game Engine
+*				- Game State Loop, Game loop
+*				- Program Cleanup
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 
 // Includes
 #include <crtdbg.h>						// For Memory Leak
 #include "AEEngine.h"					// AlphaEngine
-#include "Global.h"						// Global variables 
+#include "Global.h"						// Global variables such as deltaTime and Screen Size
 #include "Tools/Editor.h"				// Editor for gameplay
 #include "Tools/Console.h"				// Debug logger
 #include "ECS/Core.h"					// Initalise Game Engine
 #include "Managers/GameStateManager.h"  // Control Game State Flow
 #include "Managers/InputManager.h"		// Recieve Input from AlphaEngine
-#include "Managers/ResourceManager.h"	// Generate Mesh and Load in Texture
-
-#include "Tools/MemoryLeak.h"
+#include "Managers/ResourceManager.h"	// Generate Mesh and Load in Texture from folders
+#include "Managers/AudioManager.h"		// Plays audio clip to audio hardware
+#include "Managers/UpgradeManager.h"	// Load in upgrade set by designers
+#include "Tools/MemoryLeak.h"			// Provides exact line memleak occur
 
 // ---------------------------------------------------------------------------
 // Libraries
@@ -68,7 +70,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Global_Init();																// Init time, windowSize...
 	Core::Get().Core_Init();													// Initalise Game Engine ECS
 	ResourceManager::Init();													// Load in Bare Minimum
-	GSM_Init(GS_LOADINGLvl);														// Initalise Game StateManager
+	UpgradeManager::Init_UpgradeDatabase();
+	AudioManager::Init();
+
+	GSM_Init(GS_MAINMENU);														// Initalise Game StateManager
 
 	// -----------------------------------------------------------------------
 	// GAME STATE LOOP
@@ -134,6 +139,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// Clean up for all buffer and memory
 	// -----------------------------------------------------------------------
 	ResourceManager::Unload();
+	UpgradeManager::Cleanup_UpgradeDatabase();
+	AudioManager::Shutdown();
 	Console_CleanUp();
 	Core::Get().Core_Unload();						// free all core system
 	AESysExit();									// free the system

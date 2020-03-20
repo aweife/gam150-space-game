@@ -1,28 +1,43 @@
+/**********************************************************************************
+* \file			LoadingLevel.cpp
+* \brief		Game State for Loading Level
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*				
+*				Long Description
+*				- Provide a loading screen
+*				- While loading assets within the delta time of each frame
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "LoadingLevel.h"
 #include "../ECS/Factory.h"
 #include "../ECS/Core.h"
 #include "../Managers/ResourceManager.h"
-#include <queue>
+#include "../Managers/UIEventsManager.h"
+#include "../Managers/GameStateManager.h"
+#include "../Systems/UISystem.h"							//edit text
 
 unsigned int loadingForState = GS_NULL;
-std::queue<ENTITY> entityToDestroy;
-
+ENTITY loadingText = 0;
 void LoadingLvl_Load()
 {
-	entityToDestroy.push(Factory::CreateUI_Text(100, -150, "Loading Level..."));
-	entityToDestroy.push(Factory::CreateBackground_Load());
+	loadingText = Factory_UI::CreateUI_Text(0, -150, "Loading Level...");
+	Factory_UI::CreateBackground_Load();
 }
 
 void LoadingLvl_Init()
 {
-	loadingForState = GS_LEVEL1;					//REMOVE IN FUTURE
+	//loadingForState = GS_LEVEL1;					//REMOVE IN FUTURE
 	ResourceManager::loadingProgress = 0;
-	ResourceManager::loadingCompelete = false;
+	ResourceManager::loadingCompleted = false;
 }
 
 void LoadingLvl_Update()
 {
-	ResourceManager::Update(GS_LEVEL1);
+	ResourceManager::Update(loadingForState);
+	EditText(loadingText, "Loading Level...", ResourceManager::loadingProgress);
 	if (ResourceManager::loadingProgress >= 100)
 	{
 		GSM_ChangeState(loadingForState);
@@ -38,15 +53,11 @@ void LoadingLvl_Free()
 {
 	loadingForState = GS_NULL;
 	ResourceManager::loadingProgress = 100;
-	ResourceManager::loadingCompelete = true;
+	ResourceManager::loadingCompleted = true;
 }
 
 void LoadingLvl_Unload()
 {
-	while (entityToDestroy.size() > 0)
-	{
-		ENTITY destroy = entityToDestroy.front();
-		Core::Get().EntityDestroyed(destroy);
-		entityToDestroy.pop();
-	}
+	UIEventsManager::Cleanup();
+	Core::Get().DestroyAllEntity();
 }

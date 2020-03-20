@@ -1,12 +1,29 @@
-#include "PlayerManager.h"						//Self Header
-#include "../Global.h"
-#include "../Managers/InputManager.h"			//Recieve inputs
-#include "../ECS/Core.h"
-#include "../Managers/CameraManager.h"
+/**********************************************************************************
+* \file			PlayerManager.cpp
+* \brief		Logic for player features from input
+* \author		Jin Kiat,		Chong,		90% Code Contribution
+*				Jun Yi,			Chong,		10% Code Contribution
+*				
+*				Long Description
+*				- facing direction
+*				- mouse clicks on UI
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+#include "PlayerManager.h"						// Self Header
+#include "../Global.h"							// Screensize 
+#include "../Managers/InputManager.h"			// Recieve inputs
+#include "../Managers/ManagerList.h"	        // For UI manager
+#include "../ECS/Core.h"						// Get Component
+#include "../Managers/CameraManager.h"			// Get the position of a moving camera 
 #include "../Math/Math.h"						// Rotation Lerp
-#include "../Components/cSpaceShip.h"
+#include "../Components/cSpaceShip.h"			// Mouse click ->shooting
+#include "../Components/cWeapon.h"				// Mouse click ->shooting
 
-#include "../Tools/Editor.h"					//Debugging
+#include "../Tools/Editor.h"					// Debugging
+#include "../ECS/Factory.h"						// Gameover UI
 
 namespace PlayerManager
 {
@@ -20,15 +37,18 @@ namespace PlayerManager
 		cRigidBody* playerRigidBody = Core::Get().GetComponent<cRigidBody>(player);
 		cTransform* playerTransform = Core::Get().GetComponent<cTransform>(player); 
 		cSpaceShip* playerSpaceShip = Core::Get().GetComponent<cSpaceShip>(player);
+		cRangeWeapon* playerWeapon = Core::Get().GetComponent<cRangeWeapon>(player);
 		cTransform* camTransform = CameraManager::GetCameraTransform();
 		int mousePosX = InputManager::mousePosX;
 		int mousePosY = InputManager::mousePosY;
-
+			
 		RotateWithMouse(mousePosX, mousePosY, camTransform, playerTransform, playerRigidBody);
-		
-		playerSpaceShip->_isThrusting = InputManager::mouseRTrigger;
-		playerSpaceShip->_isShooting = InputManager::mouseLTrigger;
 
+		playerSpaceShip->_isThrusting = InputManager::mouseRTrigger;
+		if (playerSpaceShip->_currWeaponMode == WeaponMode::WEAPONMODE_RANGE)
+		{
+			playerWeapon->_playerIsShooting = InputManager::mouseLTrigger;
+		}
 	}
 
 	void RotateWithMouse(int mousePosX, int mousePosY, cTransform* camTransform, 
@@ -74,5 +94,12 @@ namespace PlayerManager
 	void ResetPlayer()
 	{
 		player = 0;
+	}
+
+	
+	void PlayerDeath()
+	{
+		Factory_UI::CreateUI_GameOver();
+		LevelManager::ClearObjectiveAll();
 	}
 }

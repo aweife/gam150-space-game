@@ -38,6 +38,7 @@ enum class ColliderShape
 	CIRCLE = 0,
 	RECTANGLE = 1,
 	RECTANGLE_OBB = 2,
+	RAYCAST = 3,
 	NONE
 };
 
