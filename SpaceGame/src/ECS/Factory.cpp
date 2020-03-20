@@ -762,8 +762,9 @@ namespace Factory_UI
 		Core::Get().AddComponent<cTransform>(realUpgrade, new cTransform(position, 0.0f, { 100 * 0.9f, 100 * 0.9f }));
 		Core::Get().AddComponent<cUIElement>(realUpgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
 		Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex = UpgradeManager::RandomUpgrade();
+		unsigned int upgradeIndex = Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex;
 		//Different sprite based on upgrade assigned
-		Core::Get().AddComponent<cSprite>(realUpgrade, new cSprite(realUpgrade, "Square Mesh2", "Upgrade_1", 0));
+		Core::Get().AddComponent<cSprite>(realUpgrade, new cSprite(realUpgrade, "Square Mesh2", UpgradeManager::GetUpgradeImage(upgradeIndex), 0));
 		Core::Get().GetComponent<cSprite>(realUpgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 
 

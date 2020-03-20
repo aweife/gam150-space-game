@@ -428,10 +428,30 @@ namespace ResourceManager
 				case 21:
 					if (textureLibrary.find("Boss") != textureLibrary.end()) break; 
 					textureLibrary.insert({ "Boss", AEGfxTextureLoad("res/Boss.png") });
+					break;
+				case 22:
+					if (textureLibrary.find("Upgrade_Health") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Upgrade_Health", AEGfxTextureLoad("res/Upgrade_Health.png") });
+					break;
+				case 23:
+					if (textureLibrary.find("Upgrade_Damage") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Upgrade_Damage", AEGfxTextureLoad("res/Upgrade_Damage.png") });
+					break;
+				case 24:
+					if (textureLibrary.find("Upgrade_Shield") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Upgrade_Shield", AEGfxTextureLoad("res/Upgrade_Shield.png") });
+					break;
+				case 25:
+					if (textureLibrary.find("Upgrade_Thruster") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Upgrade_Thruster", AEGfxTextureLoad("res/Upgrade_Thruster.png") });
+					break;
+				case 26:
+					if (textureLibrary.find("Upgrade_Laser") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Upgrade_Laser", AEGfxTextureLoad("res/Upgrade_Laser.png") });
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 22): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 27): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

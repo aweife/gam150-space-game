@@ -48,7 +48,8 @@ namespace InputManager
 		// Non-Gameplay Keyboard Controls ... Pause, Exit
 		// -----------------------------------------------------------------------
 
-		if (AEInputCheckTriggered(AEVK_P)) {
+		if (AEInputCheckTriggered(AEVK_P)) 
+		{
 			TogglePause();
 		}
 		if (AEInputCheckTriggered(AEVK_ESCAPE))
@@ -85,10 +86,12 @@ namespace InputManager
 		if (AEInputCheckTriggered(AEVK_1))
 		{
 			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
+			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.0f;
 		}
 		if (AEInputCheckTriggered(AEVK_2))
 		{
 			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::pistol;
+			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.2f;
 		}
 
 		//Testing...remove once done

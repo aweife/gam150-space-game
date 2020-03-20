@@ -84,3 +84,8 @@ void EntityManager::ClearActiveSet()
 {
 	_activeEntity.clear();
 }
+
+unsigned int EntityManager::GetActiveCount()
+{
+	return _activeEntityCount;
+}

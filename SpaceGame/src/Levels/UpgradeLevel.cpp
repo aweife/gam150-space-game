@@ -15,6 +15,7 @@ void UpgradeLvl_Load()
 
 void UpgradeLvl_Init()
 {
+	AEGfxSetCamPosition(0, 0);
 	upgradeFinish = false;
 }
 

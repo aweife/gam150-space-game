@@ -42,6 +42,8 @@ public:
 	const std::set<ENTITY> GetActiveSet() const;
 	void ClearActiveSet();
 
+	unsigned int GetActiveCount();
+
 private:
 	// Map the entity to a human readable name
 	std::map<ENTITY, const char*> _entitiesNameSet;

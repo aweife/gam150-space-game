@@ -14,7 +14,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include"../Components/cSpaceShip.h"
 #include"../Components/cHealth.h"
 
-const int NUMBER_OF_PLAYERPGRADES = 3;
+const int NUMBER_OF_PLAYERPGRADES = 4;
 const int NUMBER_OF_RANGEWEAPONUPGRADES = 7;
 const int NUMBER_OF_MELEEWEAPONUPGRADES = 2;
 const int NUMBER_OF_UPGRADES_TYPE = 3;
@@ -43,6 +43,7 @@ namespace UpgradeManager
 {
 	void Init_UpgradeDatabase();
 	void Cleanup_UpgradeDatabase();
+	const char* GetUpgradeImage(int i);
 	int RandomUpgrade();
 	void ApplyUpgrade(int upgradeIndex);
 	bool CheckUnique(int randomUpgrade);
@@ -103,12 +104,12 @@ struct WeaponUpgradeRange_BaseRange
 {
 	inline virtual float Get_FireRateDecrease()			{ return 0.0f; };
 	inline virtual float Get_ReloadRateDecrease()		{ return 0.0f; };
-	inline virtual int	 Get_AmmoIncrease()				{ return 0; };
+	inline virtual int	 Get_AmmoIncrease()				{ return 0;	   };
 	inline virtual float Get_DamageIncrease()			{ return 0.0f; };
 	inline virtual float Get_SpreadDecrease()			{ return 0.0f; };
 	inline virtual float Get_BulletSizeIncrease()		{ return 0.0f; };
 	inline virtual float Get_BulletSpeedIncrease()		{ return 0.0f; };
-
+	inline virtual WeaponType Get_WeaponType()			{ return WeaponType::none; };
 	//virtual ~WeaponUpgradeRange_BaseRange() = 0 {};
 };
 
@@ -153,6 +154,7 @@ struct RangeWeaponUpgrade_BulletSpeedUp1 : public WeaponUpgradeRange_BaseRange
 	inline float Get_BulletSpeedIncrease() override { return 1.0f; };
 
 };
+
 /***************************************************************************************/
 
 
