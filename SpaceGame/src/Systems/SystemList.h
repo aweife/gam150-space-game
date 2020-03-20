@@ -8,6 +8,7 @@
 #include "PhysicsSystem.h"
 #include "CollisionSystem.h"
 #include "AISystem.h"
+#include "BossSystem.h"
 #include "SpaceShipLogicSystem.h"
 #include "UISystem.h"
 #include "WeaponSystemMelee.h"

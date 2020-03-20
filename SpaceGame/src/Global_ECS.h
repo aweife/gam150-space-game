@@ -33,6 +33,7 @@ enum COMPONENTID								//ID for each component, to be used to organise systems 
 	ID_CameraComponent,
 	ID_PathFindingComponent,
 	ID_AIComponent,
+	ID_BossComponent,
 	ID_SpaceShip,
 	ID_RangeWeaponComponent,
 	ID_MeleeWeaponComponent,

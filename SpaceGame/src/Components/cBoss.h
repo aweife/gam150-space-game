@@ -4,9 +4,9 @@
 #include "../AI/aiBlackBoard.h"
 #include "../AI/aiState.h"
 
-class cAI : public Component
+class cBoss : public Component
 {
 public:
 	aiBlackBoard _blackboard;
-	aiStateList  _currentState;
+	bossAttackList  _currentAttack;
 };

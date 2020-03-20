@@ -347,7 +347,7 @@ namespace ResourceManager
 					break;
 				case 2:
 					if (textureLibrary.find("Enemy_2") != textureLibrary.end()) break;
-					textureLibrary.insert({ "Enemy_2", AEGfxTextureLoad("res/Enemy_2.png") });
+					textureLibrary.insert({ "Enemy_2", AEGfxTextureLoad("res/Boss.png") });
 					break;
 				case 3:
 					if (textureLibrary.find("Planet_1") != textureLibrary.end()) break;

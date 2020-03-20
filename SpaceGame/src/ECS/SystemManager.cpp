@@ -27,6 +27,7 @@ void SystemManager::Init()
 	RegisterSystem<PhysicsSystem>();
 	RegisterSystem<CollisionSystem>();
 	RegisterSystem<AISystem>();
+	RegisterSystem<BossSystem>();
 	RegisterSystem<HealthSystem>();
 	RegisterSystem<ProjectileSystem>();
 	RegisterSystem<ParticleEmitterSystem>();

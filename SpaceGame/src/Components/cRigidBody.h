@@ -45,7 +45,7 @@ public:
 
 	// Constructor
 	cRigidBody() = delete;
-	cRigidBody(float mass, float velocity, float velocityCap = 2.0f, float acceleration = 0.0f,
+	cRigidBody(float mass, float velocity, float velocityCap = 2.0f, float baseAcceleration = 0.0f,
 		float rotateVelocity = 0.0f, COLLISIONTAG tag = COLLISIONTAG::NONE);
 	// Destructor
 	~cRigidBody() = default;

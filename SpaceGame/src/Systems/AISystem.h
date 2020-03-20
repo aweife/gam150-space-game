@@ -14,8 +14,6 @@
 
 #include "System.h"
 
-// For Blackboard
-#include "../Player/PlayerManager.h"
 #include "../AI/aiBlackBoard.h"
 
 
@@ -31,6 +29,5 @@ public:
 	void OnComponentRemove(ENTITY) override;
 
 private:
-	void UpdateBlackboard(aiBlackBoard&, ENTITY);
 	void CheckOutOfScreen(ENTITY id);
 };

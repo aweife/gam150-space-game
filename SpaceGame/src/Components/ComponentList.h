@@ -13,6 +13,7 @@
 #include "cCollision.h"
 // AI
 #include "cAI.h"
+#include "cBoss.h"
 // Player
 #include "cSpaceShip.h"
 #include "cWeapon.h"

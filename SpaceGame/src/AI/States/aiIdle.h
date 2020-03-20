@@ -1,5 +1,5 @@
 /**********************************************************************************
-* \file			aiChase.h
+* \file			aiIdle.h
 * \brief		??
 * \author		Wei Feng, Ang, 100% Code Contribution
 *
@@ -13,22 +13,16 @@ written consent of DigiPen Institute of Technology is prohibited.
 #pragma once
 
 #include "aiBase.h"
-#include "../Components/cTransform.h"
-#include "../Components/cRigidBody.h"
 
-class aiChase : public aiBase
+class aiIdle : public aiBase
 {
-public:
-	virtual void Run(const aiBlackBoard&, the_variant&) override;
 private:
-	cTransform* trans;
-	cRigidBody* rb;
+	void OnEnter(aiBlackBoard&) override;
+	void OnUpdate(aiBlackBoard&) override;
+	void OnExit(aiStateList&) override;
 
-	// Arrival at target
-	float attackRange;
-	float maxSpeed;
-	float acceleration;
-	float rotationSpeed;
-	float wanderAngle;
-	float chaseTimer;
+	// Extra components this state needs
+
+	// State variables
+	float _idleTimer;
 };

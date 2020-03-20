@@ -1,16 +1,4 @@
-/*********************************************************************************
-* \file			AISystem.cpp
-* \brief		Controls the behaviour for AI (FSM)
-* \author		Ang Wei Feng, 100% Code Contribution
-*
-*				This system loops through all ai components in the game and calls
-*				their Run function, updating the state of every ai agent.
-*
-* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
-				or disclosure of this file or its contents without the prior
-				written consent of DigiPen Institute of Technology is prohibited.
-**********************************************************************************/
-#include "AISystem.h"							//Self Header
+#include "BossSystem.h"							//Self Header
 #include "../ECS/Core.h"						//Work with ECS
 #include "../Components/ComponentList.h"		//Get necessary component references
 #include "../Global.h"
@@ -18,25 +6,21 @@
 #include "../ECS/Factory.h"
 #include "UISystem.h"							//Spawn Ai Indicators
 #include "../Player/PlayerManager.h"			// Update ai on player
-/******************************************************************************/
-/*!
-  \brief	Sets the system signature for this system based on components required
-*/
-/******************************************************************************/
-void AISystem::Init()
+
+void BossSystem::Init()
 {
 	SIGNATURE signature;
 
 	//Set the bits for necessary components
-	signature.set(Core::Get().GetComponentType<cAI>());
+	signature.set(Core::Get().GetComponentType<cBoss>());
 
 	//Assign the signature for this System
-	Core::Get().SetSystemSignature<AISystem>(signature);
+	Core::Get().SetSystemSignature<BossSystem>(signature);
 }
 
-void AISystem::Update()
+void BossSystem::Update()
 {
-	cAI* ai;
+	cBoss* ai;
 
 	const ENTITY pid = PlayerManager::player;
 	if (pid == 0)	return;				//NO ACTIVE PLAYER
@@ -45,7 +29,7 @@ void AISystem::Update()
 	for (auto const& entity : entitiesList)
 	{
 		// Get self
-		ai = Core::Get().GetComponent<cAI>(entity);
+		ai = Core::Get().GetComponent<cBoss>(entity);
 
 		// Update this ai's blackboard
 		ai->_blackboard.UpdateBlackboard(entity);
@@ -53,18 +37,17 @@ void AISystem::Update()
 		// Run this ai's current state
 		std::visit([&](auto& state)
 			{
-				state.Run(ai->_blackboard, ai->_currentState);
-			}, ai->_currentState.states);
+				state.Run(ai->_blackboard, ai->_currentAttack);
+			}, ai->_currentAttack.attacks);
 
 		CheckOutOfScreen(entity);
-
 	}
 }
 
-void AISystem::OnComponentAdd(ENTITY) {};
-void AISystem::OnComponentRemove(ENTITY) {};
+void BossSystem::OnComponentAdd(ENTITY) {};
+void BossSystem::OnComponentRemove(ENTITY) {};
 
-void AISystem::CheckOutOfScreen(ENTITY id)
+void BossSystem::CheckOutOfScreen(ENTITY id)
 {
 	cTransform* self = Core::Get().GetComponent<cTransform>(id);
 

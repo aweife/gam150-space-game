@@ -58,7 +58,7 @@ float MBMath_Clamp(float x, float lowerlimit, float upperlimit)
     return x;
 }
 
-float MBMath_SmoothDamp(float current, float target, float* currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
+float MBMath_SmoothDamp(float current, float target, float* currentVelocity, float smoothTime, float baseMaxSpeed, float deltaTime)
 {
     smoothTime = AEMax(0.0001f, smoothTime);                                        //smoothTime cant be too small
     float num = 2.0f / smoothTime;                                                  //         
@@ -67,7 +67,7 @@ float MBMath_SmoothDamp(float current, float target, float* currentVelocity, flo
         (1.0f + num2 + 0.48f * num2 * num2 + 0.235f * num2 * num2 * num2);          //
     float num4 = current - target;                                                  //
     float num5 = target;                                                            //
-    float num6 = maxSpeed * smoothTime;                                             //
+    float num6 = baseMaxSpeed * smoothTime;                                             //
     num4 = AEClamp(num4, -num6, num6);                                              //
     target = current - num4;                                                        //
     float num7 = (*currentVelocity + num * num4) * deltaTime;                        //

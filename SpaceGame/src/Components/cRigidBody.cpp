@@ -35,8 +35,8 @@ cRigidBody::cRigidBody(float mass, float velocity, float velocityCap, float acce
 //Please move this to system
 float cRigidBody::CalculateVelwithAcc(float velocity)
 {
-	float acceleration = velocity / g_dt;
-	float newVelocity = (acceleration * g_dt) + velocity; 
+	float baseAcceleration = velocity / g_dt;
+	float newVelocity = (baseAcceleration * g_dt) + velocity; 
 	newVelocity = newVelocity * 0.99f; 
 
 	return newVelocity;

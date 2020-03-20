@@ -29,11 +29,6 @@ namespace Factory
 	//GameObjects
 	ENTITY CreateMenuPlayer();
 	ENTITY CreatePlayer(unsigned int layer);
-	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy2(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy3(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy4(ENTITY player, unsigned int layer);
-	ENTITY CreateEnemy5(ENTITY player, unsigned int layer);
 	ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position);
 	ENTITY SpawnObjective_Comrade(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
@@ -47,6 +42,8 @@ namespace Factory
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
 	ENTITY CreateBullet_LaserBeam(float posX, float posY, float rotation, OWNERTAG tag);
 	
+	ENTITY CreateHomingMissile(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag, ENTITY target);
+
 	//Debug graphics
 	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale);
 	ENTITY CreateDebug_Line(AEVec2& start, AEVec2& end);
@@ -93,10 +90,19 @@ namespace Factory_UI
 
 }
 
-
 namespace Factory_Map
 {
 	void Generate_StarField_Menu();
 	void Generate_PlanetField();
 	void Generate_StarField();
+}
+
+namespace Factory_AI
+{
+	ENTITY CreateEnemy1(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy2(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy3(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy4(ENTITY player, unsigned int layer);
+	ENTITY CreateEnemy5(ENTITY player, unsigned int layer);
+	ENTITY CreateBoss(ENTITY player, unsigned int layer);
 }
