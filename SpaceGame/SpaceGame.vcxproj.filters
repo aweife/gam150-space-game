@@ -109,8 +109,12 @@
     <Image Include="res\Prop_Planet3.png" />
     <Image Include="res\Prop_Planet4.png" />
     <Image Include="res\Weapon_Bullet1.png" />
-    <Image Include="res\Enemy_1.png" />
-    <Image Include="res\GameLogo.png" />
-    <Image Include="res\Loading.png" />
+    <Image Include="res\AI_Indicator.png" />
+    <Image Include="res\Low_Health.png" />
+    <Image Include="res\Asteroid_1.png" />
+    <Image Include="res\Asteroid_2.png" />
+    <Image Include="res\Boss_Incoming.png" />
+    <Image Include="res\Shield_Down.png" />
+    <Image Include="res\Boss.png" />
   </ItemGroup>
 </Project>

@@ -188,6 +188,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />
+    <Image Include="res\Boss.png" />
+    <Image Include="res\Boss_Incoming.png" />
     <Image Include="res\Enemy_1.png" />
     <Image Include="res\GameLogo.png" />
     <Image Include="res\Loading.png" />
