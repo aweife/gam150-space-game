@@ -938,12 +938,12 @@ namespace Factory_AI
 		ENTITY enemy = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(enemy, new cTransform);
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Boss", layer));
-		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
+		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cBoss>(enemy, new cBoss);
 		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 5.0f, 0.3f, 5));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
-		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 300.0f, 0.0f, 30.0f, 4.0f, 1.0f));
+		Core::Get().AddComponent<cHealth>(enemy, new cHealth(100.0f, 3000.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 300.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_rotation = 0.0f;

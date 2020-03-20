@@ -498,7 +498,7 @@ void CollisionSystem::Update()
 		std::shared_ptr<HealthSystem> healthSys(std::static_pointer_cast<HealthSystem>(Core::Get().GetSystem<HealthSystem>()));
 
 		//for raycast
-		float shortestDistance = 999999999.0f;
+		float shortestDistance = 999.0f;
 		ENTITY raycastEntity = 0;
 
 		for (auto const& entity2 : entitiesList)
@@ -559,7 +559,7 @@ void CollisionSystem::Update()
 				// Player collide with boss
 				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::BOSS)
 				{
-					CameraManager::StartCameraShake();
+					//CameraManager::StartCameraShake();
 
 					// for player's bounce off
 					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
@@ -593,7 +593,7 @@ void CollisionSystem::Update()
 					}
 				}
 				// if bullet collide with Player
-				else if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)
 				{
 					
 					markedForDestruction.insert(entity1);
