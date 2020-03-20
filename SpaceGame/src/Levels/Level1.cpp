@@ -65,7 +65,20 @@ void Level1_Load()
 	Factory::CreatePlanet1(5, -820.0f, -100.0f, 200.0f, 200.0f);
 	Factory::CreatePlanet1(5, 1300.0f, -90.0f, 100.0f, 100.0f);
 
+	// Creating of asteroids
+	Factory::CreateAsteroid1(2, 50.0f, -200.f, 100.0f, 100.0f);
+	Factory::CreateAsteroid1(2, 600.0f, 250.f, 80.0f, 80.0f);
+	Factory::CreateAsteroid1(2, -800.0f, -200.f, 80.0f, 80.0f);
+	Factory::CreateAsteroid1(2, 200.0f, -200.f, 150.0f, 150.0f);
+
+	Factory::CreateAsteroid2(2, 350.0f, -300.0f, 80.0f, 80.0f);
+	Factory::CreateAsteroid2(2, 270.0f, 180.0f, 120.0f, 120.0f);
+	Factory::CreateAsteroid2(2, -900.0f, 300.0f, 80.0f, 80.0f);
+	Factory::CreateAsteroid2(2, 80.0f, -260.0f, 60.0f, 60.0f);
+
 	Factory_Map::Generate_PlanetField();
+
+
 
 	Factory::CreateBackground();
 	Factory_UI::Create_PlayerUserInterface();

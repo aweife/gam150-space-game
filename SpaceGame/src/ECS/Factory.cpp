@@ -376,6 +376,41 @@ namespace Factory
 		return planet;
 	}
 
+	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
+	{
+		AEVec2 newPosition, newScale; 
+		AEVec2Set(&newPosition, posX, posY);
+		AEVec2Set(&newScale, scaleX, scaleY);
+
+		ENTITY asteroid = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(asteroid, new cTransform(newPosition, 0, newScale));
+		Core::Get().AddComponent<cSprite>(asteroid, new cSprite(asteroid, "Square Mesh", "Asteroid_1", layer));
+		Core::Get().AddComponent<cRigidBody>(asteroid, new cRigidBody(500.f, 0.0f, 0.0f, 0.0f));
+		Core::Get().AddComponent<cCollision>(asteroid, new cCollision);
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_velocity = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_tag = COLLISIONTAG::PLANET_ASTEROID;
+
+
+		return asteroid;
+	}
+
+	ENTITY CreateAsteroid2(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
+	{
+		AEVec2 newPosition, newScale; 
+		AEVec2Set(&newPosition, posX, posY);
+		AEVec2Set(&newScale, scaleX, scaleY);
+
+		ENTITY asteroid = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(asteroid, new cTransform(newPosition, 0, newScale));
+		Core::Get().AddComponent<cSprite>(asteroid, new cSprite(asteroid, "Square Mesh", "Asteroid_2", layer));
+		Core::Get().AddComponent<cRigidBody>(asteroid, new cRigidBody(500.f, 0.0f, 0.0f, 0.0f));
+		Core::Get().AddComponent<cCollision>(asteroid, new cCollision);
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_velocity = 50.0f;
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_tag = COLLISIONTAG::PLANET_ASTEROID;
+
+		return asteroid;
+	}
+
 	void CreateBackground()
 	{
 		AEVec2 newPostion, newScale;
@@ -666,7 +701,7 @@ namespace Factory_UI
 		return gameLogo;
 	}
 
-	//Placed here so that all the leves UI will be standardised in case of change
+	//Placed here so that all the levels UI will be standardised in case of change
 	//This includes health bar, shield bar and thruster fuel
 	void Create_PlayerUserInterface()
 	{
@@ -688,6 +723,27 @@ namespace Factory_UI
 
 		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::CENTER);
 		//Create_ChooseThree(spritePos);
+	}
+
+	void CreateLowHealthInterface()
+	{
+		AEVec2 spritePos;
+		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		Create_LowHealthUI(spritePos);
+	}
+
+	void CreateShieldsDownInterface()
+	{
+		AEVec2 spritePos;
+		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		Create_ShieldsDownUI(spritePos);
+	}
+
+	void CreateBossIncomingInterface()
+	{
+		AEVec2 spritePos;
+		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		Create_BossIncomingUI(spritePos);
 	}
 
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
@@ -739,6 +795,66 @@ namespace Factory_UI
 		return thruster;
 	}
 
+	ENTITY Create_LowHealthUI(AEVec2 position)
+	{
+		ENTITY lowHealth = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(lowHealth, new cTransform(position, 0, { 350, 50 }));
+		Core::Get().AddComponent<cSprite>(lowHealth, new cSprite(lowHealth, "Square Mesh", "Low_Health", 0));
+		Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(lowHealth, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::LOW_HEALTH_UI));
+		Core::Get().GetComponent<cUIElement>(lowHealth)->_isActive = false;			//invisible
+		
+		Core::Get().AddComponent<cTimeline>(lowHealth, new cTimeline(g_appTime, g_appTime + 1.8f, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 0.00f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 0.5f, 1.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 1.5f, 0.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 1.8f, 0.0f);
+		UIEventsManager::Subscribe(lowHealth, &OnLowHealth_HPIndicator); //Appear When low health
+
+		return lowHealth;
+
+	}
+
+	ENTITY Create_ShieldsDownUI(AEVec2 position)
+	{
+		ENTITY shieldDown = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(shieldDown, new cTransform(position, 0, { 380, 50 }));
+		Core::Get().AddComponent<cSprite>(shieldDown, new cSprite(shieldDown, "Square Mesh", "Shield_Down", 0));
+		Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(shieldDown, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::SHIELD_DOWN_UI));
+		Core::Get().GetComponent<cUIElement>(shieldDown)->_isActive = false;			//invisible
+
+		Core::Get().AddComponent<cTimeline>(shieldDown, new cTimeline(g_appTime, g_appTime + 1.8f, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown), 0.0f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown), 0.5f, 1.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown), 1.5f, 0.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(shieldDown)->_colorTint.a, Core::Get().GetComponent<cTimeline>(shieldDown), 1.80f, 0.0f);
+		UIEventsManager::Subscribe(shieldDown, &OnShieldDown_ShieldIndicator); //Appear When shield
+
+		return shieldDown;
+	}
+
+	ENTITY Create_BossIncomingUI(AEVec2 position)
+	{
+		ENTITY boss = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(boss, new cTransform(position, 0, { 380, 50 }));
+		Core::Get().AddComponent<cSprite>(boss, new cSprite(boss, "Square Mesh", "Boss_Incoming", 0));
+		Core::Get().GetComponent<cSprite>(boss)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(boss, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::BOSS_INCOMING_UI));
+		Core::Get().GetComponent<cUIElement>(boss)->_isActive = false;			//invisible
+
+		Core::Get().AddComponent<cTimeline>(boss, new cTimeline(g_appTime, g_appTime + 1.8f, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 0.0f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 0.5f, 1.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.5f, 0.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.80f, 0.0f);
+		UIEventsManager::Subscribe(boss, &OnBossIncoming_EnemyIndicator); //Appear When boss comes
+
+		return boss;
+	}
 
 	void Create_ChooseThree(AEVec2 centralPos)
 	{
@@ -822,7 +938,7 @@ namespace Factory_UI
 		float angle = atan2f(aiDir.y, aiDir.x);
 
 		ENTITY aiUI = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 100,100 }));
+		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 30,50 }));
 		Core::Get().AddComponent<cSprite>(aiUI, new cSprite(aiUI, "Square Mesh", "AI_Indicator", 0));
 		if (aiType == 0)
 		{
@@ -915,10 +1031,10 @@ namespace Factory_Map
 
 	void Generate_PlanetField()
 	{
-		int numOfPlanet = 50;
+		int numOfPlanet = 60;
 		for (int i = 0; i < numOfPlanet; ++i)
 		{
-			int planetType = static_cast<int>(AERandFloat() * 3);
+			int planetType = static_cast<int>(AERandFloat() * 5);
 
 			float scale = AERandFloat() * 100 + 50;
 
@@ -935,6 +1051,12 @@ namespace Factory_Map
 				break;
 			case 3:
 				Factory::CreatePlanet4(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				break;
+			case 4: 
+				Factory::CreateAsteroid1(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
+				break;
+			case 5: 
+				Factory::CreateAsteroid2(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
 				break;
 			}
 		}

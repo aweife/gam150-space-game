@@ -15,6 +15,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "PlayerManager.h"						// Self Header
 #include "../Global.h"							// Screensize 
 #include "../Managers/InputManager.h"			// Recieve inputs
+#include "../Managers/ManagerList.h"	        // For UI manager
 #include "../ECS/Core.h"						// Get Component
 #include "../Managers/CameraManager.h"			// Get the position of a moving camera 
 #include "../Math/Math.h"						// Rotation Lerp

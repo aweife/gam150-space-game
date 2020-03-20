@@ -9,6 +9,24 @@ namespace Events
 		float _newHealth;
 	};
 
+	struct OnLowHealth :public EventsBase
+	{
+		OnLowHealth(bool state) : _state{ state } {};
+		bool _state;
+	};
+
+	struct OnBossIncoming :public EventsBase
+	{
+		OnBossIncoming(bool state) : _state{ state } {};
+		bool _state;
+	};
+
+	struct OnShieldDown :public EventsBase
+	{
+		OnShieldDown(bool state) : _state{ state } {};
+		bool _state;
+	};
+
 	struct OnShieldChange :public EventsBase
 	{
 		OnShieldChange(float newShield) :_newShield{ newShield } {};

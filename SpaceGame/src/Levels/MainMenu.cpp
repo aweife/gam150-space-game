@@ -48,13 +48,13 @@ void MainMenu_Unload()
 //Placed here since there is only one main menu
 void Create_MainMenuInterface()
 {
-	AEVec2 mmAnchor = ScreenBasedCoords(0,-300, UI_ANCHOR::CENTER);
-	Factory_UI::Create_MM_BeginCampaignUI({ mmAnchor.x-300, mmAnchor.y });
-	Factory_UI::Create_MM_OptionsUI({ mmAnchor.x - 100, mmAnchor.y});
-	Factory_UI::Create_MM_CreditsUI({ mmAnchor.x + 100 , mmAnchor.y });
-	Factory_UI::Create_MM_Quit({ mmAnchor.x + 300, mmAnchor.y });
+	AEVec2 mmAnchor = ScreenBasedCoords(0,-250, UI_ANCHOR::CENTER);
+	Factory_UI::Create_MM_BeginCampaignUI({ mmAnchor.x-350, mmAnchor.y });
+	Factory_UI::Create_MM_OptionsUI({ mmAnchor.x - 120, mmAnchor.y});
+	Factory_UI::Create_MM_CreditsUI({ mmAnchor.x + 120 , mmAnchor.y });
+	Factory_UI::Create_MM_Quit({ mmAnchor.x + 350, mmAnchor.y });
 
-	AEVec2 mmAnchor2 = ScreenBasedCoords(0, 200, UI_ANCHOR::CENTER);
+	AEVec2 mmAnchor2 = ScreenBasedCoords(0, 150, UI_ANCHOR::CENTER);
 	Factory_UI::Create_GameLogo( mmAnchor2, {400,240});
 
 	//Factory::CreateEnemy1(0, 2);

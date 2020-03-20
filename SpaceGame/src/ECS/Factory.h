@@ -40,6 +40,8 @@ namespace Factory
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet4(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
+	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
+	ENTITY CreateAsteroid2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	void CreateBackground();
 
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
@@ -69,10 +71,16 @@ namespace Factory_UI
 	ENTITY Create_MM_Quit(AEVec2 position);
 
 	void Create_PlayerUserInterface();
+	void CreateLowHealthInterface();
+	void CreateShieldsDownInterface();
+	void CreateBossIncomingInterface();
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i);
 	ENTITY Create_SingleShieldBar(AEVec2 position, int i);
 	ENTITY Create_ShieldBubble();
 	ENTITY Create_ThrusterUI(AEVec2 position);
+	ENTITY Create_LowHealthUI(AEVec2 position);
+	ENTITY Create_ShieldsDownUI(AEVec2 position);
+	ENTITY Create_BossIncomingUI(AEVec2 position);
 	void Create_ChooseThree(AEVec2 centralPos);
 	void Create_ChoosableUpgrade(ENTITY entity);
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);

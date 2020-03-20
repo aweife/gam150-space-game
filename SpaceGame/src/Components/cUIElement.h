@@ -28,7 +28,10 @@ enum class UI_ROLE
 	BEGIN_BTN,
 	CREDITS_BTN,
 	OPTIONS_BTN,
-	QUIT_BTN
+	QUIT_BTN, 
+	LOW_HEALTH_UI,
+	SHIELD_DOWN_UI,
+	BOSS_INCOMING_UI
 };
 
 class cUIElement :public Component

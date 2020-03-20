@@ -400,10 +400,34 @@ namespace ResourceManager
 				case 15:
 					if (textureLibrary.find("Texture_Fill3") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Texture_Fill3", AEGfxTextureLoad("res/Texture_Fill3.png") });
+					break;
+				case 16:
+					if (textureLibrary.find("Low_Health") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Low_Health", AEGfxTextureLoad("res/Low_Health.png") });
+					break;
+				case 17: 
+					if (textureLibrary.find("Asteroid_1") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Asteroid_1", AEGfxTextureLoad("res/Asteroid_1.png") });
+					break;
+				case 18: 
+					if (textureLibrary.find("Asteroid_2") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Asteroid_2", AEGfxTextureLoad("res/Asteroid_2.png") });
+					break;
+				case 19: 
+					if (textureLibrary.find("Boss_Incoming") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Boss_Incoming", AEGfxTextureLoad("res/Boss_Incoming.png") });
+					break;
+				case 20: 
+					if (textureLibrary.find("Shield_Down") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Shield_Down", AEGfxTextureLoad("res/Shield_Down.png") });
+					break;
+				case 21:
+					if (textureLibrary.find("Boss") != textureLibrary.end()) break; 
+					textureLibrary.insert({ "Boss", AEGfxTextureLoad("res/Boss.png") });
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 16): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 22): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

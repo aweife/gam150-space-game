@@ -16,7 +16,8 @@ enum class COLLISIONTAG
 	BULLET_PLAYER = 2,
 	ENEMY = 3,
 	PLANET = 4,
-	NONE = 5
+	PLANET_ASTEROID = 5,
+	NONE = 6
 };
 
 class cRigidBody:public Component

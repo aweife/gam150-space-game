@@ -28,12 +28,14 @@ void SpaceShipLogicSystem::Update()
 	cTransform* transform;
 	cRigidBody* rigidbody;
 	cSpaceShip* spaceship;
+	cHealth*    health;
 
 	for (auto const& entity : entitiesList)
 	{
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rigidbody = Core::Get().GetComponent<cRigidBody>(entity);
 		spaceship = Core::Get().GetComponent<cSpaceShip>(entity);
+		health    = Core::Get().GetComponent<cHealth>(entity);
 
 		//Time update
 		//Cooldown slower when overheat;
@@ -88,6 +90,8 @@ void SpaceShipLogicSystem::Update()
 				, spaceship->_overheatThrusterCurr, spaceship->_overheatThruster));
 			Editor_TrackVariable("Player Velocity ", rigidbody->_velocity);
 		}
+
+
 	}
 }
 
