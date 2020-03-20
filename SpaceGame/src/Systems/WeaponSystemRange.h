@@ -31,7 +31,7 @@ public:
 	void OnComponentRemove(ENTITY) override {};
 };
 
-
-void NormalShoot(cTransform* transform, OWNERTAG tag);
+void ChooseShootingStyle(cRangeWeapon* rangeWeapComp, cTransform* transformComp);
+void StraightShoot(cTransform* transform, OWNERTAG tag);
 void HomingShoot(cTransform* transform);
-void MachineGunShoot(cTransform* transform);
+void LaserBeam(cTransform* transform, cRangeWeapon* rangeWeapComp);

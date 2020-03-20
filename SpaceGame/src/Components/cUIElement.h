@@ -21,6 +21,7 @@ enum class UI_ROLE
 	C3_FAKEUPGRADE,
 	C3_UPGRADE,
 	C3_TEXT,
+	DAMAGE_FLOAT,
 	INDICATE_AI,
 	INDICATE_COLLECT,
 	GAMEOVER,
@@ -38,6 +39,8 @@ public:
 	UI_ROLE _role = UI_ROLE::NONE;
 	unsigned int _roleIndex = 0;			//Normally map to ui Role or its entity
 
+	unsigned int _roleIndex2 = 0;
+	float _timer = 0.0f;					//For floating damage
 	//Text
 	TextInfo _text;
 

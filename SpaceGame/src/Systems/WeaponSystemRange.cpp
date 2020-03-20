@@ -42,29 +42,19 @@ void WeaponSystemRange::Update()
 		transform = Core::Get().GetComponent<cTransform>(entity);
 		rangeweapon = Core::Get().GetComponent<cRangeWeapon>(entity);
 
-		if (!rangeweapon->_isShooting) continue;
+		if (!rangeweapon->_isShooting)
 		{
-			//if (/*spaceship->_currWeaponMode == WeaponMode::range &&*/
-			//	rangeweapon->_isShooting /*&& spaceship->_shootDelay > rangeweapon->_fireCooldownTimer*/)
-			//{
-			//	switch (rangeweapon->_currWeapon)
-			//	{
-			//	case WeaponType::pistol:
-			//		rangeweapon->_fireCooldownTimer = 0.0f;
-			//		NormalShoot(transform);
-			//		break;
-			//	case WeaponType::machineGun:
-			//		rangeweapon->_fireCooldownTimer = 0.0f;
-			//		MachineGunShoot(transform);
-			//		break;
-			//	case WeaponType::grenadeGun:
-			//		break;
-			//	case WeaponType::laser:
-			//		break;
-			//	}
-			//}
+			if (rangeweapon->_currWeapon == WeaponType::laser && rangeweapon->_permenanceProjectile)
+			{
+				Core::Get().EntityDestroyed(rangeweapon->_permenanceProjectile);
+				rangeweapon->_permenanceProjectile = 0;
+				rangeweapon->_ammo = 1;
+			}
+			continue;
 		}
 
+
+		//JY - i dont understand..
 		// Decrement timer if on cooldown
 		if (rangeweapon->_attackCooldownTimer > 0.0f)
 		{
@@ -81,9 +71,8 @@ void WeaponSystemRange::Update()
 					rangeweapon->_delayTimer = rangeweapon->_delayBetweenAttacks;
 
 					// Fire
-					NormalShoot(transform,rangeweapon->_tag);
-					--rangeweapon->_attacksLeft;
-					rangeweapon->_isShooting = false;
+					ChooseShootingStyle(rangeweapon, transform);
+					
 				}
 			}
 		}
@@ -92,11 +81,29 @@ void WeaponSystemRange::Update()
 			// Set cooldown
 			rangeweapon->_attackCooldownTimer = rangeweapon->_attackCooldown;
 			rangeweapon->_attacksLeft = rangeweapon->_numberOfAttacks;
+			rangeweapon->_ammo = rangeweapon->_numberOfAttacks;
 		}
 	}
 }
 
-void NormalShoot(cTransform* transform, OWNERTAG tag)
+void ChooseShootingStyle(cRangeWeapon* rangeWeapComp, cTransform* transformComp)
+{
+	switch (rangeWeapComp->_currWeapon)
+	{
+		case WeaponType::pistol:
+			StraightShoot(transformComp, rangeWeapComp->_tag);
+			--rangeWeapComp->_attacksLeft;
+			rangeWeapComp->_isShooting = false;
+			break;
+		case WeaponType::laser:
+			LaserBeam(transformComp, rangeWeapComp);
+			rangeWeapComp->_ammo = 0;
+			break;
+
+	}	
+}
+
+void StraightShoot(cTransform* transform, OWNERTAG tag)
 {
 	AEVec2 bulletDirection;
 	AEVec2 bulletVelocity;
@@ -105,6 +112,7 @@ void NormalShoot(cTransform* transform, OWNERTAG tag)
 	AEVec2Set(&bulletDirection, AECos(transform->_rotation), AESin(transform->_rotation));
 	// Bullet velocity
 	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
+
 	// Spawn the bullet at the tip of player
 	if (tag == OWNERTAG::PLAYER)
 		Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * (transform->_scale.x/2.0f),
@@ -119,30 +127,30 @@ void HomingShoot(cTransform* transform)
 	(void)transform;
 }
 
-void MachineGunShoot(cTransform* transform)
-{
-	AEVec2 bulletDirection;
-	AEVec2 bulletVelocity;
 
-	// Setting the direction of bullet spawn
-	AEVec2Set(&bulletDirection, AECos(transform->_rotation), AESin(transform->_rotation));
-	// Bullet velocity
-	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
-	// Spawn the bullet at the tip of player
-	Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
-		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, bulletDirection, transform->_rotation + PI / 2, OWNERTAG::PLAYER);
+void MultiShot(cTransform* transform)
+{
+
 }
 
-//void TripleShot(cTransform* transform)
-//{
-//	AEVec2 bulletDirection;
-//	AEVec2 bulletVelocity;
-//
-//	// Setting the direction of bullet spawn
-//	AEVec2Set(&bulletDirection, AECos(transform->_rotation), AESin(transform->_rotation));
-//	// Bullet velocity
-//	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
-//	// Spawn the bullet at the tip of player
-//	Factory::CreateBullet(transform->_position.x + AECos(transform->_rotation) * 100.0f,
-//		transform->_position.y + AESin(transform->_rotation) * 100.0f, bulletVelocity, transform->_rotation + PI / 2);
-//}
+void LaserBeam(cTransform* transform, cRangeWeapon* rangeWeapComp)
+{
+	AEVec2 offset;
+	AEVec2Set(&offset, transform->_position.x + AECos(transform->_rotation) * transform->_scale.x / 2, transform->_position.y + AESin(transform->_rotation) * transform->_scale.y / 2);
+	if (rangeWeapComp->_ammo)
+	{
+		rangeWeapComp->_permenanceProjectile = Factory::CreateBullet_LaserBeam(offset.x, offset.y
+			, transform->_rotation, rangeWeapComp->_tag);
+	}
+
+	if (rangeWeapComp->_permenanceProjectile)
+	{
+		cTransform* laserTransform = Core::Get().GetComponent<cTransform>(rangeWeapComp->_permenanceProjectile);
+		cSprite* laserSprite = Core::Get().GetComponent<cSprite>(rangeWeapComp->_permenanceProjectile);
+		laserTransform->_position = offset;
+		laserTransform->_rotation = transform->_rotation;
+		//laserSprite->_UVOffset.x = 0.5 + ;
+	}
+
+
+}

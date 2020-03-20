@@ -115,6 +115,12 @@ void HealthSystem::TakeDamage(ENTITY entity)
 	}
 	else if (health->_healthCurr > 0)
 	{
+		//Floating damage UI
+		if (entity != PlayerManager::player)
+		{
+			Factory_UI::CreateUI_FloatingDamage(entity, static_cast<int>(health->_healthCurr), static_cast<int>(10.0f));
+		}
+
 		health->_healthCurr -= 10.0f;
 		if (health->_healthCurr < 0.0f) health->_healthCurr = 0.0f;
 		UIEventsManager::Broadcast(new Events::OnHealthChange(health->_healthCurr));

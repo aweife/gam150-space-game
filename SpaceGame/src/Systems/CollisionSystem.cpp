@@ -28,7 +28,7 @@
 #include "../ECS/Factory.h"                 // For Particle System
 #include "../Components/ComponentList.h"    // For component list
 
-
+#include "../Tools/Console.h"
 /*********************************************************************************
 *
 * HELPER FUNCTIONS
@@ -380,7 +380,52 @@ bool CollisionCheck(const Colliders& obj1, const ColliderShape shape1, const AEV
 			return false;
 		}
 	}
+	//for playtest
+	else if (shape1 == ColliderShape::RAYCAST && shape2 == ColliderShape::RECTANGLE)
+	{
+		AEVec2 pointToRect1, pointToRect2;
 
+		AEVec2 raycastDir;
+		raycastDir.x = obj1.max.x - obj1.min.x;
+		raycastDir.y = obj1.max.y - obj1.min.y;
+		if ((obj2.center.x < obj1.min.x && obj2.center.y < obj1.max.y) 
+			|| (obj2.center.x > obj1.min.x && obj2.center.y > obj1.max.y))
+		{
+			//Use top left and bottom right
+			pointToRect1.x = obj2.min.x - obj1.center.x;			//		X--------
+			pointToRect1.y = obj2.max.y - obj1.center.y;			//		|		|
+			pointToRect2.x = obj2.max.x - obj1.center.x;			//		|		|
+			pointToRect2.y = obj2.min.y - obj1.center.y;			//		--------X
+			AEVec2Normalize(&pointToRect1, &pointToRect1);
+			AEVec2Normalize(&pointToRect2, &pointToRect2);
+			float fovAngle = AEVec2DotProduct(&pointToRect1, &pointToRect2);
+			float angle1 = AEVec2DotProduct(&pointToRect1, &raycastDir);
+			float angle2 = AEVec2DotProduct(&pointToRect2, &raycastDir);
+			if (angle1 > fovAngle && angle2 > fovAngle)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			//Use bottom left and top right
+			pointToRect1.x = obj2.min.x - obj1.center.x;			//		--------X
+			pointToRect1.y = obj2.min.y - obj1.center.y;			//		|		|
+			pointToRect2.x = obj2.max.x - obj1.center.x;			//		|		|
+			pointToRect2.y = obj2.max.y - obj1.center.y;			//		X--------
+			AEVec2Normalize(&pointToRect1, &pointToRect1);
+			AEVec2Normalize(&pointToRect2, &pointToRect2);
+			float fovAngle = AEVec2DotProduct(&pointToRect1, &pointToRect2);
+			float angle1 = AEVec2DotProduct(&pointToRect1, &raycastDir);
+			float angle2 = AEVec2DotProduct(&pointToRect2, &raycastDir);
+			if (angle1 > fovAngle && angle2 > fovAngle)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 	// return no collision
 	return false; 
 }
@@ -418,13 +463,29 @@ void CollisionSystem::Update()
 		collider = Core::Get().GetComponent<cCollision>(entity);
 		transform = Core::Get().GetComponent<cTransform>(entity);
 
+		
 		collider->_boundingBox.max.x = 0.5f * transform->_scale.x + transform->_position.x;
 		collider->_boundingBox.max.y = 0.5f * transform->_scale.y + transform->_position.y;
 		collider->_boundingBox.min.x = -0.5f * transform->_scale.x + transform->_position.x;
 		collider->_boundingBox.min.y = -0.5f * transform->_scale.y + transform->_position.y;
+		//Playtest JY
+		if (collider->_bbShape == ColliderShape::RAYCAST)
+		{
+			collider->_boundingBox.center.x = transform->_position.x;
+			collider->_boundingBox.center.y = transform->_position.y;
+			//Temporary use this to calculate orientation
+			collider->_boundingBox.max.x = transform->_position.x + AECos(transform->_rotation);
+			collider->_boundingBox.max.y = transform->_position.y + AESin(transform->_rotation);
+			collider->_boundingBox.min.x = transform->_position.x;
+			collider->_boundingBox.min.y = transform->_position.y;
+		}
 
 		// Set the enum to rectangle
-		collider->_bbShape = ColliderShape::RECTANGLE;
+		if (collider->_bbShape != ColliderShape::RAYCAST)
+		{
+			collider->_bbShape = ColliderShape::RECTANGLE;
+		}
+		
 	}
 
 	// To check for collision for each entity in the list
@@ -435,6 +496,9 @@ void CollisionSystem::Update()
 		transform = Core::Get().GetComponent<cTransform>(entity1);
 		std::shared_ptr<HealthSystem> healthSys(std::static_pointer_cast<HealthSystem>(Core::Get().GetSystem<HealthSystem>()));
 
+		//for raycast
+		float shortestDistance = 999999999.0f;
+		ENTITY raycastEntity = 0;
 
 		for (auto const& entity2 : entitiesList)
 		{
@@ -476,6 +540,18 @@ void CollisionSystem::Update()
 				// if bullet collide with enemy
 				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY )
 				{
+					cProjectile* projectile = Core::Get().GetComponent<cProjectile>(entity1);
+					if (projectile && projectile->_bulletType == bulletType::laser)
+					{
+						if (AEVec2Distance(&transform->_position, &transform2->_position)<shortestDistance)
+						{
+							shortestDistance = AEVec2Distance(&transform->_position, &transform2->_position);
+							raycastEntity = entity2;
+						}
+						continue;
+					}
+
+
 					markedForDestruction.insert(entity1);
 
 					if (health2 != nullptr && health2->_isInvulnerable == false)
@@ -519,9 +595,47 @@ void CollisionSystem::Update()
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					markedForDestruction.insert(entity1);
 				}
-
 			}
 		}
+		//Raycast resolution
+		if (collider->_bbShape == ColliderShape::RAYCAST)
+		{
+			if (raycastEntity)
+			{
+				collider2 = Core::Get().GetComponent<cCollision>(raycastEntity);
+				rigidbody2 = Core::Get().GetComponent<cRigidBody>(raycastEntity);
+				transform2 = Core::Get().GetComponent<cTransform>(raycastEntity);
+				health2 = Core::Get().GetComponent<cHealth>(raycastEntity);
+				if (rigidbody->_tag == COLLISIONTAG::BULLET_PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
+				{
+					float raycastLength = transform->_scale.x;
+					float strikeLength = shortestDistance - (transform2->_scale.x/2);
+					cSprite* sprite = Core::Get().GetComponent<cSprite>(entity1);
+					//Laser 
+					if (sprite)
+					{
+						sprite->_UVOffset.x = 0.5f - (strikeLength / raycastLength)*0.5f;
+					}
+					if (health2 != nullptr && health2->_isInvulnerable == false)
+					{
+						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						CameraManager::StartCameraShake();
+						healthSys->TakeDamage(raycastEntity);
+					}
+				}
+			}
+			else
+			{
+				cSprite* sprite = Core::Get().GetComponent<cSprite>(entity1);
+				//Laser 
+				if (sprite)
+				{
+					sprite->_UVOffset.x = 0.0f;
+				}
+			}
+		}
+		
+		
 	}
 
 	//Collision Resolution

@@ -1,6 +1,6 @@
 #include "cWeapon.h"
 
-cRangeWeapon::cRangeWeapon(OWNERTAG tag, float attackCooldown, float delayBetweenAttacks, int numberOfAttacks) :
+cRangeWeapon::cRangeWeapon(OWNERTAG tag, WeaponType weaponType, float attackCooldown, float delayBetweenAttacks, int numberOfAttacks) :
 	_isShooting{ false },
 	_attackCooldown{ attackCooldown },
 	_delayBetweenAttacks{ delayBetweenAttacks },
@@ -9,9 +9,10 @@ cRangeWeapon::cRangeWeapon(OWNERTAG tag, float attackCooldown, float delayBetwee
 	_attacksLeft{ 0 },
 	_delayTimer{ 0.0f },
 	_tag{ tag },
+	_ammo{ numberOfAttacks },
 
 	// Uninitalised
-	_ammo{ 0 },
+	
 	_bulletSize{ 0.0f },
 	_bulletSpeed{ 0.0f },
 	_chargeTime{ 0.0f },
@@ -20,7 +21,9 @@ cRangeWeapon::cRangeWeapon(OWNERTAG tag, float attackCooldown, float delayBetwee
 	_reloadRate{ 0.0f },
 	_isReloading{ false },
 	_shootingSpread{ 0.0f }
-{}
+{
+	_currWeapon = weaponType;
+}
 
 cRangeWeapon::cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, int ammo,
 	float shootingSpread, float bulletSize, float bulletSpeed, float chargeTime) :

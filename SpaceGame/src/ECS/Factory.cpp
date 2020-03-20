@@ -66,15 +66,15 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(player)->_velocityHardCap = 200;
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip(false, 2.0f, WeaponMode::WEAPONMODE_RANGE));
-		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, 0.4f));
+		//Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, WeaponType::pistol ,0.4f));
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, WeaponType::laser, 999.0f, 0.0f, 1));
+
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon());
 		//Core::Get().AddComponent<cHealth>(player, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f,2.0f));
 
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 
-		/* UpgradeManager::WeaponChange(Core::Get().GetComponent<cRangeWeapon>(player)
-			, WeaponType::pistol, UpgradePackages::Range_Pistol); */
 		Core::Get().AddComponent<cHealth>(player, new cHealth(30.0f, 30.0f, 30.0f, 30.0f, 4.0f, 1.0f));
 		Factory_UI::Create_ShieldBubble();
 
@@ -97,7 +97,7 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 1));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 1));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 
@@ -133,7 +133,7 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 2));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 
@@ -168,7 +168,7 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 2));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 1500.0f;
@@ -201,7 +201,7 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 2));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 1200.0f;
@@ -237,7 +237,7 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 2));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = -1800.0f;
@@ -360,6 +360,28 @@ namespace Factory
 		return bullet;
 	}
 
+	ENTITY CreateBullet_LaserBeam(float posX, float posY, float rotation, OWNERTAG tag)
+	{
+		ENTITY bullet = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(bullet, new cTransform({posX, posY}, rotation, { 1280, 4 }));
+		Core::Get().AddComponent<cSprite>(bullet, new cSprite(bullet, "LaserBeam", "Texture_Fill", 2));
+		Core::Get().GetComponent<cSprite>(bullet)->_colorTint = { 1.0f, 0, 0, 1.0f };
+		Core::Get().GetComponent<cSprite>(bullet)->_UVOffset.x = 0.4f;
+		Core::Get().AddComponent<cRigidBody>(bullet, new cRigidBody(0.0f, 0.0f, 0.0f));
+		Core::Get().AddComponent<cCollision>(bullet, new cCollision);
+		
+		Core::Get().GetComponent<cCollision>(bullet)->_bbShape = ColliderShape::RAYCAST;
+		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
+
+		Core::Get().AddComponent<cProjectile>(bullet, new cProjectile(999.0f, 999.0f, bulletType::laser));
+		if (tag == OWNERTAG::PLAYER)
+			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET_PLAYER;
+		else
+			Core::Get().GetComponent<cRigidBody>(bullet)->_tag = COLLISIONTAG::BULLET;
+
+		return bullet;
+	}
+
 	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale)
 	{
 		ENTITY debug = Core::Get().CreateEntity();
@@ -425,6 +447,10 @@ namespace Factory
 			boundingBox = Factory::CreateDebug_Octagon(transformComponent->_position, transformComponent->_rotation,
 				transformComponent->_scale);
 			return boundingBox;
+		}
+		else if (collisionComponent->_bbShape == ColliderShape::RAYCAST)
+		{
+			return 0;
 		}
 
 		AE_ASSERT(boundingBox != 0 && "No COLLIDERSHAPE specified on collision component");
@@ -787,6 +813,19 @@ namespace Factory_UI
 		ENTITY uiEntity = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(uiEntity, new cTransform(newPostion, 0, { 1,1 }));
 		Core::Get().AddComponent<cUIElement>(uiEntity, new cUIElement(text));
+		return uiEntity;
+	}
+
+	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue)
+	{
+		ENTITY uiEntity = Core::Get().CreateEntity();
+
+		cTransform* transform = Core::Get().GetComponent<cTransform>(target);
+		Core::Get().AddComponent<cTransform>(uiEntity, new cTransform(transform->_position, 0, { 1,1 }));
+		Core::Get().AddComponent<cUIElement>(uiEntity, new cUIElement(UI_TYPE::TEXT, UI_ROLE::DAMAGE_FLOAT, target));
+		Core::Get().GetComponent<cUIElement>(uiEntity)->_roleIndex2 = startHealth - damageValue;
+		Core::Get().GetComponent<cUIElement>(uiEntity)->_text._colorTint = { 1.0f,1.0f,1.0f,1.0f };
+		EditText(uiEntity, "", startHealth);
 		return uiEntity;
 	}
 

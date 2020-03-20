@@ -224,6 +224,26 @@ namespace ResourceManager
 		meshLibrary.insert({ "Octagon Frame", mesh });
 
 		// -----------------------------------------------------------------------
+		// Bullet - Laser
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		AEGfxTriAdd(
+			1.0f, -1.0f, 0xFFFF0000, 0.5f, 0.0f,				// 3
+			0.0f, -1.0f, 0xFFFF0000, 0.0f, 0.0f,				//
+			1.0f, 1.0f, 0xFFFFFFFF, 0.5f, 1.0f);				// 1		2
+		AEGfxTriAdd(											//
+			0.0f, -1.0f, 0xFFFF0000, 0.0f, 0.0f,				// 3        2
+			0.0f, 1.0f, 0xFFFF0000, 0.0f, 1.0f,					//
+			1.0f, 1.0f, 0xFFFFFFFF, 0.5f, 1.0f);				//          1
+
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+
+		meshLibrary.insert({ "LaserBeam", mesh });
+
+
+		// -----------------------------------------------------------------------
 		// UI - HP Bar 
 		// -----------------------------------------------------------------------
 		AEGfxMeshStart();

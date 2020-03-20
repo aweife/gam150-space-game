@@ -50,6 +50,8 @@ public:
 	float		_bulletSpeed;
 	float		_chargeTime;
 
+	ENTITY	_permenanceProjectile = 0;
+
 	// Temporary
 	float	_attackCooldown;
 	float	_attackCooldownTimer;
@@ -61,7 +63,7 @@ public:
 	OWNERTAG _tag;
 
 	cRangeWeapon() = delete;
-	cRangeWeapon(OWNERTAG tag, float attackCooldown, float delayBetweenAttacks = 0.0f, int numberOfAttacks = 1);
+	cRangeWeapon(OWNERTAG tag, WeaponType weaponType, float attackCooldown, float delayBetweenAttacks = 0.0f, int numberOfAttacks = 1);
 	cRangeWeapon(bool isShooting, float currFireRate, float reloadRate, int ammo, float shootingSpread
 		, float bulletSize, float bulletSpeed, float chargeTime);
 	~cRangeWeapon() {};

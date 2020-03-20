@@ -39,8 +39,10 @@ namespace Factory
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet4(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	void CreateBackground();
-	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
 
+	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
+	ENTITY CreateBullet_LaserBeam(float posX, float posY, float rotation, OWNERTAG tag);
+	
 	//Debug graphics
 	ENTITY CreateDebug_Arrow(AEVec2& pos, AEVec2& rot, float& scale);
 	ENTITY CreateDebug_Line(AEVec2& start, AEVec2& end);
@@ -75,6 +77,7 @@ namespace Factory_UI
 
 	void CreateUI_GameOver();
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
+	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue);
 
 	ENTITY CreateBackground_Load();
 

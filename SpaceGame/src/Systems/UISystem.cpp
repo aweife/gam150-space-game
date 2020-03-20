@@ -59,7 +59,39 @@ void UISystem::Update()
 
 		}
 	}
+
+	for (std::set<ENTITY>::const_iterator it = floatingDamage_Set.begin(); it != floatingDamage_Set.end();)
+	{
+		uiComp = Core::Get().GetComponent<cUIElement>(*it);
+		transform = Core::Get().GetComponent<cTransform>(uiComp->_roleIndex);
+
+		uiComp->_timer += g_dt;
+		//Follow the position of AI
+		if (transform)
+		{
+			Core::Get().GetComponent<cTransform>(*it)->_position.x = transform->_position.x + 10.0f;
+			Core::Get().GetComponent<cTransform>(*it)->_position.y = transform->_position.y + 10.0f;
+		}
+		if (uiComp->_timer > 0.05f)
+		{
+			unsigned int currDamage = atoi(uiComp->_text._textBuffer);
+			if (uiComp->_roleIndex2 != currDamage)
+			{
+				EditText(*it, "", --currDamage);
+				uiComp->_timer = 0.0f;			//Loop
+			}
+			else
+			{
+				ENTITY destroy = *it;
+				++it;									//Avoid iterator invalidation
+				Core::Get().EntityDestroyed(destroy);
+				continue;
+			}
+		}
+		++it;
+	}
 }
+
 void UISystem::Render()
 {
 	cUIElement* uiComponent;
@@ -354,6 +386,9 @@ void UISystem::OnComponentAdd(ENTITY entity)
 		case UI_ROLE::SHIELDBUBBLE:
 			shieldBubble_Set.insert(entity);
 			break;
+		case UI_ROLE::DAMAGE_FLOAT:
+			floatingDamage_Set.insert(entity);
+			break;
 	}
 }
 
@@ -377,6 +412,9 @@ void UISystem::OnComponentRemove(ENTITY entity)
 		break;
 	case UI_ROLE::SHIELDBUBBLE:
 		shieldBubble_Set.erase(entity);
+		break;
+	case UI_ROLE::DAMAGE_FLOAT:
+		floatingDamage_Set.erase(entity);
 		break;
 	}
 }
