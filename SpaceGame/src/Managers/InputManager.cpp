@@ -74,7 +74,7 @@ namespace InputManager
 		}
 		if (AEInputCheckTriggered(AEVK_9))			
 		{
-			GSM_LoadingTransition(GS_UPGRADE);
+			LevelManager::SetObjectiveComplete();
 			//Factory_UI::Create_ChooseThree({ 0,0 });
 		}
 		/*if (AEInputCheckTriggered(AEVK_8))
@@ -105,7 +105,6 @@ namespace InputManager
 		Editor_TrackVariable("mouse Screen X", mousePosX);
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
 
-		UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY)));
 		if (AEInputCheckCurr(AEVK_LBUTTON))
 		{
 			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY))))

@@ -93,8 +93,6 @@
     <ClCompile Include="src\AI\Boss\bossSpawn.cpp" />
     <ClCompile Include="src\Systems\BossSystem.cpp" />
     <ClCompile Include="src\AI\Boss\bossHoming.cpp" />
-    <ClCompile Include="src\Managers\LevelManager.cpp" />
-    <ClCompile Include="src\Levels\UpgradeLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiState.h" />
@@ -210,8 +208,6 @@
     <ClInclude Include="src\Components\cBoss.h" />
     <ClInclude Include="src\Systems\BossSystem.h" />
     <ClInclude Include="src\AI\Boss\bossHoming.h" />
-    <ClInclude Include="src\Managers\LevelManager.h" />
-    <ClInclude Include="src\Levels\UpgradeLevel.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

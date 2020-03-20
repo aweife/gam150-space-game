@@ -30,7 +30,7 @@ public:
 	float   _invulnerabilityWindow;	// The fixed interval
 	bool	_isInvulnerable;
 
-	cHealth() = default;
+	cHealth() = delete;
 	cHealth( float shieldMax, float healthMax, float shieldCurr, float healthCurr,  float shieldRegenTime, float invulnerabilityWindow);
 	~cHealth() = default;
 };

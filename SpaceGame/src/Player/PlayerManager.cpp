@@ -19,8 +19,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../ECS/Core.h"						// Get Component
 #include "../Managers/CameraManager.h"			// Get the position of a moving camera 
 #include "../Math/Math.h"						// Rotation Lerp
-//#include "../Components/cSpaceShip.h"			// Mouse click ->shooting
-//#include "../Components/cWeapon.h"				// Mouse click ->shooting
+#include "../Components/cSpaceShip.h"			// Mouse click ->shooting
+#include "../Components/cWeapon.h"				// Mouse click ->shooting
 
 #include "../Tools/Editor.h"					// Debugging
 #include "../ECS/Factory.h"						// Gameover UI
@@ -29,13 +29,7 @@ namespace PlayerManager
 {
 	ENTITY		player			= 0;
 	float		angle			= 0.0f;			// Angle between mouse position and player
-
-	bool playerProgressInit = false;
-	cRangeWeapon playerRangeProgression;
-	cMeleeWeapon playerMeleeProgression;
-	cSpaceShip playerSpaceshipProgression;
-	cHealth playerHealthProgression;
-
+	
 	void Update()
 	{
 		if (!player) return;					// No active player to control if ENTITY = zero
@@ -97,25 +91,14 @@ namespace PlayerManager
 		}
 	}
 
-	void CreatePlayerWeapon()
-	{
-		playerRangeProgression	= cRangeWeapon{ OWNERTAG::PLAYER, WeaponType::pistol, 1.0f, 0.25f };
-		playerMeleeProgression	= cMeleeWeapon{};
-		playerSpaceshipProgression = cSpaceShip{ false, 2.0f, WeaponMode::WEAPONMODE_RANGE };
-		playerHealthProgression = cHealth{ 30.0f, 30.0f, 30.0f, 30.0f, 4.0f, 1.0f };
-		playerProgressInit = true;
-	}
-
 	void ResetPlayer()
 	{
 		player = 0;
-		playerProgressInit = false;
 	}
+
 	
 	void PlayerDeath()
 	{
-		ResetPlayer();
-
 		Factory_UI::CreateUI_GameOver();
 		LevelManager::ClearObjectiveAll();
 	}

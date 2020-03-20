@@ -15,8 +15,6 @@
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
-#include "../Levels/UpgradeLevel.h"
-
 void UISystem::Init()
 {
 	// Sets the system signature for this system
@@ -227,7 +225,7 @@ bool OnHealthChange_HPUI(ENTITY entity, Events::OnHealthChange* message)
 
 bool OnLowHealth_HPIndicator(ENTITY entity, Events::OnLowHealth* message)
 {
-	//cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
 	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
 
 	if (!uiComp) return false;
@@ -243,7 +241,7 @@ bool OnLowHealth_HPIndicator(ENTITY entity, Events::OnLowHealth* message)
 
 bool OnBossIncoming_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* message)
 {
-	//cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
 	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
 
 	if (!uiComp) return false;
@@ -259,7 +257,7 @@ bool OnBossIncoming_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* messag
 
 bool OnShieldDown_ShieldIndicator(ENTITY entity, Events::OnShieldDown* message)
 {
-	//cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
 	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
 
 	if (!uiComp) return false;
@@ -371,38 +369,11 @@ bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	cUIElement* upgrade = Core::Get().GetComponent<cUIElement>(entity);
-	if (upgrade && !upgradeFinish)
+	if (upgrade)
 	{
-		UpgradeManager::ApplyUpgrade(upgrade->_roleIndex);
-		UpgradeManager::ClearAllUpgradeChoice();
-		upgradeFinish = true;
-	}
-
-	return true;
-}
-
-bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
-{
-	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
-
-	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
-	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
-	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
-	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
-	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
-	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
-		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
-	{
-		if (sprite)
-		{
-			sprite->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
-		}
-		return false;
-	}
-
-	if(sprite)
-	{
-		sprite->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+		int i = 0;
+		i += 1;
+		//UpgradeManager::PlayerUpgrade();
 	}
 
 	return true;

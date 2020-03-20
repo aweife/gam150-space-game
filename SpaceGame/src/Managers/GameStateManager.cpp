@@ -3,7 +3,6 @@
 #include "../Levels/SplashScreen.h"
 #include "../Levels/MainMenu.h"
 #include "../Levels/Level1.h"
-#include "../Levels/UpgradeLevel.h"
 
 #include "../Tools/Console.h"
 unsigned int currentState, previousState, nextState;
@@ -57,14 +56,6 @@ void GSM_Update()
 		fpDraw		=	Level1_Draw;
 		fpFree		=	Level1_Free;
 		fpUnload	=	Level1_Unload;
-		break;
-	case GS_UPGRADE:
-		fpLoad = UpgradeLvl_Load;
-		fpInit = UpgradeLvl_Init;
-		fpUpdate = UpgradeLvl_Update;
-		fpDraw = UpgradeLvl_Draw;
-		fpFree = UpgradeLvl_Free;
-		fpUnload = UpgradeLvl_Unload;
 		break;
 	case GS_RESTART:
 		break;

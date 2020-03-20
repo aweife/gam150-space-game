@@ -49,10 +49,6 @@ namespace ResourceManager
 			GenerateMeshLibrary_1();
 			LoadTextureLibrary_1(&loadingStage, &loadingProgress);
 			break;
-		case GS_UPGRADE:
-			//nothing to load
-			loadingProgress = 100;
-			break;
 		default:
 			break;
 		}

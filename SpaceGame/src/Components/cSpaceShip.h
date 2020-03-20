@@ -34,7 +34,7 @@ public:
 	//We can know if the spaceship has any weapon features
 	WeaponMode _currWeaponMode;
 
-	cSpaceShip() = default;
+	cSpaceShip() = delete;
 	cSpaceShip(bool isThrusting, float thrustDelay, WeaponMode currWeaponMode);
 	~cSpaceShip() = default;
 };
