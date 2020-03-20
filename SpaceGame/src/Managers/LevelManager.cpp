@@ -1,7 +1,11 @@
 #include "LevelManager.h"
 #include <list>
+#include <set>
 #include "../ECS/Factory.h"
 #include "../Player/PlayerManager.h"
+
+#include "../ECS/Core.h"
+#include "../Systems/UISystem.h"							//Spawn Ai Indicators
 
 namespace LevelManager
 {
@@ -16,6 +20,50 @@ namespace LevelManager
 	objectSpawnArea6 leftSpawnArea;
 	objectSpawnArea7 topSpawnArea;
 	objectSpawnArea8 bottomSpawnArea;
+
+	std::set<ENTITY> collectableList;
+	bool objectiveComplete;
+	bool upgradePhase;
+
+	void Update()
+	{
+		if (upgradePhase) return;
+
+		for (std::set<ENTITY>::const_iterator it = collectableList.begin(); it != collectableList.end(); ++it)
+		{
+			CheckOutOfScreen(*it);
+		}
+		//Hacks...by right need to check if enemy killed or collectable done
+		if (objectiveComplete)
+		{
+			Factory_UI::Create_ChooseThree({ 0,0 });
+			upgradePhase = true;
+		}
+	}
+	void CheckOutOfScreen(ENTITY id)
+	{
+		cTransform* self = Core::Get().GetComponent<cTransform>(id);
+
+		AEVec2 cameraPosition = { 0 };
+		AEGfxGetCamPosition(&cameraPosition.x, &cameraPosition.y);
+
+		if (!(self->_position.x > cameraPosition.x - g_WorldMaxX && self->_position.x < cameraPosition.x + g_WorldMaxX
+			&& self->_position.y > cameraPosition.y - g_WorldMaxY && self->_position.y < cameraPosition.y + g_WorldMaxY))
+		{
+			AEVec2 relativeDirection;
+			AEVec2Sub(&relativeDirection, &self->_position, &cameraPosition);
+			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+
+			//@TED later just change the last variable for different enemy type
+			uiSys->Check_AIIndicatorExist(id, relativeDirection, 0); //Under UI System
+		}
+	}
+
+	//HACKS
+	void SetObjectiveComplete()
+	{
+		objectiveComplete = true;
+	}
 
 	float GetRandomPattern()
 	{
@@ -76,8 +124,11 @@ namespace LevelManager
 	{
 		float randomLevel = GetRandomPattern();
 
+		//3 objectives
 		SetObjectiveSpawn(randomLevel);
 		SetEnemySpawn(randomLevel);
+		objectiveComplete = false;
+		upgradePhase = false;
 	}
 
 
@@ -92,21 +143,27 @@ namespace LevelManager
 		//float randomRotation = AERandFloat() * 360.0f;
 		float rotationSpeed = 5.0f;
 
+		ENTITY collectable;
 		switch (static_cast<int>(randomSpawnArea))
 		{
 		case 0:
 			spawnPos.x = topRightSpawnArea.x + RandomPos();
 			spawnPos.y = topRightSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, 60.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, 60.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
+
 			spawnPos.x = topLeftSpawnArea.x + RandomPos();
 			spawnPos.y = topLeftSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, -120.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, -120.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
+
 			spawnPos.x = bottomSpawnArea.x + RandomPos();
 			spawnPos.y = bottomSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, 240.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, 240.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
 
 			ClearSpawnArea();
 			break;
@@ -115,15 +172,20 @@ namespace LevelManager
 			spawnPos.x = topRightSpawnArea.x + RandomPos();
 			spawnPos.y = topRightSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, 60.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, 60.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
+
 			spawnPos.x = leftSpawnArea.x + RandomPos();
 			spawnPos.y = leftSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, -120.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, -120.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
+
 			spawnPos.x = bottomRightSpawnArea.x + RandomPos();
 			spawnPos.y = bottomRightSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, 240.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, 240.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
 
 			ClearSpawnArea();
 			break;
@@ -132,15 +194,20 @@ namespace LevelManager
 			spawnPos.x = bottomRightSpawnArea.x + RandomPos();
 			spawnPos.y = bottomRightSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, 60.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, 60.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
+
 			spawnPos.x = bottomLeftSpawnArea.x + RandomPos();
 			spawnPos.y = bottomLeftSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, -120.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, -120.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
+
 			spawnPos.x = topSpawnArea.x + RandomPos();
 			spawnPos.y = topSpawnArea.y + RandomPos();
 			// Spawn Objective;
-			Factory::SpawnObjective_Comrade(spawnPos, 240.0f, rotationSpeed, objectiveSize, 0);
+			collectable = Factory::SpawnObjective_Comrade(spawnPos, 240.0f, rotationSpeed, objectiveSize, 0);
+			collectableList.insert(collectable);
 
 			ClearSpawnArea();
 			break;

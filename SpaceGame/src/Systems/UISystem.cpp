@@ -10,6 +10,7 @@
 #include "../Managers/GameStateManager.h"
 #include "../ECS/Factory.h"								//Create enemy indicator...careful of circular dependency
 #include "../Player/PlayerManager.h"
+#include "../Managers/UpgradeManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -304,6 +305,31 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	return true;
 }
 
+bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message)
+{
+	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+
+	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
+	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
+	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
+	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
+
+	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
+		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
+	{
+		return false;
+	}
+	cUIElement* upgrade = Core::Get().GetComponent<cUIElement>(entity);
+	if (upgrade)
+	{
+		int i = 0;
+		i += 1;
+		//UpgradeManager::PlayerUpgrade();
+	}
+
+	return true;
+}
+
 void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 {
 	cUIElement* uiComp = nullptr;
@@ -359,6 +385,7 @@ void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 
 void UISystem::DeleteUpgradeWindow()
 {
+	UpgradeManager::ClearAllUpgradeChoice();
 	while (choose3_Set.size() > 0)
 	{
 		Core::Get().EntityDestroyed(*choose3_Set.begin());
@@ -389,6 +416,9 @@ void UISystem::OnComponentAdd(ENTITY entity)
 		case UI_ROLE::DAMAGE_FLOAT:
 			floatingDamage_Set.insert(entity);
 			break;
+		case UI_ROLE::INDICATE_COLLECT:
+			collectIndicator_Set.insert(entity);
+			break;
 	}
 }
 
@@ -416,5 +446,9 @@ void UISystem::OnComponentRemove(ENTITY entity)
 	case UI_ROLE::DAMAGE_FLOAT:
 		floatingDamage_Set.erase(entity);
 		break;
+	case UI_ROLE::INDICATE_COLLECT:
+		collectIndicator_Set.erase(entity);
+		break;
+		
 	}
 }

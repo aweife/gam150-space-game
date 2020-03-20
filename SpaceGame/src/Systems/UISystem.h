@@ -18,6 +18,7 @@ class UISystem :public System
 public:
 	std::set<ENTITY> choose3_Set;
 	std::set<ENTITY> aiIndicator_Set;
+	std::set<ENTITY> collectIndicator_Set;
 	std::set<ENTITY> gameOver_Set;
 	std::set<ENTITY> shieldBubble_Set;
 	std::set<ENTITY> floatingDamage_Set;
@@ -42,3 +43,4 @@ bool OnShieldChange_ShieldUI(ENTITY entity, Events::OnShieldChange* message);
 bool OnShieldActivate_ShieldBubble(ENTITY entity, Events::OnShieldActivate* message);
 bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* message);
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message);
+bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message);

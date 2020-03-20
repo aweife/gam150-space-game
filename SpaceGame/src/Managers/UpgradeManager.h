@@ -44,7 +44,8 @@ namespace UpgradeManager
 	void Cleanup_UpgradeDatabase();
 
 	int RandomUpgrade();
-	bool CheckUnique();
+	bool CheckUnique(int randomUpgrade);
+	void AddActiveUpgrade(int randomUpgrade);
 	void ClearAllUpgradeChoice();
 
 	void PlayerUpgrade(cSpaceShip* spaceship, cHealth* health, UpgradePackages upgradePack);

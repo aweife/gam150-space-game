@@ -25,6 +25,8 @@
 #include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
 #include "UIEventsManager.h"							//Testing events calling
 
+#include "LevelManager.h"
+
 #include "../ECS/Factory.h"
 #include "../ECS/Core.h"
 #include "../Systems/UISystem.h"
@@ -70,15 +72,16 @@ namespace InputManager
 		{
 			ToggleShowBoundingBoxMode(); 
 		}
-		if (AEInputCheckTriggered(AEVK_9))			//Show all mesh outline
+		if (AEInputCheckTriggered(AEVK_9))			
 		{
-			Factory_UI::Create_ChooseThree({ 0,0 });
+			LevelManager::SetObjectiveComplete();
+			//Factory_UI::Create_ChooseThree({ 0,0 });
 		}
-		if (AEInputCheckTriggered(AEVK_8))
+		/*if (AEInputCheckTriggered(AEVK_8))
 		{
 			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
 			uiSys->DeleteUpgradeWindow();
-		}
+		}*/
 
 		//Testing...remove once done
 		if (AEInputCheckTriggered(AEVK_S))

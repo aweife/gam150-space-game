@@ -273,7 +273,7 @@ namespace Factory
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI);
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 2));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		//Core::Get().GetComponent<cTransform>(enemy)->_position.x = -1800.0f;
@@ -779,10 +779,12 @@ namespace Factory_UI
 		Core::Get().AddComponent<cSprite>(realUpgrade, new cSprite(realUpgrade, "Square Mesh2", "Upgrade_1", 0));
 		Core::Get().GetComponent<cSprite>(realUpgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(realUpgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
+		Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex = UpgradeManager::RandomUpgrade();
 
 		Core::Get().AddComponent<cTimeline>(realUpgrade, new cTimeline(g_appTime, g_appTime + 0.5f, false));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade));
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade), 0.45f, -0.5f);
+		UIEventsManager::Subscribe(realUpgrade, &OnButtonClick_Upgrades);
 	}
 
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType)

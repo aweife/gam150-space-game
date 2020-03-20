@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AEEngine.h"	
-
+#include "../Global_ECS.h"
 const float MIN_SPAWN_X = 2000.0f;
 const float MIN_SPAWN_Y = 2000.0f;
 
@@ -9,6 +9,11 @@ const float MIN_SPAWN_Y = 2000.0f;
 
 namespace LevelManager
 {
+	void Update();
+	void CheckOutOfScreen(ENTITY id);
+	
+	void SetObjectiveComplete();
+
 	AEVec2 RandomEnemyPosition();
 	AEVec2 RandomItemPosition();
 

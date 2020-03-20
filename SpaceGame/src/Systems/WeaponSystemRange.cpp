@@ -130,7 +130,7 @@ void HomingShoot(cTransform* transform)
 
 void MultiShot(cTransform* transform)
 {
-
+	(void)transform;
 }
 
 void LaserBeam(cTransform* transform, cRangeWeapon* rangeWeapComp)
@@ -146,10 +146,8 @@ void LaserBeam(cTransform* transform, cRangeWeapon* rangeWeapComp)
 	if (rangeWeapComp->_permenanceProjectile)
 	{
 		cTransform* laserTransform = Core::Get().GetComponent<cTransform>(rangeWeapComp->_permenanceProjectile);
-		cSprite* laserSprite = Core::Get().GetComponent<cSprite>(rangeWeapComp->_permenanceProjectile);
 		laserTransform->_position = offset;
 		laserTransform->_rotation = transform->_rotation;
-		//laserSprite->_UVOffset.x = 0.5 + ;
 	}
 
 

@@ -93,10 +93,7 @@ void Level1_Update()
 	AudioManager::Update();
 	PlayerManager::Update();
 	Core::Get().Core_Update();
-	if (AEInputCheckTriggered(AEVK_1))
-	{
-		Core::Get().EntityDestroyed(enemy);
-	}
+	LevelManager::Update();
 }
 
 // ----------------------------------------------------------------------------
