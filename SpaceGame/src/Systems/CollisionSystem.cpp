@@ -434,6 +434,25 @@ bool CollisionCheck(const Colliders& obj1, const ColliderShape shape1, const AEV
 
 /*********************************************************************************
 *
+*  Collision Resolution Helper functions
+*
+**********************************************************************************/
+void PlayerBounceOff(cRigidBody* rigidbody)
+{
+	AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
+	AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), -(rigidbody->_velocityVector.y * 1.2f));
+	AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
+}
+
+void EnemyBounceOff(cRigidBody* rigidbody)
+{
+	AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
+	AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.5f), -(rigidbody->_velocityVector.y * 1.5f));
+	AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
+}
+
+/*********************************************************************************
+*
 *  Collision System Functions
 *
 **********************************************************************************/
@@ -525,7 +544,6 @@ void CollisionSystem::Update()
 																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
 				{
 					//CameraManager::StartCameraShake();
-					//printf("Enemy health decrease lmao\n");
 
 					// when the player's velocity is more than the velocity cap
 					if (rigidbody->_velocity > (rigidbody->_velocityCap/2.0f))
@@ -536,14 +554,10 @@ void CollisionSystem::Update()
 					}
 
 					// for player's bounce off
-					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
-					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), -(rigidbody->_velocityVector.y * 1.2f));
-					AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
+					PlayerBounceOff(rigidbody);
 
 					// for enemy's bounce off
-					AEVec2Set(&rigidbody2->_velocityDirection, -(rigidbody2->_velocityVector.x), -(rigidbody2->_velocityVector.y));
-					AEVec2Set(&rigidbody2->_collisionVector, -(rigidbody2->_velocityVector.x * 1.5f), -(rigidbody2->_velocityVector.y * 1.5f));
-					AEVec2Add(&rigidbody2->_collisionVector, &rigidbody2->_collisionVector, &rigidbody2->_velocityDirection);
+					EnemyBounceOff(rigidbody2);
 
 				}
 
@@ -562,9 +576,7 @@ void CollisionSystem::Update()
 					//CameraManager::StartCameraShake();
 
 					// for player's bounce off
-					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
-					AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), -(rigidbody->_velocityVector.y * 1.2f));
-					AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
+					PlayerBounceOff(rigidbody);
 				}
 				
 				// if bullet collide with object
