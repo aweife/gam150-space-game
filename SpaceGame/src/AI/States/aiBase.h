@@ -14,6 +14,8 @@ enum STATE
 	STATE_IDLE,
 	STATE_PURSUIT,
 	STATE_RETREAT,
+
+	SPECIAL_ENTER,
 };
 
 class aiBase

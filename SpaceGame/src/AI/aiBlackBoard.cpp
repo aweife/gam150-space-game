@@ -3,7 +3,10 @@
 #include "../ECS/Core.h"						//Work with ECS
 #include "../Global.h"
 
-aiBlackBoard::aiBlackBoard():
+aiBlackBoard::aiBlackBoard(ENTITY entity, AI_TYPE type):
+	id {entity},
+	type {type},
+
 	positionUpdateTimer{0.0f},
 
 	baseAttackRange{ 300.0f },
@@ -15,12 +18,11 @@ aiBlackBoard::aiBlackBoard():
 	wanderAngle{ 0.0f }
 {}
 
-void aiBlackBoard::UpdateBlackboard(ENTITY entity)
+void aiBlackBoard::UpdateBlackboard()
 {
-	// Set ids
-	id = entity;
+	//NO ACTIVE PLAYER
 	const ENTITY pid = PlayerManager::player;
-	if (pid == 0)	return;				//NO ACTIVE PLAYER
+	if (pid == 0)	return;				
 
 	// Get components
 	cTransform* self = Core::Get().GetComponent<cTransform>(id);

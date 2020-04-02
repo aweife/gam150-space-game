@@ -547,13 +547,13 @@ void CollisionSystem::Update()
 
 				}
 
-				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::OBJECTIVE)
-				{
-					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-					//CameraManager::StartCameraShake();
-					markedForDestruction.insert(entity2);
-					LevelManager::ClearObjective(entity2);
-				}
+				//if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::OBJECTIVE)
+				//{
+				//	Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+				//	//CameraManager::StartCameraShake();
+				//	markedForDestruction.insert(entity2);
+				//	LevelManager::ClearObjective(entity2);
+				//}
 
 
 				// Player collide with boss

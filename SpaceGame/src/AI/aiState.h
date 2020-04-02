@@ -23,6 +23,9 @@
 #include "States/aiPursuit.h"
 #include "States/aiIdle.h"
 
+// Other states
+#include "States/objEnter.h"
+
 // Boss attacks
 #include "Boss/bossSpawn.h"
 #include "Boss/bossIdle.h"
@@ -34,7 +37,7 @@
 
 struct aiStateList
 {
-	std::variant< aiChase, aiPursuit, aiAttack, aiRetreat, aiIdle > states;
+	std::variant< aiChase, aiPursuit, aiAttack, aiRetreat, aiIdle, objEnter > states;
 };
 
 struct bossAttackList

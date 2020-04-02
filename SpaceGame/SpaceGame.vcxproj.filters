@@ -95,6 +95,7 @@
     <ClCompile Include="src\AI\Boss\bossHoming.cpp" />
     <ClCompile Include="src\Managers\LevelManager.cpp" />
     <ClCompile Include="src\Levels\UpgradeLevel.cpp" />
+    <ClCompile Include="src\AI\States\objEnter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiState.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="src\AI\Boss\bossHoming.h" />
     <ClInclude Include="src\Managers\LevelManager.h" />
     <ClInclude Include="src\Levels\UpgradeLevel.h" />
+    <ClInclude Include="src\AI\States\objEnter.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

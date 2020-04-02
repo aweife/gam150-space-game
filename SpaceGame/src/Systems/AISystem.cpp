@@ -48,7 +48,7 @@ void AISystem::Update()
 		ai = Core::Get().GetComponent<cAI>(entity);
 
 		// Update this ai's blackboard
-		ai->_blackboard.UpdateBlackboard(entity);
+		ai->_blackboard.UpdateBlackboard();
 
 		// Run this ai's current state
 		std::visit([&](auto& state)
