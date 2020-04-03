@@ -48,3 +48,4 @@ bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* messag
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message);
 bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message);
 bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message);
+bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message);

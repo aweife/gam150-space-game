@@ -15,6 +15,7 @@ cUIElement::cUIElement(const char* text, ColorInfo tint, ColorInfo blend, TEXT_A
 	_text._colorBlend = blend;
 	_text._anchor = anchor;
 	_text._bufferCount = strlen(text);
+	_text._usingScreenSpace = false;
 }
 
 cUIElement::~cUIElement()

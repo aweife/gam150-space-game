@@ -83,11 +83,19 @@ namespace Factory_UI
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);
 
 	void CreateUI_GameOver();
+	void CreateUI_Pause();
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue);
 
 	ENTITY CreateBackground_Load();
 
+}
+
+namespace Factory_SpashScreen
+{
+	ENTITY CreateSpashScreen_Digipen();
+
+	ENTITY CreateSpashScreen_MoonBase();
 }
 
 namespace Factory_Map

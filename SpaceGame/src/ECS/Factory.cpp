@@ -841,6 +841,8 @@ namespace Factory_UI
 		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 1;
 		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
+
 
 		ENTITY text2 = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(text2, new cTransform({ 0,-100 }, 0, { 1, 1 }));
@@ -849,6 +851,36 @@ namespace Factory_UI
 		Core::Get().GetComponent<cUIElement>(text2)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(text2)->_roleIndex = 2;
 		Core::Get().GetComponent<cUIElement>(text2)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(text2)->_text._usingScreenSpace = true;
+
+	}
+
+	void CreateUI_Pause()
+	{
+		ENTITY panel = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 800,300 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Texture_Default", 0));
+		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::PAUSE, 0));
+		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 1.0f, 0.0f, 0.0f, 0.0f };
+		UIEventsManager::Subscribe(panel, &TogglePauseWindow);
+
+		ENTITY text = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(text, new cTransform({ 0,50 }, 0, { 1, 1 }));
+		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Paused"));
+		Core::Get().GetComponent<cUIElement>(text)->_text._colorTint.a = 0.0f;
+		Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 1;						//Set transparency differently
+		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(text, &TogglePauseWindow);
+
+		ENTITY text2 = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(text2, new cTransform({ 0,-100 }, 0, { 1, 1 }));
+		Core::Get().AddComponent<cUIElement>(text2, new cUIElement("Press P To Resume Game"));
+		Core::Get().GetComponent<cUIElement>(text2)->_text._colorTint.a = 0.0f;
+		Core::Get().GetComponent<cUIElement>(text2)->_roleIndex = 1;						//Set transparency differently
+		Core::Get().GetComponent<cUIElement>(text2)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(text2)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(text2, &TogglePauseWindow);
 	}
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text)
@@ -879,6 +911,27 @@ namespace Factory_UI
 	{
 		ENTITY gamelogo = Create_GameLogo({ 0,100 }, { 500, 300 });
 		return gamelogo;
+	}
+}
+
+namespace Factory_SpashScreen
+{
+	ENTITY CreateSpashScreen_Digipen()
+	{
+		ENTITY spashScreen = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(spashScreen, new cTransform({ 0,0 }, 0, {1525 /2, 445/2}));
+		Core::Get().AddComponent<cSprite>(spashScreen, new cSprite(spashScreen, "Square Mesh", "DigiPenLogo", 0));
+		return spashScreen;
+	}
+
+	ENTITY CreateSpashScreen_MoonBase()
+	{
+		ENTITY spashScreen = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(spashScreen, new cTransform({ 0,0 }, 0, { 612,688 }));
+		Core::Get().AddComponent<cSprite>(spashScreen, new cSprite(spashScreen, "Square Mesh", "TeamLogo", 0));
+		Core::Get().GetComponent<cSprite>(spashScreen)->_colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cSprite>(spashScreen)->_colorBlend = { 0.9f, 0.9f, 0.9f, 0.2f};
+		return spashScreen;
 	}
 }
 

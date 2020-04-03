@@ -210,3 +210,81 @@ void RenderSystem::OnComponentRemove(ENTITY entity)
 	entityLayer7.erase(entity); */
 
 }
+
+namespace RenderingTricks
+{
+	// Step based
+	void LightSpeedEffectOut(ENTITY target, float elapsedTime, int counter, 
+		float increment, float alphaDecrement, float degree)
+	{
+		cTransform* transform = Core::Get().GetComponent<cTransform>(target);
+		cSprite* sprite = Core::Get().GetComponent<cSprite>(target);
+		float angle = AEDegToRad(degree);
+		
+		//First frame
+		if (elapsedTime <= g_dt && counter == 0)
+		{
+			transform->_position.x -= AECos(angle) * increment;
+			transform->_position.y += AESin(angle) * increment;		//0, up
+			sprite->_colorTint.a -= alphaDecrement;
+		}
+		else
+		{
+			int step = counter % 2;		//0 or 1;
+			if (step)	// 1 or odd, down
+			{
+				transform->_position.x -= AECos(angle) * 2 * increment * ((counter / 2) + 1);
+				transform->_position.y -= AESin(angle) * 2 * increment * ((counter / 2) + 1);
+				sprite->_colorTint.a -= alphaDecrement;
+			}
+			else		// 0 or even, up
+			{
+				// Centralised first
+				transform->_position.x += AECos(angle) * increment * (counter / 2);
+				transform->_position.y += AESin(angle) * increment * (counter / 2);
+				transform->_position.x += AECos(angle) * increment * ((counter / 2) + 1);
+				transform->_position.y += AESin(angle) * increment * ((counter / 2) + 1);
+				sprite->_colorTint.a -= alphaDecrement;
+			}
+		}
+	}
+
+	//Timebased
+	void LightSpeedEffectIn(ENTITY target, float elapsedTime, float totalTime, float timeOffset,int counter,
+		float maxRangeX, float maxRangeY, float desiredX, float desiredY, float alphaIncrement, float degree)
+	{
+		cTransform* transform = Core::Get().GetComponent<cTransform>(target);
+		cSprite* sprite = Core::Get().GetComponent<cSprite>(target);
+		float angle = AEDegToRad(degree);
+
+		//First frame
+		if (elapsedTime <= g_dt && counter == 0)
+		{
+			//Up
+			transform->_position.x = desiredX + (AECos(angle) * maxRangeX);
+			transform->_position.y = desiredY + (AESin(angle) * maxRangeY);		//0, up
+			sprite->_colorTint.a += alphaIncrement;
+		}
+		else
+		{
+			int step = counter % 2;		//0 or 1;
+			// +g_dt*step to retrieve previous frame distance
+			//time offset used to achieve centralised position faster
+			float timePercentage = (totalTime - elapsedTime + (g_dt * step) - timeOffset)/totalTime;
+			timePercentage = (timePercentage < 0.0f ? 0.0f : timePercentage);
+			if (step)	// 1 or odd, down
+			{
+				transform->_position.x = desiredX - (AECos(angle) * (maxRangeX * timePercentage));
+				transform->_position.y = desiredY - (AESin(angle) * (maxRangeY * timePercentage));
+				sprite->_colorTint.a += alphaIncrement;
+			}
+			else		// 0 or even, up
+			{
+				// Centralised first
+				transform->_position.x = desiredX + (AECos(angle) * (maxRangeX * timePercentage));
+				transform->_position.y = desiredY + (AESin(angle) * (maxRangeY * timePercentage));
+				sprite->_colorTint.a += alphaIncrement;
+			}
+		}
+	}
+}

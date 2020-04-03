@@ -36,7 +36,10 @@ extern long			g_WindowHeight;				// Height ^
 extern AEVec2 defaultAEVec2;
 extern float defaultFloat;
 
-void Global_Init();
+
+void Global_InitWindowSize(bool isFullScreen);
+
+void Global_UpdateWindowSize();
 
 void TogglePause();
 

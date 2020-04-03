@@ -105,14 +105,19 @@ void UISystem::Render()
 	{
 		uiComponent = Core::Get().GetComponent<cUIElement>(entity);
 		uiTransform = Core::Get().GetComponent<cTransform>(entity);
-		
+		float cameraX, cameraY;
+		AEGfxGetCamPosition(&cameraX, &cameraY);
+
 		if (uiComponent->_type == UI_TYPE::TEXT)
 		{
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			AEGfxTextureSet(NULL, 0, 0);
 			AEGfxSetBlendMode(AE_GFX_BM_NONE);
-			AEGfxSetTransparency(uiComponent->_text._colorTint.a);
+			//AEGfxSetTransparency(uiComponent->_text._colorTint.a);		//not working for text
 
+			if (uiComponent->_text._colorTint.a < 0.1f) continue;
+
+			// Aligh the text itself
 			AEVec2 textPosition = { 0 };
 			if (uiComponent->_text._anchor == TEXT_ANCHOR::CENTERLEFT)
 			{
@@ -128,6 +133,14 @@ void UISystem::Render()
 				AEVec2Set(&textPosition, uiTransform->_position.x - (14.0f * uiComponent->_text._bufferCount/2)
 					, uiTransform->_position.y - 8);
 			}
+
+			// UI Screenspace
+			if (uiComponent->_text._usingScreenSpace)
+			{
+				textPosition.x += cameraX;
+				textPosition.y += cameraY;
+			}
+
 
 			AEGfxPrint(ResourceManager::fontId, uiComponent->_text._textBuffer,
 				static_cast<int>(textPosition.x), static_cast<int>(textPosition.y),
@@ -408,6 +421,39 @@ bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
 	return true;
 }
 
+bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);			//Might be nullptr
+	cUIElement* ui = Core::Get().GetComponent <cUIElement>(entity);			
+
+	if (message->_show)
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 1.0f;
+		}
+		
+	}
+	else 
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 0.0f;
+		}
+	}
+
+	return true;
+}
+
+
 void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 {
 	cUIElement* uiComp = nullptr;
@@ -461,6 +507,7 @@ void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 	Factory_UI::Create_AIIndicator(ai, aiDir, aiType);
 }
 
+//Not used 
 void UISystem::DeleteUpgradeWindow()
 {
 	UpgradeManager::ClearAllUpgradeChoice();
@@ -527,6 +574,5 @@ void UISystem::OnComponentRemove(ENTITY entity)
 	case UI_ROLE::INDICATE_COLLECT:
 		collectIndicator_Set.erase(entity);
 		break;
-		
 	}
 }

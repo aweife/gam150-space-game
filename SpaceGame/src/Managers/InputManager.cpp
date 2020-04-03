@@ -48,9 +48,11 @@ namespace InputManager
 		// Non-Gameplay Keyboard Controls ... Pause, Exit
 		// -----------------------------------------------------------------------
 
-		if (AEInputCheckTriggered(AEVK_P)) 
+		if (AEInputCheckTriggered(AEVK_P) && currentState != GS_SPLASHSCREEN && currentState != GS_MAINMENU)
 		{
 			TogglePause();
+			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 
+				: UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
 		if (AEInputCheckTriggered(AEVK_ESCAPE))
 		{
@@ -68,6 +70,8 @@ namespace InputManager
 			//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
 		}
 
+		if (g_GamePause) return;
+
 		//Debug functionality
 		if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
 		{
@@ -75,7 +79,8 @@ namespace InputManager
 		}
 		if (AEInputCheckTriggered(AEVK_9))			
 		{
-			GSM_LoadingTransition(GS_UPGRADE);
+			GSM_ChangeState(GS_UPGRADE);
+			//GSM_LoadingTransition(GS_UPGRADE);
 			//Factory_UI::Create_ChooseThree({ 0,0 });
 		}
 		/*if (AEInputCheckTriggered(AEVK_8))

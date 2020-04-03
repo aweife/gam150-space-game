@@ -61,4 +61,10 @@ namespace Events
 		float _xPos;
 		float _yPos;
 	};
+
+	struct TogglePause :public EventsBase
+	{
+		TogglePause(bool show) :_show{ show } {};
+		bool _show;
+	};
 }

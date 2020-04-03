@@ -85,6 +85,7 @@ void Level1_Load()
 
 	Factory::CreateBackground();
 	Factory_UI::Create_PlayerUserInterface();
+	Factory_UI::CreateUI_Pause();
 
 	// FOR NOW, audio
 	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);
