@@ -54,6 +54,8 @@ namespace Factory
 		Core::Get().AddComponent<cTransform>(player, new cTransform({ -360, -100 }, PI * 1 / 9, { 50,50 }));
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", 2));
 		CreateParticleEmitter_TRAILSTATIC(Core::Get().GetComponent<cTransform>(player));
+		//CreateParticleEmitter_BOSSSPAWNSTATIC(Core::Get().GetComponent<cTransform>(player));
+		CreateParticleEmitter_OTHERSTATIC(Core::Get().GetComponent<cTransform>(player));
 		return player;
 	}
 
@@ -502,6 +504,73 @@ namespace Factory
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 5, 5 });
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 1, 1 });
 		return emitter;
+	}
+
+	ENTITY CreateParticleEmitter_BOSSSPAWNSTATIC(cTransform* tar)
+	{
+		UNREFERENCED_PARAMETER(tar);
+		ENTITY emitter = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ -100.0f, -100.0f }, 0.0f, { 1,1 }));
+		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f, 0.0f }, 5.0f, 0.1f, 0.2f, 20.0f, 3, 
+			0.0f, 0.0f, 2.0f));
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 70;
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", { 0.0f, 0.0f, 1.0f, 0.5f },
+			{ 20,20 }, 2.0f, { 0.0f,0.0f }, { -1.0f, -0.3f }, 50.0f, 0.0f, 2);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
+			VARIANCETYPE::NONE, { 28,28 }, { 28, 28 }, VARIANCETYPE::NONE);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 0.0f, 1.0f, 1.0f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 1.0f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 1.0f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 0.0f, 1.0f, 1.0f });
+		for (int i = 0; i < 360.0f; i += 10)
+		{
+			float _angle = i / (PI / 4);
+			Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Direction({5.0f * cosf(_angle), 5.0f * sinf(_angle)});
+			Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Direction({0, 0});
+		}
+		/*Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Direction({ 0 , 0 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(20.0f);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(0.0f);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 28, 28 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 20, 20 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 10, 10 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 5, 5 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 1, 1 });*/
+		return emitter;
+	}
+
+	ENTITY CreateParticleEmitter_OTHERSTATIC(cTransform* tar)
+	{
+		UNREFERENCED_PARAMETER(tar);
+		ENTITY emitter = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ 0.0f, 0.0f }, 0.0f, { 1,1 }));
+		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f, 0.0f }, 10.0f, 0.1f, 0.2f, 999.0f, 3, 
+			0.0f, 0.0f, 2.0f));
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 90;
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", { 0.0f, 0.0f, 1.0f, 0.5f },
+			{ 20,20 }, 2.0f, { 0.0f,0.0f }, { -1.0f, -0.3f }, 100.0f, 0.0f, 2);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
+			VARIANCETYPE::NONE, { 2,1 }, { 28, 20 }, VARIANCETYPE::RANDOM);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 0.0f, 0.0f, 1.0f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 1.0f, 1.0f, 0.9f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 0.0f, 0.0f, 1.0f, 0.1f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 1.0f, 0.0f, 1.0f, 0.9f });
+		for (int i = 0; i < 360.0f; i += 10)
+		{
+			float _angle = i / (PI / 2);
+			Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Direction({10.0f * cosf(_angle), 10.0f * sinf(_angle)});
+			Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Direction({0, 0});
+		}
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Direction({ 0 , 0 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(30.0f);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Velocity(0.0f);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 28, 28 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 20, 20 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 10, 10 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 5, 5 });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 1, 1 });
+		return emitter;
+
 	}
 }
 

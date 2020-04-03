@@ -56,6 +56,8 @@ namespace Factory
 	ENTITY CreateParticleEmitter_UPONIMPACT(cTransform* target);
 	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar);
 	ENTITY CreateParticleEmitter_TRAILSTATIC(cTransform* tar);
+	ENTITY CreateParticleEmitter_BOSSSPAWNSTATIC(cTransform* tar);
+	ENTITY CreateParticleEmitter_OTHERSTATIC(cTransform* tar);
 }
 
 namespace Factory_UI

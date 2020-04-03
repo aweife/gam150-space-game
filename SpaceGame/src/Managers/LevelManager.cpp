@@ -77,40 +77,40 @@ namespace LevelManager
 		return randomLevel;
 	}
 
-	std::list<AEVec2> randomEnemyPos
-	{
-		{0.0f, 0.0f},
-		{100.0f, 100.0f},
-		{90.0f,	90.0f},
+	//std::list<AEVec2> randomEnemyPos
+	//{
+	//	{0.0f, 0.0f},
+	//	{100.0f, 100.0f},
+	//	{90.0f,	90.0f},
 
-		{-70.0f, 70.0f},
-		{-90.0f, 100.0f},
-		{-120.0f, 120.0f},
-		{-105.0f, 110.0f},
+	//	{-70.0f, 70.0f},
+	//	{-90.0f, 100.0f},
+	//	{-120.0f, 120.0f},
+	//	{-105.0f, 110.0f},
 
-		{ -70.0f, -70.0f },
-		{ -90.0f, -100.0f },
-		{ -120.0f, -120.0f },
-		{ -105.0f, -110.0f },
+	//	{ -70.0f, -70.0f },
+	//	{ -90.0f, -100.0f },
+	//	{ -120.0f, -120.0f },
+	//	{ -105.0f, -110.0f },
 
-		{ 80.0f, -80.0f },
-		{ 100.0f, -100.0f },
-		{ 90.0f, -90.0f }
-	};
+	//	{ 80.0f, -80.0f },
+	//	{ 100.0f, -100.0f },
+	//	{ 90.0f, -90.0f }
+	//};
 
-	std::list<AEVec2> randomItemPos
-	{
-		{110.0f, 110.0f},
+	//std::list<AEVec2> randomItemPos
+	//{
+	//	{110.0f, 110.0f},
 
-		{-140.0f, 130.0f},
+	//	{-140.0f, 130.0f},
 
-		{-140.0f, -130.0f},
+	//	{-140.0f, -130.0f},
 
-		{ 70.0f, -70.0f }
-	};
+	//	{ 70.0f, -70.0f }
+	//};
 
 
-	AEVec2 RandomEnemyPosition()
+	/*AEVec2 RandomEnemyPosition()
 	{
 		AEVec2 position = randomEnemyPos.front();
 		randomEnemyPos.pop_front();
@@ -122,7 +122,7 @@ namespace LevelManager
 		AEVec2 position = randomItemPos.front();
 		randomItemPos.pop_front();
 		return position;
-	}
+	}*/
 
 	void Level1_Map()
 	{

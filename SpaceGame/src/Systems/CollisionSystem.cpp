@@ -24,7 +24,7 @@
 #include "../Math/Math.h"                   // Additional Math functions
 #include "../Global.h"                      // g_dt
 #include "../ECS/Core.h"                    // For ECS
-#include "../Tools/Editor.h"                    // For ECS
+#include "../Tools/Editor.h"                // For ECS
 #include "../ECS/Factory.h"                 // For Particle System
 #include "../Components/ComponentList.h"    // For component list
 #include "../Managers/LevelManager.h"
@@ -37,33 +37,31 @@
 *********************************************************************************/
 using RectVertexArray = std::array<AEVec2, 4>; // the array to store 4 sides of the rectangle
 
-float min = std::numeric_limits<float>::infinity();
-float max = -std::numeric_limits<float>::infinity();
-
 // Finding the minimum and maximum projections of each array on the axis 
 AEVec2 vectorProjections(const RectVertexArray& vertices, const AEVec2& axis)
 {
-	UNREFERENCED_PARAMETER(vertices);
-	UNREFERENCED_PARAMETER(axis);
+	float min = -std::numeric_limits<float>::infinity();
+	float max = std::numeric_limits<float>::infinity();
+	//UNREFERENCED_PARAMETER(vertices);
+	//UNREFERENCED_PARAMETER(axis);
 	//UNREACHABLE CODE ERROR!!
 
-	//// to check all the vertices for projection 
-	//for (auto& vertex : vertices)
-	//{
-	//	float proj = MBMath_DotProduct(vertex, axis);
-	//	if (proj < min)
-	//	{
-	//		min = proj;
-	//	}
+	// to check all the vertices for projection 
+	for (auto& vertex : vertices)
+	{
+		float proj = MBMath_DotProduct(vertex, axis);
+		if (proj < min)
+		{
+			min = proj;
+		}
 
-	//	if (proj > max)
-	//	{
-	//		max = proj;
-	//	}
+		if (proj > max)
+		{
+			max = proj;
+		}
 
-	//	return AEVec2{ min, max };
-	//}
-	return { 0 };
+	}
+	return AEVec2{ min, max };
 }
 
 // to check whether both vectors are overlapping
@@ -440,7 +438,7 @@ bool CollisionCheck(const Colliders& obj1, const ColliderShape shape1, const AEV
 void PlayerBounceOff(cRigidBody* rigidbody)
 {
 	AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
-	AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 1.2f), -(rigidbody->_velocityVector.y * 1.2f));
+	AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 0.5f), -(rigidbody->_velocityVector.y * 0.5f));
 	AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
 }
 
@@ -500,12 +498,16 @@ void CollisionSystem::Update()
 			collider->_boundingBox.min.y = transform->_position.y;
 		}
 
-		// Set the enum to rectangle
-		if (collider->_bbShape != ColliderShape::RAYCAST)
+		// Planet collider (test) 
+		if (collider->_bbShape == ColliderShape::CIRCLE)
 		{
-			collider->_bbShape = ColliderShape::RECTANGLE;
+			collider->_boundingBox.center.x = transform->_position.x;
+			collider->_boundingBox.center.y = transform->_position.y;
 		}
-		
+
+		// Set the enum to rectangle (default)
+		collider->_bbShape = ColliderShape::RECTANGLE;
+
 	}
 
 	// To check for collision for each entity in the list
@@ -558,6 +560,12 @@ void CollisionSystem::Update()
 
 					// for enemy's bounce off
 					EnemyBounceOff(rigidbody2);
+
+					// damage to the player's health
+					healthSys->TakeDamage(entity1);
+
+					// damage to the enemy's health
+					healthSys->TakeDamage(entity2);
 
 				}
 

@@ -86,6 +86,25 @@ namespace ResourceManager
 		meshLibrary.insert({ "Square Mesh", mesh });
 
 		// -----------------------------------------------------------------------
+		// Circle Mesh
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		//Creating the ball shape
+		int Parts = 12;
+		for (float i = 0; i < Parts; ++i)
+		{
+			AEGfxTriAdd(
+				0.0f, 0.0f, 0xFFFFFF00, 0.0f, 0.0f,
+				cosf(i * 2 * PI / Parts) * 1.0f, sinf(i * 2 * PI / Parts) * 1.0f, 0xFFFFFF00, 0.0f, 0.0f,
+				cosf((i + 1) * 2 * PI / Parts) * 1.0f, sinf((i + 1) * 2 * PI / Parts) * 1.0f, 0xFFFFFF00, 0.0f, 0.0f);
+		}
+		// Saving the mesh (list of triangles) in mesh
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+		meshLibrary.insert({ "Circle Mesh", mesh });
+
+		// -----------------------------------------------------------------------
 		// Octagon Mesh
 		// -----------------------------------------------------------------------
 		AEGfxMeshStart();
