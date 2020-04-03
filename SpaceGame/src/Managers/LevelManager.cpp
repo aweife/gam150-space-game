@@ -35,6 +35,7 @@ namespace LevelManager
 		{
 			CheckOutOfScreen(*it);
 		}
+
 		//Hacks...by right need to check if enemy killed or collectable done
 		if (objectiveComplete)
 		{

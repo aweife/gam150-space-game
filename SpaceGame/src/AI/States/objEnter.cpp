@@ -19,7 +19,7 @@ void objEnter::OnEnter(aiBlackBoard& bb)
 void objEnter::OnUpdate(aiBlackBoard& bb)
 {
 	// If we leave the objective
-	if (!Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange/4.0f))
+	if (!Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange/2.0f))
 		ChangeState(STATE_IDLE);
 
 	// Keep track of how long we are staying near the objective
@@ -27,7 +27,7 @@ void objEnter::OnUpdate(aiBlackBoard& bb)
 
 	// Basic feedback for now
 	// TODO: make particles fly towards player
-	trans->_rotation += g_dt;
+	trans->_rotation += _stayTimer * PI;
 
 	// When we stayed long enough
 	if (_stayTimer > _stayDuration)
@@ -40,7 +40,7 @@ void objEnter::OnUpdate(aiBlackBoard& bb)
 			Factory::CreateParticleEmitter_UPONIMPACT(trans);
 			LevelManager::ClearObjective(bb.id);
 			ChangeState(STATE_IDLE);
-			//Core::Get().EntityDestroyed(bb.id);
+			bb.markedForDestruction = true;
 
 			break;
 		case LEVEL_END:

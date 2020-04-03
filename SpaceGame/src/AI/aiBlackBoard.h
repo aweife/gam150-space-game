@@ -35,6 +35,7 @@ struct aiBlackBoard
 	// These are used by states
 	float wanderAngle;
 	float rotationSpeed;
+	bool markedForDestruction;
 };
 
 enum INNER_STATE

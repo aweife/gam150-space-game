@@ -136,7 +136,7 @@ namespace Factory
 		ENTITY objective = Core::Get().CreateEntity();
 
 		Core::Get().AddComponent<cTransform>(objective, new cTransform(position, startRotation, size));
-		Core::Get().AddComponent<cSprite>(objective, new cSprite(objective, "Square Mesh", "Planet_1", 2));
+		Core::Get().AddComponent<cSprite>(objective, new cSprite(objective, "Square Mesh", "Player_1", 2));
 
 		Core::Get().AddComponent<cTimeline>(objective, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
 		Core::Get().AddComponent<cRigidBody>(objective, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
@@ -153,6 +153,30 @@ namespace Factory
 
 		return objective;
 	}
+
+	//ENTITY SpawnLevel_End(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index)
+	//{
+	//	UNREFERENCED_PARAMETER(index);
+	//	ENTITY objective = Core::Get().CreateEntity();
+
+	//	Core::Get().AddComponent<cTransform>(objective, new cTransform(position, startRotation, size));
+	//	Core::Get().AddComponent<cSprite>(objective, new cSprite(objective, "Square Mesh", "Player_1", 2));
+
+	//	Core::Get().AddComponent<cTimeline>(objective, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
+	//	Core::Get().AddComponent<cRigidBody>(objective, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
+	//	Core::Get().AddComponent<cCollision>(objective, new cCollision);
+
+	//	Core::Get().AddComponent<cAI>(objective, new cAI{ objective, OBJECTIVE });
+	//	Core::Get().GetComponent<cAI>(objective)->_currentState.states.emplace<aiIdle>();
+
+	//	AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(objective)->_rotation, Core::Get().GetComponent<cTimeline>(objective));
+	//	AddNewNode_Float(&Core::Get().GetComponent<cTransform>(objective)->_rotation, Core::Get().GetComponent<cTimeline>(objective), 5.0f, Core::Get().GetComponent<cTransform>(objective)->_rotation + 2 * PI);
+
+	//	Core::Get().GetComponent<cRigidBody>(objective)->_tag = COLLISIONTAG::OBJECTIVE; // testing collision
+	//	Core::Get().GetComponent<cCollision>(objective)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+	//	return objective;
+	//}
 
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
 	{

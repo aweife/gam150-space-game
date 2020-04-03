@@ -58,6 +58,18 @@ void AISystem::Update()
 
 		CheckOutOfScreen(entity);
 
+		// Check if ai is destroyed in the states, add to our destroy set
+		if (ai->_blackboard.markedForDestruction)
+			markedForDestruction.insert(entity);
+	}
+
+	if (markedForDestruction.size() > 0)
+	{
+		for (auto const& entity : markedForDestruction)
+		{
+			Core::Get().EntityDestroyed(entity);
+		}
+		markedForDestruction.clear();
 	}
 }
 
@@ -67,6 +79,9 @@ void AISystem::OnComponentRemove(ENTITY) {};
 void AISystem::CheckOutOfScreen(ENTITY id)
 {
 	cTransform* self = Core::Get().GetComponent<cTransform>(id);
+
+	// If ai is destroyed, dont update
+	if (!self) return;
 
 	AEVec2 cameraPosition = { 0 };
 	AEGfxGetCamPosition(&cameraPosition.x, &cameraPosition.y);

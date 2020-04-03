@@ -15,7 +15,8 @@ aiBlackBoard::aiBlackBoard(ENTITY entity, AI_TYPE type):
 	baseAcceleration{ 5.0f },
 	baseRotationSpeed{ 5.0f },
 
-	wanderAngle{ 0.0f }
+	wanderAngle{ 0.0f },
+	markedForDestruction{false}
 {}
 
 void aiBlackBoard::UpdateBlackboard()
