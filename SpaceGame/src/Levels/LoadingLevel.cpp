@@ -21,6 +21,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 unsigned int loadingForState = GS_NULL;
 ENTITY loadingText = 0;
+
 void LoadingLvl_Load()
 {
 	loadingText = Factory_UI::CreateUI_Text(0, -150, "Loading Level...");

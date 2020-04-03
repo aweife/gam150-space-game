@@ -44,6 +44,8 @@ namespace ResourceManager
 		switch (loadingCode)
 		{
 		case GS_MAINMENU:
+			//nothing to load
+			loadingProgress = 100;
 			break;
 		case GS_LEVEL1:
 			GenerateMeshLibrary_1();
@@ -328,14 +330,22 @@ namespace ResourceManager
 	void LoadTextureLibrary_Essential()
 	{
 		//SHOULD BE AS LIGHT WEIGHT AS POSSIBLE
+		if (textureLibrary.find("DigiPenLogo") == textureLibrary.end())
+		{
+			textureLibrary.insert({"DigiPenLogo", AEGfxTextureLoad("res/DigiPen_Singapore_WEB_RED.png") });
+		}
+		if (textureLibrary.find("TeamLogo") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "TeamLogo", AEGfxTextureLoad("res/MoonBase_Logo.png") });
+		}
 		if (textureLibrary.find("GameLogo") == textureLibrary.end())
 		{
 			textureLibrary.insert({ "GameLogo", AEGfxTextureLoad("res/GameLogo.png") });
 		}	
-		if (textureLibrary.find("BG_MainMenu") == textureLibrary.end())
-		{
-			textureLibrary.insert({ "BG_MainMenu", AEGfxTextureLoad("res/Loading.png") });
-		}
+		//if (textureLibrary.find("BG_MainMenu") == textureLibrary.end())
+		//{
+		//	textureLibrary.insert({ "BG_MainMenu", AEGfxTextureLoad("res/Loading.png") });
+		//}
 		if (textureLibrary.find("Texture_Default") == textureLibrary.end())
 		{
 			textureLibrary.insert({ "Texture_Default", AEGfxTextureLoad("res/Texture_Default.png") });

@@ -24,7 +24,7 @@ void UpgradeLvl_Update()
 	Core::Get().Core_Update();
 	if (upgradeFinish && loadingForNextLevel != GS_NULL)
 	{
-		GSM_ChangeState(loadingForNextLevel);
+		GSM_LoadingTransition(loadingForNextLevel);
 	}
 }
 

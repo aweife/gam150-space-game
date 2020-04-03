@@ -33,7 +33,7 @@ void Editor_Init()
 
 	//Reposition game window to top right corner
 	int xnew = desktopRect.right - (applicationRect.right - applicationRect.left);
-	int ynew = 60;//desktopRect.bottom - (applicationRect.bottom - applicationRect.top);	//Offset to see visual studio taskbar
+	int ynew = 0;// 60;//desktopRect.bottom - (applicationRect.bottom - applicationRect.top);	//Offset to see visual studio taskbar
 	SetWindowPos(gameWindow, HWND_NOTOPMOST, xnew, ynew, 0, 0, SWP_FRAMECHANGED | SWP_DRAWFRAME | SWP_NOSIZE);
 	
 }
