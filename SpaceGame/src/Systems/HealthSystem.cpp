@@ -21,6 +21,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Player/PlayerManager.h"
 #include "../ECS/Factory.h"
 #include "../Tools/Console.h"
+#include "../Managers/LevelManager.h"
 
 void HealthSystem::Init()
 {
@@ -117,6 +118,16 @@ void HealthSystem::Update()
 				Factory::RemoveCamera();
 				PlayerManager::PlayerDeath();
 			}
+			//Check for enemy WAVES
+			cRigidBody* collision = Core::Get().GetComponent<cRigidBody>(entity);
+			if (collision)
+			{
+				if (collision->_tag == COLLISIONTAG::WAVEENEMY)
+				{
+					LevelManager::wavesEnemyList.erase(entity);
+				}
+			}
+			
 			Core::Get().EntityDestroyed(entity);
 		}
 		markedForDestruction.clear();

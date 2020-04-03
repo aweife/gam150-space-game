@@ -25,9 +25,10 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
 ENTITY enemy;
-const float bossSpawn = 1.0f;
-float bossSpawnTimer = 0.0f;
-bool spawnedBoss = false;
+//const float bossSpawn = 1.0f;
+//float bossSpawnTimer = 0.0f;
+//bool spawnedBoss = false;
+
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -51,7 +52,7 @@ void Level1_Load()
 	//enemy = Factory::CreateEnemy4(PlayerManager::player, 2);
 	//enemy = Factory::CreateEnemy5(PlayerManager::player, 2);
 
-	LevelManager::Level1_Map();
+	//LevelManager::Level1_Map();
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
 	Factory::CreatePlanet2(3, 200.0f, 179.0f, 200.0f, 200.0f);
@@ -97,7 +98,7 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
-	spawnedBoss = false;
+	//spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 }
 
@@ -108,7 +109,7 @@ void Level1_Init()
 void Level1_Update()
 {
 	//Editor_TrackVariable("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
-	Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
+	//Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	AudioManager::Update();
 	PlayerManager::Update();
 	Core::Get().Core_Update();
@@ -116,7 +117,7 @@ void Level1_Update()
 
 
 	// Test boss
-	if (!spawnedBoss)
+	/*if (!spawnedBoss)
 	{
 		bossSpawnTimer += g_dt;
 
@@ -125,7 +126,11 @@ void Level1_Update()
 			spawnedBoss = true;
 			enemy = Factory_AI::CreateBoss(PlayerManager::player, 2);
 		}
-	}
+	}*/
+	LevelManager::EnemySpawnManager::SpawnBoss(enemy);
+	cTransform* playerPosT = Core::Get().GetComponent<cTransform>(PlayerManager::player);
+	AEVec2 playerPos = playerPosT->_position;
+	LevelManager::EnemySpawnManager::SpawnEnemyWavesTimer(playerPos);
 }
 
 // ----------------------------------------------------------------------------
@@ -143,7 +148,7 @@ void Level1_Draw()
 // ----------------------------------------------------------------------------
 void Level1_Free()
 {
-	spawnedBoss = false;
+	//spawnedBoss = false;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }

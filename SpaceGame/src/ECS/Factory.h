@@ -101,5 +101,7 @@ namespace Factory_AI
 {
 	ENTITY CreateEnemy1(ENTITY player, unsigned int layer, AEVec2 spawnPos);
 	ENTITY CreateEnemy2(ENTITY player, unsigned int layer, AEVec2 spawnPos);
+	ENTITY CreateEnemy3(ENTITY player, unsigned int layer, AEVec2 spawnPos);
+	ENTITY CreateEnemy4(ENTITY player, unsigned int layer, AEVec2 spawnPos);
 	ENTITY CreateBoss(ENTITY player, unsigned int layer);
 }

@@ -521,8 +521,8 @@ void CollisionSystem::Update()
 				// if player and enemy collide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
-				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY || 
-																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	(rigidbody2->_tag == COLLISIONTAG::ENEMY || 
+																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID))
 				{
 					//CameraManager::StartCameraShake();
 					//printf("Enemy health decrease lmao\n");
@@ -555,6 +555,15 @@ void CollisionSystem::Update()
 					LevelManager::ClearObjective(entity2);
 				}
 
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::DELIVERY)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					//CameraManager::StartCameraShake();
+					LevelManager::isCollected = true;
+					markedForDestruction.insert(entity2);
+					//LevelManager::ClearObjective(entity2);
+				}
+
 
 				// Player collide with boss
 				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::BOSS)
@@ -568,7 +577,7 @@ void CollisionSystem::Update()
 				}
 				
 				// if bullet collide with object
-				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY)
+				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER &&	(rigidbody2->_tag == COLLISIONTAG::ENEMY || rigidbody2->_tag == COLLISIONTAG::WAVEENEMY))
 				{
 					cProjectile* projectile = Core::Get().GetComponent<cProjectile>(entity1);
 					if (projectile && projectile->_bulletType == bulletType::laser)
@@ -582,7 +591,6 @@ void CollisionSystem::Update()
 						continue;
 					}
 
-
 					markedForDestruction.insert(entity1);
 
 					if (health2 != nullptr && health2->_isInvulnerable == false)
@@ -592,6 +600,8 @@ void CollisionSystem::Update()
 						healthSys->TakeDamage(entity2);
 					}
 				}
+
+
 				// if bullet collide with Player
 				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)
 				{
