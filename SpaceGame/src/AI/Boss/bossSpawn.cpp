@@ -16,11 +16,13 @@ void bossSpawn::OnEnter(aiBlackBoard& bb)
 
 void bossSpawn::OnUpdate(aiBlackBoard& bb)
 {
+	// Spawning animation here
 	if (trans->_scale.x < _initialScale.x)
 		trans->_scale.x += g_dt * bb.baseMaxSpeed;
 	else if (trans->_scale.y < _initialScale.y)
 		trans->_scale.y += g_dt * bb.baseMaxSpeed;
 	else
+		//End animation
 		ChangeAttack(BOSS_IDLE);
 
 	trans->_rotation += g_dt * bb.baseMaxSpeed * bb.baseRotationSpeed;

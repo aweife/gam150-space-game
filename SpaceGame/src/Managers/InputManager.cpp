@@ -124,7 +124,7 @@ namespace InputManager
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
 
 		UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY)));
-		if (AEInputCheckCurr(AEVK_LBUTTON))
+		if (AEInputCheckTriggered(AEVK_LBUTTON))
 		{
 			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY))))
 			{
@@ -137,7 +137,14 @@ namespace InputManager
 		}
 		else
 		{
-			mouseLTrigger = false;
+			if (AEInputCheckCurr(AEVK_LBUTTON))
+			{
+				mouseLTrigger = true;			//Auto Fire Bullets
+			}
+			else
+			{
+				mouseLTrigger = false;
+			}
 		}
 		mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
 	

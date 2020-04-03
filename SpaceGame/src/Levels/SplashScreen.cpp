@@ -18,9 +18,9 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 #include "../Systems/RenderSystem.h"		//RenderingTricks
 
-const float displayTime[2] = { 2.0f, 1.0f };
-const float preanimationTime[2] = { 0.0f, 1.0f };
-const float postanimationTime[2] = { 0.0f, 1.0f };
+const float displayTime[2] = { 0.0f, 0.0f };//{ 2.0f, 1.0f };
+const float preanimationTime[2] = { 0.0f, 0.0f };//{ 0.0f, 1.0f };
+const float postanimationTime[2] = { 0.0f, 0.0f };//{ 0.0f, 1.0f };
 float currentTimer = 0.0f;							//Timer
 unsigned int splashScreenStage = 0;					//Which image to show
 int counter = 0;									//Animation Step

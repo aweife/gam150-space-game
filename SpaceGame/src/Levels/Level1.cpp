@@ -108,13 +108,10 @@ void Level1_Init()
 // ----------------------------------------------------------------------------
 void Level1_Update()
 {
-	//Editor_TrackVariable("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
-	Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	AudioManager::Update();
 	PlayerManager::Update();
 	Core::Get().Core_Update();
 	LevelManager::Update();
-
 
 	// Test boss
 	if (!spawnedBoss)

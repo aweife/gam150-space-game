@@ -613,9 +613,11 @@ void CollisionSystem::Update()
 				}
 
 				// if bullet collide with planet
-				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
+				if ((rigidbody->_tag == COLLISIONTAG::BULLET || rigidbody->_tag == COLLISIONTAG::BULLET_PLAYER) 
+					&& rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
 				{
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					markedForDestruction.insert(entity1);
 					markedForDestruction.insert(entity2);
 				}
 

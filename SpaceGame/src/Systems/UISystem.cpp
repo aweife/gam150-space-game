@@ -148,6 +148,7 @@ void UISystem::Render()
 		}
 		
 	}
+	UIEventsManager::Broadcast(new Events::OnUpgradeDescpChange(-1));//Clear the upgrade description
 }
 
 void EditText(ENTITY target, const char* newText)
@@ -384,13 +385,52 @@ bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	cUIElement* upgrade = Core::Get().GetComponent<cUIElement>(entity);
+
 	if (upgrade && !upgradeFinish)
 	{
+		int resultingRerollCount = -1;
+		UIEventsManager::Broadcast(new Events::OnUpgradeReroll(resultingRerollCount));
 		UpgradeManager::ApplyUpgrade(upgrade->_roleIndex);
 		UpgradeManager::ClearAllUpgradeChoice();
-		upgradeFinish = true;
+		
+		if (resultingRerollCount == 0)
+		{
+			upgradeFinish = true;
+		}
+		
 	}
 
+	return true;
+}
+
+bool UpdateRerollCount(ENTITY entity, Events::OnUpgradeReroll* message)
+{
+	// There is only one reroll UI
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+
+	if (uiComp)
+	{
+		--uiComp->_roleIndex2;
+		char buffer[4];
+		_itoa_s(uiComp->_roleIndex2, buffer, 10);
+		EditText(entity, buffer);
+
+		message->_rerollInfo = uiComp->_roleIndex2;
+	}
+
+	return true;
+}
+
+bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message)
+{
+	if (message->_upgradeIndex == -1)
+	{
+		EditText(entity, "");
+	}
+	else
+	{
+		EditText(entity, "");
+	}
 	return true;
 }
 
@@ -403,12 +443,15 @@ bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
 	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
 	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+	cUIElement* upgrade = Core::Get().GetComponent<cUIElement>(entity);
+
 	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
 	{
 		if (sprite)
 		{
 			sprite->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+			
 		}
 		return false;
 	}
@@ -416,6 +459,7 @@ bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
 	if(sprite)
 	{
 		sprite->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+		UIEventsManager::Broadcast(new Events::OnUpgradeDescpChange(static_cast<int>(upgrade->_roleIndex)));
 	}
 
 	return true;

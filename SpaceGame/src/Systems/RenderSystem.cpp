@@ -26,6 +26,7 @@ void RenderSystem::Render()
 	AEGfxGetCamPosition(&cameraX, &cameraY);
 	float parallaxOffsetX = 0.0f;
 	float parallaxOffsetY = 0.0f;
+	ColorInfo farAwayTint = {0.0f,0.0f ,0.0f ,0.0f };
 
 	//Update particle system based on layers after finished 
 	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
@@ -36,6 +37,7 @@ void RenderSystem::Render()
 	// -----------------------------------------------------------------------
 	for (auto const& layer : allLayer)
 	{
+		farAwayTint = { 0.0f, 0.0f ,0.0f ,0.0f };
 		for (auto const& entity : *layer)
 		{
 			transform = Core::Get().GetComponent<cTransform>(entity);
@@ -64,12 +66,14 @@ void RenderSystem::Render()
 				//Render with parallax offset
 				parallaxOffsetX = cameraX * -0.001f * sprite->_layer;
 				parallaxOffsetY = cameraY * -0.001f * sprite->_layer;
+				farAwayTint = {0.4f, 0.4f, 0.4f, 0.0f};
 			}
 			else if (sprite->_layer >= 3 && sprite->_layer <= 4)			//BACKGROUND <--
 			{
 				//Render with parallax offset
 				parallaxOffsetX = cameraX * -0.05f * sprite->_layer;
 				parallaxOffsetY = cameraY * -0.05f * sprite->_layer;
+				farAwayTint = { 0.2f, 0.2f, 0.2f, 0.0f };
 			}
 			else if (sprite->_layer == 1)									//FOREGROUND -->
 			{
@@ -104,10 +108,11 @@ void RenderSystem::Render()
 
 				// Set blend mode to blend so we can render transparency
 				AEGfxSetBlendMode(sprite->_blend);
-				//Transparency
+				// Transparency
 				AEGfxSetTransparency(1.0f);
 				// No tint
-				AEGfxSetTintColor(sprite->_colorTint.r, sprite->_colorTint.g, sprite->_colorTint.b, sprite->_colorTint.a);
+				AEGfxSetTintColor(sprite->_colorTint.r - farAwayTint.r, sprite->_colorTint.g - farAwayTint.g
+					, sprite->_colorTint.b - farAwayTint.b, sprite->_colorTint.a);
 				AEGfxSetBlendColor(sprite->_colorBlend.r, sprite->_colorBlend.g, sprite->_colorBlend.b, sprite->_colorBlend.a);
 				// Render at _position
 				AEGfxSetTransform(transform->_transform.m);
@@ -120,7 +125,8 @@ void RenderSystem::Render()
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 				AEGfxSetBlendMode(sprite->_blend);
 				AEGfxSetTransparency(1.0f);
-				AEGfxSetTintColor(sprite->_colorTint.r, sprite->_colorTint.g, sprite->_colorTint.b, sprite->_colorTint.a);
+				AEGfxSetTintColor(sprite->_colorTint.r - farAwayTint.r, sprite->_colorTint.g - farAwayTint.g
+					, sprite->_colorTint.b - farAwayTint.b, sprite->_colorTint.a);
 				AEGfxSetBlendColor(sprite->_colorBlend.r, sprite->_colorBlend.g, sprite->_colorBlend.b, sprite->_colorBlend.a);
 				AEGfxSetTransform(transform->_transform.m);
 				AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);

@@ -10,7 +10,7 @@ void UpgradeLvl_Load()
 {
 	Factory::CreateMenuPlayer();
 	Factory_Map::Generate_StarField_Menu();
-	Factory_UI::Create_ChooseThree({ 0,0 });
+	Factory_UI::Create_ChooseThree({0, 0 }, 2);
 }
 
 void UpgradeLvl_Init()

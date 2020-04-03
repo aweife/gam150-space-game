@@ -725,13 +725,57 @@ namespace Factory_UI
 		return boss;
 	}
 
-	void Create_ChooseThree(AEVec2 centralPos)
+	void Create_ChooseThree(AEVec2 centralPos, unsigned int reroll)
 	{
 		ENTITY border = 0, fakeupgrade = 0;
 		float borderSize = 100, borderSpace = 10;
 		AEVec2 startingPos;
-		AEVec2Set(&centralPos, centralPos.x - borderSize - borderSpace, centralPos.y);
 
+		// Title of Upgrade
+		AEVec2Set(&startingPos, centralPos.x, centralPos.y + 100);
+		ENTITY text = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
+		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Choose Your Upgrade"));
+		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
+		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
+
+		// Number of Rerolls Title
+		AEVec2Set(&startingPos, centralPos.x, centralPos.y + 75);
+		text = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
+		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Remaining Rerolls: "));
+		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
+		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
+
+		// Number of Rerolls
+		AEVec2Set(&startingPos, centralPos.x + 120, centralPos.y + 75);
+		text = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
+		char buffer[4];
+		_itoa_s(reroll, buffer, 10);
+		Core::Get().AddComponent<cUIElement>(text, new cUIElement(buffer));
+		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
+		Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 1;
+		Core::Get().GetComponent<cUIElement>(text)->_roleIndex2 = reroll;		//Used to track reroll count
+		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(text, &UpdateRerollCount);
+
+		// Item Description
+		AEVec2Set(&startingPos, centralPos.x, centralPos.y - 120);
+		text = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
+		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Sample Item Description"));
+		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
+		Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 2;
+		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(text, &UpdateDescriptionText);
+
+		// Three Roulette
+		AEVec2Set(&centralPos, centralPos.x - borderSize - borderSpace, centralPos.y);
 		for (int i = 0; i < 3; ++i)
 		{
 			AEVec2Set(&startingPos, centralPos.x + (borderSize + borderSpace) * i, centralPos.y);

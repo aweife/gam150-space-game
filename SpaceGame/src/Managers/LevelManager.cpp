@@ -112,6 +112,8 @@ namespace LevelManager
 
 	AEVec2 RandomEnemyPosition()
 	{
+		AE_ASSERT(randomEnemyPos.size() > 0 && "No more enemy position to churn out");
+
 		AEVec2 position = randomEnemyPos.front();
 		randomEnemyPos.pop_front();
 		return position;
@@ -119,6 +121,8 @@ namespace LevelManager
 
 	AEVec2 RandomItemPosition()
 	{
+		AE_ASSERT(randomItemPos.size() > 0 && "No more item position to churn out");
+
 		AEVec2 position = randomItemPos.front();
 		randomItemPos.pop_front();
 		return position;
@@ -442,7 +446,7 @@ namespace LevelManager
 		if (collectableList.size() == 0)
 			objectiveComplete = true;
 
-		printf("Objectives Left: %d\n", collectableList.size());
+		printf("Objectives Left: %zd\n", collectableList.size());
 	}
 
 	void ClearObjectiveAll()

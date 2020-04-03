@@ -67,4 +67,17 @@ namespace Events
 		TogglePause(bool show) :_show{ show } {};
 		bool _show;
 	};
+
+	// Selected 1 upgrade and decrementing reroll
+	struct OnUpgradeReroll :public EventsBase
+	{
+		OnUpgradeReroll(int& rerollInfo) :_rerollInfo{rerollInfo} {};
+		int& _rerollInfo;
+	};
+
+	struct OnUpgradeDescpChange :public EventsBase
+	{
+		OnUpgradeDescpChange(int upgradeIndex) :_upgradeIndex{ upgradeIndex } {};
+		int _upgradeIndex;		//-1 is no desption
+	};
 }

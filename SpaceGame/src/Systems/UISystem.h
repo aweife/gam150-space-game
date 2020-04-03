@@ -49,3 +49,5 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message);
 bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message);
 bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message);
 bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message);
+bool UpdateRerollCount(ENTITY entity, Events::OnUpgradeReroll* message);
+bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message);
