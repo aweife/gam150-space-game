@@ -24,8 +24,11 @@ namespace LevelManager
 	objectSpawnArea8 bottomSpawnArea;
 
 	std::set<ENTITY> collectableList;
+	
 	bool objectiveComplete;
 	bool upgradePhase;
+	bool spawnExit;
+	ENTITY exitId;
 
 	void Update()
 	{
@@ -35,14 +38,10 @@ namespace LevelManager
 		{
 			CheckOutOfScreen(*it);
 		}
-		//Hacks...by right need to check if enemy killed or collectable done
+
+		// If objective complete, spawn level end
 		if (objectiveComplete)
-		{
-			//Factory_UI::Create_ChooseThree({ 0,0 });
-			loadingForNextLevel = GS_LEVEL1;
-			GSM_ChangeState(GS_UPGRADE);
-			upgradePhase = true;
-		}
+			SetObjectiveComplete();
 	}
 	void CheckOutOfScreen(ENTITY id)
 	{
@@ -66,7 +65,30 @@ namespace LevelManager
 	//HACKS
 	void SetObjectiveComplete()
 	{
-		//objectiveComplete = true;
+		if (spawnExit)
+		{
+			CheckOutOfScreen(exitId);
+		}
+		else
+		{
+			spawnExit = true;
+			exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+
+			StartBossSpawnSequence();
+		}
+	}
+
+	void StartBossSpawnSequence()
+	{
+		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,-100.0f }, 100.0f, 10);
+	}
+
+	void ClearLevel()
+	{
+		//Factory_UI::Create_ChooseThree({ 0,0 });
+		loadingForNextLevel = GS_LEVEL1;
+		GSM_ChangeState(GS_UPGRADE);
+		upgradePhase = true;
 	}
 
 	float GetRandomPattern()
@@ -137,6 +159,7 @@ namespace LevelManager
 		SetEnemySpawn(randomLevel);
 		objectiveComplete = false;
 		upgradePhase = false;
+		spawnExit = false;
 	}
 
 

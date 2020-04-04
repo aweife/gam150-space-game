@@ -458,6 +458,18 @@ namespace ResourceManager
 				case 26:
 					if (textureLibrary.find("Upgrade_Laser") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Upgrade_Laser", AEGfxTextureLoad("res/Upgrade_Laser.png") });
+					break;
+				case 27:
+					if (textureLibrary.find("Exit_1") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Exit_1", AEGfxTextureLoad("res/Exit_1.png") });
+					break;
+				case 28:
+					if (textureLibrary.find("Exit_2") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Exit_2", AEGfxTextureLoad("res/Exit_2.png") });
+					break;
+				case 29:
+					if (textureLibrary.find("Exit_3") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Exit_3", AEGfxTextureLoad("res/Exit_3.png") });
 					*progress = 100;
 					break;
 			}

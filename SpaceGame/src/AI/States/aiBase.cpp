@@ -46,6 +46,9 @@ void aiBase::OnExit(aiStateList& var)
 	case STATE_IDLE:
 		var.states.emplace<aiIdle>();
 		break;
+	case SPECIAL_ENTER:
+		var.states.emplace<objEnter>();
+		break;
 	default:
 		var.states.emplace<aiIdle>();
 		break;

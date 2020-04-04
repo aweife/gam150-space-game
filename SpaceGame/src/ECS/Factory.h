@@ -29,8 +29,9 @@ namespace Factory
 	//GameObjects
 	ENTITY CreateMenuPlayer();
 	ENTITY CreatePlayer(unsigned int layer);
-	ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position);
+	//ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position);
 	ENTITY SpawnObjective_Comrade(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index);
+	ENTITY SpawnLevel_End(AEVec2 position);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
@@ -56,6 +57,7 @@ namespace Factory
 	ENTITY CreateParticleEmitter_UPONIMPACT(cTransform* target);
 	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar);
 	ENTITY CreateParticleEmitter_TRAILSTATIC(cTransform* tar);
+	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count);
 }
 
 namespace Factory_UI

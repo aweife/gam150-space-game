@@ -12,7 +12,9 @@ namespace LevelManager
 	void Update();
 	void CheckOutOfScreen(ENTITY id);
 	
+	void ClearLevel();
 	void SetObjectiveComplete();
+	void StartBossSpawnSequence();
 
 	AEVec2 RandomEnemyPosition();
 	AEVec2 RandomItemPosition();

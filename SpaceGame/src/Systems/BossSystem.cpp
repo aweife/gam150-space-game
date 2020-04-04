@@ -32,7 +32,7 @@ void BossSystem::Update()
 		ai = Core::Get().GetComponent<cBoss>(entity);
 
 		// Update this ai's blackboard
-		ai->_blackboard.UpdateBlackboard(entity);
+		ai->_blackboard.UpdateBlackboard();
 
 		// Run this ai's current state
 		std::visit([&](auto& state)

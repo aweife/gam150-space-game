@@ -29,5 +29,6 @@ public:
 	void OnComponentRemove(ENTITY) override;
 
 private:
+	std::set<ENTITY> markedForDestruction;					//Cant delete entity while looping with range loop
 	void CheckOutOfScreen(ENTITY id);
 };

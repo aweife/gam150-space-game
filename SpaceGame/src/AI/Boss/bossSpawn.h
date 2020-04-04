@@ -13,5 +13,7 @@ private:
 	// Extra components this state needs
 
 	// State variables
-	AEVec2 _initialScale;
+	AEVec2 _maxSize;
+	float _sizeRatioX;
+	float _sizeRatioY;
 };
