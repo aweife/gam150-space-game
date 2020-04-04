@@ -1004,6 +1004,37 @@ namespace Factory_SpashScreen
 	}
 }
 
+namespace Factory_LevelDisplay
+{
+	ENTITY CreateLevelDisplay_Level1()
+	{
+		ENTITY levelDisplay = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(levelDisplay, new cTransform({ 0,0 }, 0, { 1525 / 2, 445 / 2 }));
+		//Core::Get().AddComponent<cSprite>(levelDisplay, new cSprite(levelDisplay, "Square Mesh", "DigiPenLogo", 0));
+		return levelDisplay;
+	}
+
+	ENTITY CreateLevelDisplay_Level2()
+	{
+		ENTITY levelDisplay = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(levelDisplay, new cTransform({ 0,0 }, 0, { 612,688 }));
+		Core::Get().AddComponent<cSprite>(levelDisplay, new cSprite(levelDisplay, "Square Mesh", "TeamLogo", 0));
+		Core::Get().GetComponent<cSprite>(levelDisplay)->_colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cSprite>(levelDisplay)->_colorBlend = { 0.9f, 0.9f, 0.9f, 0.2f };
+		return levelDisplay;
+	}
+
+	ENTITY CreateLevelDisplay_Level3()
+	{
+		ENTITY levelDisplay = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(levelDisplay, new cTransform({ 0,0 }, 0, { 612,688 }));
+		Core::Get().AddComponent<cSprite>(levelDisplay, new cSprite(levelDisplay, "Square Mesh", "TeamLogo", 0));
+		Core::Get().GetComponent<cSprite>(levelDisplay)->_colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cSprite>(levelDisplay)->_colorBlend = { 0.9f, 0.9f, 0.9f, 0.2f };
+		return levelDisplay;
+	}
+}
+
 namespace Factory_Map
 {
 	void Generate_StarField_Menu()

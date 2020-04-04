@@ -100,6 +100,16 @@ namespace Factory_SpashScreen
 	ENTITY CreateSpashScreen_MoonBase();
 }
 
+namespace Factory_LevelDisplay
+{
+	ENTITY CreateLevelDisplay_Level1();
+	
+	ENTITY CreateLevelDisplay_Level2();
+	
+	ENTITY CreateLevelDisplay_Level3();
+
+}
+
 namespace Factory_Map
 {
 	void Generate_StarField_Menu();
