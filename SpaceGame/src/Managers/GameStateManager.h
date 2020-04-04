@@ -2,8 +2,12 @@
 
 enum GAMESTATE
 {
-	GS_LOADINGLvl,
+	GS_LOADINGSCREEN,
+
 	GS_SPLASHSCREEN,
+	GS_SPLASHSCREEN_LVL1,
+	GS_SPLASHSCREEN_LVL2,
+	GS_SPLASHSCREEN_LVL3,
 	GS_MAINMENU,
 	GS_LEVEL1,
 	GS_UPGRADE,
@@ -32,3 +36,4 @@ void GSM_RestartLevel();
 void GSM_QuitGame();
 void GSM_ChangeState(int nextGameState);
 void GSM_LoadingTransition(int loadForState);
+void GSM_DisplayLevelName(int currState);

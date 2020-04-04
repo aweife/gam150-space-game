@@ -1,5 +1,6 @@
 #include "GameStateManager.h"
 #include "../Levels/LoadingLevel.h"
+#include "../Levels/LevelDisplay.h"
 #include "../Levels/SplashScreen.h"
 #include "../Levels/MainMenu.h"
 #include "../Levels/Level1.h"
@@ -33,7 +34,7 @@ void GSM_Update()
 		fpFree		=	SplashScreen_Free;
 		fpUnload	=	SplashScreen_Unload;
 		break;
-	case GS_LOADINGLvl:
+	case GS_LOADINGSCREEN:
 		fpLoad		=	LoadingLvl_Load;
 		fpInit		=	LoadingLvl_Init;
 		fpUpdate	=	LoadingLvl_Update;
@@ -41,7 +42,30 @@ void GSM_Update()
 		fpFree		=	LoadingLvl_Free;
 		fpUnload	=	LoadingLvl_Unload;
 		break;
-
+	case GS_SPLASHSCREEN_LVL1:
+		fpLoad = LevelDisplay_Load;
+		fpInit = LevelDisplay_Init;
+		fpUpdate = LevelDisplay_Update;
+		fpDraw = LevelDisplay_Draw;
+		fpFree = LevelDisplay_Free;
+		fpUnload = LevelDisplay_Unload;
+		break;
+	case GS_SPLASHSCREEN_LVL2:
+		fpLoad = LevelDisplay_Load;
+		fpInit = LevelDisplay_Init;
+		fpUpdate = LevelDisplay_Update;
+		fpDraw = LevelDisplay_Draw;
+		fpFree = LevelDisplay_Free;
+		fpUnload = LevelDisplay_Unload;
+		break;
+	case GS_SPLASHSCREEN_LVL3:
+		fpLoad = LevelDisplay_Load;
+		fpInit = LevelDisplay_Init;
+		fpUpdate = LevelDisplay_Update;
+		fpDraw = LevelDisplay_Draw;
+		fpFree = LevelDisplay_Free;
+		fpUnload = LevelDisplay_Unload;
+		break;
 	case GS_MAINMENU:
 		fpLoad		=	MainMenu_Load;
 		fpInit		=	MainMenu_Init;
@@ -97,5 +121,12 @@ void GSM_LoadingTransition(int loadForState)
 {
 	Console_Cout("Loading Level Assets");
 	loadingForState = loadForState;
-	nextState = GS_LOADINGLvl;
+	nextState = GS_LOADINGSCREEN;
+}
+
+void GSM_DisplayLevelName(int currState)
+{
+	Console_Cout("Displaying Level Name");
+	loadingForState = currState; 
+	nextState = GS_SPLASHSCREEN_LVL1;
 }
