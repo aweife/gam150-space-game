@@ -31,6 +31,8 @@ namespace Factory
 	ENTITY CreatePlayer(unsigned int layer);
 	ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position);
 	ENTITY SpawnObjective_Comrade(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index);
+
+	ENTITY SpawnDelivery(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
@@ -101,7 +103,9 @@ namespace Factory_AI
 {
 	ENTITY CreateEnemy1(ENTITY player, unsigned int layer, AEVec2 spawnPos);
 	ENTITY CreateEnemy2(ENTITY player, unsigned int layer, AEVec2 spawnPos);
-	ENTITY CreateEnemy3(ENTITY player, unsigned int layer, AEVec2 spawnPos);
-	ENTITY CreateEnemy4(ENTITY player, unsigned int layer, AEVec2 spawnPos);
+	ENTITY CreateEnemy3(ENTITY player, unsigned int layer, AEVec2 spawnPos); // Waves Enemies, tag: WAVE_ENEMIES
+	ENTITY CreateEnemy4(ENTITY player, unsigned int layer, AEVec2 spawnPos); // Waves Enemies  tag: WAVE_ENEMIES
+	ENTITY CreateEnemy5(ENTITY player, unsigned int layer, AEVec2 spawnPos); // Delivery Mission Enemies
+	ENTITY CreateEscort(unsigned int layer, AEVec2 spawnPos);
 	ENTITY CreateBoss(ENTITY player, unsigned int layer);
 }

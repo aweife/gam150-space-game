@@ -106,6 +106,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\AI\States\aiPursuit.cpp" />
     <ClCompile Include="src\Components\cWarping.cpp" />
     <ClCompile Include="src\Components\cWeapon.cpp" />
+    <ClCompile Include="src\Levels\Level2.cpp" />
     <ClCompile Include="src\Levels\UpgradeLevel.cpp" />
     <ClCompile Include="src\Managers\AIBehaviors.cpp" />
     <ClCompile Include="src\AI\States\aiRetreat.cpp" />
@@ -180,6 +181,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClInclude Include="src\AI\aiBlackBoard.h" />
     <ClInclude Include="src\Components\cBoss.h" />
     <ClInclude Include="src\Components\cWarping.h" />
+    <ClInclude Include="src\Levels\Level2.h" />
     <ClInclude Include="src\Levels\UpgradeLevel.h" />
     <ClInclude Include="src\Managers\AIBehaviors.h" />
     <ClInclude Include="src\Components\cAI.h" />

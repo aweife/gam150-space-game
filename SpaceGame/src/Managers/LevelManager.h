@@ -7,12 +7,16 @@
 const float OBJECTIVE_MIN_SPAWN_X = 20.0f;
 const float OBJECTIVE_MIN_SPAWN_Y = 20.0f;
 
-const float WAVE_ENEMY_MIN_SPAWN_X = 400.0f;
-const float WAVE_ENEMY_MIN_SPAWN_Y = 400.0f;
+const float WAVE_ENEMY_MIN_SPAWN_X = 800.0f;
+const float WAVE_ENEMY_MIN_SPAWN_Y = 800.0f;
+
+const float DELIVERY_ENEMY_MIN_SPAWN_X = 400.0f;
+const float DELIVERY_ENEMY_MIN_SPAWN_Y = 400.0f;
 
 namespace LevelManager
 {
-	void Update();
+	// Level 1 Missions
+	void Level1Update();
 	void CheckOutOfScreen(ENTITY id);
 	
 	void SetObjectiveComplete();
@@ -31,9 +35,6 @@ namespace LevelManager
 	void ClearObjective(ENTITY collectable);
 	void ClearObjectiveAll();
 
-	bool isCollected;
-
-
 	namespace EnemySpawnManager
 	{
 		extern int enemyDestroyCounter;
@@ -42,14 +43,22 @@ namespace LevelManager
 		extern float BossTimer;
 		extern float WaveTimer;
 		extern bool spawnBoss;
-		
+
 		void SpawnBoss(ENTITY boss, float spawnTimer = 3.0f);
 		void SpawnEnemyWavesTimer(AEVec2 playerPos, float spawnTimer = 5.0f);
 		void SpawnEnemyWaves(AEVec2 playerPos);
 		void EnemyWaveSpawnArea(AEVec2 spawnPos);
 	}
 
-	void DeliveryObjective();
+	// Level 2 Missions
+	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer = 5.0f);
+	extern bool isCollected;
+	extern float DeliveryEnemyTimer;
+	void SpawnEnemyOnCollect(AEVec2 playerPos);
+
+	// Level 3 Missions
+	void Level3Update(AEVec2 escortPos, float escortEnemySpawnTimer = 5.0f);
+	extern float escortEnemyTimer;
 
 }
 

@@ -37,7 +37,9 @@ namespace LevelManager
 	bool upgradePhase;
 
 	// Delivery
-	isCollected = false;
+	bool isCollected = false;
+	float DeliveryEnemyTimer = 0.0f;
+	float escortEnemyTimer = 0.0f;
 
 
 
@@ -50,7 +52,7 @@ namespace LevelManager
 		float WaveTimer = 0.0f;
 		bool spawnBoss = false;
 	}
-	void Update()
+	void Level1Update()
 	{
 		if (upgradePhase) return;
 
@@ -67,6 +69,82 @@ namespace LevelManager
 			upgradePhase = true;
 		}
 	}
+
+	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer)
+	{
+		//std::cout << "did i do level2update" << std::endl;
+		
+		if (isCollected)
+		{
+			// UI appears
+			//std::cout << "did i do level2update" << std::endl;
+			DeliveryEnemyTimer += g_dt;
+
+			if (DeliveryEnemyTimer >= DeliveryEnemySpawnTimer)
+			{
+				std::cout << "delivery enemies spawned" << std::endl;
+				SpawnEnemyOnCollect(playerPos);
+				DeliveryEnemyTimer = 0.0f;
+			}
+
+		}
+	}
+
+	void Level3Update(AEVec2 escortPos, float escortEnemySpawnTimer)
+	{
+		escortEnemyTimer += g_dt;
+
+		if (escortEnemyTimer >= escortEnemySpawnTimer)
+		{
+			SpawnEnemyOnCollect(escortPos);
+			escortEnemyTimer = 0.0f;
+		}
+	}
+
+	void SpawnEnemyOnCollect(AEVec2 playerPos)
+	{
+		AEVec2 spawnPos;
+
+		int numberOfDeliveryEnemies = floorf(AERandFloat() * 2.99f);
+
+		switch (numberOfDeliveryEnemies)
+		{
+			case 0:
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				break;
+			case 1:
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				break;
+			case 2:
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				break;
+			default:
+				break;
+		}
+
+	}
+
 	void CheckOutOfScreen(ENTITY id)
 	{
 		cTransform* self = Core::Get().GetComponent<cTransform>(id);
@@ -191,6 +269,8 @@ namespace LevelManager
 
 			ClearSpawnArea();
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -260,6 +340,8 @@ namespace LevelManager
 			Factory_AI::CreateEnemy2(PlayerManager::player, 2, spawnPos);
 
 			ClearSpawnArea();
+			break;
+		default:
 			break;
 		}
 	}
@@ -345,6 +427,8 @@ namespace LevelManager
 			// Positive Y or X
 		case 1:
 			randomPos = AERandFloat() * 450.0f;
+			break;
+		default:
 			break;
 		}
 		return randomPos;
@@ -500,12 +584,10 @@ namespace LevelManager
 			wavesEnemies = Factory_AI::CreateEnemy3(PlayerManager::player, 2, spawnPos);
 			wavesEnemyList.insert(wavesEnemies);
 			break;
-		}
-	}
 
-	void DeliveryObjective()
-	{
-		
+		default:
+			break;
+		}
 	}
 
 }

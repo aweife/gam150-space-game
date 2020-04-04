@@ -561,7 +561,6 @@ void CollisionSystem::Update()
 					//CameraManager::StartCameraShake();
 					LevelManager::isCollected = true;
 					markedForDestruction.insert(entity2);
-					//LevelManager::ClearObjective(entity2);
 				}
 
 
