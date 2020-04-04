@@ -12,7 +12,7 @@ void objEnter::OnEnter(aiBlackBoard& bb)
 	aiBase::OnEnter(bb);
 
 	// Initialize state
-	_stayDuration = 5.0f;
+	_stayDuration = 3.0f;
 	_stayTimer = 0.0f;
 }
 
@@ -46,7 +46,7 @@ void objEnter::OnUpdate(aiBlackBoard& bb)
 		case LEVEL_END:
 
 			// Escape and transit to next level
-
+			LevelManager::ClearLevel();
 
 			break;
 		}

@@ -82,7 +82,7 @@ namespace Factory
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 
-		Core::Get().AddComponent<cHealth>(player, new cHealth{PlayerManager::playerHealthProgression});
+		Core::Get().AddComponent<cHealth>(player, new cHealth{ PlayerManager::playerHealthProgression });
 		Factory_UI::Create_ShieldBubble();
 
 		// Debug
@@ -136,7 +136,7 @@ namespace Factory
 		ENTITY objective = Core::Get().CreateEntity();
 
 		Core::Get().AddComponent<cTransform>(objective, new cTransform(position, startRotation, size));
-		Core::Get().AddComponent<cSprite>(objective, new cSprite(objective, "Square Mesh", "Player_1", 2));
+		Core::Get().AddComponent<cSprite>(objective, new cSprite(objective, "Square Mesh", "Player_1", 21));
 
 		Core::Get().AddComponent<cTimeline>(objective, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
 		Core::Get().AddComponent<cRigidBody>(objective, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
@@ -154,29 +154,45 @@ namespace Factory
 		return objective;
 	}
 
-	//ENTITY SpawnLevel_End(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index)
-	//{
-	//	UNREFERENCED_PARAMETER(index);
-	//	ENTITY objective = Core::Get().CreateEntity();
+	ENTITY SpawnLevel_End(AEVec2 position)
+	{
+		float rotSpeed = 5.0f;
+		float rotStart = 0.0f;
+		AEVec2 size{ 30.0f,30.0f };
 
-	//	Core::Get().AddComponent<cTransform>(objective, new cTransform(position, startRotation, size));
-	//	Core::Get().AddComponent<cSprite>(objective, new cSprite(objective, "Square Mesh", "Player_1", 2));
+		ENTITY exit1 = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(exit1, new cTransform(position, rotStart, size));
+		Core::Get().AddComponent<cTimeline>(exit1, new cTimeline(g_appTime, g_appTime + rotSpeed, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit1)->_rotation, Core::Get().GetComponent<cTimeline>(exit1));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit1)->_rotation, Core::Get().GetComponent<cTimeline>(exit1), rotSpeed, Core::Get().GetComponent<cTransform>(exit1)->_rotation + 2.0f * PI);
+		Core::Get().AddComponent<cAI>(exit1, new cAI{ exit1, LEVEL_END });
+		Core::Get().GetComponent<cAI>(exit1)->_currentState.states.emplace<aiIdle>();
 
-	//	Core::Get().AddComponent<cTimeline>(objective, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
-	//	Core::Get().AddComponent<cRigidBody>(objective, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
-	//	Core::Get().AddComponent<cCollision>(objective, new cCollision);
+		rotSpeed *= 2.0f;
+		AEVec2Scale(&size, &size, 2.0f);
 
-	//	Core::Get().AddComponent<cAI>(objective, new cAI{ objective, OBJECTIVE });
-	//	Core::Get().GetComponent<cAI>(objective)->_currentState.states.emplace<aiIdle>();
+		ENTITY exit2 = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(exit2, new cTransform(position, rotStart, size));
+		Core::Get().AddComponent<cTimeline>(exit2, new cTimeline(g_appTime, g_appTime + rotSpeed, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit2)->_rotation, Core::Get().GetComponent<cTimeline>(exit2));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit2)->_rotation, Core::Get().GetComponent<cTimeline>(exit2), rotSpeed, Core::Get().GetComponent<cTransform>(exit2)->_rotation + 2.0f * PI);
 
-	//	AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(objective)->_rotation, Core::Get().GetComponent<cTimeline>(objective));
-	//	AddNewNode_Float(&Core::Get().GetComponent<cTransform>(objective)->_rotation, Core::Get().GetComponent<cTimeline>(objective), 5.0f, Core::Get().GetComponent<cTransform>(objective)->_rotation + 2 * PI);
+		rotSpeed *= 2.0f;
+		AEVec2Scale(&size, &size, 2.0f);
 
-	//	Core::Get().GetComponent<cRigidBody>(objective)->_tag = COLLISIONTAG::OBJECTIVE; // testing collision
-	//	Core::Get().GetComponent<cCollision>(objective)->_bbShape = ColliderShape::RECTANGLE_OBB;
+		ENTITY exit3 = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(exit3, new cTransform(position, rotStart, size));
+		Core::Get().AddComponent<cTimeline>(exit3, new cTimeline(g_appTime, g_appTime + rotSpeed, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit3)->_rotation, Core::Get().GetComponent<cTimeline>(exit3));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_rotation, Core::Get().GetComponent<cTimeline>(exit3), rotSpeed, Core::Get().GetComponent<cTransform>(exit3)->_rotation + 2.0f * PI);
 
-	//	return objective;
-	//}
+		Core::Get().AddComponent<cSprite>(exit3, new cSprite(exit3, "Square Mesh", "Exit_3", 21));
+		Core::Get().AddComponent<cSprite>(exit1, new cSprite(exit1, "Square Mesh", "Exit_1", 21));
+		Core::Get().AddComponent<cSprite>(exit2, new cSprite(exit2, "Square Mesh", "Exit_2", 21));
+
+
+		return exit1;
+	}
 
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
 	{
@@ -241,7 +257,7 @@ namespace Factory
 
 	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
 	{
-		AEVec2 newPosition, newScale; 
+		AEVec2 newPosition, newScale;
 		AEVec2Set(&newPosition, posX, posY);
 		AEVec2Set(&newScale, scaleX, scaleY);
 
@@ -259,7 +275,7 @@ namespace Factory
 
 	ENTITY CreateAsteroid2(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
 	{
-		AEVec2 newPosition, newScale; 
+		AEVec2 newPosition, newScale;
 		AEVec2Set(&newPosition, posX, posY);
 		AEVec2Set(&newScale, scaleX, scaleY);
 
@@ -342,13 +358,13 @@ namespace Factory
 	ENTITY CreateBullet_LaserBeam(float posX, float posY, float rotation, OWNERTAG tag)
 	{
 		ENTITY bullet = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(bullet, new cTransform({posX, posY}, rotation, { 1280, 4 }));
+		Core::Get().AddComponent<cTransform>(bullet, new cTransform({ posX, posY }, rotation, { 1280, 4 }));
 		Core::Get().AddComponent<cSprite>(bullet, new cSprite(bullet, "LaserBeam", "Texture_Fill", 2));
 		Core::Get().GetComponent<cSprite>(bullet)->_colorTint = { 1.0f, 0, 0, 1.0f };
 		Core::Get().GetComponent<cSprite>(bullet)->_UVOffset.x = 0.4f;
 		Core::Get().AddComponent<cRigidBody>(bullet, new cRigidBody(0.0f, 0.0f, 0.0f));
 		Core::Get().AddComponent<cCollision>(bullet, new cCollision);
-		
+
 		Core::Get().GetComponent<cCollision>(bullet)->_bbShape = ColliderShape::RAYCAST;
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(bullet);					//For Collision
 
@@ -530,6 +546,37 @@ namespace Factory
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Scale({ 1, 1 });
 		return emitter;
 	}
+
+	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count)
+	{
+		float rotation = 2.0f * PI / count;
+		float cap = 100 / count;
+
+		for (int i = 0; i < count; ++i)
+		{
+			float current = i * rotation;
+			AEVec2 curPosition = { position.x + radius * cosf(current),position.y + radius * sinf(current) };
+			AEVec2 dirToCenter;
+			AEVec2Sub(&dirToCenter, &position, &curPosition);
+			AEVec2Normalize(&dirToCenter, &dirToCenter);
+
+			ENTITY emitter = Core::Get().CreateEntity();
+			Core::Get().AddComponent<cTransform>(emitter, new cTransform(curPosition, 0.0f, { 1.0f,1.0f }));
+			Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f,0.0f }, 10.0f, 2.0f, 3.0f, 20.0f));
+			Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = cap;
+			Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", 
+				{ 1.0f, 0.0f, 0.0f, 1.0f },
+				{ 20.0f,5.0f },
+				1.0f, 
+				{ 0.0f,0.0f },
+				dirToCenter,
+				100.0f, 
+				atan2f(dirToCenter.y, dirToCenter.x), 
+				2);
+		}
+
+		return 0;
+	}
 }
 
 namespace Factory_UI
@@ -542,7 +589,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(begin)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(begin, new cUIElement("Play"));
 		Core::Get().GetComponent<cUIElement>(begin)->_text._anchor = TEXT_ANCHOR::CENTER;
-		Core::Get().GetComponent<cUIElement>(begin)->_text._colorTint = {1.0f, 1.0f, 1.0f, 1.0f};
+		Core::Get().GetComponent<cUIElement>(begin)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		UIEventsManager::Subscribe(begin, &OnButtonClick_MainMenuUI);
 
 		return begin;
@@ -682,7 +729,7 @@ namespace Factory_UI
 	ENTITY Create_ThrusterUI(AEVec2 position)
 	{
 		ENTITY thruster = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(thruster, new cTransform(position, 0, { 50, 50}));			//mesh scale of 50
+		Core::Get().AddComponent<cTransform>(thruster, new cTransform(position, 0, { 50, 50 }));			//mesh scale of 50
 		Core::Get().AddComponent<cSprite>(thruster, new cSprite(thruster, "UI_Thruster", "Texture_Fill3", 0));
 		Core::Get().GetComponent<cSprite>(thruster)->_colorTint = { 1.0f,1.0f, 0.0f,0.8f };
 		Core::Get().AddComponent<cUIElement>(thruster, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::THRUSTER));
@@ -699,7 +746,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
 		Core::Get().AddComponent<cUIElement>(lowHealth, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::LOW_HEALTH_UI));
 		Core::Get().GetComponent<cUIElement>(lowHealth)->_isActive = false;			//invisible
-		
+
 		Core::Get().AddComponent<cTimeline>(lowHealth, new cTimeline(g_appTime, g_appTime + 1.8f, true));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.r, Core::Get().GetComponent<cTimeline>(lowHealth));
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(lowHealth)->_colorTint.a, Core::Get().GetComponent<cTimeline>(lowHealth), 0.00f, 0.0f);
@@ -954,10 +1001,10 @@ namespace Factory_Map
 			case 3:
 				Factory::CreatePlanet4(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
 				break;
-			case 4: 
+			case 4:
 				Factory::CreateAsteroid1(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
 				break;
-			case 5: 
+			case 5:
 				Factory::CreateAsteroid2(2, AERandFloat() * 8000 - g_WorldMaxX * 2, AERandFloat() * 4000 - g_WorldMaxY * 2, scale, scale);
 				break;
 			}
@@ -981,15 +1028,15 @@ namespace Factory_AI
 		Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Boss", layer));
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
-		Core::Get().AddComponent<cBoss>(enemy, new cBoss{enemy, BOSS});
+		Core::Get().AddComponent<cBoss>(enemy, new cBoss{ enemy, BOSS });
 		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 5.0f, 0.3f, 5));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(100.0f, 3000.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 300.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_rotation = 0.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 500.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 300.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 250.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 150.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.0f;

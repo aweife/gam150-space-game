@@ -29,7 +29,7 @@ void RenderSystem::Render()
 
 	//Update particle system based on layers after finished 
 	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
-	unsigned int currentLayer = 7;
+	unsigned int currentLayer = 8;
 
 	// -----------------------------------------------------------------------
 	// Update all entities that has the components we want
@@ -82,6 +82,7 @@ void RenderSystem::Render()
 				parallaxOffsetX = cameraX;
 				parallaxOffsetY = cameraY;
 			}
+			//Only layer 2 and 21 does not move
 
 			//  Compute the TRANSLATION matrix after PARALLAX
 			AEMtx33Trans(&trans, transform->_position.x + parallaxOffsetX, transform->_position.y + parallaxOffsetY);
@@ -147,6 +148,9 @@ void RenderSystem::OnComponentAdd(ENTITY entity)
 	case 2:
 		entityLayer2.insert(entity);
 		break;
+	case 21:
+		entityLayer21.insert(entity);
+		break;
 	case 3:
 		entityLayer3.insert(entity);
 		break;
@@ -180,6 +184,9 @@ void RenderSystem::OnComponentRemove(ENTITY entity)
 		break;
 	case 2:
 		entityLayer2.erase(entity);
+		break;
+	case 21:
+		entityLayer21.erase(entity);
 		break;
 	case 3:
 		entityLayer3.erase(entity);

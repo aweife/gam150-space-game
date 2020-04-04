@@ -24,10 +24,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
-ENTITY enemy;
-const float bossSpawn = 1.0f;
-float bossSpawnTimer = 0.0f;
-bool spawnedBoss = false;
+
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -97,7 +94,6 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
-	spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 }
 
@@ -113,19 +109,6 @@ void Level1_Update()
 	PlayerManager::Update();
 	Core::Get().Core_Update();
 	LevelManager::Update();
-
-
-	// Test boss
-	if (!spawnedBoss)
-	{
-		bossSpawnTimer += g_dt;
-
-		if (bossSpawnTimer >= bossSpawn)
-		{
-			spawnedBoss = true;
-			enemy = Factory_AI::CreateBoss(PlayerManager::player, 2);
-		}
-	}
 }
 
 // ----------------------------------------------------------------------------
@@ -143,7 +126,6 @@ void Level1_Draw()
 // ----------------------------------------------------------------------------
 void Level1_Free()
 {
-	spawnedBoss = false;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }
