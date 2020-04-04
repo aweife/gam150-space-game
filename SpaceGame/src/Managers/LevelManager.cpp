@@ -24,11 +24,18 @@ namespace LevelManager
 	objectSpawnArea8 bottomSpawnArea;
 
 	std::set<ENTITY> collectableList;
-	
+
 	bool objectiveComplete;
 	bool upgradePhase;
 	bool spawnExit;
 	ENTITY exitId;
+
+	// Boss spawn sequence
+	bool arrival1;
+	bool arrival2;
+	bool arrival3;
+	float bossTimer;
+	const float bossArrivalTime = 5.0f;
 
 	void Update()
 	{
@@ -40,13 +47,13 @@ namespace LevelManager
 		}
 
 		// If objective complete, spawn level end
-		if (objectiveComplete)
+		//if (objectiveComplete)
 			SetObjectiveComplete();
 	}
 	void CheckOutOfScreen(ENTITY id)
 	{
 		cTransform* self = Core::Get().GetComponent<cTransform>(id);
-		
+
 		AEVec2 cameraPosition = { 0 };
 		AEGfxGetCamPosition(&cameraPosition.x, &cameraPosition.y);
 
@@ -67,20 +74,49 @@ namespace LevelManager
 	{
 		if (spawnExit)
 		{
+			// For the exit
 			CheckOutOfScreen(exitId);
+
+			// Boss spawn sequence
+			if (arrival1 && arrival2 && arrival3) return;
+			bossTimer -= g_dt;
+
+			if (bossTimer < 0.0f)
+			{
+				bossTimer = bossArrivalTime / 3.0f;
+
+				if (!arrival1)
+				{
+					arrival1 = true;
+					Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 250.0f, 10);
+				}
+				else if (!arrival2) 
+				{
+					arrival2 = true;
+					Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 150.0f, 20);
+				}
+				else
+				{
+					arrival3 = true;
+					Factory_AI::CreateBoss(PlayerManager::player, 2);
+				}
+			}
 		}
 		else
 		{
-			spawnExit = true;
-			exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
-
 			StartBossSpawnSequence();
 		}
 	}
 
 	void StartBossSpawnSequence()
 	{
-		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,-100.0f }, 100.0f, 10);
+		spawnExit = true;
+		exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+
+		// Init spawn sequence
+		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 300.0f, 5);
+		arrival1 = arrival2 = arrival3 = false;
+		bossTimer = bossArrivalTime / 3.0f;
 	}
 
 	void ClearLevel()
@@ -156,6 +192,8 @@ namespace LevelManager
 		objectiveComplete = false;
 		upgradePhase = false;
 		spawnExit = false;
+
+		StartBossSpawnSequence();
 	}
 
 

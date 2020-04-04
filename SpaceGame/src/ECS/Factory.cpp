@@ -558,6 +558,7 @@ namespace Factory
 			AEVec2 curPosition = { position.x + radius * cosf(current),position.y + radius * sinf(current) };
 			AEVec2 dirToCenter;
 			AEVec2Sub(&dirToCenter, &position, &curPosition);
+			float vel = AEVec2Length(&dirToCenter);
 			AEVec2Normalize(&dirToCenter, &dirToCenter);
 
 			ENTITY emitter = Core::Get().CreateEntity();
@@ -570,9 +571,9 @@ namespace Factory
 				1.0f, 
 				{ 0.0f,0.0f },
 				dirToCenter,
-				100.0f, 
+				vel,
 				atan2f(dirToCenter.y, dirToCenter.x), 
-				2);
+				3);
 		}
 
 		return 0;
@@ -1033,7 +1034,7 @@ namespace Factory_AI
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(100.0f, 3000.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 300.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_rotation = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 250.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 150.0f;
