@@ -386,24 +386,30 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
-	// Bounds of Main Menu Buttons
+	// Bounds of Pause Menu Buttons
 	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
 	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
 
-	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
-		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
+	if ((buttomMaxX > message->_xPos && buttomMinX < message->_xPos &&
+		buttomMaxY > message->_yPos && buttomMinY < message->_yPos) == false)
 	{
 		//printf("failed\n");
 		return false;
 	}
+	
 	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
 	if (uiComp)
 	{
+		if (uiComp->_text._colorBlend.a < 0.5f) return false;
+
+		TogglePause();
+		UIEventsManager::Broadcast(new Events::TogglePause(false));
+
 		if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 1)	//Resume game
 		{
-			 UIEventsManager::Broadcast(new Events::TogglePause(false));
+			 //UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 2)	//Restart Level 
 		{
@@ -414,8 +420,6 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 			GSM_ChangeState(GS_MAINMENU);
 		}
 	}
-
-	//GSM_LoadingTransition(GS_LEVEL1);
 	return true;
 }
 

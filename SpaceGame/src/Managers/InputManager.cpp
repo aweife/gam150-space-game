@@ -55,23 +55,6 @@ namespace InputManager
 			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 
 				: UIEventsManager::Broadcast(new Events::TogglePause(false));
 
-			if (AEInputCheckTriggered(AEVK_LBUTTON))
-			{
-				if (UIEventsManager::Broadcast(new Events::OnMouseClick(-230, 0)))
-				{
-					g_GamePause = UIEventsManager::Broadcast(new Events::TogglePause(false));
-				}
-				else if (UIEventsManager::Broadcast(new Events::OnMouseClick(0, 0)))
-				{
-					GSM_RestartLevel();
-				}
-				else if (UIEventsManager::Broadcast(new Events::OnMouseClick(230, 0)))
-				{
-					GSM_ChangeState(GS_MAINMENU);
-				}
-				
-			}
-
 		}
 		//if (AEInputCheckTriggered(AEVK_ESCAPE))
 		//{
@@ -89,52 +72,49 @@ namespace InputManager
 		//	//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
 		//}
 
-		if (g_GamePause) return;
+		if (!g_GamePause)
+		{
 
-		//Debug functionality
-		if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
-		{
-			ToggleShowBoundingBoxMode(); 
-		}
-		if (AEInputCheckTriggered(AEVK_9))			
-		{
-			GSM_ChangeState(GS_UPGRADE);
-			//GSM_LoadingTransition(GS_UPGRADE);
-			//Factory_UI::Create_ChooseThree({ 0,0 });
-		}
-		/*if (AEInputCheckTriggered(AEVK_8))
-		{
-			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
-			uiSys->DeleteUpgradeWindow();
-		}*/
-		if (AEInputCheckTriggered(AEVK_1))
-		{
-			if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon != WeaponType::laser)
+
+
+			//Debug functionality
+			if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
 			{
-				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
-				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.0f;
-				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_ammo = 1;
+				ToggleShowBoundingBoxMode();
 			}
-			
-		}
-		if (AEInputCheckTriggered(AEVK_2))
-		{
-			if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile)
+			if (AEInputCheckTriggered(AEVK_9))
 			{
-				Core::Get().EntityDestroyed(Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile);
-				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile = 0;
+				GSM_ChangeState(GS_UPGRADE);
+				//GSM_LoadingTransition(GS_UPGRADE);
+				//Factory_UI::Create_ChooseThree({ 0,0 });
 			}
-			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::pistol;
-			Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.2f;
+			/*if (AEInputCheckTriggered(AEVK_8))
+			{
+				std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+				uiSys->DeleteUpgradeWindow();
+			}*/
+			if (AEInputCheckTriggered(AEVK_1))
+			{
+				if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon != WeaponType::laser)
+				{
+					Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::laser;
+					Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.0f;
+					Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_ammo = 1;
+				}
+
+			}
+			if (AEInputCheckTriggered(AEVK_2))
+			{
+				if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile)
+				{
+					Core::Get().EntityDestroyed(Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile);
+					Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_permenanceProjectile = 0;
+				}
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::pistol;
+				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.2f;
+			}
+
 		}
-
-		//Testing...remove once done
-		//if (AEInputCheckTriggered(AEVK_S))
-		//{
-		//	CameraManager::StartCameraShake();
-		//}
-
-
 		// -----------------------------------------------------------------------
 		// Mouse Controls
 		// -----------------------------------------------------------------------
@@ -142,22 +122,22 @@ namespace InputManager
 
 		Editor_TrackVariable("mouse Screen X", mousePosX);
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
-
+		
 		float yOffset = 20.0f * static_cast<int>(!g_isFullScreen);
 
-		UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY + yOffset)));
+		if(!g_GamePause) UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY + yOffset)));
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
 		{
 			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY + yOffset))))
 			{
-				mouseLTrigger = true;
+				if (!g_GamePause) mouseLTrigger = true;
 			}
 			else
 			{
-				mouseLTrigger = false;
+				if (!g_GamePause) mouseLTrigger = false;
 			}
 		}
-		else
+		else if(!g_GamePause)
 		{
 			if (AEInputCheckCurr(AEVK_LBUTTON))
 			{
@@ -168,7 +148,7 @@ namespace InputManager
 				mouseLTrigger = false;
 			}
 		}
-		mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
+		if (!g_GamePause) mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
 	
 	}
 }
