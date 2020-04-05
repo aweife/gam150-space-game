@@ -40,7 +40,7 @@ float currTimer = 0.0f;
 void Level1_Load()
 {
 	// Create Level name 
-	referencetoLevelDisplay = Factory_UI::Level1Display();
+	referencetoLevelDisplay = Factory_UI::CreateUI_Level1Display();
 
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);

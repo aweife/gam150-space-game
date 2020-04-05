@@ -64,9 +64,6 @@ namespace Factory
 		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon{ OWNERTAG::PLAYER, WeaponType::pistol, 1.0f, 0.25f });
 		Core::Get().AddComponent<cWarping>(player, new cWarping({ g_WorldMinX -25, g_WorldMaxX +25}, { g_WorldMinY -25,g_WorldMaxY +25}));
 
-		//CreateParticleEmitter_TRAILSTATIC(Core::Get().GetComponent<cTransform>(player));
-		CreateParticleEmitter_TRAILSTATIC(Core::Get().GetComponent<cTransform>(player));
-		//CreateParticleEmitter_BOSSSPAWNSTATIC(Core::Get().GetComponent<cTransform>(player));
 		CreateParticleEmitter_OTHERSTATIC(Core::Get().GetComponent<cTransform>(player));
 		return player;
 	}
@@ -1146,16 +1143,25 @@ namespace Factory_UI
 		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::PAUSE, 0));
 		UIEventsManager::Subscribe(panel, &TogglePauseWindow);
 
+		ENTITY settings = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(settings, new cTransform({ 300, 150 }, 0, { 40,40 }));
+		Core::Get().AddComponent<cSprite>(settings, new cSprite(panel, "Square Mesh", "Settings_Icon", 0));
+		Core::Get().GetComponent<cSprite>(settings)->_colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().AddComponent<cUIElement>(settings, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::PAUSE, 0));
+		UIEventsManager::Subscribe(settings, &TogglePauseWindow);
+
 		ENTITY resume = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(resume, new cTransform({-230, -100}, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(resume, new cSprite(resume, "Square Mesh", "Texture_Default", 0));
 		Core::Get().GetComponent<cSprite>(resume)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(resume, new cUIElement("Resume"));
 		Core::Get().GetComponent<cUIElement>(resume)->_role = UI_ROLE::PAUSE;
+		//Core::Get().GetComponent<cUIElement>(resume)->_roleIndex2 = 1;
 		Core::Get().GetComponent<cUIElement>(resume)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(resume)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(resume)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(resume, &TogglePauseWindow);
+		UIEventsManager::Subscribe(resume, &OnButtonClick_PauseMenuUI);
 		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
 
 		ENTITY restart = Core::Get().CreateEntity();
@@ -1164,23 +1170,29 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(restart, new cUIElement("Restart"));
 		Core::Get().GetComponent<cUIElement>(restart)->_role = UI_ROLE::PAUSE;
+		//Core::Get().GetComponent<cUIElement>(restart)->_roleIndex2 = 2;
 		Core::Get().GetComponent<cUIElement>(restart)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(restart)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(restart, &TogglePauseWindow);
+		UIEventsManager::Subscribe(restart, &OnButtonClick_PauseMenuUI);
 		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
 
 		ENTITY exit = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 230, -100 }, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
 		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
-		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit"));
+		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
 		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::PAUSE;
-		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTER;
+		//Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 3;
+		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
 		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &TogglePauseWindow);
+		UIEventsManager::Subscribe(exit, &OnButtonClick_PauseMenuUI);
 		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
+
+		
 	}
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text)
@@ -1246,7 +1258,7 @@ namespace Factory_UI
 		return gamelogo;
 	}
 
-	ENTITY Level1Display()
+	ENTITY CreateUI_Level1Display()
 	{
 		ENTITY levelDisplay = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(levelDisplay, new cTransform({ 0,-200 }, 0, { 810 , 120 }));
@@ -1254,21 +1266,19 @@ namespace Factory_UI
 		return levelDisplay;
 	}
 
-	ENTITY Level2Display()
+	ENTITY CreateUI_Level2Display()
 	{
 		ENTITY levelDisplay = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(levelDisplay, new cTransform({ 0,-200 }, 0, { 800 , 120 }));
 		Core::Get().AddComponent<cSprite>(levelDisplay, new cSprite(levelDisplay, "Square Mesh", "UI_Mission2", 0));
-		RenderingTricks::LightSpeedEffectOut(levelDisplay, 5.0f, 6.0f, 10.0f, 0.04f, -60.0f);
 		return levelDisplay;
 	}
 
-	ENTITY Level3Display()
+	ENTITY CreateUI_Level3Display()
 	{
 		ENTITY levelDisplay = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(levelDisplay, new cTransform({ 0,-200 }, 0, { 800 , 120 }));
 		Core::Get().AddComponent<cSprite>(levelDisplay, new cSprite(levelDisplay, "Square Mesh", "UI_Mission3", 0));
-		RenderingTricks::LightSpeedEffectOut(levelDisplay, 5.0f, 6.0f, 10.0f, 0.04f, -60.0f);
 		return levelDisplay;
 	}
 }

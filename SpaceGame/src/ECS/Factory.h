@@ -104,9 +104,9 @@ namespace Factory_UI
 	ENTITY CreateBackground_Load();
 
 	// Level display
-	ENTITY Level1Display();
-	ENTITY Level2Display();
-	ENTITY Level3Display();
+	ENTITY CreateUI_Level1Display();
+	ENTITY CreateUI_Level2Display();
+	ENTITY CreateUI_Level3Display();
 
 }
 

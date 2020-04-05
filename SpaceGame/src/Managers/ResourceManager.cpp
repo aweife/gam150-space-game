@@ -533,10 +533,14 @@ namespace ResourceManager
 				case 35:
 					if (textureLibrary.find("UI_Mission3") != textureLibrary.end()) break;
 					textureLibrary.insert({ "UI_Mission3", AEGfxTextureLoad("res/UI_Mission3.png") });
+					break;
+				case 36:
+					if (textureLibrary.find("Settings_Icon") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Settings_Icon", AEGfxTextureLoad("res/Settings_Icon.png") });
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 36): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 37): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

@@ -24,6 +24,7 @@
 
 #include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
 #include "UIEventsManager.h"							//Testing events calling
+#include "../Systems/UISystem.h"
 #include "../Player/PlayerManager.h"
 #include "LevelManager.h"
 
@@ -53,6 +54,24 @@ namespace InputManager
 			TogglePause();
 			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 
 				: UIEventsManager::Broadcast(new Events::TogglePause(false));
+
+			if (AEInputCheckTriggered(AEVK_LBUTTON))
+			{
+				if (UIEventsManager::Broadcast(new Events::OnMouseClick(-230, 0)))
+				{
+					g_GamePause = UIEventsManager::Broadcast(new Events::TogglePause(false));
+				}
+				else if (UIEventsManager::Broadcast(new Events::OnMouseClick(0, 0)))
+				{
+					GSM_RestartLevel();
+				}
+				else if (UIEventsManager::Broadcast(new Events::OnMouseClick(230, 0)))
+				{
+					GSM_ChangeState(GS_MAINMENU);
+				}
+				
+			}
+
 		}
 		//if (AEInputCheckTriggered(AEVK_ESCAPE))
 		//{
@@ -65,10 +84,10 @@ namespace InputManager
 		//		GSM_ChangeState(GS_MAINMENU);
 		//	}
 		//}
-		if (AEInputCheckTriggered(AEVK_R))
-		{
-			//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
-		}
+		//if (AEInputCheckTriggered(AEVK_R))
+		//{
+		//	//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+		//}
 
 		if (g_GamePause) return;
 
