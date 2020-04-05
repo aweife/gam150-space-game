@@ -537,10 +537,14 @@ namespace ResourceManager
 				case 36:
 					if (textureLibrary.find("Settings_Icon") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Settings_Icon", AEGfxTextureLoad("res/Settings_Icon.png") });
+					break;
+				case 37:
+					if (textureLibrary.find("GameOver_Menu") != textureLibrary.end()) break;
+					textureLibrary.insert({ "GameOver_Menu", AEGfxTextureLoad("res/GameOver_Menu.png") });
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 37): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 38): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

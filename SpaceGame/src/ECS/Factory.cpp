@@ -1109,12 +1109,40 @@ namespace Factory_UI
 	void CreateUI_GameOver()
 	{
 		ENTITY panel = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 800,300 }));
-		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Texture_Default", 0));
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 730,400 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "GameOver_Menu", 0));
 		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::GAMEOVER, 0));
-		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-		ENTITY text = Core::Get().CreateEntity();
+
+
+		ENTITY restart = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(restart, new cTransform({ -200, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(restart, new cSprite(restart, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 1.0f, 0.55f, 0.0f, 0.0f };
+		Core::Get().AddComponent<cUIElement>(restart, new cUIElement("Restart"));
+		Core::Get().GetComponent<cUIElement>(restart)->_role = UI_ROLE::PAUSE;
+		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex2 = 2;
+		Core::Get().GetComponent<cUIElement>(restart)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(restart)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(restart, &TogglePauseWindow);
+		UIEventsManager::Subscribe(restart, &OnButtonClick_PauseMenuUI);
+		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
+
+		ENTITY exit = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 200, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 1.0f, 0.55f, 0.0f, 0.0f };
+		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
+		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::PAUSE;
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 3;
+		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
+		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(exit, &TogglePauseWindow);
+		UIEventsManager::Subscribe(exit, &OnButtonClick_PauseMenuUI);
+		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
+		/*ENTITY text = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(text, new cTransform({ 0,50 }, 0, { 1, 1 }));
 		Core::Get().AddComponent<cUIElement>(text, new cUIElement("GAME OVER"));
 		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::GAMEOVER;
@@ -1130,7 +1158,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cUIElement>(text2)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(text2)->_roleIndex = 2;
 		Core::Get().GetComponent<cUIElement>(text2)->_text._anchor = TEXT_ANCHOR::CENTER;
-		Core::Get().GetComponent<cUIElement>(text2)->_text._usingScreenSpace = true;
+		Core::Get().GetComponent<cUIElement>(text2)->_text._usingScreenSpace = true;*/
 
 	}
 
@@ -1156,7 +1184,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(resume)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(resume, new cUIElement("Resume"));
 		Core::Get().GetComponent<cUIElement>(resume)->_role = UI_ROLE::PAUSE;
-		//Core::Get().GetComponent<cUIElement>(resume)->_roleIndex2 = 1;
+		Core::Get().GetComponent<cUIElement>(resume)->_roleIndex2 = 1;
 		Core::Get().GetComponent<cUIElement>(resume)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(resume)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(resume)->_text._usingScreenSpace = true;
@@ -1170,7 +1198,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(restart, new cUIElement("Restart"));
 		Core::Get().GetComponent<cUIElement>(restart)->_role = UI_ROLE::PAUSE;
-		//Core::Get().GetComponent<cUIElement>(restart)->_roleIndex2 = 2;
+		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex2 = 2;
 		Core::Get().GetComponent<cUIElement>(restart)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(restart)->_text._usingScreenSpace = true;
@@ -1184,7 +1212,7 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
 		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::PAUSE;
-		//Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 3;
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 3;
 		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
 		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
