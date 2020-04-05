@@ -14,7 +14,7 @@
 or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "Level1.h"									//Self Header
+#include "Level2.h"									//Self Header
 #include "../ECS/Core.h"							//Systems to Update
 #include "../ECS/Factory.h"							//Entity to create
 #include "../Player/PlayerManager.h"				//Control over the player
@@ -24,7 +24,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
-ENTITY enemy, escort;
+//ENTITY enemy;
 //const float bossSpawn = 1.0f;
 //float bossSpawnTimer = 0.0f;
 //bool spawnedBoss = false;
@@ -32,9 +32,9 @@ ENTITY enemy, escort;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
-// It loads assets like textures, meshes and music files etcï¿½
+// It loads assets like textures, meshes and music files etc…
 // ----------------------------------------------------------------------------
-void Level1_Load()
+void Level2_Load()
 {
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);
@@ -80,22 +80,12 @@ void Level1_Load()
 	Factory::CreateAsteroid2(2, -900.0f, 300.0f, 80.0f, 80.0f);
 	Factory::CreateAsteroid2(2, 80.0f, -260.0f, 60.0f, 60.0f);
 
-	AEVec2 deliverySize, spawnPos;
-	AEVec2Set(&deliverySize, 50.0f, 50.0f);
-	AEVec2Set(&spawnPos, 0.0f, 0.0f);
-
-	Factory::SpawnDelivery(spawnPos, 60.0f, 5.0f, deliverySize, 0);
-
-	escort = Factory_AI::CreateEscort(2, { 0.0f, 0.0f });
-
 	Factory_Map::Generate_PlanetField();
 
 
 
 	Factory::CreateBackground();
-	Factory_UI::CreateUI_AddObjective(1, "Save 3 Stranded Allies");
-	Factory_UI::Create_PlayerUserInterface(3, 3);
-	Factory_UI::CreateUI_Pause();
+	Factory_UI::Create_PlayerUserInterface();
 
 	// FOR NOW, audio
 	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);
@@ -104,10 +94,11 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 // This function initalise all necessary data in Level1
 // It should be called once before the start of the level
-// It resets data like counters to inital valuesï¿½
+// It resets data like counters to inital values…
 // ----------------------------------------------------------------------------
-void Level1_Init()
+void Level2_Init()
 {
+	//spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 }
 
@@ -115,27 +106,39 @@ void Level1_Init()
 // This function updates the data within Level1
 // Update functions such as user input, time or gameplay logic
 // ----------------------------------------------------------------------------
-void Level1_Update()
+void Level2_Update()
 {
+	//Editor_TrackVariable("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
+	//Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	AudioManager::Update();
 	PlayerManager::Update();
 	Core::Get().Core_Update();
-	LevelManager::Level1Update();
+	//LevelManager::Level2Update();
 
-	// Level 3 Escort mission
-	cRigidBody* escortVel = Core::Get().GetComponent<cRigidBody>(escort);
-	escortVel->_acceleration += 50.0f;
-	if (AEInputCheckTriggered(AEVK_L))
+
+	// Test boss
+	/*if (!spawnedBoss)
 	{
-		Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");
-	}
+		bossSpawnTimer += g_dt;
+
+		if (bossSpawnTimer >= bossSpawn)
+		{
+			spawnedBoss = true;
+			enemy = Factory_AI::CreateBoss(PlayerManager::player, 2);
+		}
+	}*/
+	//LevelManager::EnemySpawnManager::SpawnBoss(enemy);
+
+	cTransform* playerPosT = Core::Get().GetComponent<cTransform>(PlayerManager::player);
+	AEVec2 playerPos = playerPosT->_position;
+	LevelManager::EnemySpawnManager::SpawnEnemyWavesTimer(playerPos);
 }
 
 // ----------------------------------------------------------------------------
 // This function renders the graphics for each frame of Level1
 // Sends data to the graphics engine component
 // ----------------------------------------------------------------------------
-void Level1_Draw()
+void Level2_Draw()
 {
 	Core::Get().Core_Render();
 }
@@ -144,8 +147,9 @@ void Level1_Draw()
 // Make the state ready to be unloaded or initialized again
 // No data is dumped in this cycle function
 // ----------------------------------------------------------------------------
-void Level1_Free()
+void Level2_Free()
 {
+	//spawnedBoss = false;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }
@@ -153,7 +157,7 @@ void Level1_Free()
 // This function dumps all data loaded in Level 1
 // Is called when the state should be terminated
 // ----------------------------------------------------------------------------
-void Level1_Unload()
+void Level2_Unload()
 {
 	UIEventsManager::Cleanup();
 	Factory::RemoveCamera();

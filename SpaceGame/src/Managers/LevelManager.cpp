@@ -1,6 +1,4 @@
 #include "LevelManager.h"
-#include <list>
-#include <set>
 #include "../ECS/Factory.h"
 #include "../Player/PlayerManager.h"
 
@@ -10,6 +8,7 @@
 #include "../Levels/UpgradeLevel.h"
 #include "../Managers/GameStateManager.h"
 
+#include <iostream>
 namespace LevelManager
 {
 	std::set<ENTITY> starfield_Set;
@@ -20,12 +19,21 @@ namespace LevelManager
 	objectSpawnArea3 bottomLeftSpawnArea;
 	objectSpawnArea4 bottomRightSpawnArea;
 
-	// Top, Bottom, Left, Right Spawn Areas
-	objectSpawnArea5 rightSpawnArea;
-	objectSpawnArea6 leftSpawnArea;
-	objectSpawnArea7 topSpawnArea;
-	objectSpawnArea8 bottomSpawnArea;
+	// Top, Bottom, Left, Right Spawn Areas for Objectives
+	objectSpawnArea rightSpawnArea;
+	objectSpawnArea leftSpawnArea;
+	objectSpawnArea topSpawnArea;
+	objectSpawnArea bottomSpawnArea;
 
+	objectSpawnArea enemyTopRightSpawnArea;
+	objectSpawnArea enemyTopLeftSpawnArea;
+	objectSpawnArea enemyBottomLeftSpawnArea;
+	objectSpawnArea enemyBottomRightSpawnArea;
+
+	// Enemy Waves
+	std::set<ENTITY> wavesEnemyList;
+
+	// Objective 
 	std::set<ENTITY> collectableList;
 	
 	bool objectiveComplete;
@@ -33,7 +41,23 @@ namespace LevelManager
 	bool spawnExit;
 	ENTITY exitId;
 
-	void Update()
+	// Delivery
+	bool isCollected = false;
+	float DeliveryEnemyTimer = 0.0f;
+	float escortEnemyTimer = 0.0f;
+
+
+
+	namespace EnemySpawnManager
+	{
+		int enemyDestroyCounter = 0;
+		bool spawnEnemy = false;
+		int spawnedEnemy = 0;
+		float BossTimer = 0.0f;
+		float WaveTimer = 0.0f;
+		bool spawnBoss = false;
+	}
+	void Level1Update()
 	{
 		if (upgradePhase) return;
 
@@ -45,6 +69,81 @@ namespace LevelManager
 		// If objective complete, spawn level end
 		if (objectiveComplete)
 			SetObjectiveComplete();
+	}
+
+	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer)
+	{
+		//std::cout << "did i do level2update" << std::endl;
+		
+		if (isCollected)
+		{
+			// UI appears
+			//std::cout << "did i do level2update" << std::endl;
+			DeliveryEnemyTimer += g_dt;
+
+			if (DeliveryEnemyTimer >= DeliveryEnemySpawnTimer)
+			{
+				std::cout << "delivery enemies spawned" << std::endl;
+				SpawnEnemyOnCollect(playerPos);
+				DeliveryEnemyTimer = 0.0f;
+			}
+
+		}
+	}
+
+	void Level3Update(AEVec2 escortPos, float escortEnemySpawnTimer)
+	{
+		escortEnemyTimer += g_dt;
+
+		if (escortEnemyTimer >= escortEnemySpawnTimer)
+		{
+			SpawnEnemyOnCollect(escortPos);
+			escortEnemyTimer = 0.0f;
+		}
+	}
+
+	void SpawnEnemyOnCollect(AEVec2 playerPos)
+	{
+		AEVec2 spawnPos;
+
+		int numberOfDeliveryEnemies = floorf(AERandFloat() * 2.99f);
+
+		switch (numberOfDeliveryEnemies)
+		{
+			case 0:
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				break;
+			case 1:
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				break;
+			case 2:
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
+				spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
+				Factory_AI::CreateEnemy5(PlayerManager::player, 2, spawnPos);
+				break;
+			default:
+				break;
+		}
+
 	}
 
 	void CheckOutOfScreen(ENTITY id)
@@ -103,57 +202,6 @@ namespace LevelManager
 		return randomLevel;
 	}
 
-	std::list<AEVec2> randomEnemyPos
-	{
-		{0.0f, 0.0f},
-		{100.0f, 100.0f},
-		{90.0f,	90.0f},
-
-		{-70.0f, 70.0f},
-		{-90.0f, 100.0f},
-		{-120.0f, 120.0f},
-		{-105.0f, 110.0f},
-
-		{ -70.0f, -70.0f },
-		{ -90.0f, -100.0f },
-		{ -120.0f, -120.0f },
-		{ -105.0f, -110.0f },
-
-		{ 80.0f, -80.0f },
-		{ 100.0f, -100.0f },
-		{ 90.0f, -90.0f }
-	};
-
-	std::list<AEVec2> randomItemPos
-	{
-		{110.0f, 110.0f},
-
-		{-140.0f, 130.0f},
-
-		{-140.0f, -130.0f},
-
-		{ 70.0f, -70.0f }
-	};
-
-
-	AEVec2 RandomEnemyPosition()
-	{
-		AE_ASSERT(randomEnemyPos.size() > 0 && "No more enemy position to churn out");
-
-		AEVec2 position = randomEnemyPos.front();
-		randomEnemyPos.pop_front();
-		return position;
-	}
-
-	AEVec2 RandomItemPosition()
-	{
-		AE_ASSERT(randomItemPos.size() > 0 && "No more item position to churn out");
-
-		AEVec2 position = randomItemPos.front();
-		randomItemPos.pop_front();
-		return position;
-	}
-
 	void Level1_Map()
 	{
 		float randomLevel = GetRandomPattern();
@@ -169,7 +217,7 @@ namespace LevelManager
 
 	void SetObjectiveSpawn(float randomLevel)
 	{
-		SetSpawnArea();
+		SetObjectiveSpawnArea();
 		AEVec2 spawnPos;
 		AEVec2 objectiveSize;
 		AEVec2Set(&objectiveSize, 50.0f, 50.0f);
@@ -246,12 +294,14 @@ namespace LevelManager
 
 			ClearSpawnArea();
 			break;
+		default:
+			break;
 		}
 	}
 
 	void SetEnemySpawn(float randomLevel)
 	{
-		SetSpawnArea();
+		SetObjectiveSpawnArea();
 		AEVec2 spawnPos;
 
 		float randomSpawnArea = randomLevel;
@@ -316,43 +366,45 @@ namespace LevelManager
 
 			ClearSpawnArea();
 			break;
+		default:
+			break;
 		}
 	}
 
-	void SetSpawnArea()
+	void SetObjectiveSpawnArea()
 	{
 
 		// Top Right Area
-		topRightSpawnArea.x = AERandFloat() * 1000.0f + MIN_SPAWN_X;
-		topRightSpawnArea.y = AERandFloat() * 1000.0f + MIN_SPAWN_Y;
+		topRightSpawnArea.x = AERandFloat() * 1000.0f + OBJECTIVE_MIN_SPAWN_X;
+		topRightSpawnArea.y = AERandFloat() * 1000.0f + OBJECTIVE_MIN_SPAWN_Y;
 
 		// Top Left Area
-		topLeftSpawnArea.x = AERandFloat() * -800.0f + -MIN_SPAWN_X;
-		topLeftSpawnArea.y = AERandFloat() * 800.0f + MIN_SPAWN_Y;
+		topLeftSpawnArea.x = AERandFloat() * -800.0f + -OBJECTIVE_MIN_SPAWN_X;
+		topLeftSpawnArea.y = AERandFloat() * 800.0f + OBJECTIVE_MIN_SPAWN_Y;
 
 		//Bottom Left Area
-		bottomLeftSpawnArea.x = AERandFloat() * -1200.0f + -MIN_SPAWN_X;
-		bottomLeftSpawnArea.y = AERandFloat() * -1200.0f + -MIN_SPAWN_Y;
+		bottomLeftSpawnArea.x = AERandFloat() * -1200.0f + -OBJECTIVE_MIN_SPAWN_X;
+		bottomLeftSpawnArea.y = AERandFloat() * -1200.0f + -OBJECTIVE_MIN_SPAWN_Y;
 
 		//Bottom Right Area
-		bottomRightSpawnArea.x = AERandFloat() * 800.0f + MIN_SPAWN_X;
-		bottomRightSpawnArea.y = AERandFloat() * -800.0f + -MIN_SPAWN_Y;
+		bottomRightSpawnArea.x = AERandFloat() * 800.0f + OBJECTIVE_MIN_SPAWN_X;
+		bottomRightSpawnArea.y = AERandFloat() * -800.0f + -OBJECTIVE_MIN_SPAWN_Y;
 
 		// Right Area
-		rightSpawnArea.x = AERandFloat() * 1000.0f + MIN_SPAWN_X;
+		rightSpawnArea.x = AERandFloat() * 1000.0f + OBJECTIVE_MIN_SPAWN_X;
 		rightSpawnArea.y = RandomPos();
 
 		// Left Area
-		leftSpawnArea.x = AERandFloat() * -800.0f + -MIN_SPAWN_X;
+		leftSpawnArea.x = AERandFloat() * -800.0f + -OBJECTIVE_MIN_SPAWN_X;
 		leftSpawnArea.y = RandomPos();
 
 		//Top Area
 		topSpawnArea.x = RandomPos();
-		topSpawnArea.y = AERandFloat() * 1200.0f + MIN_SPAWN_Y;
+		topSpawnArea.y = AERandFloat() * 1200.0f + OBJECTIVE_MIN_SPAWN_Y;
 
 		//Bottom Area
 		bottomSpawnArea.x = RandomPos();
-		bottomSpawnArea.y = AERandFloat() * -800.0f + -MIN_SPAWN_Y;
+		bottomSpawnArea.y = AERandFloat() * -800.0f + -OBJECTIVE_MIN_SPAWN_Y;
 
 	}
 
@@ -401,70 +453,11 @@ namespace LevelManager
 		case 1:
 			randomPos = AERandFloat() * 450.0f;
 			break;
+		default:
+			break;
 		}
 		return randomPos;
 	}
-
-	/*
-	float randomOffSetX()
-	{
-		float spawnOffSetX = 0.0f;
-		float random = 0.0f;
-		random = floorf(AERandFloat() * 1.99f);
-
-		if (spawnOffSetX == oldOffSetX)
-		{
-			switch (static_cast<int>(random))
-			{
-				// Negative X
-			case 0:
-				spawnOffSetX = AERandFloat() * -450.0f;
-				break;
-				// Positive X
-			case 1:
-				spawnOffSetX = AERandFloat() * 450.0f;
-				break;
-			}
-		}
-		else
-		{
-			oldOffSetX = spawnOffSetX;
-			return spawnOffSetX;
-		}
-
-		return spawnOffSetX;
-	}
-
-
-	float randomOffSetY()
-	{
-		float spawnOffSetY = 0.0f;
-		float random = 0.0f;
-		random = floorf(AERandFloat() * 1.99f);
-
-		if (spawnOffSetY == oldOffSetY)
-		{
-			switch (static_cast<int>(random))
-			{
-				// Negative X
-			case 0:
-				spawnOffSetX = AERandFloat() * -450.0f;
-				break;
-				// Positive X
-			case 1:
-				spawnOffSetX = AERandFloat() * 450.0f;
-				break;
-			}
-		}
-		else
-		{
-			oldOffSetY = spawnOffSetY;
-			return spawnOffSetY;
-		}
-
-		return spawnOffSetY;
-	}
-	*/
 
 	void ClearObjective(ENTITY collectable)
 	{
@@ -473,12 +466,153 @@ namespace LevelManager
 		if (collectableList.size() == 0)
 			objectiveComplete = true;
 
-		printf("Objectives Left: %zd\n", collectableList.size());
+		printf("Objectives Left: %d\n", collectableList.size());
 	}
 
 	void ClearObjectiveAll()
 	{
 		collectableList.clear();
+	}
+
+
+	void EnemySpawnManager::SpawnBoss(ENTITY boss, float spawnTimer)
+	{
+		if (!spawnBoss)
+		{
+			BossTimer += g_dt;
+
+			if (BossTimer >= spawnTimer)
+			{
+				boss = Factory_AI::CreateBoss(PlayerManager::player, 2);
+				spawnBoss = true;
+			}
+		}
+	}
+
+	void EnemySpawnManager::EnemyWaveSpawnArea(AEVec2 playerPos)
+	{
+		enemyTopRightSpawnArea.x = playerPos.x + (AERandFloat() * 400.0f) + WAVE_ENEMY_MIN_SPAWN_X;
+		enemyTopRightSpawnArea.y = playerPos.y + (AERandFloat() * 400.0f) + WAVE_ENEMY_MIN_SPAWN_Y;
+
+		enemyTopLeftSpawnArea.x = playerPos.x - (AERandFloat() * 400.0f) - WAVE_ENEMY_MIN_SPAWN_X;
+		enemyTopLeftSpawnArea.y = playerPos.y + (AERandFloat() * 400.0f) + WAVE_ENEMY_MIN_SPAWN_Y;
+
+		enemyBottomLeftSpawnArea.x = playerPos.x - (AERandFloat() * 400.0f) - WAVE_ENEMY_MIN_SPAWN_X;
+		enemyBottomLeftSpawnArea.y = playerPos.y - (AERandFloat() * 400.0f) - WAVE_ENEMY_MIN_SPAWN_Y;
+
+		enemyBottomRightSpawnArea.x = playerPos.x + (AERandFloat() * 400.0f) + WAVE_ENEMY_MIN_SPAWN_X;
+		enemyBottomRightSpawnArea.y = playerPos.y - (AERandFloat() * 400.0f) - WAVE_ENEMY_MIN_SPAWN_Y;
+	}
+
+	void EnemySpawnManager::SpawnEnemyWavesTimer(AEVec2 playerPos, float spawnTimer)
+	{
+		AEVec2 spawnPos;
+		ENTITY wavesEnemies;
+		EnemySpawnManager::EnemyWaveSpawnArea(playerPos);
+		std::cout << wavesEnemyList.size() << std::endl;
+
+		if (spawnEnemy)
+		{
+			WaveTimer += g_dt;
+
+			std::cout << WaveTimer << std::endl;
+			if (WaveTimer >= spawnTimer && wavesEnemyList.size() == 0)
+			{
+
+				SpawnEnemyWaves(playerPos);
+				spawnEnemy = false;
+				WaveTimer = 0.0f;
+			}
+		}
+
+		if(wavesEnemyList.size() == 0)
+		{
+			std::cout << "did it come here" << std::endl;
+			spawnEnemy = true;
+		}
+	}
+
+	void EnemySpawnManager::SpawnEnemyWaves(AEVec2 playerPos)
+	{
+		int randomEnemySpawn = 0;
+		AEVec2 spawnPos;
+		ENTITY wavesEnemies;
+
+		randomEnemySpawn = floorf(AERandFloat() * 2.99f);
+
+		switch (randomEnemySpawn)
+		{
+		case 0:
+			spawnPos.x = enemyTopRightSpawnArea.x + RandomPos();
+			spawnPos.y = enemyTopRightSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy3(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+
+			spawnPos.x = enemyTopRightSpawnArea.x + RandomPos();
+			spawnPos.y = enemyTopRightSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy4(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+
+			spawnPos.x = enemyTopRightSpawnArea.x + RandomPos();
+			spawnPos.y = enemyTopRightSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy3(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+			break;
+
+		case 1:
+			spawnPos.x = enemyTopLeftSpawnArea.x + RandomPos();
+			spawnPos.y = enemyTopLeftSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy4(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+
+			spawnPos.x = enemyTopLeftSpawnArea.x + RandomPos();
+			spawnPos.y = enemyTopLeftSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy3(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+
+			spawnPos.x = enemyTopLeftSpawnArea.x + RandomPos();
+			spawnPos.y = enemyTopLeftSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy4(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+			break;
+
+		case 2:
+			spawnPos.x = enemyBottomLeftSpawnArea.x + RandomPos();
+			spawnPos.y = enemyBottomLeftSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy3(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+
+			spawnPos.x = enemyBottomLeftSpawnArea.x + RandomPos();
+			spawnPos.y = enemyBottomLeftSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy4(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+
+			spawnPos.x = enemyBottomLeftSpawnArea.x + RandomPos();
+			spawnPos.y = enemyBottomLeftSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy3(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+			break;
+
+		case 3:
+			spawnPos.x = enemyBottomRightSpawnArea.x + RandomPos();
+			spawnPos.y = enemyBottomRightSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy3(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+
+			spawnPos.x = enemyBottomRightSpawnArea.x + RandomPos();
+			spawnPos.y = enemyBottomRightSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy4(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+
+			spawnPos.x = enemyBottomRightSpawnArea.x + RandomPos();
+			spawnPos.y = enemyBottomRightSpawnArea.y + RandomPos();
+			wavesEnemies = Factory_AI::CreateEnemy3(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(wavesEnemies);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	void Clear_StarField()
