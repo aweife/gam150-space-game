@@ -494,10 +494,12 @@ namespace ResourceManager
 				case 30:
 					if (textureLibrary.find("Skull_Boss") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Skull_Boss", AEGfxTextureLoad("res/Skull_Boss.png") });
-					*progress = 100;
 					break;
+				case 31:
+					if (textureLibrary.find("Scanner") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Scanner", AEGfxTextureLoad("res/Player_Shield.png") });
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 31): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 32): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

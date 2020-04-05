@@ -22,6 +22,7 @@ public:
 	std::set<ENTITY> gameOver_Set;
 	std::set<ENTITY> shieldBubble_Set;
 	std::set<ENTITY> floatingDamage_Set;
+	std::set<ENTITY> objective_Set;
 
 	UISystem() = default;
 	~UISystem() = default;

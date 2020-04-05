@@ -27,3 +27,4 @@
 #include "cTimeline.h"
 
 #include "cWarping.h"
+#include "cScanner.h"

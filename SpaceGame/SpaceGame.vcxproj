@@ -105,6 +105,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\AI\States\aiIdle.cpp" />
     <ClCompile Include="src\AI\States\aiPursuit.cpp" />
     <ClCompile Include="src\AI\States\objEnter.cpp" />
+    <ClCompile Include="src\Components\cScanner.cpp" />
     <ClCompile Include="src\Components\cWarping.cpp" />
     <ClCompile Include="src\Components\cWeapon.cpp" />
     <ClCompile Include="src\Levels\UpgradeLevel.cpp" />
@@ -156,6 +157,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\Systems\ProjectileSystem.cpp" />
     <ClCompile Include="src\Systems\RenderSystem.cpp" />
+    <ClCompile Include="src\Systems\ScannerSystem.cpp" />
     <ClCompile Include="src\Systems\SpaceShipLogicSystem.cpp" />
     <ClCompile Include="src\Systems\TimelineSystem.cpp" />
     <ClCompile Include="src\Systems\UISystem.cpp" />
@@ -181,6 +183,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClInclude Include="src\AI\aiBlackBoard.h" />
     <ClInclude Include="src\AI\States\objEnter.h" />
     <ClInclude Include="src\Components\cBoss.h" />
+    <ClInclude Include="src\Components\cScanner.h" />
     <ClInclude Include="src\Components\cWarping.h" />
     <ClInclude Include="src\Levels\UpgradeLevel.h" />
     <ClInclude Include="src\Managers\AIBehaviors.h" />
@@ -239,6 +242,7 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClInclude Include="src\Systems\PhysicsSystem.h" />
     <ClInclude Include="src\Systems\ProjectileSystem.h" />
     <ClInclude Include="src\Systems\RenderSystem.h" />
+    <ClInclude Include="src\Systems\ScannerSystem.h" />
     <ClInclude Include="src\Systems\SpaceShipLogicSystem.h" />
     <ClInclude Include="src\Systems\System.h" />
     <ClInclude Include="src\Systems\SystemList.h" />

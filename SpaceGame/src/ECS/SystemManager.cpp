@@ -32,6 +32,7 @@ void SystemManager::Init()
 	RegisterSystem<ProjectileSystem>();
 	RegisterSystem<ParticleEmitterSystem>();
 	RegisterSystem<TimelineSystem>();
+	RegisterSystem<ScannerSystem>();
 
 	// Rendering
 	RegisterSystem<RenderSystem>();

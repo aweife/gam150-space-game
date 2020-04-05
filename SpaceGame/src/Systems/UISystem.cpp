@@ -12,6 +12,8 @@
 #include "../Player/PlayerManager.h"
 #include "../Managers/UpgradeManager.h"
 #include "../Managers/UIEventsManager.h"
+#include "../Managers/CameraManager.h"					//ScreenSpace Text UI
+
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -101,12 +103,14 @@ void UISystem::Render()
 	cUIElement* uiComponent;
 	cTransform* uiTransform;
 
+	float cameraX = 0.0f, cameraY = 0.0f;
+	AEGfxGetCamPosition(&cameraX, &cameraY);
+
+
 	for (auto const& entity : entitiesList)
 	{
 		uiComponent = Core::Get().GetComponent<cUIElement>(entity);
 		uiTransform = Core::Get().GetComponent<cTransform>(entity);
-		float cameraX, cameraY;
-		AEGfxGetCamPosition(&cameraX, &cameraY);
 
 		if (uiComponent->_type == UI_TYPE::TEXT)
 		{
@@ -600,6 +604,9 @@ void UISystem::OnComponentAdd(ENTITY entity)
 		case UI_ROLE::INDICATE_COLLECT:
 			collectIndicator_Set.insert(entity);
 			break;
+		case UI_ROLE::OBJECTIVES:
+			objective_Set.insert(entity);
+			break;
 	}
 }
 
@@ -629,6 +636,9 @@ void UISystem::OnComponentRemove(ENTITY entity)
 		break;
 	case UI_ROLE::INDICATE_COLLECT:
 		collectIndicator_Set.erase(entity);
+		break;
+	case UI_ROLE::OBJECTIVES:
+		objective_Set.erase(entity);
 		break;
 	}
 }

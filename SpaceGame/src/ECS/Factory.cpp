@@ -640,6 +640,30 @@ namespace Factory
 	}
 }
 
+namespace Factory_ParticleFx
+{
+	ENTITY CreateParticleEmitter_FinaleMisson(AEVec2 position)
+	{
+		ENTITY emitter = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(emitter, new cTransform(position, 0.0f, { 1.0f,1.0f }));
+		Core::Get().AddComponent<cRigidBody>(emitter, new cRigidBody(0, 400.0f, 200.0f, 2.5f));
+		Core::Get().GetComponent<cRigidBody>(emitter)->_velocityDirection = { -1.0f, 0 };
+		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f,0.0f }, 5.0f, 0.001f, 0.02f, 0.50f, 3));
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 500;
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default",
+			{ 1.0f, 1.0f, 0.0f, 1.0f }, { 4.0f,4.0f }, 0.6f, { 0.0f,0.0f },
+			{ 1.0f, 0.0f }, 100.0f, 0.0f, 0);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
+			VARIANCETYPE::NONE, { 2.0f,2.0f }, { 6.0f, 6.0f }, VARIANCETYPE::RANDOM_UNIFORM);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 0.0f, 1.0f, 1.0f, 1.0f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 0.0f, 1.0f, 1.0f, 0.0f });
+
+
+		return emitter;
+	}
+
+}
+
 /******************************************************************************/
 /*!
   \brief	Template of various UI Entity to be used in game
@@ -766,8 +790,7 @@ namespace Factory_UI
 		Create_ThrusterUI(spritePos);
 
 		// Objectives UI
-		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::TOPLEFT);
-		CreateUI_Text(spritePos.x, spritePos.y, "Objectives");
+		CreateUI_Objective_Base();
 	}
 
 	void CreateLowHealthInterface()
@@ -1046,6 +1069,64 @@ namespace Factory_UI
 		Core::Get().AddComponent<cUIElement>(aiUI, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INDICATE_AI, ai));
 		return aiUI;
 	}
+	ENTITY CreateUI_Objective_Base()
+	{
+		AEVec2 textPos = ScreenBasedCoords(0.025f, -0.05f, UI_ANCHOR::TOPLEFT, true);
+
+		ENTITY objectiveTitle = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(objectiveTitle, new cTransform(textPos, 0, { 1,1 }));
+		Core::Get().AddComponent<cUIElement>(objectiveTitle, new cUIElement("Objectives"));
+		Core::Get().GetComponent<cUIElement>(objectiveTitle)->_role = UI_ROLE::OBJECTIVES;
+		Core::Get().GetComponent<cUIElement>(objectiveTitle)->_roleIndex = 0;
+		Core::Get().GetComponent<cUIElement>(objectiveTitle)->_text._usingScreenSpace = true;
+
+		return objectiveTitle;
+	}
+
+	ENTITY CreateUI_AddObjective(unsigned int index, const char* text)
+	{
+		AEVec2 textPos = ScreenBasedCoords(0.025f, -0.05f - (0.04f * index), UI_ANCHOR::TOPLEFT, true);
+
+		ENTITY objective = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(objective, new cTransform(textPos, 0, { 1,1 }));
+		Core::Get().AddComponent<cUIElement>(objective, new cUIElement(text));
+		Core::Get().GetComponent<cUIElement>(objective)->_role = UI_ROLE::OBJECTIVES;
+		Core::Get().GetComponent<cUIElement>(objective)->_roleIndex = index;
+		Core::Get().GetComponent<cUIElement>(objective)->_text._usingScreenSpace = true;
+
+		textPos = ScreenBasedCoords(0.015f, -0.05f - (0.04f * index), UI_ANCHOR::TOPLEFT, true);
+		ENTITY tickbox = CreateUI_TickBox(textPos.x, textPos.y, 20, 0);
+		return tickbox;
+	}
+
+	ENTITY CreateUI_AddObjective_Finale(unsigned int index, const char* text)
+	{
+		AEVec2 textPos = ScreenBasedCoords(0.025f, -0.05f - (0.04f * index), UI_ANCHOR::TOPLEFT, true);
+
+		ENTITY objective = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(objective, new cTransform(textPos, 0, { 1,1 }));
+		Core::Get().AddComponent<cUIElement>(objective, new cUIElement(text));
+		Core::Get().GetComponent<cUIElement>(objective)->_role = UI_ROLE::OBJECTIVES;
+		Core::Get().GetComponent<cUIElement>(objective)->_roleIndex = index;
+		Core::Get().GetComponent<cUIElement>(objective)->_text._usingScreenSpace = true;
+		Core::Get().GetComponent<cUIElement>(objective)->_text._colorTint = { 1.0f, 1.0f, 0.0f, 1.0f };
+
+		textPos = ScreenBasedCoords(0.015f, -0.05f - (0.04f * index), UI_ANCHOR::TOPLEFT, true);
+		ENTITY tickbox = CreateUI_TickBox(textPos.x, textPos.y, 20, 0);
+		Core::Get().GetComponent<cSprite>(tickbox)->_colorTint = { 1.0f, 1.0f, 0.0f, 1.0f };
+
+		textPos = ScreenBasedCoords(0.12f, -0.05f - (0.04f * index) - 0.02f, UI_ANCHOR::TOPLEFT, true);
+		//There will be a player so no worries for nullptr
+		if (CameraManager::GetCameraTransform() != nullptr)
+		{
+			//textPos.x += CameraManager::GetCameraTransform()->_position.x;
+			//textPos.y += CameraManager::GetCameraTransform()->_position.y;
+		}
+
+		Factory_ParticleFx::CreateParticleEmitter_FinaleMisson(textPos);
+		return tickbox;
+	}
+
 
 	void CreateUI_GameOver()
 	{

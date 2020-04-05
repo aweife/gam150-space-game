@@ -81,6 +81,7 @@ void Level1_Load()
 
 
 	Factory::CreateBackground();
+	Factory_UI::CreateUI_AddObjective(1, "Save 3 Stranded Allies");
 	Factory_UI::Create_PlayerUserInterface(3, 3);
 	Factory_UI::CreateUI_Pause();
 
@@ -108,6 +109,11 @@ void Level1_Update()
 	PlayerManager::Update();
 	Core::Get().Core_Update();
 	LevelManager::Update();
+
+	if (AEInputCheckTriggered(AEVK_L))
+	{
+		Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");
+	}
 }
 
 // ----------------------------------------------------------------------------

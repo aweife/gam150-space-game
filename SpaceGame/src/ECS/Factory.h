@@ -63,6 +63,12 @@ namespace Factory
 	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count);
 }
 
+namespace Factory_ParticleFx
+{
+	ENTITY CreateParticleEmitter_FinaleMisson(AEVec2 position);
+}
+
+
 namespace Factory_UI
 {
 	//Game user interface
@@ -88,8 +94,13 @@ namespace Factory_UI
 	void Create_ChoosableUpgrade(ENTITY entity);
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);
 
+	ENTITY CreateUI_Objective_Base();
+	ENTITY CreateUI_AddObjective(unsigned int index, const char* text);
+	ENTITY CreateUI_AddObjective_Finale(unsigned int index, const char* text);
+
 	void CreateUI_GameOver();
 	void CreateUI_Pause();
+
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue);
 
