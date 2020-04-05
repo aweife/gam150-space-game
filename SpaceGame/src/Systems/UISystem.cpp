@@ -270,6 +270,7 @@ bool OnBossIncoming_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* messag
 	return true;
 }
 
+
 bool OnShieldDown_ShieldIndicator(ENTITY entity, Events::OnShieldDown* message)
 {
 	//cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
@@ -366,7 +367,6 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	GSM_LoadingTransition(GS_LEVEL1);
-	GSM_DisplayLevelName(GS_LEVEL1);
 	return true;
 }
 

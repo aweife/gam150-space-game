@@ -52,12 +52,14 @@ namespace Factory
 	ENTITY DebugVector_Velocity(ENTITY target);
 	ENTITY DebugBoundingBox_Rigidbody(ENTITY target);
 
+	// Particle systems
 	ENTITY CreateParticleEmitter_MYFIRST();
 	ENTITY CreateParticleEmitter_UPONIMPACT(cTransform* target);
 	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar);
 	ENTITY CreateParticleEmitter_TRAILSTATIC(cTransform* tar);
 	ENTITY CreateParticleEmitter_BOSSSPAWNSTATIC(cTransform* tar);
 	ENTITY CreateParticleEmitter_OTHERSTATIC(cTransform* tar);
+
 }
 
 namespace Factory_UI
@@ -91,6 +93,11 @@ namespace Factory_UI
 
 	ENTITY CreateBackground_Load();
 
+	// Level display
+	ENTITY Level1Display();
+	ENTITY Level2Display();
+	ENTITY Level3Display();
+
 }
 
 namespace Factory_SpashScreen
@@ -98,16 +105,6 @@ namespace Factory_SpashScreen
 	ENTITY CreateSpashScreen_Digipen();
 
 	ENTITY CreateSpashScreen_MoonBase();
-}
-
-namespace Factory_LevelDisplay
-{
-	ENTITY CreateLevelDisplay_Level1();
-	
-	ENTITY CreateLevelDisplay_Level2();
-	
-	ENTITY CreateLevelDisplay_Level3();
-
 }
 
 namespace Factory_Map

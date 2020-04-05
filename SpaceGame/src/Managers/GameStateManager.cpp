@@ -42,33 +42,6 @@ void GSM_Update()
 		fpFree		=	LoadingLvl_Free;
 		fpUnload	=	LoadingLvl_Unload;
 		break;
-<<<<<<< HEAD
-=======
-	case GS_SPLASHSCREEN_LVL1:
-		fpLoad = LevelDisplay_Load;
-		fpInit = LevelDisplay_Init;
-		fpUpdate = LevelDisplay_Update;
-		fpDraw = LevelDisplay_Draw;
-		fpFree = LevelDisplay_Free;
-		fpUnload = LevelDisplay_Unload;
-		break;
-	case GS_SPLASHSCREEN_LVL2:
-		fpLoad = LevelDisplay_Load;
-		fpInit = LevelDisplay_Init;
-		fpUpdate = LevelDisplay_Update;
-		fpDraw = LevelDisplay_Draw;
-		fpFree = LevelDisplay_Free;
-		fpUnload = LevelDisplay_Unload;
-		break;
-	case GS_SPLASHSCREEN_LVL3:
-		fpLoad = LevelDisplay_Load;
-		fpInit = LevelDisplay_Init;
-		fpUpdate = LevelDisplay_Update;
-		fpDraw = LevelDisplay_Draw;
-		fpFree = LevelDisplay_Free;
-		fpUnload = LevelDisplay_Unload;
-		break;
->>>>>>> c616826a5c346c1313f28fb6c3e6e43c1a90c762
 	case GS_MAINMENU:
 		fpLoad		=	MainMenu_Load;
 		fpInit		=	MainMenu_Init;
@@ -126,13 +99,3 @@ void GSM_LoadingTransition(int loadForState)
 	loadingForState = loadForState;
 	nextState = GS_LOADINGSCREEN;
 }
-<<<<<<< HEAD
-=======
-
-void GSM_DisplayLevelName(int currState)
-{
-	Console_Cout("Displaying Level Name");
-	loadingForState = currState; 
-	nextState = GS_SPLASHSCREEN_LVL1;
-}
->>>>>>> c616826a5c346c1313f28fb6c3e6e43c1a90c762

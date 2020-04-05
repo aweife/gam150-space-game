@@ -48,23 +48,23 @@ namespace InputManager
 		// Non-Gameplay Keyboard Controls ... Pause, Exit
 		// -----------------------------------------------------------------------
 
-		if (AEInputCheckTriggered(AEVK_P) && currentState != GS_SPLASHSCREEN && currentState != GS_MAINMENU)
+		if (AEInputCheckTriggered(AEVK_ESCAPE) && currentState != GS_SPLASHSCREEN && currentState != GS_MAINMENU)
 		{
 			TogglePause();
 			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 
 				: UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
-		if (AEInputCheckTriggered(AEVK_ESCAPE))
-		{
-			if (currentState == GS_MAINMENU)
-			{
-				GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
-			}
-			else
-			{
-				GSM_ChangeState(GS_MAINMENU);
-			}
-		}
+		//if (AEInputCheckTriggered(AEVK_ESCAPE))
+		//{
+		//	if (currentState == GS_MAINMENU)
+		//	{
+		//		GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+		//	}
+		//	else
+		//	{
+		//		GSM_ChangeState(GS_MAINMENU);
+		//	}
+		//}
 		if (AEInputCheckTriggered(AEVK_R))
 		{
 			//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!

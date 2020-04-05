@@ -21,6 +21,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/AudioManager.h"
 #include "../Managers/LevelManager.h"
+#include "../Systems/RenderSystem.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -28,6 +29,9 @@ ENTITY enemy;
 const float bossSpawn = 1.0f;
 float bossSpawnTimer = 0.0f;
 bool spawnedBoss = false;
+ENTITY referencetoLevelDisplay = 0;
+int count = 0;									//Animation Step
+float currTimer = 0.0f;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -35,6 +39,9 @@ bool spawnedBoss = false;
 // ----------------------------------------------------------------------------
 void Level1_Load()
 {
+	// Create Level name 
+	Factory_UI::Level1Display();
+
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);
 
@@ -100,6 +107,7 @@ void Level1_Init()
 {
 	spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
+	referencetoLevelDisplay = Factory_UI::Level1Display();
 }
 
 // ----------------------------------------------------------------------------
@@ -108,6 +116,8 @@ void Level1_Init()
 // ----------------------------------------------------------------------------
 void Level1_Update()
 {
+	currTimer += g_dt;
+	RenderingTricks::LightSpeedEffectOut(referencetoLevelDisplay, currTimer, count++, 5.0f, 0.04f, -60.0f);
 	//Editor_TrackVariable("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	AudioManager::Update();
