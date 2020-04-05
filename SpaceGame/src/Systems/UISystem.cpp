@@ -149,10 +149,8 @@ void UISystem::Render()
 			AEGfxPrint(ResourceManager::fontId, uiComponent->_text._textBuffer,
 				static_cast<int>(textPosition.x), static_cast<int>(textPosition.y),
 				uiComponent->_text._colorTint.r, uiComponent->_text._colorTint.g, uiComponent->_text._colorTint.b);
-		}
-		
+		}		
 	}
-	UIEventsManager::Broadcast(new Events::OnUpgradeDescpChange(-1));//Clear the upgrade description
 }
 
 void EditText(ENTITY target, const char* newText)
@@ -445,7 +443,13 @@ bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message)
 	}
 	else
 	{
-		EditText(entity, "");
+		cUIElement* descptUIComp = Core::Get().GetComponent<cUIElement>(entity);
+		if (descptUIComp->_roleIndex == static_cast<unsigned int>(message->_slot))
+		{
+			EditText(entity, "Hello");
+			return true;
+		}
+		return false;
 	}
 	return true;
 }
@@ -458,24 +462,22 @@ bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
 	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
-	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
-	cUIElement* upgrade = Core::Get().GetComponent<cUIElement>(entity);
+
+	float defaultSize = 100.0f;
 
 	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
 	{
-		if (sprite)
+		if (transform)
 		{
-			sprite->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
-			
+			transform->_scale = { defaultSize, defaultSize };
 		}
 		return false;
 	}
 
-	if(sprite)
+	if(transform)
 	{
-		sprite->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
-		UIEventsManager::Broadcast(new Events::OnUpgradeDescpChange(static_cast<int>(upgrade->_roleIndex)));
+		transform->_scale = { defaultSize * 1.2f, defaultSize * 1.2f };
 	}
 
 	return true;
@@ -514,16 +516,28 @@ bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message)
 }
 
 
-void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
+void UISystem::Check_IndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 {
 	cUIElement* uiComp = nullptr;
 	cTransform* uiTrans = nullptr;
+	float imageDistance = 0.9f;
+	bool foundBothIndicator = false;
 
 	for(ENTITY entity :aiIndicator_Set)
 	{
 		uiComp = Core::Get().GetComponent<cUIElement>(entity);
 		if (uiComp->_roleIndex == ai)			//the indicator already exists
 		{
+			foundBothIndicator = true;
+			if (uiComp->_roleIndex2 == 1)			//The arrow Component
+			{
+				imageDistance = 0.9f;
+			}
+			else if (uiComp->_roleIndex2 == 2)
+			{
+				imageDistance = 0.855f;
+			}
+
 			//Update the position
 			uiTrans = Core::Get().GetComponent<cTransform>(entity);
 			float screenGradiant = g_WorldMaxY / g_WorldMaxX;
@@ -532,26 +546,26 @@ void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 
 			if (aiDir.x < FLT_EPSILON && aiDir.x > -FLT_EPSILON) //Horizontal axis
 			{
-				aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
-				aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * imageDistance;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * imageDistance;
 			}
 			else if (aiDir.y < FLT_EPSILON && aiDir.y > -FLT_EPSILON) //Vertical axis
 			{
-				aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
-				aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * imageDistance;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * imageDistance;
 			}
 			else
 			{
 				float aiGradiant = aiDir.y / aiDir.x;
 				if (fabs(aiGradiant) < screenGradiant)		//Vertical Axis
 				{
-					aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
-					aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+					aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * imageDistance;
+					aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * imageDistance;
 				}
 				else if (fabs(aiGradiant) > screenGradiant)	//Horizontal Axis
 				{
-					aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
-					aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+					aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * imageDistance;
+					aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * imageDistance;
 				}
 			}
 			//Calculate angle
@@ -559,12 +573,16 @@ void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 
 			uiTrans->_position.x = aiDir.x;
 			uiTrans->_position.y = aiDir.y;
-			uiTrans->_rotation = angle;
+			uiTrans->_rotation = (uiComp->_roleIndex2 == 1 ? angle : 0.0f);
 			uiComp->_isActive = true;
-			return;
+					
 		}
 	}
-	Factory_UI::Create_AIIndicator(ai, aiDir, aiType);
+	if (!foundBothIndicator)
+	{
+		Factory_UI::Create_AIIndicator(ai, aiDir, aiType);
+	}
+
 }
 
 //Not used 

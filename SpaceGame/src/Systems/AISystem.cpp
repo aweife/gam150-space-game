@@ -91,9 +91,14 @@ void AISystem::CheckOutOfScreen(ENTITY id)
 	{
 		AEVec2 relativeDirection;
 		AEVec2Sub(&relativeDirection, &self->_position, &cameraPosition);
-		std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
 
-		//@TED later just change the last variable for different enemy type
-		uiSys->Check_AIIndicatorExist(id, relativeDirection, 0); //Under UI System
+		//Out of screen, but not extremely far away
+		float maximumDistance = sqrt(g_WorldMaxX * g_WorldMaxX + g_WorldMaxY * g_WorldMaxY) * 1.05f;
+		if (AEVec2Length(&relativeDirection) <= maximumDistance)
+		{
+			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+			//@TED later just change the last variable for different enemy type
+			uiSys->Check_IndicatorExist(id, relativeDirection, 0); //Under UI System
+		}
 	}
 }

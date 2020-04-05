@@ -32,7 +32,7 @@ public:
 	void OnComponentAdd(ENTITY);
 	void OnComponentRemove(ENTITY);
 
-	void Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType);
+	void Check_IndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType);
 	void DeleteUpgradeWindow();
 };
 void EditText(ENTITY target, const char* newText);

@@ -484,8 +484,8 @@ namespace ResourceManager
 					textureLibrary.insert({ "Enemy_1_5", AEGfxTextureLoad("res/Enemy_1_5.png") });
 					break;
 				case 28:
-					if (textureLibrary.find("ObjectiveSymbol") != textureLibrary.end()) break;
-					textureLibrary.insert({ "ObjectiveSymbol", AEGfxTextureLoad("res/Objective_Symbol.png") });
+					if (textureLibrary.find("Objective_Symbol") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Objective_Symbol", AEGfxTextureLoad("res/Objective_Symbol.png") });
 					break;
 				case 29:
 					if (textureLibrary.find("Skull_Normal") != textureLibrary.end()) break;
