@@ -9,8 +9,11 @@
 #include "../Tools/Editor.h"
 #include "../Levels/UpgradeLevel.h"
 #include "../Managers/GameStateManager.h"
+
 namespace LevelManager
 {
+	std::set<ENTITY> starfield_Set;
+
 	// Top Right, Top Left, Bottom Right, Bottom Left Spawn Areas
 	objectSpawnArea1 topRightSpawnArea;
 	objectSpawnArea2 topLeftSpawnArea;
@@ -477,5 +480,33 @@ namespace LevelManager
 		collectableList.clear();
 	}
 
+	void Clear_StarField()
+	{
+		//Leave the actual entity destruction to Core
+		starfield_Set.clear();
+	}
+
+	void SpeedChange_StarField(float multiplier)
+	{
+		//Leave the actual entity destruction to Core
+		for (auto const& entity : starfield_Set)
+		{
+			Core::Get().GetComponent<cRigidBody>(entity)->_velocity *= multiplier;
+			Core::Get().GetComponent<cRigidBody>(entity)->_velocityCap *= multiplier;
+		}
+	}
+
+	void Move_StarField(float posX, float posY)
+	{
+		for (auto const& entity : starfield_Set)
+		{
+			Core::Get().GetComponent<cTransform>(entity)->_position.x += posX;
+			Core::Get().GetComponent<cTransform>(entity)->_position.y += posY;
+			Core::Get().GetComponent<cWarping>(entity)->_warpX.x += posX;
+			Core::Get().GetComponent<cWarping>(entity)->_warpX.y += posX;
+			Core::Get().GetComponent<cWarping>(entity)->_warpY.x += posY;
+			Core::Get().GetComponent<cWarping>(entity)->_warpY.y += posY;
+		}
+	}
 }
 

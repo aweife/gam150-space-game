@@ -22,7 +22,8 @@
 #include "../Player/PlayerManager.h"
 namespace Factory
 {
-	ENTITY CreateCamera(ENTITY player)
+	// Create a dynamic camera to follow player & screenshake
+	ENTITY CreateCamera(ENTITY player, bool dynamic)
 	{
 		ENTITY cameraID = Core::Get().CreateEntity();
 		cTransform* playerTransform = Core::Get().GetComponent<cTransform>(player);
@@ -37,7 +38,7 @@ namespace Factory
 			}
 		}
 		Core::Get().AddComponent<cTransform>(cameraID, new cTransform());
-		Core::Get().AddComponent<cCamera>(cameraID, new cCamera(playerTransform, 400.0f));
+		Core::Get().AddComponent<cCamera>(cameraID, new cCamera(playerTransform, 400.0f, dynamic));
 		CameraManager::AssignNewCam(cameraID);
 
 		return cameraID;
@@ -53,21 +54,31 @@ namespace Factory
 		ENTITY player = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(player, new cTransform({ -360, -100 }, PI * 1 / 9, { 50,50 }));
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", 2));
-		CreateParticleEmitter_TRAILSTATIC(Core::Get().GetComponent<cTransform>(player));
+		
+		//No Hard Velocity Cap so player can move freely
+		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
+		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER_MENU;
+		Core::Get().AddComponent<cCollision>(player, new cCollision);
+		//Enable player to move and shoot in main menu
+		Core::Get().AddComponent<cSpaceShip>(player, new cSpaceShip{ false, 2.0f, WeaponMode::WEAPONMODE_RANGE });
+		Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon{ OWNERTAG::PLAYER, WeaponType::pistol, 1.0f, 0.25f });
+		Core::Get().AddComponent<cWarping>(player, new cWarping({ g_WorldMinX -25, g_WorldMaxX +25}, { g_WorldMinY -25,g_WorldMaxY +25}));
+
+		//CreateParticleEmitter_TRAILSTATIC(Core::Get().GetComponent<cTransform>(player));
 		return player;
 	}
 
 	ENTITY CreatePlayer(unsigned int layer)
 	{
 		ENTITY player = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(player, new cTransform);
+		Core::Get().AddComponent<cTransform>(player, new cTransform({ 0,0 }, 0.0f, {50.0f, 50.0f}));
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
 		Core::Get().GetComponent<cRigidBody>(player)->_velocityHardCap = 200;
+		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
-
-
-
+		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
+		
 		if (!PlayerManager::playerProgressInit)
 		{
 			PlayerManager::CreatePlayerWeapon();
@@ -78,57 +89,14 @@ namespace Factory
 		//Core::Get().AddComponent<cRangeWeapon>(player, new cRangeWeapon(OWNERTAG::PLAYER, WeaponType::laser, 999.0f, 0.0f, 1));
 		Core::Get().AddComponent<cMeleeWeapon>(player, new cMeleeWeapon{ PlayerManager::playerMeleeProgression });
 		//Core::Get().AddComponent<cHealth>(player, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f,2.0f));
-
-		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
-		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
-
 		Core::Get().AddComponent<cHealth>(player, new cHealth{ PlayerManager::playerHealthProgression });
 		Factory_UI::Create_ShieldBubble();
 
 		// Debug
 		if (g_BBShowMode)	DebugBoundingBox_Rigidbody(player);					//For Collision
 
-		Core::Get().GetComponent<cTransform>(player)->_scale.x = 50.0f;
-		Core::Get().GetComponent<cTransform>(player)->_scale.y = 50.0f;
-
 		return player;
 	}
-
-	//ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position)
-	//{
-	//	UNREFERENCED_PARAMETER(player);
-
-	//	ENTITY enemy = Core::Get().CreateEntity();
-	//	Core::Get().AddComponent<cTransform>(enemy, new cTransform);
-	//	Core::Get().AddComponent<cSprite>(enemy, new cSprite(enemy, "Square Mesh", "Enemy_2", layer));
-	//	Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
-	//	Core::Get().AddComponent<cCollision>(enemy, new cCollision);
-	//	Core::Get().AddComponent<cAI>(enemy, new cAI);
-	//	Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 2));
-	//	//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
-	//	Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
-	//	//Core::Get().GetComponent<cTransform>(enemy)->_position.x = -1800.0f;
-	//	//Core::Get().GetComponent<cTransform>(enemy)->_position.y = -2000.0f;
-	//	Core::Get().GetComponent<cTransform>(enemy)->_position = position;
-	//	Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 75.0f;
-	//	Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 50.0f;
-	//	Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
-	//	Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = -0.5f;
-	//	Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.5f;
-	//	Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::ENEMY; // testing collision
-	//	Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
-
-
-
-	//	// debug ai
-	//	if (g_BBShowMode)	DebugBoundingBox_Rigidbody(enemy);					//For Collision
-	//	cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
-	//	//cAI* aiComp = Core::Get().GetComponent<cAI>(enemy);
-	//	//CreateDebug_Arrow(aiT->_position, aiComp->_blackboard.directionToPlayerN, aiT->_scale.x);
-	//	cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
-	//	CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
-	//	return enemy;
-	//}
 
 	ENTITY SpawnObjective_Comrade(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index)
 	{
@@ -154,44 +122,123 @@ namespace Factory
 		return objective;
 	}
 
+	
 	ENTITY SpawnLevel_End(AEVec2 position)
 	{
-		float rotSpeed = 5.0f;
-		float rotStart = 0.0f;
-		AEVec2 size{ 30.0f,30.0f };
+		ENTITY exit = CreateWormhole(position, 5.0f, 0.0f, 30.0f);
+		// Objective will check if player remains in range for a few seconds
+		Core::Get().AddComponent<cAI>(exit, new cAI{ exit, LEVEL_END });
+		Core::Get().GetComponent<cAI>(exit)->_currentState.states.emplace<aiIdle>();
 
-		ENTITY exit1 = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(exit1, new cTransform(position, rotStart, size));
-		Core::Get().AddComponent<cTimeline>(exit1, new cTimeline(g_appTime, g_appTime + rotSpeed, true));
-		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit1)->_rotation, Core::Get().GetComponent<cTimeline>(exit1));
-		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit1)->_rotation, Core::Get().GetComponent<cTimeline>(exit1), rotSpeed, Core::Get().GetComponent<cTransform>(exit1)->_rotation + 2.0f * PI);
-		Core::Get().AddComponent<cAI>(exit1, new cAI{ exit1, LEVEL_END });
-		Core::Get().GetComponent<cAI>(exit1)->_currentState.states.emplace<aiIdle>();
+		return exit;
+	}
 
-		rotSpeed *= 2.0f;
-		AEVec2Scale(&size, &size, 2.0f);
+	//Reused for main menu and level exit
+	ENTITY CreateWormhole(AEVec2 position, float rotSpeed, float rotStart, float uniformSize, int colorVariance)
+	{
+		AEVec2 size{uniformSize, uniformSize};
 
-		ENTITY exit2 = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(exit2, new cTransform(position, rotStart, size));
-		Core::Get().AddComponent<cTimeline>(exit2, new cTimeline(g_appTime, g_appTime + rotSpeed, true));
-		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit2)->_rotation, Core::Get().GetComponent<cTimeline>(exit2));
-		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit2)->_rotation, Core::Get().GetComponent<cTimeline>(exit2), rotSpeed, Core::Get().GetComponent<cTransform>(exit2)->_rotation + 2.0f * PI);
+		rotSpeed *= 1.0f;
+		AEVec2Scale(&size, &size, 4.0f);
 
-		rotSpeed *= 2.0f;
-		AEVec2Scale(&size, &size, 2.0f);
-
+		//Sort the entity to create layering
 		ENTITY exit3 = Core::Get().CreateEntity();
+		ENTITY exit2 = Core::Get().CreateEntity();
+		ENTITY exit1 = Core::Get().CreateEntity();
+		ENTITY* arrayToSort[3] = { &exit3, &exit2, &exit1 };
+		Core::Get().SortEntity(arrayToSort);
+
+		//Outer Wormhole
 		Core::Get().AddComponent<cTransform>(exit3, new cTransform(position, rotStart, size));
 		Core::Get().AddComponent<cTimeline>(exit3, new cTimeline(g_appTime, g_appTime + rotSpeed, true));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit3)->_rotation, Core::Get().GetComponent<cTimeline>(exit3));
-		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_rotation, Core::Get().GetComponent<cTimeline>(exit3), rotSpeed, Core::Get().GetComponent<cTransform>(exit3)->_rotation + 2.0f * PI);
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_rotation, Core::Get().GetComponent<cTimeline>(exit3)
+			, 0.0f, Core::Get().GetComponent<cTransform>(exit3)->_rotation);
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_rotation, Core::Get().GetComponent<cTimeline>(exit3)
+			, rotSpeed, Core::Get().GetComponent<cTransform>(exit3)->_rotation + 2.0f * PI);
+		//Scale to animate
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit3)->_scale.x, Core::Get().GetComponent<cTimeline>(exit3));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_scale.x, Core::Get().GetComponent<cTimeline>(exit3)
+			, 0.0f, Core::Get().GetComponent<cTransform>(exit3)->_scale.x);
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_scale.x, Core::Get().GetComponent<cTimeline>(exit3)
+			, rotSpeed /2, Core::Get().GetComponent<cTransform>(exit3)->_scale.x * 1.2f);
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_scale.x, Core::Get().GetComponent<cTimeline>(exit3)
+			, rotSpeed, Core::Get().GetComponent<cTransform>(exit3)->_scale.x);
 
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit3)->_scale.y, Core::Get().GetComponent<cTimeline>(exit3));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_scale.y, Core::Get().GetComponent<cTimeline>(exit3)
+			, 0.0f, Core::Get().GetComponent<cTransform>(exit3)->_scale.y);
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_scale.y, Core::Get().GetComponent<cTimeline>(exit3)
+			, rotSpeed /2, Core::Get().GetComponent<cTransform>(exit3)->_scale.y * 1.2f);
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit3)->_scale.y, Core::Get().GetComponent<cTimeline>(exit3)
+			, rotSpeed, Core::Get().GetComponent<cTransform>(exit3)->_scale.y);
+
+		rotSpeed *= 2.0f;
+		AEVec2Scale(&size, &size, 0.75f);
+
+		
+		Core::Get().AddComponent<cTransform>(exit2, new cTransform(position, rotStart, size));
+		Core::Get().AddComponent<cTimeline>(exit2, new cTimeline(g_appTime, g_appTime + rotSpeed, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit2)->_rotation, Core::Get().GetComponent<cTimeline>(exit2));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit2)->_rotation, Core::Get().GetComponent<cTimeline>(exit2)
+			,  0.0f, Core::Get().GetComponent<cTransform>(exit2)->_rotation);
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit2)->_rotation, Core::Get().GetComponent<cTimeline>(exit2)
+			, rotSpeed, Core::Get().GetComponent<cTransform>(exit2)->_rotation - 2.0f * PI);
+
+		rotSpeed *= 0.3f;
+		AEVec2Scale(&size, &size, 0.5f);
+
+		//small white 
+		
+		Core::Get().AddComponent<cTransform>(exit1, new cTransform(position, rotStart, size));
+		//Looping Rotation
+		Core::Get().AddComponent<cTimeline>(exit1, new cTimeline(g_appTime, g_appTime + rotSpeed, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(exit1)->_rotation, Core::Get().GetComponent<cTimeline>(exit1));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit1)->_rotation, Core::Get().GetComponent<cTimeline>(exit1)
+			, 0.0f, Core::Get().GetComponent<cTransform>(exit1)->_rotation);
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(exit1)->_rotation, Core::Get().GetComponent<cTimeline>(exit1)
+			, rotSpeed, Core::Get().GetComponent<cTransform>(exit1)->_rotation + 2.0f * PI);
+
+		// Layering
 		Core::Get().AddComponent<cSprite>(exit3, new cSprite(exit3, "Square Mesh", "Exit_3", 21));
-		Core::Get().AddComponent<cSprite>(exit1, new cSprite(exit1, "Square Mesh", "Exit_1", 21));
 		Core::Get().AddComponent<cSprite>(exit2, new cSprite(exit2, "Square Mesh", "Exit_2", 21));
+		Core::Get().AddComponent<cSprite>(exit1, new cSprite(exit1, "Square Mesh", "Exit_1", 21));
+		if (colorVariance == 1)//red
+		{
+			Core::Get().GetComponent<cSprite>(exit3)->_colorTint = Core::Get().GetComponent<cSprite>(exit2)->_colorTint
+				= Core::Get().GetComponent<cSprite>(exit1)->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+		}
+		else if (colorVariance == 2)
+		{
+			Core::Get().GetComponent<cSprite>(exit3)->_colorTint = Core::Get().GetComponent<cSprite>(exit2)->_colorTint
+				= Core::Get().GetComponent<cSprite>(exit1)->_colorTint = { 1.0f, 1.0f, 0.8f, 1.0f };
+		}
+		else if (colorVariance == 3)	//yellow
+		{
+			Core::Get().GetComponent<cSprite>(exit3)->_colorTint = Core::Get().GetComponent<cSprite>(exit2)->_colorTint
+				= Core::Get().GetComponent<cSprite>(exit1)->_colorTint = { 1.0f, 1.0f, 0.0f, 1.0f };
+		}
+		else if (colorVariance == 4)
+		{
+			Core::Get().GetComponent<cSprite>(exit3)->_colorTint = Core::Get().GetComponent<cSprite>(exit2)->_colorTint
+				= Core::Get().GetComponent<cSprite>(exit1)->_colorTint = { 1.0f, 0.0f, 1.0f, 1.0f };
+		}
 
 
 		return exit1;
+	}
+
+	ENTITY CreateTutorialPlanet(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
+	{
+		AEVec2 newPostion, newScale;
+		AEVec2Set(&newPostion, posX, posY);
+		AEVec2Set(&newScale, scaleX, scaleY);
+
+		ENTITY planet = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(planet, new cTransform(newPostion, 0, newScale));
+		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "Square Mesh", "Tutorial_planet", layer));
+
+		return planet;
 	}
 
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
@@ -253,6 +300,21 @@ namespace Factory
 		//Core::Get().AddComponent<cCollision>(planet, new cCollision);
 
 		return planet;
+	}
+
+	ENTITY CreateLevelBoundary(float posX, float posY, float scaleX, float scaleY)
+	{
+		AEVec2 newPosition, newScale;
+		AEVec2Set(&newPosition, posX, posY);
+		AEVec2Set(&newScale, scaleX, scaleY);
+
+		ENTITY asteroid = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(asteroid, new cTransform(newPosition, 0, newScale));
+		Core::Get().AddComponent<cRigidBody>(asteroid, new cRigidBody(500.f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(asteroid)->_tag = COLLISIONTAG::PLANET_ASTEROID;
+		Core::Get().AddComponent<cCollision>(asteroid, new cCollision);
+
+		return asteroid;
 	}
 
 	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
@@ -500,7 +562,6 @@ namespace Factory
 
 	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar)
 	{
-		//This one causes crash
 		ENTITY emitter = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ tar->_position.x, tar->_position.y }, 0.0f, { 1,1 }));
 		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f,0.0f }, 10.0f, 0.2f, 0.4f, 1.0f, 1));
@@ -550,9 +611,9 @@ namespace Factory
 	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count)
 	{
 		float rotation = 2.0f * PI / count;
-		float cap = 100 / count;
+		unsigned int cap = 100 / count;
 
-		for (int i = 0; i < count; ++i)
+		for (unsigned int i = 0; i < count; ++i)
 		{
 			float current = i * rotation;
 			AEVec2 curPosition = { position.x + radius * cosf(current),position.y + radius * sinf(current) };
@@ -579,18 +640,30 @@ namespace Factory
 	}
 }
 
+/******************************************************************************/
+/*!
+  \brief	Template of various UI Entity to be used in game
+			- Main Menu Buttons/Wormholes
+			- 
+*/
+/******************************************************************************/
 namespace Factory_UI
 {
 	ENTITY Create_MM_BeginCampaignUI(AEVec2 position)
 	{
 		ENTITY begin = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(begin, new cTransform(position, 0, { 160, 40 }));
-		Core::Get().AddComponent<cSprite>(begin, new cSprite(begin, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(begin)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
+		//Core::Get().AddComponent<cSprite>(begin, new cSprite(begin, "Square Mesh", "Texture_Default", 0));
+		//Core::Get().GetComponent<cSprite>(begin)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(begin, new cUIElement("Play"));
 		Core::Get().GetComponent<cUIElement>(begin)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(begin)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
-		UIEventsManager::Subscribe(begin, &OnButtonClick_MainMenuUI);
+		//UIEventsManager::Subscribe(begin, &OnButtonClick_MainMenuUI);
+
+		ENTITY wormhole = Factory::CreateWormhole({ position.x,position.y + 50 }, 5.0f, 0.0f, 30.0f, 1);
+		Core::Get().AddComponent<cRigidBody>(wormhole, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(wormhole)->_tag = COLLISIONTAG::MENU_BEGIN;
+		Core::Get().AddComponent<cCollision>(wormhole, new cCollision);
 
 		return begin;
 	}
@@ -598,12 +671,16 @@ namespace Factory_UI
 	{
 		ENTITY options = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(options, new cTransform(position, 0, { 160, 40 }));
-		Core::Get().AddComponent<cSprite>(options, new cSprite(options, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(options)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
+		//Core::Get().AddComponent<cSprite>(options, new cSprite(options, "Square Mesh", "Texture_Default", 0));
+		//Core::Get().GetComponent<cSprite>(options)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(options, new cUIElement("Options"));
 		Core::Get().GetComponent<cUIElement>(options)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(options)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
-		//UIEventsManager::Subscribe(options, &OnButtonClick_MainMenuUI);
+
+		ENTITY wormhole = Factory::CreateWormhole({ position.x,position.y + 50 }, 5.0f, 0.0f, 30.0f, 2);
+		Core::Get().AddComponent<cRigidBody>(wormhole, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(wormhole)->_tag = COLLISIONTAG::MENU_OPTIONS;
+		Core::Get().AddComponent<cCollision>(wormhole, new cCollision);
 		return 0;
 
 	}
@@ -611,27 +688,53 @@ namespace Factory_UI
 	{
 		ENTITY credits = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(credits, new cTransform(position, 0, { 160, 40 }));
-		Core::Get().AddComponent<cSprite>(credits, new cSprite(credits, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(credits)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
+		//Core::Get().AddComponent<cSprite>(credits, new cSprite(credits, "Square Mesh", "Texture_Default", 0));
+		//Core::Get().GetComponent<cSprite>(credits)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(credits, new cUIElement("Credits"));
 		Core::Get().GetComponent<cUIElement>(credits)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(credits)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//UIEventsManager::Subscribe(credits, &OnButtonClick_MainMenuUI);
+
+		ENTITY wormhole = Factory::CreateWormhole({ position.x, position.y +50 }, 5.0f, 0.0f, 30.0f, 3);
+		Core::Get().AddComponent<cRigidBody>(wormhole, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(wormhole)->_tag = COLLISIONTAG::MENU_CREDITS;
+		Core::Get().AddComponent<cCollision>(wormhole, new cCollision);
 		return 0;
 	}
 	ENTITY Create_MM_Quit(AEVec2 position)
 	{
 		ENTITY quit = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(quit, new cTransform(position, 0, { 160, 40 }));
-		Core::Get().AddComponent<cSprite>(quit, new cSprite(quit, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(quit)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
+		//Core::Get().AddComponent<cSprite>(quit, new cSprite(quit, "Square Mesh", "Texture_Default", 0));
+		//Core::Get().GetComponent<cSprite>(quit)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(quit, new cUIElement("Quit"));
 		Core::Get().GetComponent<cUIElement>(quit)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(quit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
-		//UIEventsManager::Subscribe(quit, &OnButtonClick_MainMenuUI);
+
+		ENTITY wormhole = Factory::CreateWormhole({ position.x,position.y + 50 }, 5.0f, 0.0f, 30.0f, 4);
+		Core::Get().AddComponent<cRigidBody>(wormhole, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(wormhole)->_tag = COLLISIONTAG::MENU_QUIT;
+		Core::Get().AddComponent<cCollision>(wormhole, new cCollision);
+
 		return 0;
 	}
 
+	ENTITY Create_MM_BackToMain(AEVec2 position)
+	{
+		ENTITY back = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(back, new cTransform(position, 0, { 160, 40 }));
+		Core::Get().AddComponent<cUIElement>(back, new cUIElement("Back To Main Menu"));
+		Core::Get().GetComponent<cUIElement>(back)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(back)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+		ENTITY wormhole = Factory::CreateWormhole({ position.x,position.y + 50 }, 5.0f, 0.0f, 30.0f, 4);
+		Core::Get().AddComponent<cRigidBody>(wormhole, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(wormhole)->_tag = COLLISIONTAG::MENU_BACK;
+		Core::Get().AddComponent<cCollision>(wormhole, new cCollision);
+		return 0;
+	}
+
+	// "End Of Space" Game Logo
 	ENTITY Create_GameLogo(AEVec2 position, AEVec2 scale)
 	{
 		ENTITY gameLogo = Core::Get().CreateEntity();
@@ -640,28 +743,27 @@ namespace Factory_UI
 		return gameLogo;
 	}
 
-	//Placed here so that all the levels UI will be standardised in case of change
 	//This includes health bar, shield bar and thruster fuel
-	void Create_PlayerUserInterface()
+	void Create_PlayerUserInterface(unsigned int health, unsigned int shield)
 	{
 		AEVec2 spritePos;
-		for (int i = 0; i < 3; ++i)
+		// Default 3 Health for Player 
+		for (unsigned int i = 0; i < health; ++i)
 		{
 			spritePos = ScreenBasedCoords(100.0f + 50.0f * i, 75.0f, UI_ANCHOR::BOTTOMLEFT);
 			Create_SingleHealthBar(spritePos, i);
 		}
 
-		for (int i = 0; i < 3; ++i)
+		// Default 3 Shield for Player
+		for (unsigned int i = 0; i < shield; ++i)
 		{
 			spritePos = ScreenBasedCoords(250.0f + 50.0f * i, 75.0f, UI_ANCHOR::BOTTOMLEFT);
 			Create_SingleShieldBar(spritePos, i);
 		}
 
+		// Thruster speed interface
 		spritePos = ScreenBasedCoords(-150.0f, -75.0f, UI_ANCHOR::TOPRIGHT);
 		Create_ThrusterUI(spritePos);
-
-		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::CENTER);
-		//Create_ChooseThree(spritePos);
 
 		// Objectives UI
 		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::TOPLEFT);
@@ -1025,6 +1127,39 @@ namespace Factory_UI
 		return uiEntity;
 	}
 
+	ENTITY CreateUI_TickBox(float posX, float posY, float size, unsigned int layer)
+	{
+		ENTITY tick = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(tick, new cTransform({ posX,posY }, 0, { size * 0.5f,size * 0.5f }));
+		Core::Get().AddComponent<cSprite>(tick, new cSprite(tick, "Square Mesh", "Texture_Default", layer));
+		Core::Get().GetComponent<cSprite>(tick)->_colorTint = {1.0f, 1.0f, 1.0f, 0.0f};			//Invisible at start
+		Core::Get().AddComponent<cUIElement>(tick, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::TICK, 0));
+
+		ENTITY tickbox = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(tickbox, new cTransform({ posX,posY }, 0, { size,size }));
+		Core::Get().AddComponent<cSprite>(tickbox, new cSprite(tickbox, "Square Mesh", "Checkbox", layer));
+		Core::Get().GetComponent<cSprite>(tickbox)->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(tickbox, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::TICKBOX, 0));
+		Core::Get().GetComponent<cUIElement>(tickbox)->_roleIndex = tick;		//Reference to Tick
+
+		return tickbox;
+	}
+
+	ENTITY CreateUI_Option_TickBox_Sound(float posX, float posY, float size, unsigned int layer)
+	{
+		ENTITY tickbox = CreateUI_TickBox(posX, posY, size, layer);
+		Core::Get().GetComponent<cUIElement>(tickbox)->_roleIndex2 = 1;		//Inform the function what to do
+		UIEventsManager::Subscribe(tickbox, &OnButtonClick_MainMenuUI);
+		return tickbox;
+	}
+	ENTITY CreateUI_Option_TickBox_Fullscreen(float posX, float posY, float size, unsigned int layer)
+	{
+		ENTITY tickbox = CreateUI_TickBox(posX, posY, size, layer);
+		Core::Get().GetComponent<cUIElement>(tickbox)->_roleIndex2 = 2;		//Inform the function what to do
+		UIEventsManager::Subscribe(tickbox, &OnButtonClick_MainMenuUI);
+		return tickbox;
+	}
+
 	ENTITY CreateBackground_Load()
 	{
 		ENTITY gamelogo = Create_GameLogo({ 0,100 }, { 500, 300 });
@@ -1055,8 +1190,10 @@ namespace Factory_SpashScreen
 
 namespace Factory_Map
 {
-	void Generate_StarField_Menu()
+	void Generate_StarField()
 	{
+		if (LevelManager::starfield_Set.size() > 0)	return;
+
 		int numOfStars = 120;
 		for (int i = 0; i < numOfStars; ++i)
 		{
@@ -1067,11 +1204,11 @@ namespace Factory_Map
 			Core::Get().AddComponent<cTransform>(star, new cTransform({ posX, AERandFloat() * g_WorldMaxY * 2 - g_WorldMaxY }
 			, 0, { randSize, randSize }));
 			Core::Get().AddComponent<cSprite>(star, new cSprite(star, "Octagon Mesh", "Texture_Default", 6));
-			Core::Get().AddComponent<cRigidBody>(star, new cRigidBody(100, AERandFloat() * 50 + 10, 100));
+			Core::Get().AddComponent<cRigidBody>(star, new cRigidBody(100, AERandFloat() * 100 + 10, 1000));
 			Core::Get().GetComponent<cRigidBody>(star)->_velocityDirection = { -1,0 };
 			Core::Get().GetComponent<cRigidBody>(star)->_airResistance = 1.0f;		//no air resitatnce
-			Core::Get().AddComponent<cWarping>(star, new cWarping({ -2000, g_WorldMaxX }, { 0,0 }));
-
+			Core::Get().AddComponent<cWarping>(star, new cWarping({ g_WorldMinX - 200, g_WorldMaxX + 200 }, { g_WorldMinY,g_WorldMaxY }));
+			LevelManager::starfield_Set.insert(star);
 		}
 	}
 
@@ -1106,11 +1243,6 @@ namespace Factory_Map
 				break;
 			}
 		}
-	}
-
-	void Generate_StarField()
-	{
-
 	}
 }
 

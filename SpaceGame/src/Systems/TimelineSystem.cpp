@@ -26,7 +26,7 @@ void TimelineSystem::Update()
 		{
 			for (auto it2 = it->second->begin(); it2 != it->second->end(); ++it2)
 			{
-				if (it2->first > timelineComp->_currTime)
+				if (it2->first >= timelineComp->_currTime)
 				{
 					float timeDiff = it2->first - timelineComp->_currTime;
 					float valueDiff1 = 0.0f;
@@ -53,7 +53,7 @@ void TimelineSystem::Update()
 							}
 							else
 							{
-								*it->first->_floatRef += valueDiff1;
+								*it->first->_intRef += valueDiff2;
 							}
 							break;
 						case TimelineType::FUNCTION:

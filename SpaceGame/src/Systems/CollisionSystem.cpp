@@ -24,10 +24,12 @@
 #include "../Math/Math.h"                   // Additional Math functions
 #include "../Global.h"                      // g_dt
 #include "../ECS/Core.h"                    // For ECS
-#include "../Tools/Editor.h"                    // For ECS
+#include "../Tools/Editor.h"                // For ECS
 #include "../ECS/Factory.h"                 // For Particle System
 #include "../Components/ComponentList.h"    // For component list
-#include "../Managers/LevelManager.h"
+#include "../Managers/LevelManager.h"		// Keep Track of enemy defeated
+#include "../Managers/GameStateManager.h"	// Main Menu Wormholes
+#include "../Levels/MainMenu.h"				
 
 #include "../Tools/Console.h"
 /*********************************************************************************
@@ -521,8 +523,8 @@ void CollisionSystem::Update()
 				// if player and enemy collide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
-				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	rigidbody2->_tag == COLLISIONTAG::ENEMY || 
-																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	(rigidbody2->_tag == COLLISIONTAG::ENEMY || 
+																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID))
 				{
 					//CameraManager::StartCameraShake();
 					//printf("Enemy health decrease lmao\n");
@@ -627,6 +629,39 @@ void CollisionSystem::Update()
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					markedForDestruction.insert(entity1);
 				}
+
+				// Main Menu Interactions
+				if (currentState == GS_MAINMENU)
+				{
+					if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_BEGIN)
+					{
+						GSM_LoadingTransition(GS_LEVEL1);
+					}
+					else if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_OPTIONS)
+					{
+						Switch_MainMenuState(mmStates::OPTIONS);
+					}
+					else if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_CREDITS)
+					{
+						Switch_MainMenuState(mmStates::CREDITS);
+					}
+					else if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_QUIT)
+					{
+					}
+					else if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_BACK)
+					{
+						Switch_MainMenuState(mmStates::MAIN);
+					}
+
+					if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
+					{
+						// for player's bounce off
+						AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
+						AEVec2Set(&rigidbody->_collisionVector, -(rigidbody->_velocityVector.x * 2.0f), -(rigidbody->_velocityVector.y * 2.0f));
+						//AEVec2Add(&rigidbody->_collisionVector, &rigidbody->_collisionVector, &rigidbody->_velocityDirection);
+					}
+				}
+
 			}
 		}
 		//Raycast resolution

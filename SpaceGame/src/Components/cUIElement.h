@@ -32,7 +32,9 @@ enum class UI_ROLE
 	QUIT_BTN, 
 	LOW_HEALTH_UI,
 	SHIELD_DOWN_UI,
-	BOSS_INCOMING_UI
+	BOSS_INCOMING_UI,
+	TICKBOX,
+	TICK
 };
 
 class cUIElement :public Component

@@ -81,7 +81,7 @@ void Level1_Load()
 
 
 	Factory::CreateBackground();
-	Factory_UI::Create_PlayerUserInterface();
+	Factory_UI::Create_PlayerUserInterface(3, 3);
 	Factory_UI::CreateUI_Pause();
 
 	// FOR NOW, audio

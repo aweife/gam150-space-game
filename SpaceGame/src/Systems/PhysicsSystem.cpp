@@ -65,6 +65,10 @@ void PhysicsSystem::Update()
 		if (rb->_velocity > rb->_velocityCap)
 			rb->_velocity *= 0.985f;
 
+		//Normalised velocityDirection just in case 
+		if (fabs(AEVec2Length(&rb->_velocityDirection)) > FLT_EPSILON)
+		AEVec2Normalize(&rb->_velocityDirection, &rb->_velocityDirection);
+
 		// Calculate current velocity vector based on velocity and direction
 		AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity * g_dt);
 

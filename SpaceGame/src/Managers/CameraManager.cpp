@@ -29,15 +29,22 @@ namespace CameraManager
 	{
 		if (_currCamera == 0) return;
 
-		//Apply basic camera follow
-		SmoothFollow();
+		if (currCameraComp->_isdynamic)
+		{
+			//Apply basic camera follow
+			SmoothFollow();
 
-		//Apply secondary camera transformation effects like screenshake...
-		if (currCameraComp->_isCameraShake)	CameraShake();
+			//Apply secondary camera transformation effects like screenshake...
+			if (currCameraComp->_isCameraShake)	CameraShake();
 
-		//Take note that AECam position is not equal to its transform component
-		AEGfxSetCamPosition(currCameraTransform->_position.x + currCameraComp->_camOffsetPos.x
-			, currCameraTransform->_position.y + currCameraComp->_camOffsetPos.y);
+			//Take note that AECam position is not equal to its transform component
+			AEGfxSetCamPosition(currCameraTransform->_position.x + currCameraComp->_camOffsetPos.x
+				, currCameraTransform->_position.y + currCameraComp->_camOffsetPos.y);
+		}
+		else
+		{
+			AEGfxGetCamPosition(&currCameraTransform->_position.x, &currCameraTransform->_position.y);
+		}
 	}
 
 	void SmoothFollow()

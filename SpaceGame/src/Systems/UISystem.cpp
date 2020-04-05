@@ -350,23 +350,35 @@ bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* messag
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
-	
+	// Bounds of Main Menu Buttons
 	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
 	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
 
-	//printf("mouse %f %f \n", message->_xPos, message->_yPos);
-	//printf("orig %f %f \n", transform->_position.x, transform->_position.y);
-	//printf("min %f %f \n", buttomMinX, buttomMinY);
-	//printf("max %f %f \n", buttomMaxX, buttomMaxY);
 	if ((buttomMaxX > message->_xPos && buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos && buttomMinY < message->_yPos) == false)
 	{
 		//printf("failed\n");
 		return false;
 	}
-	GSM_LoadingTransition(GS_LEVEL1);
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (uiComp)
+	{
+		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound
+		{
+
+		}
+		else if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 2)	//Toggle Full screen
+		{
+			Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a 
+				= 1.0f - Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a;
+			Global_ToggleWindowed();
+			GSM_RestartLevel();
+		}
+	}
+
+	//GSM_LoadingTransition(GS_LEVEL1);
 	return true;
 }
 

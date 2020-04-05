@@ -30,7 +30,7 @@ void RenderSystem::Render()
 
 	//Update particle system based on layers after finished 
 	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
-	unsigned int currentLayer = 8;
+	unsigned int currentLayer = 7;
 
 	// -----------------------------------------------------------------------
 	// Update all entities that has the components we want
@@ -135,6 +135,8 @@ void RenderSystem::Render()
 			
 		}
 		particleSystemInstance->RenderLayer(currentLayer, parallaxOffsetX, parallaxOffsetY);
+		// Will synchronise everyones version
+		if (currentLayer == 3)	particleSystemInstance->RenderLayer(21, parallaxOffsetX, parallaxOffsetY);
 		--currentLayer;
 	}
 }
@@ -239,7 +241,7 @@ namespace RenderingTricks
 		{
 			transform->_position.x -= AECos(angle) * increment;
 			transform->_position.y += AESin(angle) * increment;		//0, up
-			sprite->_colorTint.a -= alphaDecrement;
+			if(sprite) sprite->_colorTint.a -= alphaDecrement;
 		}
 		else
 		{
@@ -248,7 +250,7 @@ namespace RenderingTricks
 			{
 				transform->_position.x -= AECos(angle) * 2 * increment * ((counter / 2) + 1);
 				transform->_position.y -= AESin(angle) * 2 * increment * ((counter / 2) + 1);
-				sprite->_colorTint.a -= alphaDecrement;
+				if (sprite) sprite->_colorTint.a -= alphaDecrement;
 			}
 			else		// 0 or even, up
 			{
@@ -257,7 +259,7 @@ namespace RenderingTricks
 				transform->_position.y += AESin(angle) * increment * (counter / 2);
 				transform->_position.x += AECos(angle) * increment * ((counter / 2) + 1);
 				transform->_position.y += AESin(angle) * increment * ((counter / 2) + 1);
-				sprite->_colorTint.a -= alphaDecrement;
+				if (sprite) sprite->_colorTint.a -= alphaDecrement;
 			}
 		}
 	}
@@ -276,7 +278,7 @@ namespace RenderingTricks
 			//Up
 			transform->_position.x = desiredX + (AECos(angle) * maxRangeX);
 			transform->_position.y = desiredY + (AESin(angle) * maxRangeY);		//0, up
-			sprite->_colorTint.a += alphaIncrement;
+			if (sprite) sprite->_colorTint.a += alphaIncrement;
 		}
 		else
 		{
@@ -289,14 +291,14 @@ namespace RenderingTricks
 			{
 				transform->_position.x = desiredX - (AECos(angle) * (maxRangeX * timePercentage));
 				transform->_position.y = desiredY - (AESin(angle) * (maxRangeY * timePercentage));
-				sprite->_colorTint.a += alphaIncrement;
+				if (sprite) sprite->_colorTint.a += alphaIncrement;
 			}
 			else		// 0 or even, up
 			{
 				// Centralised first
 				transform->_position.x = desiredX + (AECos(angle) * (maxRangeX * timePercentage));
 				transform->_position.y = desiredY + (AESin(angle) * (maxRangeY * timePercentage));
-				sprite->_colorTint.a += alphaIncrement;
+				if (sprite) sprite->_colorTint.a += alphaIncrement;
 			}
 		}
 	}
