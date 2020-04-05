@@ -640,7 +640,7 @@ namespace Factory
 	{
 		UNREFERENCED_PARAMETER(tar);
 		ENTITY emitter = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ 0.0f, 0.0f }, 0.0f, { 1,1 }));
+		Core::Get().AddComponent<cTransform>(emitter, new cTransform({ 0.0f, 80.0f }, 0.0f, { 1,1 }));
 		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f, 0.0f }, 10.0f, 0.1f, 0.2f, 999.0f, 3, 
 			0.0f, 0.0f, 2.0f));
 		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 90;
@@ -717,7 +717,7 @@ namespace Factory_UI
 		Core::Get().AddComponent<cTransform>(begin, new cTransform(position, 0, { 160, 40 }));
 		//Core::Get().AddComponent<cSprite>(begin, new cSprite(begin, "Square Mesh", "Texture_Default", 0));
 		//Core::Get().GetComponent<cSprite>(begin)->_colorTint = { 1.0f, 0.28f, 0.0f, 1.0f };
-		Core::Get().AddComponent<cUIElement>(begin, new cUIElement("Play"));
+		Core::Get().AddComponent<cUIElement>(begin, new cUIElement("Start Game"));
 		Core::Get().GetComponent<cUIElement>(begin)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(begin)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		//UIEventsManager::Subscribe(begin, &OnButtonClick_MainMenuUI);

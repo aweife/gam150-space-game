@@ -513,10 +513,30 @@ namespace ResourceManager
 				case 30:
 					if (textureLibrary.find("Skull_Boss") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Skull_Boss", AEGfxTextureLoad("res/Skull_Boss.png") });
+					break;
+				case 31:
+					if (textureLibrary.find("Pause_Menu") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Pause_Menu", AEGfxTextureLoad("res/Pause_Menu.png") });
+					break;
+				case 32:
+					if (textureLibrary.find("Pause_Confirmation") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Pause_Confirmation", AEGfxTextureLoad("res/Pause_confirmation.png") });
+					break;
+				case 33:
+					if (textureLibrary.find("UI_Mission1") != textureLibrary.end()) break;
+					textureLibrary.insert({ "UI_Mission1", AEGfxTextureLoad("res/UI_Mission1.png") });
+					break;
+				case 34:
+					if (textureLibrary.find("UI_Mission2") != textureLibrary.end()) break;
+					textureLibrary.insert({ "UI_Mission2", AEGfxTextureLoad("res/UI_Mission2.png") });
+					break;
+				case 35:
+					if (textureLibrary.find("UI_Mission3") != textureLibrary.end()) break;
+					textureLibrary.insert({ "UI_Mission3", AEGfxTextureLoad("res/UI_Mission3.png") });
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 31): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 36): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);
