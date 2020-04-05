@@ -91,7 +91,7 @@ void Level1_Load()
 
 
 	Factory::CreateBackground();
-	Factory_UI::Create_PlayerUserInterface();
+	Factory_UI::Create_PlayerUserInterface(3, 3);
 	Factory_UI::CreateUI_Pause();
 
 	// FOR NOW, audio
@@ -105,7 +105,6 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
-	spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 	referencetoLevelDisplay = Factory_UI::Level1Display();
 }
@@ -124,19 +123,6 @@ void Level1_Update()
 	PlayerManager::Update();
 	Core::Get().Core_Update();
 	LevelManager::Update();
-
-
-	// Test boss
-	if (!spawnedBoss)
-	{
-		bossSpawnTimer += g_dt;
-
-		if (bossSpawnTimer >= bossSpawn)
-		{
-			spawnedBoss = true;
-			enemy = Factory_AI::CreateBoss(PlayerManager::player, 2);
-		}
-	}
 }
 
 // ----------------------------------------------------------------------------
@@ -154,7 +140,6 @@ void Level1_Draw()
 // ----------------------------------------------------------------------------
 void Level1_Free()
 {
-	spawnedBoss = false;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }

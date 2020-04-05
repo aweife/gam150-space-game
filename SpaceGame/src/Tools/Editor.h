@@ -19,3 +19,5 @@ void Editor_Render();
 void Editor_TrackVariable(const char* text, float value);
 
 void Editor_TrackVariable(const char* text, int value);
+
+void Editor_SetSize(short x, short y);

@@ -342,10 +342,6 @@ namespace ResourceManager
 		{
 			textureLibrary.insert({ "GameLogo", AEGfxTextureLoad("res/GameLogo.png") });
 		}	
-		//if (textureLibrary.find("BG_MainMenu") == textureLibrary.end())
-		//{
-		//	textureLibrary.insert({ "BG_MainMenu", AEGfxTextureLoad("res/Loading.png") });
-		//}
 		if (textureLibrary.find("Texture_Default") == textureLibrary.end())
 		{
 			textureLibrary.insert({ "Texture_Default", AEGfxTextureLoad("res/Texture_Default.png") });
@@ -357,6 +353,30 @@ namespace ResourceManager
 		if (textureLibrary.find("Player_1") == textureLibrary.end())
 		{
 			textureLibrary.insert({ "Player_1", AEGfxTextureLoad("res/Player_MachineGun.png") });
+		}
+		if (textureLibrary.find("Exit_1") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Exit_1", AEGfxTextureLoad("res/Exit_1.png") });
+		}
+		if (textureLibrary.find("Exit_2") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Exit_2", AEGfxTextureLoad("res/Exit_2.png") });
+		}
+		if (textureLibrary.find("Exit_3") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Exit_3", AEGfxTextureLoad("res/Exit_3.png") });
+		}
+		if (textureLibrary.find("Bullet_1") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Bullet_1", AEGfxTextureLoad("res/Weapon_Bullet1.png") });
+		}
+		if (textureLibrary.find("Checkbox") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Checkbox", AEGfxTextureLoad("res/Checkbox.png") });
+		}
+		if (textureLibrary.find("Tutorial_planet") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Tutorial_planet", AEGfxTextureLoad("res/Tutorial_planet.png") });
 		}
 	}
 
@@ -399,8 +419,8 @@ namespace ResourceManager
 					textureLibrary.insert({"Planet_4", AEGfxTextureLoad("res/Prop_Planet4.png") });
 					break;
 				case 7:
-					if (textureLibrary.find("Bullet_1") != textureLibrary.end()) break;
-					textureLibrary.insert({"Bullet_1", AEGfxTextureLoad("res/Weapon_Bullet1.png") });
+					if (textureLibrary.find("Bullet_2") != textureLibrary.end()) break;
+					textureLibrary.insert({"Bullet_2", AEGfxTextureLoad("res/Weapon_Bullet2.png") });
 					break;
 				case 8:
 					if (textureLibrary.find("BG_1") != textureLibrary.end()) break;
@@ -479,28 +499,24 @@ namespace ResourceManager
 					textureLibrary.insert({ "Upgrade_Laser", AEGfxTextureLoad("res/Upgrade_Laser.png") });
 					break;
 				case 27:
-					if (textureLibrary.find("Pause_Menu") != textureLibrary.end()) break;
-					textureLibrary.insert({ "Pause_Menu", AEGfxTextureLoad("res/Pause_Menu.png") });
+					if (textureLibrary.find("Enemy_1_5") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Enemy_1_5", AEGfxTextureLoad("res/Enemy_1_5.png") });
 					break;
-				case 28: 
-					if (textureLibrary.find("Pause_Confirmation") != textureLibrary.end()) break;
-					textureLibrary.insert({ "Pause_Confirmation", AEGfxTextureLoad("res/Pause_confirmation.png") });
+				case 28:
+					if (textureLibrary.find("ObjectiveSymbol") != textureLibrary.end()) break;
+					textureLibrary.insert({ "ObjectiveSymbol", AEGfxTextureLoad("res/Objective_Symbol.png") });
 					break;
 				case 29:
-					if (textureLibrary.find("UI_Mission1") != textureLibrary.end()) break;
-					textureLibrary.insert({ "UI_Mission1", AEGfxTextureLoad("res/UI_Mission1.png") });
+					if (textureLibrary.find("Skull_Normal") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Skull_Normal", AEGfxTextureLoad("res/Skull_Normal.png") });
 					break;
 				case 30:
-					if (textureLibrary.find("UI_Mission2") != textureLibrary.end()) break;
-					textureLibrary.insert({ "UI_Mission2", AEGfxTextureLoad("res/UI_Mission2.png") });
-					break;
-				case 31:
-					if (textureLibrary.find("UI_Mission3") != textureLibrary.end()) break;
-					textureLibrary.insert({ "UI_Mission3", AEGfxTextureLoad("res/UI_Mission3.png") });
+					if (textureLibrary.find("Skull_Boss") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Skull_Boss", AEGfxTextureLoad("res/Skull_Boss.png") });
 					*progress = 100;
 					break;
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 32): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 31): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

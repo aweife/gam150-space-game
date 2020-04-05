@@ -9,27 +9,28 @@ void bossSpawn::OnEnter(aiBlackBoard& bb)
 {
 	bossBase::OnEnter(bb);
 
-	_initialScale = trans->_scale;
-	AEVec2Zero(&trans->_scale);
-	trans->_scale.x += g_dt * bb.baseMaxSpeed;
+	_maxSize = trans->_scale;
+	AEVec2Scale(&_maxSize, &_maxSize, 2.0f);
+
+	_sizeRatioX = bb.baseMaxSpeed * (trans->_scale.x / _maxSize.x);
+	_sizeRatioY = bb.baseMaxSpeed * (trans->_scale.y / _maxSize.y);
 }
 
 void bossSpawn::OnUpdate(aiBlackBoard& bb)
 {
-	if (trans->_scale.x < _initialScale.x)
-		trans->_scale.x += g_dt * bb.baseMaxSpeed;
-	else if (trans->_scale.y < _initialScale.y)
-		trans->_scale.y += g_dt * bb.baseMaxSpeed;
+	if (trans->_scale.x < _maxSize.x && trans->_scale.y < _maxSize.y)
+	{
+		trans->_scale.x += g_dt * _sizeRatioX;
+		trans->_scale.y += g_dt * _sizeRatioY;
+	}
 	else
 		ChangeAttack(BOSS_IDLE);
-
-	trans->_rotation += g_dt * bb.baseMaxSpeed * bb.baseRotationSpeed;
 }
 
 void bossSpawn::OnExit(bossAttackList& var)
 {
 	trans->_rotation = 0.0f;
-	trans->_scale = _initialScale;
+	trans->_scale = _maxSize;
 
 	bossBase::OnExit(var);
 }

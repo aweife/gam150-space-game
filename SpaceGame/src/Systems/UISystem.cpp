@@ -148,6 +148,7 @@ void UISystem::Render()
 		}
 		
 	}
+	UIEventsManager::Broadcast(new Events::OnUpgradeDescpChange(-1));//Clear the upgrade description
 }
 
 void EditText(ENTITY target, const char* newText)
@@ -350,23 +351,35 @@ bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* messag
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
-	
+	// Bounds of Main Menu Buttons
 	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
 	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
 
-	//printf("mouse %f %f \n", message->_xPos, message->_yPos);
-	//printf("orig %f %f \n", transform->_position.x, transform->_position.y);
-	//printf("min %f %f \n", buttomMinX, buttomMinY);
-	//printf("max %f %f \n", buttomMaxX, buttomMaxY);
 	if ((buttomMaxX > message->_xPos && buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos && buttomMinY < message->_yPos) == false)
 	{
 		//printf("failed\n");
 		return false;
 	}
-	GSM_LoadingTransition(GS_LEVEL1);
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (uiComp)
+	{
+		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound
+		{
+
+		}
+		else if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 2)	//Toggle Full screen
+		{
+			Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a 
+				= 1.0f - Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a;
+			Global_ToggleWindowed();
+			GSM_RestartLevel();
+		}
+	}
+
+	//GSM_LoadingTransition(GS_LEVEL1);
 	return true;
 }
 
@@ -385,13 +398,52 @@ bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	cUIElement* upgrade = Core::Get().GetComponent<cUIElement>(entity);
+
 	if (upgrade && !upgradeFinish)
 	{
+		int resultingRerollCount = -1;
+		UIEventsManager::Broadcast(new Events::OnUpgradeReroll(resultingRerollCount));
 		UpgradeManager::ApplyUpgrade(upgrade->_roleIndex);
 		UpgradeManager::ClearAllUpgradeChoice();
-		upgradeFinish = true;
+		
+		if (resultingRerollCount == 0)
+		{
+			upgradeFinish = true;
+		}
+		
 	}
 
+	return true;
+}
+
+bool UpdateRerollCount(ENTITY entity, Events::OnUpgradeReroll* message)
+{
+	// There is only one reroll UI
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+
+	if (uiComp)
+	{
+		--uiComp->_roleIndex2;
+		char buffer[4];
+		_itoa_s(uiComp->_roleIndex2, buffer, 10);
+		EditText(entity, buffer);
+
+		message->_rerollInfo = uiComp->_roleIndex2;
+	}
+
+	return true;
+}
+
+bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message)
+{
+	if (message->_upgradeIndex == -1)
+	{
+		EditText(entity, "");
+	}
+	else
+	{
+		EditText(entity, "");
+	}
 	return true;
 }
 
@@ -404,12 +456,15 @@ bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
 	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
 	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+	cUIElement* upgrade = Core::Get().GetComponent<cUIElement>(entity);
+
 	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
 	{
 		if (sprite)
 		{
 			sprite->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+			
 		}
 		return false;
 	}
@@ -417,6 +472,7 @@ bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
 	if(sprite)
 	{
 		sprite->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+		UIEventsManager::Broadcast(new Events::OnUpgradeDescpChange(static_cast<int>(upgrade->_roleIndex)));
 	}
 
 	return true;

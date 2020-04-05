@@ -110,10 +110,11 @@ namespace InputManager
 		}
 
 		//Testing...remove once done
-		if (AEInputCheckTriggered(AEVK_S))
-		{
-			CameraManager::StartCameraShake();
-		}
+		//if (AEInputCheckTriggered(AEVK_S))
+		//{
+		//	CameraManager::StartCameraShake();
+		//}
+
 
 		// -----------------------------------------------------------------------
 		// Mouse Controls
@@ -123,10 +124,12 @@ namespace InputManager
 		Editor_TrackVariable("mouse Screen X", mousePosX);
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
 
-		UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY)));
-		if (AEInputCheckCurr(AEVK_LBUTTON))
+		float yOffset = 20.0f * static_cast<int>(!g_isFullScreen);
+
+		UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY + yOffset)));
+		if (AEInputCheckTriggered(AEVK_LBUTTON))
 		{
-			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY))))
+			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY + yOffset))))
 			{
 				mouseLTrigger = true;
 			}
@@ -137,7 +140,14 @@ namespace InputManager
 		}
 		else
 		{
-			mouseLTrigger = false;
+			if (AEInputCheckCurr(AEVK_LBUTTON))
+			{
+				mouseLTrigger = true;			//Auto Fire Bullets
+			}
+			else
+			{
+				mouseLTrigger = false;
+			}
 		}
 		mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
 	

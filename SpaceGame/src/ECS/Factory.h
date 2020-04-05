@@ -23,18 +23,22 @@
 namespace Factory
 {
 	//Camera
-	ENTITY CreateCamera(ENTITY player);
+	ENTITY CreateCamera(ENTITY player, bool dynamic = true);
 	void RemoveCamera();
 
 	//GameObjects
 	ENTITY CreateMenuPlayer();
 	ENTITY CreatePlayer(unsigned int layer);
-	ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position);
+	//ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position);
 	ENTITY SpawnObjective_Comrade(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index);
+	ENTITY SpawnLevel_End(AEVec2 position);
+	ENTITY CreateWormhole(AEVec2 position, float rotSpeed = 5.0f, float rotStart = 0.0f, float uniformSize = 30.0f, int colorVariance = 0);
+	ENTITY CreateTutorialPlanet(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet4(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
+	ENTITY CreateLevelBoundary(float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreateAsteroid2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	void CreateBackground();
@@ -60,6 +64,7 @@ namespace Factory
 	ENTITY CreateParticleEmitter_BOSSSPAWNSTATIC(cTransform* tar);
 	ENTITY CreateParticleEmitter_OTHERSTATIC(cTransform* tar);
 
+	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count);
 }
 
 namespace Factory_UI
@@ -70,8 +75,9 @@ namespace Factory_UI
 	ENTITY Create_MM_OptionsUI(AEVec2 position);
 	ENTITY Create_MM_CreditsUI(AEVec2 position);
 	ENTITY Create_MM_Quit(AEVec2 position);
+	ENTITY Create_MM_BackToMain(AEVec2 position);
 
-	void Create_PlayerUserInterface();
+	void Create_PlayerUserInterface(unsigned int health = 3, unsigned int shield = 3);
 	void CreateLowHealthInterface();
 	void CreateShieldsDownInterface();
 	void CreateBossIncomingInterface();
@@ -82,7 +88,7 @@ namespace Factory_UI
 	ENTITY Create_LowHealthUI(AEVec2 position);
 	ENTITY Create_ShieldsDownUI(AEVec2 position);
 	ENTITY Create_BossIncomingUI(AEVec2 position);
-	void Create_ChooseThree(AEVec2 centralPos);
+	void Create_ChooseThree(AEVec2 centralPos, unsigned int reroll);
 	void Create_ChoosableUpgrade(ENTITY entity);
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);
 
@@ -90,6 +96,10 @@ namespace Factory_UI
 	void CreateUI_Pause();
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue);
+
+	ENTITY CreateUI_TickBox(float posX, float posY, float size, unsigned int layer = 0);
+	ENTITY CreateUI_Option_TickBox_Sound(float posX, float posY, float size, unsigned int layer = 0);
+	ENTITY CreateUI_Option_TickBox_Fullscreen(float posX, float posY, float size, unsigned int layer = 0);
 
 	ENTITY CreateBackground_Load();
 
@@ -109,9 +119,8 @@ namespace Factory_SpashScreen
 
 namespace Factory_Map
 {
-	void Generate_StarField_Menu();
-	void Generate_PlanetField();
 	void Generate_StarField();
+	void Generate_PlanetField();
 }
 
 namespace Factory_AI

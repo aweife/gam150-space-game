@@ -66,12 +66,12 @@ namespace PlayerManager
 		//Move the point of origin from top left to center
 		float worldMousePosX = static_cast<float>(mousePosX) - g_WindowWidth / 2.0f;
 		// Calculate mouse X position in world space
-		worldMousePosX += camTransform->_position.x;
+		if(camTransform != nullptr)		worldMousePosX += camTransform->_position.x;
 
 		//Move the point of origin from top left to center
 		float worldMousePosY = -1 * (static_cast<float>(mousePosY) - g_WindowHeight / 2.0f);
 		// Calculate mouse Y position in world space
-		worldMousePosY += camTransform->_position.y;
+		if (camTransform != nullptr)	worldMousePosY += camTransform->_position.y;
 
 		// -----------------------------------------------------------------------
 		// Global Space: calculate relative vector direction to player
@@ -106,10 +106,13 @@ namespace PlayerManager
 		playerProgressInit = true;
 	}
 
-	void ResetPlayer()
+	void ResetPlayer(bool hardReset)
 	{
 		player = 0;
-		playerProgressInit = false;
+		if (hardReset)
+		{
+			playerProgressInit = false;
+		}
 	}
 	
 	void PlayerDeath()

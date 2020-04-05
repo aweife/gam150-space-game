@@ -26,6 +26,7 @@ void RenderSystem::Render()
 	AEGfxGetCamPosition(&cameraX, &cameraY);
 	float parallaxOffsetX = 0.0f;
 	float parallaxOffsetY = 0.0f;
+	ColorInfo farAwayTint = {0.0f,0.0f ,0.0f ,0.0f };
 
 	//Update particle system based on layers after finished 
 	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
@@ -36,6 +37,7 @@ void RenderSystem::Render()
 	// -----------------------------------------------------------------------
 	for (auto const& layer : allLayer)
 	{
+		farAwayTint = { 0.0f, 0.0f ,0.0f ,0.0f };
 		for (auto const& entity : *layer)
 		{
 			transform = Core::Get().GetComponent<cTransform>(entity);
@@ -64,12 +66,14 @@ void RenderSystem::Render()
 				//Render with parallax offset
 				parallaxOffsetX = cameraX * -0.001f * sprite->_layer;
 				parallaxOffsetY = cameraY * -0.001f * sprite->_layer;
+				farAwayTint = {0.4f, 0.4f, 0.4f, 0.0f};
 			}
 			else if (sprite->_layer >= 3 && sprite->_layer <= 4)			//BACKGROUND <--
 			{
 				//Render with parallax offset
 				parallaxOffsetX = cameraX * -0.05f * sprite->_layer;
 				parallaxOffsetY = cameraY * -0.05f * sprite->_layer;
+				farAwayTint = { 0.2f, 0.2f, 0.2f, 0.0f };
 			}
 			else if (sprite->_layer == 1)									//FOREGROUND -->
 			{
@@ -82,6 +86,7 @@ void RenderSystem::Render()
 				parallaxOffsetX = cameraX;
 				parallaxOffsetY = cameraY;
 			}
+			//Only layer 2 and 21 does not move
 
 			//  Compute the TRANSLATION matrix after PARALLAX
 			AEMtx33Trans(&trans, transform->_position.x + parallaxOffsetX, transform->_position.y + parallaxOffsetY);
@@ -104,10 +109,11 @@ void RenderSystem::Render()
 
 				// Set blend mode to blend so we can render transparency
 				AEGfxSetBlendMode(sprite->_blend);
-				//Transparency
+				// Transparency
 				AEGfxSetTransparency(1.0f);
 				// No tint
-				AEGfxSetTintColor(sprite->_colorTint.r, sprite->_colorTint.g, sprite->_colorTint.b, sprite->_colorTint.a);
+				AEGfxSetTintColor(sprite->_colorTint.r - farAwayTint.r, sprite->_colorTint.g - farAwayTint.g
+					, sprite->_colorTint.b - farAwayTint.b, sprite->_colorTint.a);
 				AEGfxSetBlendColor(sprite->_colorBlend.r, sprite->_colorBlend.g, sprite->_colorBlend.b, sprite->_colorBlend.a);
 				// Render at _position
 				AEGfxSetTransform(transform->_transform.m);
@@ -120,7 +126,8 @@ void RenderSystem::Render()
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 				AEGfxSetBlendMode(sprite->_blend);
 				AEGfxSetTransparency(1.0f);
-				AEGfxSetTintColor(sprite->_colorTint.r, sprite->_colorTint.g, sprite->_colorTint.b, sprite->_colorTint.a);
+				AEGfxSetTintColor(sprite->_colorTint.r - farAwayTint.r, sprite->_colorTint.g - farAwayTint.g
+					, sprite->_colorTint.b - farAwayTint.b, sprite->_colorTint.a);
 				AEGfxSetBlendColor(sprite->_colorBlend.r, sprite->_colorBlend.g, sprite->_colorBlend.b, sprite->_colorBlend.a);
 				AEGfxSetTransform(transform->_transform.m);
 				AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);
@@ -128,6 +135,8 @@ void RenderSystem::Render()
 			
 		}
 		particleSystemInstance->RenderLayer(currentLayer, parallaxOffsetX, parallaxOffsetY);
+		// Will synchronise everyones version
+		if (currentLayer == 3)	particleSystemInstance->RenderLayer(21, parallaxOffsetX, parallaxOffsetY);
 		--currentLayer;
 	}
 }
@@ -146,6 +155,9 @@ void RenderSystem::OnComponentAdd(ENTITY entity)
 		break;
 	case 2:
 		entityLayer2.insert(entity);
+		break;
+	case 21:
+		entityLayer21.insert(entity);
 		break;
 	case 3:
 		entityLayer3.insert(entity);
@@ -180,6 +192,9 @@ void RenderSystem::OnComponentRemove(ENTITY entity)
 		break;
 	case 2:
 		entityLayer2.erase(entity);
+		break;
+	case 21:
+		entityLayer21.erase(entity);
 		break;
 	case 3:
 		entityLayer3.erase(entity);
@@ -226,11 +241,7 @@ namespace RenderingTricks
 		{
 			transform->_position.x -= AECos(angle) * increment;
 			transform->_position.y += AESin(angle) * increment;		//0, up
-			if (sprite)
-			{
-				sprite->_colorTint.a -= alphaDecrement;
-			}
-			
+			if(sprite) sprite->_colorTint.a -= alphaDecrement;
 		}
 		else
 		{
@@ -239,10 +250,7 @@ namespace RenderingTricks
 			{
 				transform->_position.x -= AECos(angle) * 2 * increment * ((counter / 2) + 1);
 				transform->_position.y -= AESin(angle) * 2 * increment * ((counter / 2) + 1);
-				if (sprite)
-				{
-					sprite->_colorTint.a -= alphaDecrement;
-				}
+				if (sprite) sprite->_colorTint.a -= alphaDecrement;
 			}
 			else		// 0 or even, up
 			{
@@ -251,11 +259,7 @@ namespace RenderingTricks
 				transform->_position.y += AESin(angle) * increment * (counter / 2);
 				transform->_position.x += AECos(angle) * increment * ((counter / 2) + 1);
 				transform->_position.y += AESin(angle) * increment * ((counter / 2) + 1);
-				if (sprite)
-				{
-					sprite->_colorTint.a -= alphaDecrement;
-				}
-					
+				if (sprite) sprite->_colorTint.a -= alphaDecrement;
 			}
 		}
 	}
@@ -274,10 +278,7 @@ namespace RenderingTricks
 			//Up
 			transform->_position.x = desiredX + (AECos(angle) * maxRangeX);
 			transform->_position.y = desiredY + (AESin(angle) * maxRangeY);		//0, up
-			if (sprite)
-			{
-				sprite->_colorTint.a += alphaIncrement;
-			}
+			if (sprite) sprite->_colorTint.a += alphaIncrement;
 		}
 		else
 		{
@@ -290,20 +291,14 @@ namespace RenderingTricks
 			{
 				transform->_position.x = desiredX - (AECos(angle) * (maxRangeX * timePercentage));
 				transform->_position.y = desiredY - (AESin(angle) * (maxRangeY * timePercentage));
-				if (sprite)
-				{
-					sprite->_colorTint.a += alphaIncrement;
-				}
+				if (sprite) sprite->_colorTint.a += alphaIncrement;
 			}
 			else		// 0 or even, up
 			{
 				// Centralised first
 				transform->_position.x = desiredX + (AECos(angle) * (maxRangeX * timePercentage));
 				transform->_position.y = desiredY + (AESin(angle) * (maxRangeY * timePercentage));
-				if (sprite)
-				{
-					sprite->_colorTint.a += alphaIncrement;
-				}
+				if (sprite) sprite->_colorTint.a += alphaIncrement;
 			}
 		}
 	}

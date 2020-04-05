@@ -9,8 +9,11 @@
 #include "../Tools/Editor.h"
 #include "../Levels/UpgradeLevel.h"
 #include "../Managers/GameStateManager.h"
+
 namespace LevelManager
 {
+	std::set<ENTITY> starfield_Set;
+
 	// Top Right, Top Left, Bottom Right, Bottom Left Spawn Areas
 	objectSpawnArea1 topRightSpawnArea;
 	objectSpawnArea2 topLeftSpawnArea;
@@ -24,8 +27,11 @@ namespace LevelManager
 	objectSpawnArea8 bottomSpawnArea;
 
 	std::set<ENTITY> collectableList;
+	
 	bool objectiveComplete;
 	bool upgradePhase;
+	bool spawnExit;
+	ENTITY exitId;
 
 	void Update()
 	{
@@ -35,14 +41,10 @@ namespace LevelManager
 		{
 			CheckOutOfScreen(*it);
 		}
-		//Hacks...by right need to check if enemy killed or collectable done
+
+		// If objective complete, spawn level end
 		if (objectiveComplete)
-		{
-			//Factory_UI::Create_ChooseThree({ 0,0 });
-			loadingForNextLevel = GS_LEVEL1;
-			GSM_ChangeState(GS_UPGRADE);
-			upgradePhase = true;
-		}
+			SetObjectiveComplete();
 	}
 	void CheckOutOfScreen(ENTITY id)
 	{
@@ -66,7 +68,30 @@ namespace LevelManager
 	//HACKS
 	void SetObjectiveComplete()
 	{
-		//objectiveComplete = true;
+		if (spawnExit)
+		{
+			CheckOutOfScreen(exitId);
+		}
+		else
+		{
+			spawnExit = true;
+			exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+
+			StartBossSpawnSequence();
+		}
+	}
+
+	void StartBossSpawnSequence()
+	{
+		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,-100.0f }, 100.0f, 10);
+	}
+
+	void ClearLevel()
+	{
+		//Factory_UI::Create_ChooseThree({ 0,0 });
+		loadingForNextLevel = GS_LEVEL1;
+		GSM_ChangeState(GS_UPGRADE);
+		upgradePhase = true;
 	}
 
 	float GetRandomPattern()
@@ -112,6 +137,8 @@ namespace LevelManager
 
 	/*AEVec2 RandomEnemyPosition()
 	{
+		AE_ASSERT(randomEnemyPos.size() > 0 && "No more enemy position to churn out");
+
 		AEVec2 position = randomEnemyPos.front();
 		randomEnemyPos.pop_front();
 		return position;
@@ -119,6 +146,8 @@ namespace LevelManager
 
 	AEVec2 RandomItemPosition()
 	{
+		AE_ASSERT(randomItemPos.size() > 0 && "No more item position to churn out");
+
 		AEVec2 position = randomItemPos.front();
 		randomItemPos.pop_front();
 		return position;
@@ -133,6 +162,7 @@ namespace LevelManager
 		SetEnemySpawn(randomLevel);
 		objectiveComplete = false;
 		upgradePhase = false;
+		spawnExit = false;
 	}
 
 
@@ -442,7 +472,7 @@ namespace LevelManager
 		if (collectableList.size() == 0)
 			objectiveComplete = true;
 
-		printf("Objectives Left: %d\n", collectableList.size());
+		printf("Objectives Left: %zd\n", collectableList.size());
 	}
 
 	void ClearObjectiveAll()
@@ -450,5 +480,33 @@ namespace LevelManager
 		collectableList.clear();
 	}
 
+	void Clear_StarField()
+	{
+		//Leave the actual entity destruction to Core
+		starfield_Set.clear();
+	}
+
+	void SpeedChange_StarField(float multiplier)
+	{
+		//Leave the actual entity destruction to Core
+		for (auto const& entity : starfield_Set)
+		{
+			Core::Get().GetComponent<cRigidBody>(entity)->_velocity *= multiplier;
+			Core::Get().GetComponent<cRigidBody>(entity)->_velocityCap *= multiplier;
+		}
+	}
+
+	void Move_StarField(float posX, float posY)
+	{
+		for (auto const& entity : starfield_Set)
+		{
+			Core::Get().GetComponent<cTransform>(entity)->_position.x += posX;
+			Core::Get().GetComponent<cTransform>(entity)->_position.y += posY;
+			Core::Get().GetComponent<cWarping>(entity)->_warpX.x += posX;
+			Core::Get().GetComponent<cWarping>(entity)->_warpX.y += posX;
+			Core::Get().GetComponent<cWarping>(entity)->_warpY.x += posY;
+			Core::Get().GetComponent<cWarping>(entity)->_warpY.y += posY;
+		}
+	}
 }
 

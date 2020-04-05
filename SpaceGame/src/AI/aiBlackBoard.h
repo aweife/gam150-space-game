@@ -3,12 +3,22 @@
 #include "../Global_ECS.h"
 #include "AEVec2.h"
 
+enum AI_TYPE
+{
+	ENEMY = 0,
+	BOSS,
+	OBJECTIVE,
+	LEVEL_END,
+};
+
 struct aiBlackBoard
 {
-	aiBlackBoard();
-	void UpdateBlackboard(ENTITY id);
+	aiBlackBoard(ENTITY entity, AI_TYPE type);
+	void UpdateBlackboard();
 
 	ENTITY id;
+	AI_TYPE type;
+
 	float distanceFromPlayer;
 	AEVec2 directionToPlayer;
 	AEVec2 directionToPlayerN;
@@ -25,6 +35,7 @@ struct aiBlackBoard
 	// These are used by states
 	float wanderAngle;
 	float rotationSpeed;
+	bool markedForDestruction;
 };
 
 enum INNER_STATE

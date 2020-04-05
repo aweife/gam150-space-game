@@ -7,6 +7,7 @@
 class cAI : public Component
 {
 public:
+	cAI(ENTITY entity, AI_TYPE type) : _blackboard{ entity, type } {}
 	aiBlackBoard _blackboard;
 	aiStateList  _currentState;
 };

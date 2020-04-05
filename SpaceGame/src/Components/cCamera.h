@@ -6,6 +6,7 @@
 class cCamera :public Component
 {
 public:
+	bool _isdynamic = true;
 	bool _isCameraShake = false;
 	float _camEffectStartTime = 0.0;
 	float _camEffectDuration = 0.0;
@@ -18,6 +19,6 @@ public:
 	float			_camVelocityX = 0;					//for smoothdamp increments
 	float			_camVelocityY = 0;					//for smoothdamp increments
 
-	cCamera(cTransform* target = nullptr, float _followSpeed = 0);
+	cCamera(cTransform* target = nullptr, float _followSpeed = 0, bool dynamic = true);
 };
 
