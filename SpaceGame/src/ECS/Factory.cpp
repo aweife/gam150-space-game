@@ -1184,13 +1184,14 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(resume)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(resume, new cUIElement("Resume"));
 		Core::Get().GetComponent<cUIElement>(resume)->_role = UI_ROLE::PAUSE;
-		Core::Get().GetComponent<cUIElement>(resume)->_roleIndex2 = 1;
+		Core::Get().GetComponent<cUIElement>(resume)->_roleIndex = 1;	//Toggle Text Transparency
+		Core::Get().GetComponent<cUIElement>(resume)->_roleIndex2 = 1;	//Resume Game
+
 		Core::Get().GetComponent<cUIElement>(resume)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(resume)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(resume)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(resume, &TogglePauseWindow);
 		UIEventsManager::Subscribe(resume, &OnButtonClick_PauseMenuUI);
-		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
 
 		ENTITY restart = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(restart, new cTransform({ 0, -100 }, 0, { 160, 40 }));
@@ -1198,13 +1199,13 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(restart, new cUIElement("Restart"));
 		Core::Get().GetComponent<cUIElement>(restart)->_role = UI_ROLE::PAUSE;
-		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex2 = 2;
+		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex = 1;
+		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex2 = 2;		//Restart Game
 		Core::Get().GetComponent<cUIElement>(restart)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(restart)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(restart, &TogglePauseWindow);
 		UIEventsManager::Subscribe(restart, &OnButtonClick_PauseMenuUI);
-		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
 
 		ENTITY exit = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 230, -100 }, 0, { 160, 40 }));
@@ -1212,15 +1213,13 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
 		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::PAUSE;
-		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 3;
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex = 1;		//Toggle Transparency
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 3;	//Exit to main menu
 		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
 		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &TogglePauseWindow);
 		UIEventsManager::Subscribe(exit, &OnButtonClick_PauseMenuUI);
-		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
-
-		
 	}
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text)
