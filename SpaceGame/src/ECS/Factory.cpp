@@ -1142,17 +1142,18 @@ namespace Factory_UI
 		ENTITY panel = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 730,400 }));
 		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Pause_Menu", 0));
+		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::PAUSE, 0));
 		UIEventsManager::Subscribe(panel, &TogglePauseWindow);
 
 		ENTITY resume = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(resume, new cTransform({-230, -100}, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(resume, new cSprite(resume, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(resume)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cSprite>(resume)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(resume, new cUIElement("Resume"));
 		Core::Get().GetComponent<cUIElement>(resume)->_role = UI_ROLE::PAUSE;
 		Core::Get().GetComponent<cUIElement>(resume)->_text._anchor = TEXT_ANCHOR::CENTER;
-		Core::Get().GetComponent<cUIElement>(resume)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cUIElement>(resume)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(resume)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(resume, &TogglePauseWindow);
 		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
@@ -1160,11 +1161,11 @@ namespace Factory_UI
 		ENTITY restart = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(restart, new cTransform({ 0, -100 }, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(restart, new cSprite(restart, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(restart, new cUIElement("Restart"));
 		Core::Get().GetComponent<cUIElement>(restart)->_role = UI_ROLE::PAUSE;
 		Core::Get().GetComponent<cUIElement>(restart)->_text._anchor = TEXT_ANCHOR::CENTER;
-		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(restart)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(restart, &TogglePauseWindow);
 		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
@@ -1172,11 +1173,11 @@ namespace Factory_UI
 		ENTITY exit = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 230, -100 }, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit"));
 		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::PAUSE;
 		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTER;
-		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &TogglePauseWindow);
 		//UIEventsManager::Subscribe(resume, &OnButtonClick_MainMenuUI);
