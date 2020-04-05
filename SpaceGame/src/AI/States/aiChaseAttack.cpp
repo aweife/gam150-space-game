@@ -5,16 +5,19 @@
 #include "../../Tools/Console.h"
 
 
-void aiChase::OnEnter(aiBlackBoard& bb)
+void aiChaseAttack::OnEnter(aiBlackBoard& bb)
 {
 	aiBase::OnEnter(bb);
 
 	// Initialize state
 	rb->_velocityCap = bb.baseMaxSpeed;
 	_minStay = 2.0f + (AERandFloat() * 3.0f);
+
+	// Cache self components
+	rwp = Core::Get().GetComponent<cRangeWeapon>(bb.id);
 }
 
-void aiChase::OnUpdate(aiBlackBoard& bb)
+void aiChaseAttack::OnUpdate(aiBlackBoard& bb)
 {
 	rb->_velocity += rb->_acceleration;
 	Steering::SeekTarget(rb->_steeringVector, bb.directionToPlayerN, rb->_velocity * g_dt, rb->_velocityVector);
@@ -22,6 +25,7 @@ void aiChase::OnUpdate(aiBlackBoard& bb)
 	Transform::RotateToTarget(trans->_rotation, bb.directionToPlayerN, bb.baseRotationSpeed * g_dt);
 
 	// If close enought to attack
+	Attack();
 	if (bb.distanceFromPlayer < bb.baseAttackRange)
 	{
 		// Change inner state
@@ -35,7 +39,12 @@ void aiChase::OnUpdate(aiBlackBoard& bb)
 		ChangeState((AERandFloat() > 0.5f) ? STATE_PURSUIT : STATE_PURSUITATTACK);
 }
 
-void aiChase::OnExit(aiStateList& var)
+void aiChaseAttack::OnExit(aiStateList& var)
 {
 	aiBase::OnExit(var);
+}
+
+void aiChaseAttack::Attack()
+{
+	rwp->_enemyIsShooting = true;
 }

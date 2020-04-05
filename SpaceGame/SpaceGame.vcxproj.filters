@@ -96,6 +96,10 @@
     <ClCompile Include="src\Managers\LevelManager.cpp" />
     <ClCompile Include="src\Levels\UpgradeLevel.cpp" />
     <ClCompile Include="src\AI\States\objEnter.cpp" />
+    <ClCompile Include="src\AI\States\aiChaseAttack.cpp" />
+    <ClCompile Include="src\AI\States\aiPursuitAttack.cpp" />
+    <ClCompile Include="src\AI\States\aiRetreatAttack.cpp" />
+    <ClCompile Include="src\AI\States\aiIdleWander.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiState.h" />
@@ -214,6 +218,10 @@
     <ClInclude Include="src\Managers\LevelManager.h" />
     <ClInclude Include="src\Levels\UpgradeLevel.h" />
     <ClInclude Include="src\AI\States\objEnter.h" />
+    <ClInclude Include="src\AI\States\aiChaseAttack.h" />
+    <ClInclude Include="src\AI\States\aiPursuitAttack.h" />
+    <ClInclude Include="src\AI\States\aiRetreatAttack.h" />
+    <ClInclude Include="src\AI\States\aiIdleWander.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />
@@ -240,5 +248,6 @@
     <Image Include="res\Exit_1.png" />
     <Image Include="res\Exit_2.png" />
     <Image Include="res\Exit_3.png" />
+    <Image Include="res\Weapon_Bullet2.png" />
   </ItemGroup>
 </Project>

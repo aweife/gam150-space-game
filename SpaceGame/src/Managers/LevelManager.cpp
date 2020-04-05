@@ -47,7 +47,7 @@ namespace LevelManager
 		}
 
 		// If objective complete, spawn level end
-		//if (objectiveComplete)
+		if (objectiveComplete)
 			SetObjectiveComplete();
 	}
 	void CheckOutOfScreen(ENTITY id)
@@ -193,7 +193,7 @@ namespace LevelManager
 		upgradePhase = false;
 		spawnExit = false;
 
-		StartBossSpawnSequence();
+		//StartBossSpawnSequence();
 	}
 
 

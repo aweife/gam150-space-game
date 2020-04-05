@@ -4,21 +4,24 @@
 #include "../../Global.h"
 #include "../../Tools/Editor.h"
 
-void aiRetreat::OnEnter(aiBlackBoard& bb)
+void aiRetreatAttack::OnEnter(aiBlackBoard& bb)
 {
 	aiBase::OnEnter(bb);
 
+	// Cache self components
+	rwp = Core::Get().GetComponent<cRangeWeapon>(bb.id);
+
 	// Initialise state
 	bb.rotationSpeed = bb.baseRotationSpeed / 2.0f;
-	_safeDistance = 500.0f + bb.baseAttackRange;
+	_safeDistance = 700.0f + bb.baseAttackRange;
 	FindSafePosition(bb);
 }
 
-void aiRetreat::OnUpdate(aiBlackBoard& bb)
+void aiRetreatAttack::OnUpdate(aiBlackBoard& bb)
 {
 	if (AEVec2Distance(&_safePosition, &trans->_position) > 10.0f)
 	{
-		Transform::RotateToTarget(trans->_rotation, trans->_position, _safePosition, bb.rotationSpeed * g_dt);
+		Transform::RotateToTarget(trans->_rotation, trans->_position, bb.playerLastKnownPosition, bb.rotationSpeed * g_dt);
 		rb->_velocity += bb.baseAcceleration;
 
 		Steering::SeekTarget(
@@ -27,18 +30,18 @@ void aiRetreat::OnUpdate(aiBlackBoard& bb)
 			rb->_velocity * g_dt * TurnToTarget(trans->_rotation, _safePosition),
 			rb->_velocityVector);
 
-		Steering::Wander(rb->_steeringVector, rb->_velocityDirection, bb.wanderAngle, 2.0f);
+		Attack();
 	}
 	else
-		ChangeState((AERandFloat() > 0.5f) ? STATE_CHASE : STATE_IDLEWANDER);
+		ChangeState((AERandFloat() > 0.5f) ? STATE_CHASE : STATE_CHASEATTACK);
 }
 
-void aiRetreat::OnExit(aiStateList& var) 
-{ 
-	aiBase::OnExit(var); 
+void aiRetreatAttack::OnExit(aiStateList& var)
+{
+	aiBase::OnExit(var);
 }
 
-void aiRetreat::FindSafePosition(const aiBlackBoard& bb)
+void aiRetreatAttack::FindSafePosition(const aiBlackBoard& bb)
 {
 	AEVec2 desired = bb.directionToPlayerN;
 	AEVec2Neg(&desired, &desired);
@@ -46,7 +49,7 @@ void aiRetreat::FindSafePosition(const aiBlackBoard& bb)
 	AEVec2Add(&_safePosition, &trans->_position, &desired);
 }
 
-float aiRetreat::TurnToTarget(const float& self, const AEVec2& target)
+float aiRetreatAttack::TurnToTarget(const float& self, const AEVec2& target)
 {
 	AEVec2 selfRot{ cosf(self), sinf(self) };
 	AEVec2 targetRot{ target };
@@ -55,6 +58,10 @@ float aiRetreat::TurnToTarget(const float& self, const AEVec2& target)
 	AEVec2Normalize(&targetRot, &targetRot);
 
 	float dotAngle = AEVec2DotProduct(&selfRot, &targetRot);
-
 	return (dotAngle < 0.0f ? 0.25f : dotAngle);
+}
+
+void aiRetreatAttack::Attack()
+{
+	rwp->_enemyIsShooting = true;
 }

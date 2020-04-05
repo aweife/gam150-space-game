@@ -15,7 +15,7 @@ void bossNormal::OnEnter(aiBlackBoard& bb)
 
 void bossNormal::OnUpdate(aiBlackBoard& bb)
 {
-	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange*3.0f))
+	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange*2.0f))
 		Attack(bb);
 }
 
@@ -28,5 +28,6 @@ void bossNormal::Attack(aiBlackBoard& bb)
 {
 	rwp->_enemyIsShooting = true;
 	rwp->_bossIsShooting = true;
+	rwp->_homing = false;
 	rwp->_targetPosition = bb.playerLastKnownPosition;
 }

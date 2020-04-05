@@ -460,6 +460,10 @@ namespace ResourceManager
 				case 29:
 					if (textureLibrary.find("Exit_3") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Exit_3", AEGfxTextureLoad("res/Exit_3.png") });
+					break;
+				case 30:
+					if (textureLibrary.find("Weapon_Bullet2") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Weapon_Bullet2", AEGfxTextureLoad("res/Weapon_Bullet2.png") });
 					*progress = 100;
 					break;
 			}
