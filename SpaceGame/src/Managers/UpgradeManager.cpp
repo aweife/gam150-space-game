@@ -35,59 +35,59 @@ namespace UpgradeManager
 	{
 		if (!isLoaded)
 		{
-			//4
+			//3
 			database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_HpUp1, new PlayerUpgrade_HpUp1);
 			textureNames[0] = "Upgrade_Health";
 			descriptionNames[0] = "Health Up";
-			database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_LifeUp1, new PlayerUpgrade_LifeUp1);
-			textureNames[1] = "PlayerUpgrade_LifeUp1";
-			textureNames[1] = "Upgrade_1";
-			descriptionNames[1] = "Life Up";
+			//database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_LifeUp1, new PlayerUpgrade_LifeUp1);
+			//textureNames[1] = "PlayerUpgrade_LifeUp1";
+			//textureNames[1] = "Upgrade_1";
+			/*descriptionNames[1] = "Life Up";*/
 			database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_ShieldUp1, new PlayerUpgrade_ShieldUp1);
-			textureNames[2] = "Upgrade_Shield";
-			descriptionNames[2] = "Shield Up";
+			textureNames[1] = "Upgrade_Shield";
+			descriptionNames[1] = "Shield Up";
 			database_playerUpgrade.emplace(UpgradePackages::PlayerUpgrade_ThrustAccelUp1, new PlayerUpgrade_ThrustAccelUp1);
-			textureNames[3] = "Upgrade_Thruster";
-			descriptionNames[3] = "Accel Up";
+			textureNames[2] = "Upgrade_Thruster";
+			descriptionNames[2] = "Accel Up";
 
-			//7
-			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_FireRateDown1, new RangeWeaponUpgrade_FireRateDown1);
-			textureNames[4] = "RangeWeaponUpgrade_FireRateDown1";
-			textureNames[4] = "Upgrade_1";
-			descriptionNames[4] = "FireRate Up";
-			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_ReloadRateDown1, new RangeWeaponUpgrade_ReloadRateDown1);
-			textureNames[5] = "RangeWeaponUpgrade_ReloadRateDown1";
-			textureNames[5] = "Upgrade_1";
-			descriptionNames[5] = "Reload Faster";
-			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_AmmoUp1, new RangeWeaponUpgrade_AmmoUp1);
-			textureNames[6] = "RangeWeaponUpgrade_AmmoUp1";
-			textureNames[6] = "Upgrade_1";
-			descriptionNames[6] = "Ammo Up";
+			//1
+			//database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_FireRateDown1, new RangeWeaponUpgrade_FireRateDown1);
+			//textureNames[4] = "RangeWeaponUpgrade_FireRateDown1";
+			//textureNames[4] = "Upgrade_1";
+			//descriptionNames[4] = "FireRate Up";
+			//database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_ReloadRateDown1, new RangeWeaponUpgrade_ReloadRateDown1);
+			//textureNames[5] = "RangeWeaponUpgrade_ReloadRateDown1";
+			//textureNames[5] = "Upgrade_1";
+			//descriptionNames[5] = "Reload Faster";
+			//database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_AmmoUp1, new RangeWeaponUpgrade_AmmoUp1);
+			//textureNames[6] = "RangeWeaponUpgrade_AmmoUp1";
+			//textureNames[6] = "Upgrade_1";
+			//descriptionNames[6] = "Ammo Up";
 			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_DamageUp1, new RangeWeaponUpgrade_DamageUp1);
-			textureNames[7] = "Upgrade_Damage";
-			descriptionNames[7] = "Damage Up";
-			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_SpreadDown1, new RangeWeaponUpgrade_SpreadDown1);
-			textureNames[8] = "RangeWeaponUpgrade_SpreadDown1";
-			textureNames[8] = "Upgrade_1";
-			descriptionNames[8] = "Spread Down";
-			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_BulletSizeUp1, new RangeWeaponUpgrade_BulletSizeUp1);
-			textureNames[9] = "RangeWeaponUpgrade_BulletSizeUp1";
-			textureNames[9] = "Upgrade_1";
-			descriptionNames[9] = "Bullet Size Up";
-			database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_BulletSpeedUp1, new RangeWeaponUpgrade_BulletSpeedUp1);
-			textureNames[10] = "RangeWeaponUpgrade_BulletSpeedUp1";
-			textureNames[10] = "Upgrade_1";
-			descriptionNames[10] = "Bullet Speed Up";
+			textureNames[3] = "Upgrade_Damage";
+			descriptionNames[3] = "Damage Up";
+			//database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_SpreadDown1, new RangeWeaponUpgrade_SpreadDown1);
+			//textureNames[8] = "RangeWeaponUpgrade_SpreadDown1";
+			//textureNames[8] = "Upgrade_1";
+			//descriptionNames[8] = "Spread Down";
+			//database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_BulletSizeUp1, new RangeWeaponUpgrade_BulletSizeUp1);
+			//textureNames[9] = "RangeWeaponUpgrade_BulletSizeUp1";
+			//textureNames[9] = "Upgrade_1";
+			//descriptionNames[9] = "Bullet Size Up";
+			//database_rangeUpgrade.emplace(UpgradePackages::RangeWeaponUpgrade_BulletSpeedUp1, new RangeWeaponUpgrade_BulletSpeedUp1);
+			//textureNames[10] = "RangeWeaponUpgrade_BulletSpeedUp1";
+			//textureNames[10] = "Upgrade_1";
+			//descriptionNames[10] = "Bullet Speed Up";
 
-			//2
-			database_meleeUpgrade.emplace(UpgradePackages::MeleeWeaponUpgrade_RangeUp1, new MeleeWeaponUpgrade_RangeUp1);
-			textureNames[11] = "MeleeWeaponUpgrade_RangeUp1";
-			textureNames[11] = "Upgrade_1";
-			descriptionNames[11] = "Melee Range Up";
+			//1
+			//database_meleeUpgrade.emplace(UpgradePackages::MeleeWeaponUpgrade_RangeUp1, new MeleeWeaponUpgrade_RangeUp1);
+			//textureNames[11] = "MeleeWeaponUpgrade_RangeUp1";
+			//textureNames[11] = "Upgrade_1";
+			//descriptionNames[11] = "Melee Range Up";
 			database_meleeUpgrade.emplace(UpgradePackages::MeleeWeaponUpgrade_DamageUp1, new MeleeWeaponUpgrade_DamageUp1);
-			textureNames[12] = "MeleeWeaponUpgrade_DamageUp1";
-			textureNames[12] = "Upgrade_1";
-			descriptionNames[12] = "Melee Damage Up";
+			textureNames[4] = "MeleeWeaponUpgrade_DamageUp1";
+			textureNames[4] = "Upgrade_1";
+			descriptionNames[4] = "Melee Damage Up";
 
 			isLoaded = true;
 		}
@@ -96,6 +96,11 @@ namespace UpgradeManager
 	const char* GetUpgradeImage(int i)
 	{
 		return textureNames[i];
+	}
+
+	const char* GetUpgradeDescript(int i)
+	{
+		return descriptionNames[i];
 	}
 
 	void PlayerUpgrade(cSpaceShip* spaceship, cHealth* health, UpgradePackages upgradePack)
@@ -135,16 +140,16 @@ namespace UpgradeManager
 
 	void ApplyUpgrade(int upgradeIndex)
 	{
-		if (upgradeIndex < 4)
+		if (upgradeIndex < 3)
 		{
 			PlayerUpgrade(&PlayerManager::playerSpaceshipProgression, &PlayerManager::playerHealthProgression
 				, upgrade1Pack);
 		}
-		else if (upgradeIndex < 11)
+		else if (upgradeIndex < 4)
 		{
 			WeaponUpgradeRange(&PlayerManager::playerRangeProgression, upgrade2Pack);
 		}
-		else if (upgradeIndex < 13)
+		else if (upgradeIndex < 5)
 		{
 			WeaponUpgradeMelee(&PlayerManager::playerMeleeProgression, upgrade3Pack);
 		}
@@ -181,11 +186,12 @@ namespace UpgradeManager
 
 	bool CheckUnique(int randomUpgrade)
 	{
-		if (upgrade1 == randomUpgrade /*|| upgrade2 == randomUpgrade
-			|| upgrade3 == randomUpgrade*/)
-		{
-			return false;			//NOT UNIQUE
-		}
+		//Too Few to randomise
+		//if (upgrade1 == randomUpgrade /*|| upgrade2 == randomUpgrade
+		//	|| upgrade3 == randomUpgrade*/)
+		//{
+		//	return false;			//NOT UNIQUE
+		//}
 		return true;				//UNIQUE
 	}
 

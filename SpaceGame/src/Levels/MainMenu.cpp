@@ -17,7 +17,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"
 #include "../Player/PlayerManager.h"
 #include "../Managers/LevelManager.h"
-
+#include "../Managers/AudioManager.h"
 struct MainMenu_Group
 {
 	ENTITY gameLogo;
@@ -50,9 +50,13 @@ void MainMenu_Load()
 	Factory_Map::Generate_StarField();
 
 	AEGfxSetCamPosition(0, 0);
+	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);
+
 }
 void MainMenu_Init()
 {
+	AudioManager::PlayBGM("res/BGM/cinescifi.wav", 0.25f);
+
 	//Restrict Player within menu...changed to wraping
 	/*Factory::CreateLevelBoundary(g_WorldMaxX + 70.0f, 0, 150.0f, 2000);
 	Factory::CreateLevelBoundary(g_WorldMinX - 70.0f, 0, 150.0f, 2000);

@@ -60,9 +60,9 @@ namespace ResourceManager
 			break;
 		case GS_LEVEL3:
 			//nothing to load
-			GenerateMeshLibrary_1();
-			LoadTextureLibrary_1(&loadingStage, &loadingProgress);
-			//loadingProgress = 100;
+			//GenerateMeshLibrary_1();
+			//LoadTextureLibrary_1(&loadingStage, &loadingProgress);
+			loadingProgress = 100;
 			break;
 		default:
 			break;
@@ -406,6 +406,10 @@ namespace ResourceManager
 		if (textureLibrary.find("Credits_5") == textureLibrary.end())
 		{
 			textureLibrary.insert({ "Credits_5", AEGfxTextureLoad("res/Credits_5.png") });
+		}
+		if (textureLibrary.find("Pause_Confirmation") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Pause_Confirmation", AEGfxTextureLoad("res/Pause_confirmation.png") });
 		}
 	}
 

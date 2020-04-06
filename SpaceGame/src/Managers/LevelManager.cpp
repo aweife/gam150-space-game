@@ -108,7 +108,7 @@ namespace LevelManager
 
 	void ClearLevel()
 	{
-		if (nextGameState == GS_MAINMENU)
+		if (currentState == GS_LEVEL3)
 		{
 			Factory_UI::CreateUI_GameWin();
 			return;
@@ -276,7 +276,7 @@ namespace LevelManager
 			if (isCollectedCompleted && !endPortalSpawned)
 			{
 				spawnExit = true;
-				exitId = Factory::SpawnLevel_End({ 0.0f, 600.0f });
+				exitId = Factory::SpawnLevel_End({ 0.0f, 500.0f });
 				endPortalSpawned = true;
 			}
 
@@ -297,7 +297,7 @@ namespace LevelManager
 	{
 		isCollected = true;
 
-		exitId = Factory::SpawnLevel_DeliveryEnd({ 0.0f, 400.0f });
+		exitId = Factory::SpawnLevel_DeliveryEnd({ 1000.0f, 0.0f });
 
 	}
 
@@ -357,7 +357,7 @@ namespace LevelManager
 		{
 			escortEnemyTimer += g_dt;
 
-			CheckEscort(escortPos, 200.0f, 0.0f);
+			CheckEscort(escortPos, 800.0f, 0.0f);
 
 			if (escortEnemyTimer >= escortEnemySpawnTimer)
 			{
