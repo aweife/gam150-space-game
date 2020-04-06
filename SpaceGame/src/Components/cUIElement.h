@@ -36,7 +36,8 @@ enum class UI_ROLE
 	BOSS_INCOMING_UI,
 	TICKBOX,
 	TICK,
-	OBJECTIVES
+	OBJECTIVES,
+	QUIT
 };
 
 class cUIElement :public Component

@@ -1256,6 +1256,31 @@ namespace Factory_UI
 	}
 
 
+	void CreateUI_GameWin()
+	{
+		ENTITY panel = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 730,400 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "GameWin_Menu", 0));
+		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::GAMEWIN, 0));
+		UIEventsManager::Subscribe(panel, &ToggleGameWinWindow);
+
+		ENTITY exit = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 0, -100 }, 0, { 218, 40 }));
+		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
+		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
+		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::GAMEWIN;
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex = 2;		//Toggle Transparency
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 2;	//Exit to main menu
+		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
+		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(exit, &ToggleGameOverWindow);
+		UIEventsManager::Subscribe(exit, &OnButtonClick_GameWinMenuUI);
+
+
+	}
+
 	void CreateUI_GameOver()
 	{
 		ENTITY panel = Core::Get().CreateEntity();
@@ -1356,6 +1381,45 @@ namespace Factory_UI
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &TogglePauseWindow);
 		UIEventsManager::Subscribe(exit, &OnButtonClick_PauseMenuUI);
+	}
+
+	void  CreateUI_ExitConfirmation()
+	{
+		ENTITY panel = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 500,300 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Pause_Confirmation", 0));
+		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::QUIT, 0));
+		UIEventsManager::Subscribe(panel, &ToggleConfirmationWindow);
+
+		ENTITY yes = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(yes, new cTransform({ -100, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(yes, new cSprite(yes, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(yes)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(yes, new cUIElement("YES"));
+		Core::Get().GetComponent<cUIElement>(yes)->_role = UI_ROLE::QUIT;
+		Core::Get().GetComponent<cUIElement>(yes)->_roleIndex = 2;	//Toggle Text Transparency
+		Core::Get().GetComponent<cUIElement>(yes)->_roleIndex2 = 1;	//Exit Game
+											 
+		Core::Get().GetComponent<cUIElement>(yes)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(yes)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cUIElement>(yes)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(yes, &ToggleConfirmationWindow);
+		UIEventsManager::Subscribe(yes, &OnButtonClick_ConfirmationMenuUI);
+
+		ENTITY no = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(no, new cTransform({ 100, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(no, new cSprite(no, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(no)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(no, new cUIElement("NO"));
+		Core::Get().GetComponent<cUIElement>(no)->_role = UI_ROLE::QUIT;
+		Core::Get().GetComponent<cUIElement>(no)->_roleIndex = 2;
+		Core::Get().GetComponent<cUIElement>(no)->_roleIndex2 = 2;		//Resume Game
+		Core::Get().GetComponent<cUIElement>(no)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(no)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cUIElement>(no)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(no, &ToggleConfirmationWindow);
+		UIEventsManager::Subscribe(no, &OnButtonClick_ConfirmationMenuUI);
 	}
 
 	void Create_InGameOptions()
@@ -1465,6 +1529,8 @@ namespace Factory_UI
 		Core::Get().AddComponent<cSprite>(levelDisplay, new cSprite(levelDisplay, "Square Mesh", "UI_Mission3", 0));
 		return levelDisplay;
 	}
+
+
 }
 
 namespace Factory_SpashScreen

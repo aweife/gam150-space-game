@@ -107,6 +107,8 @@ namespace Factory_UI
 
 	void CreateUI_GameOver();
 	void CreateUI_Pause();
+	void CreateUI_GameWin();
+	void  CreateUI_ExitConfirmation();
 	void Create_InGameOptions();
 
 
