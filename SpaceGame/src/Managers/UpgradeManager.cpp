@@ -85,8 +85,7 @@ namespace UpgradeManager
 			//textureNames[11] = "Upgrade_1";
 			//descriptionNames[11] = "Melee Range Up";
 			database_meleeUpgrade.emplace(UpgradePackages::MeleeWeaponUpgrade_DamageUp1, new MeleeWeaponUpgrade_DamageUp1);
-			textureNames[4] = "MeleeWeaponUpgrade_DamageUp1";
-			textureNames[4] = "Upgrade_1";
+			textureNames[4] = "Upgrade_Damage";
 			descriptionNames[4] = "Melee Damage Up";
 
 			isLoaded = true;
@@ -109,8 +108,8 @@ namespace UpgradeManager
 		if (!data)	return;
 		Console_Cout("Player Upgrade");
 		spaceship->_thrustDelay			+= data->Get_ThrustAcceleration();
-		health->_healthMax				+= data->Get_ShieldIncrease();
-		health->_shieldMax				+= data->Get_HealthIncrease();
+		health->_shieldMax				+= data->Get_ShieldIncrease();
+		health->_healthMax				+= data->Get_HealthIncrease();
 
 	}
 
@@ -138,26 +137,41 @@ namespace UpgradeManager
 
 	}
 
-	void ApplyUpgrade(int upgradeIndex)
+	void ApplyUpgrade(int upgradeIndex, int slot)
 	{
+		UpgradePackages selected = upgrade1Pack;
+
+		if (slot == 0)
+		{
+			selected = upgrade1Pack;
+		}
+		else if (slot == 1)
+		{
+			selected = upgrade2Pack;
+		}
+		else if (slot == 2)
+		{
+			selected = upgrade3Pack;
+		}
+
 		if (upgradeIndex < 3)
 		{
 			PlayerUpgrade(&PlayerManager::playerSpaceshipProgression, &PlayerManager::playerHealthProgression
-				, upgrade1Pack);
+				, selected);
 		}
 		else if (upgradeIndex < 4)
 		{
-			WeaponUpgradeRange(&PlayerManager::playerRangeProgression, upgrade2Pack);
+			WeaponUpgradeRange(&PlayerManager::playerRangeProgression, selected);
 		}
 		else if (upgradeIndex < 5)
 		{
-			WeaponUpgradeMelee(&PlayerManager::playerMeleeProgression, upgrade3Pack);
+			WeaponUpgradeMelee(&PlayerManager::playerMeleeProgression, selected);
 		}
 	}
 
 	int RandomUpgrade()
 	{
-		int randomUpgradeType = rand() % NUMBER_OF_UPGRADES_TYPE + 1;
+		int randomUpgradeType;
 		int randomUpgrade = 0;
 
 		if (upgrade3 != -1) {
@@ -166,6 +180,7 @@ namespace UpgradeManager
 		}
 		do
 		{
+			randomUpgradeType = rand() % NUMBER_OF_UPGRADES_TYPE + 1;
 			if (randomUpgradeType == 1) // Player Upgrade
 			{
 				randomUpgrade = rand() % NUMBER_OF_PLAYERPGRADES;
@@ -186,13 +201,13 @@ namespace UpgradeManager
 
 	bool CheckUnique(int randomUpgrade)
 	{
-		UNREFERENCED_PARAMETER(randomUpgrade);
+		//UNREFERENCED_PARAMETER(randomUpgrade);
 		//Too Few to randomise
-		//if (upgrade1 == randomUpgrade /*|| upgrade2 == randomUpgrade
-		//	|| upgrade3 == randomUpgrade*/)
-		//{
-		//	return false;			//NOT UNIQUE
-		//}
+		if (upgrade1 == randomUpgrade || upgrade2 == randomUpgrade
+			/*|| upgrade3 == randomUpgrade*/)
+		{
+			return false;			//NOT UNIQUE
+		}
 		return true;				//UNIQUE
 	}
 

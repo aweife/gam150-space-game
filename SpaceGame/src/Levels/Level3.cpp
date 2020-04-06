@@ -34,6 +34,8 @@ ENTITY _referencetoLevelDisplay = 0;
 int _counter = 0;									//Animation Step
 float _currentTimer = 0.0f;
 
+ENTITY escortTickBox = 0;
+ENTITY defeatBossTickBox = 0;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -86,10 +88,11 @@ void Level3_Load()
 
 	escort = Factory_AI::CreateEscort(2, { 0.0f, 0.0f });
 
-	Factory_UI::CreateUI_AddObjective(1, "Escort The Ship Safely");
+	escortTickBox = Factory_UI::CreateUI_AddObjective(1, "Escort The Ship Safely");
 
 	Factory::CreateBackground();
-	Factory_UI::Create_PlayerUserInterface();
+	Factory_UI::Create_PlayerUserInterface(static_cast<unsigned int>(PlayerManager::playerHealthProgression._healthMax / 10)
+		, static_cast<unsigned int>(PlayerManager::playerHealthProgression._shieldMax / 10.0f));
 	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
 
 	// FOR NOW, audio
@@ -129,11 +132,6 @@ void Level3_Update()
 	AudioManager::Update();
 	PlayerManager::Update();
 	
-
-	if (AEInputCheckTriggered(AEVK_L))
-	{
-		Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");
-	}
 
 	// Level 3 Escort mission
 	LevelManager::Level3Update(escort, 5.0f);
@@ -177,13 +175,27 @@ ENTITY GetEscort() { return escort; }
 
 void EscortDeath(bool success)
 {
-	escort = 0;
 	SetMissionStatus(success);
 	// If mission success, we only destroy escort without spawning gameover
-	if (success) return;
-
+	if (success)
+	{
+		Core::Get().EntityDestroyed(escort);
+		escort = 0;
+		Core::Get().GetComponent<cSprite>(Core::Get().GetComponent<cUIElement>(escortTickBox)->_roleIndex)->_colorTint.a = 1.0f;
+		return;
+	}
+	escort = 0;
 	Factory_UI::CreateUI_GameOver();
 	LevelManager::ClearObjectiveAll();
 }
 void SetMissionStatus(bool success) { missionStatus = success; }
 bool EscortMissionSuccess() { return missionStatus; }
+void FinalObjective()
+{
+	defeatBossTickBox = Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");
+}
+void Level3DefeatBoss()
+{
+	
+	Core::Get().GetComponent<cSprite>(Core::Get().GetComponent<cUIElement>(defeatBossTickBox)->_roleIndex)->_colorTint.a = 1.0f;
+}

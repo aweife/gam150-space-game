@@ -646,7 +646,7 @@ void CollisionSystem::Update()
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					//CameraManager::StartCameraShake();
 					LevelManager::isCollected = true;
-					markedForDestruction.insert(entity2);
+					markedForRemoval.insert(entity2);
 				}
 
 				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::DELIVERYCOMPLETE && currentState == GS_LEVEL2)
@@ -654,7 +654,7 @@ void CollisionSystem::Update()
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					//CameraManager::StartCameraShake();
 					LevelManager::isCollectedCompleted = true;
-					markedForDestruction.insert(entity2);
+					markedForRemoval.insert(entity2);
 				}
 
 
@@ -831,6 +831,15 @@ void CollisionSystem::Update()
 			Core::Get().EntityDestroyed(entity);
 		}
 		markedForDestruction.clear();
+	}
+
+	if (markedForRemoval.size() > 0)
+	{
+		for (auto const& entity : markedForRemoval)
+		{
+			Core::Get().RemoveComponent <cCollision>(entity);
+		}
+		markedForRemoval.clear();
 	}
 	
 }

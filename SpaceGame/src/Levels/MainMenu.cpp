@@ -92,7 +92,7 @@ void MainMenu_Unload()
 {
 	LevelManager::Clear_StarField();
 	Factory::RemoveCamera();
-	PlayerManager::ResetPlayer(false);
+	PlayerManager::ResetPlayer(true);
 	UIEventsManager::Cleanup();
 	Core::Get().DestroyAllEntity();
 }

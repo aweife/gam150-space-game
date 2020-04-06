@@ -22,6 +22,12 @@ const int NUMBER_OF_UPGRADES_TYPE = 3;
 enum class UpgradePackages
 {
 	PlayerUpgrade_HpUp1,
+	PlayerUpgrade_ShieldUp1,
+	PlayerUpgrade_ThrustAccelUp1,
+	RangeWeaponUpgrade_DamageUp1,
+	MeleeWeaponUpgrade_DamageUp1,
+
+	/*PlayerUpgrade_HpUp1,
 	PlayerUpgrade_LifeUp1,
 	PlayerUpgrade_ShieldUp1,
 	PlayerUpgrade_ThrustAccelUp1,
@@ -35,7 +41,8 @@ enum class UpgradePackages
 	RangeWeaponUpgrade_BulletSpeedUp1,
 
 	MeleeWeaponUpgrade_RangeUp1,
-	MeleeWeaponUpgrade_DamageUp1,
+	MeleeWeaponUpgrade_DamageUp1,*/
+
 	NONE
 };
 
@@ -46,7 +53,7 @@ namespace UpgradeManager
 	const char* GetUpgradeImage(int i);
 	const char* GetUpgradeDescript(int i);
 	int RandomUpgrade();
-	void ApplyUpgrade(int upgradeIndex);
+	void ApplyUpgrade(int upgradeIndex, int slot);
 	bool CheckUnique(int randomUpgrade);
 	void AddActiveUpgrade(int randomUpgrade);
 	void ClearAllUpgradeChoice();
@@ -74,7 +81,7 @@ struct PlayerUpgrade_Base
 
 struct PlayerUpgrade_HpUp1: public PlayerUpgrade_Base
 {
-	inline float Get_HealthIncrease() override		{ return 1.0f; };
+	inline float Get_HealthIncrease() override		{ return 10.0f; };
 
 };
 
@@ -86,7 +93,7 @@ struct PlayerUpgrade_LifeUp1 : public PlayerUpgrade_Base
 
 struct PlayerUpgrade_ShieldUp1 : public PlayerUpgrade_Base
 {
-	inline float Get_ShieldIncrease() override { return 1.0f; };
+	inline float Get_ShieldIncrease() override { return 10.0f; };
 
 };
 
@@ -133,7 +140,7 @@ struct RangeWeaponUpgrade_AmmoUp1 : public WeaponUpgradeRange_BaseRange
 
 struct RangeWeaponUpgrade_DamageUp1 : public WeaponUpgradeRange_BaseRange
 {
-	inline float Get_DamageIncrease() override { return 1.0f; };
+	inline float Get_DamageIncrease() override { return 5.0f; };
 
 };
 
@@ -176,7 +183,7 @@ struct MeleeWeaponUpgrade_RangeUp1 : public WeaponUpgradeMelee_BaseMelee
 
 struct MeleeWeaponUpgrade_DamageUp1 : public WeaponUpgradeMelee_BaseMelee
 {
-	inline float Get_DamageIncrease() override { return 1.0f; };
+	inline float Get_DamageIncrease() override { return 10.0f; };
 
 };
 

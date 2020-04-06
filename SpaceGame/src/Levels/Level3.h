@@ -63,5 +63,6 @@ ENTITY GetEscort();
 void EscortDeath(bool success = false);
 bool EscortMissionSuccess();
 void SetMissionStatus(bool success);
-
+void FinalObjective();
+void Level3DefeatBoss();
 #endif

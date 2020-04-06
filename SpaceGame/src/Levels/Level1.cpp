@@ -146,10 +146,10 @@ void Level1_Update()
 	
 
 
-	if (AEInputCheckTriggered(AEVK_L))
-	{
-		Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");
-	}
+	//if (AEInputCheckTriggered(AEVK_L))
+	//{
+	//	Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");
+	//}
 }
 
 // ----------------------------------------------------------------------------

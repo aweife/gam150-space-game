@@ -117,7 +117,7 @@ namespace PlayerManager
 	
 	void PlayerDeath()
 	{
-		ResetPlayer();
+		ResetPlayer(false);			//Player can still restart
 
 		Factory_UI::CreateUI_GameOver();
 

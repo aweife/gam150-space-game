@@ -135,7 +135,7 @@ namespace Factory
 
 	ENTITY SpawnLevel_DeliveryEnd(AEVec2 position)
 	{
-		ENTITY wormhole = CreateWormhole(position, 5.0f, 0.0f, 30.0f, 2);
+		ENTITY wormhole = CreateWormhole(position, 5.0f, 0.0f, 30.0f, 1);
 		Core::Get().AddComponent<cRigidBody>(wormhole, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 		Core::Get().GetComponent<cRigidBody>(wormhole)->_tag = COLLISIONTAG::DELIVERYCOMPLETE;
 		Core::Get().AddComponent<cCollision>(wormhole, new cCollision);
@@ -901,7 +901,7 @@ namespace Factory_UI
 		// Default 3 Shield for Player
 		for (unsigned int i = 0; i < shield; ++i)
 		{
-			spritePos = ScreenBasedCoords(250.0f + 50.0f * i, 75.0f, UI_ANCHOR::BOTTOMLEFT);
+			spritePos = ScreenBasedCoords(100.0f + 50.0f * health + 50.0f * i, 75.0f, UI_ANCHOR::BOTTOMLEFT);
 			Create_SingleShieldBar(spritePos, i);
 		}
 
@@ -1108,8 +1108,7 @@ namespace Factory_UI
 		AEVec2Set(&startingPos, centralPos.x, centralPos.y + 100);
 		ENTITY text = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
-		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Choose Your Upgrade"));
-		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
+		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Choose Your Upgrade", UI_ROLE::C3_TEXT));
 		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
 
@@ -1117,8 +1116,7 @@ namespace Factory_UI
 		AEVec2Set(&startingPos, centralPos.x, centralPos.y + 75);
 		text = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
-		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Remaining Rerolls: "));
-		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
+		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Remaining Rerolls: ", UI_ROLE::C3_TEXT));
 		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
 		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
 
@@ -1143,20 +1141,20 @@ namespace Factory_UI
 			AEVec2Set(&startingPos, centralPos.x + (borderSize + borderSpace) * i, centralPos.y);
 			border = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(border, new cTransform(startingPos, 0.0f, { borderSize , borderSize }));
-			Core::Get().AddComponent<cSprite>(border, new cSprite(border, "Square Mesh", "Texture_Default", 0));
+			Core::Get().AddComponent<cSprite>(border, new cSprite(border, "Square Mesh", "Texture_Default", 1));
 			Core::Get().GetComponent<cSprite>(border)->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
 			Core::Get().AddComponent<cUIElement>(border, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FRAME));
 
 			AEVec2Set(&startingPos, startingPos.x, centralPos.y);
 			fakeupgrade = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(fakeupgrade, new cTransform(startingPos, 0.0f, { borderSize * 0.9f, borderSize * 0.9f }));
-			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh2", "Random_Upgrade", 0));
+			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh2", "Random_Upgrade", 1));
 			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 			Core::Get().AddComponent<cUIElement>(fakeupgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FAKEUPGRADE, 2 + i));
 
 			Core::Get().AddComponent<cTimeline>(fakeupgrade, new cTimeline(g_appTime, g_appTime + 0.5f + (i * 0.5f), false));
 			AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade));
-			AddNewNode_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.45f + (i * 0.5f), -1.5f * (i + 2));
+			AddNewNode_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.45f + (i * 0.5f), -1.5f * (i * 2));
 			AddNewTimeline_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade));
 			AddNewNode_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.49f + (i * 0.5f), fakeupgrade);
 		
@@ -1164,8 +1162,7 @@ namespace Factory_UI
 			AEVec2Set(&startingPos, startingPos.x, centralPos.y - 100.0f);
 			text = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
-			Core::Get().AddComponent<cUIElement>(text, new cUIElement("NOT Ready"));
-			Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
+			Core::Get().AddComponent<cUIElement>(text, new cUIElement("NOT Ready", UI_ROLE::C3_TEXT));
 			Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 2 + i;
 			Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
 			Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
@@ -1181,7 +1178,8 @@ namespace Factory_UI
 		ENTITY realUpgrade = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(realUpgrade, new cTransform(position, 0.0f, { 100 * 0.9f, 100 * 0.9f }));
 		Core::Get().AddComponent<cUIElement>(realUpgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
-		Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex = UpgradeManager::RandomUpgrade();
+		Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex = UpgradeManager::RandomUpgrade();		//Which Upgrade
+		Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex2 = slot -2;		//Which Slot
 		unsigned int upgradeIndex = Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex;
 		UIEventsManager::Broadcast(new Events::OnUpgradeDescpChange(static_cast<int>(upgradeIndex), slot));
 
@@ -1335,13 +1333,13 @@ namespace Factory_UI
 		ENTITY exit = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 0, -100 }, 0, { 218, 40 }));
 		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
 		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::GAMEWIN;
 		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex = 2;		//Toggle Transparency
-		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 2;	//Exit to main menu
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 1;	//Exit to main menu
 		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
-		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &ToggleGameOverWindow);
 		UIEventsManager::Subscribe(exit, &OnButtonClick_GameWinMenuUI);
@@ -1839,7 +1837,8 @@ namespace Factory_AI
 		ENTITY escort = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(escort, new cTransform({ spawnPos.x , spawnPos.y }, 0.0f, {75.0f, 50.0f}));
 		Core::Get().AddComponent<cSprite>(escort, new cSprite(escort, "Square Mesh", "Enemy_1", layer));
-		Core::Get().AddComponent<cRigidBody>(escort, new cRigidBody(30.0f, 40.0f, 1000.0f, 0.0f));
+		Core::Get().AddComponent<cRigidBody>(escort, new cRigidBody(30.0f, 30.0f, 1000.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(escort)->_airResistance = 1.0f;		//No Air Resist
 		Core::Get().GetComponent<cRigidBody>(escort)->_velocityDirection = { 1.0f, 0.0f };
 		Core::Get().GetComponent<cRigidBody>(escort)->_tag = COLLISIONTAG::ESCORT; // testing collision
 		Core::Get().AddComponent<cCollision>(escort, new cCollision());

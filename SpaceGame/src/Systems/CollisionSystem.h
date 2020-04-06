@@ -18,6 +18,7 @@ class CollisionSystem : public System
 {
 private:
 	std::set<ENTITY> markedForDestruction;					//Cant delete entity while looping with range loop
+	std::set<ENTITY> markedForRemoval;						//Cant delete entity while looping with range loop
 public:
 	CollisionSystem() = default;
 	~CollisionSystem() = default;

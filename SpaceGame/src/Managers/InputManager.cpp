@@ -103,7 +103,7 @@ namespace InputManager
 			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
 			uiSys->DeleteUpgradeWindow();
 		}*/
-			if (AEInputCheckTriggered(AEVK_1))
+			/*if (AEInputCheckTriggered(AEVK_1))
 			{
 				if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon != WeaponType::laser)
 				{
@@ -122,7 +122,7 @@ namespace InputManager
 				}
 				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon = WeaponType::pistol;
 				Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_delayBetweenAttacks = 0.2f;
-			}
+			}*/
 
 		}
 		// -----------------------------------------------------------------------

@@ -57,7 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Global_InitWindowSize(true);
 	AESysInit(hInstance, nCmdShow, g_WindowWidth, g_WindowHeight, g_DebugEditor, 60, true, NULL);	// Using custom window procedure
 	AEToogleFullScreen(true);
-	AESysSetWindowTitle("Master Branch");										// Changing the window title
+	AESysSetWindowTitle("END OF SPACE");										// Changing the window title
 	AESysReset();																// reset the system modules
 	AEGfxSetBackgroundColor(0.07f, 0.04f, 0.22f);								// Set Dark Purple BG 
 

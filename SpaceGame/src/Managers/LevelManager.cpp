@@ -25,7 +25,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"					//Broadcasting
 #include "../Levels/Level3.h"
 #include <iostream>
-
+#include "../Managers/AudioManager.h"
 namespace LevelManager
 {
 	//Storage Containers
@@ -68,6 +68,7 @@ namespace LevelManager
 	bool enemyObjectiveComplete = false;
 	bool isCollectedCompleted = false;
 	bool endPortalSpawned = false;
+	ENTITY deliveryPt = 0;
 
 	// Escort for Level 3s
 	float escortEnemyTimer = 0.0f;
@@ -95,6 +96,7 @@ namespace LevelManager
 		{
 			spawnExit = true;
 			exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+			Factory_UI::CreateUI_AddObjective(2, "Find The Exit Wormhole");
 		}
 
 		// Init spawn sequence
@@ -131,7 +133,13 @@ namespace LevelManager
 	{
 		if (currentState == GS_LEVEL3)
 		{
-			Factory_UI::CreateUI_GameWin();
+			if (nextState != GS_MAINMENU)
+			{
+				TogglePause();
+				AudioManager::TogglePause(g_GamePause);
+				Factory_UI::CreateUI_GameWin();
+				spawnExit = false;
+			}	
 			return;
 		}
 		loadingForNextLevel = nextGameState;
@@ -267,8 +275,10 @@ namespace LevelManager
 		wavesEnemyList.clear();
 		spawnExit = false;
 		isCollected = false;
-
+		objectiveComplete = false;
+		enemyObjectiveCount = 0;
 		bossSpawnPos = { 0.0f,0.0f };
+		deliveryPt = 0;
 	}
 
 	// Start spawning enemies after delivery is collected
@@ -276,22 +286,21 @@ namespace LevelManager
 	{
 		if (isCollected)
 		{
+
 			if (objectiveComplete)
 			{
 				ObjectiveCompleteUpdate();
 			}
 
-			if (spawnExit)
-			{
-				CheckOutOfScreen(exitId);
-			}
+			//if (spawnExit)
+			//{
+			//	CheckOutOfScreen(exitId);
+			//}
+			//Show indicator for delivery point and level exit
 
+			CheckOutOfScreen(exitId);
 
-			//Straight away spawn boss upon collection
-			if (/*eliminatedCount >= 10 && */!objectiveComplete)
-			{
-				objectiveComplete = true;
-			}
+			
 
 			DeliveryEnemyTimer += g_dt;
 
@@ -309,6 +318,7 @@ namespace LevelManager
 			{
 				spawnExit = true;
 				exitId = Factory::SpawnLevel_End({ 0.0f, 500.0f });
+				Factory_UI::CreateUI_AddObjective(3, "Find The Exit Wormhole");
 				endPortalSpawned = true;
 			}
 
@@ -320,7 +330,6 @@ namespace LevelManager
 		++enemyObjectiveCount;
 		if (enemyObjectiveCount >= 10)
 		{
-			std::cout << "did it enemyobjectivecomplete" << std::endl;
 			enemyObjectiveComplete = true;
 		}
 	}
@@ -361,7 +370,7 @@ namespace LevelManager
 		wavesEnemyList.clear();
 		defeatBoss = false;
 		enemySpawned3 = 0;
-
+		objectiveComplete = false;
 		bossSpawnPos = { 200.0f,0.0f };
 	}
 
@@ -377,6 +386,7 @@ namespace LevelManager
 				{
 					spawnExit = true;
 					exitId = Factory::SpawnLevel_End({ 0.0f, 0.0f });
+					Factory_UI::CreateUI_AddObjective(3, "Find The Exit Wormhole");
 				}
 			}
 		}
@@ -389,7 +399,7 @@ namespace LevelManager
 		{
 			escortEnemyTimer += g_dt;
 
-			CheckEscort(escortPos, 1000.0f, 0.0f);
+			CheckEscort(escortPos, 1250.0f, 0.0f);
 
 			if (escortEnemyTimer >= escortEnemySpawnTimer)
 			{
@@ -412,6 +422,7 @@ namespace LevelManager
 			isEscorting = false;
 			SetMissionStatus(true);
 			EscortDeath(true);
+			FinalObjective();
 			StartBossSpawnSequence();
 		}
 	}
@@ -419,6 +430,7 @@ namespace LevelManager
 	void DefeatBoss()
 	{
 		defeatBoss = true;
+		Level3DefeatBoss();
 	}
 
 	void SpawnEnemyOnCollect(AEVec2 playerPos)

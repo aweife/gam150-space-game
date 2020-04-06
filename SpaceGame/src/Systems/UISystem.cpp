@@ -477,12 +477,20 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 		if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 1)	//Resume game
 		{
 			TogglePause();
-			UIEventsManager::Broadcast(new Events::TogglePause(false));
+			UIEventsManager::Broadcast(new Events::TogglePause(false));				
+			AudioManager::TogglePause(g_GamePause);
+
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 2)	//Restart Level 
 		{
-			if(g_GamePause) TogglePause();
-			UIEventsManager::Broadcast(new Events::TogglePause(false));
+			if (g_GamePause)
+			{
+				TogglePause();
+				UIEventsManager::Broadcast(new Events::TogglePause(false));
+				UIEventsManager::Broadcast(new Events::TogglePause(false));				
+				AudioManager::TogglePause(g_GamePause);
+
+			}
 			GSM_LoadingTransition(currentState);
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 3)   // Exit to main menu
@@ -585,12 +593,16 @@ bool OnButtonClick_GameOverMenuUI(ENTITY entity, Events::OnMouseClick* message)
 
 		if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 1)	//Restart Level 
 		{
-			TogglePause();
+			if (g_GamePause)
+			{
+				TogglePause();
+			}
 			GSM_LoadingTransition(currentState);
 		}
 		else if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 2)   // Exit to main menu
 		{
 			TogglePause();
+			AudioManager::TogglePause(g_GamePause);
 			GSM_ChangeState(GS_MAINMENU);
 		}
 	}
@@ -617,9 +629,14 @@ bool OnButtonClick_GameWinMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	if (uiComp)
 	{
 		if (uiComp->_text._colorBlend.a < 0.5f) return false;
-		UIEventsManager::Broadcast(new Events::TogglePause(false));
+
 		if (uiComp->_role == UI_ROLE::GAMEWIN && uiComp->_roleIndex2 == 1)	//Restart Level 
 		{
+			if (g_GamePause)
+			{
+				TogglePause();
+				AudioManager::TogglePause(g_GamePause);
+			}
 			GSM_ChangeState(GS_MAINMENU);
 		}
 	}
@@ -629,7 +646,7 @@ bool OnButtonClick_GameWinMenuUI(ENTITY entity, Events::OnMouseClick* message)
 bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
-
+	if (!transform) return false;
 	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
@@ -646,12 +663,18 @@ bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message)
 	{
 		int resultingRerollCount = -1;
 		UIEventsManager::Broadcast(new Events::OnUpgradeReroll(resultingRerollCount));
-		UpgradeManager::ApplyUpgrade(upgrade->_roleIndex);
+		UpgradeManager::ApplyUpgrade(upgrade->_roleIndex, upgrade->_roleIndex2);
 		UpgradeManager::ClearAllUpgradeChoice();
 		
 		if (resultingRerollCount == 0)
 		{
 			upgradeFinish = true;
+		}
+		else
+		{
+			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+			uiSys->DeleteUpgradeWindow();
+			Factory_UI::Create_ChooseThree({ 0, 0 }, resultingRerollCount);
 		}
 		
 	}
@@ -686,9 +709,10 @@ bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message)
 	else
 	{
 		cUIElement* descptUIComp = Core::Get().GetComponent<cUIElement>(entity);
+		if (!descptUIComp) return false;
 		if (descptUIComp->_roleIndex == static_cast<unsigned int>(message->_slot))
 		{
-			EditText(entity, UpgradeManager::GetUpgradeDescript(descptUIComp->_roleIndex));
+			EditText(entity, UpgradeManager::GetUpgradeDescript(message->_upgradeIndex));
 			return true;
 		}
 		return false;
@@ -699,7 +723,7 @@ bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message)
 bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
-
+	if (!transform) return false;
 	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
@@ -976,7 +1000,6 @@ void CleanUpIndicator()
 	uiSys->aiIndicator_Set.clear();
 }
 
-//Not used 
 void UISystem::DeleteUpgradeWindow()
 {
 	UpgradeManager::ClearAllUpgradeChoice();

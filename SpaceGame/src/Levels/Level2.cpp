@@ -95,8 +95,8 @@ void Level2_Load()
 	enemyDestroyedUI = Factory_UI::CreateUI_AddObjective(2, "Eliminate 10 enemies");
 	enemyDestroyedUITickbox_state = Core::Get().GetComponent<cUIElement>(enemyDestroyedUI)->_roleIndex;
 	
-	Factory_UI::Create_PlayerUserInterface();
-	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
+	Factory_UI::Create_PlayerUserInterface(static_cast<unsigned int>(PlayerManager::playerHealthProgression._healthMax / 10)
+		, static_cast<unsigned int>(PlayerManager::playerHealthProgression._shieldMax / 10.0f));	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
 
 	// FOR NOW, audio
 	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);
