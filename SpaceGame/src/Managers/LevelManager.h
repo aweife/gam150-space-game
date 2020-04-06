@@ -26,6 +26,10 @@ namespace LevelManager
 	//Delivery
 	extern bool isCollected;
 	extern float DeliveryEnemyTimer;
+	extern int enemyObjectiveCount;
+	extern bool enemyObjectiveComplete;
+	extern bool isCollectedCompleted;
+	extern bool endPortalSpawned;
 	//Escort
 	extern float escortEnemyTimer;
 	extern bool isEscorting;
@@ -48,10 +52,11 @@ namespace LevelManager
 
 	// Level 2 Missions
 	void Level2_Setup();
-	void Level2Update(AEVec2 playerPos, ENTITY package, float DeliveryEnemySpawnTimer = 5.0f);
+	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer = 5.0f);
 	void SpawnEnemyOnCollect(AEVec2 playerPos);
 	void CheckDelivery();
 	void ClearEnemy(ENTITY enemy);
+	void CheckEnemyObjective();
 
 	// Level 3 Missions
 	void Level3_Setup();

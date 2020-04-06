@@ -627,8 +627,11 @@ void CollisionSystem::Update()
 					AEVec2Set(&rigidbody2->_collisionVector, -(rigidbody2->_velocityVector.x * 1.5f), -(rigidbody2->_velocityVector.y * 1.5f));
 					AEVec2Add(&rigidbody2->_collisionVector, &rigidbody2->_collisionVector, &rigidbody2->_velocityDirection);
 					
+
 					markedForDestruction.insert(entity2);
 				}
+
+
 
 				//if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::OBJECTIVE)
 				//{
@@ -638,13 +641,21 @@ void CollisionSystem::Update()
 				//	LevelManager::ClearObjective(entity2);
 				//}
 
-				//if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::DELIVERY)
-				//{
-				//	Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-				//	//CameraManager::StartCameraShake();
-				//	LevelManager::isCollected = true;
-				//	markedForDestruction.insert(entity2);
-				//}
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::DELIVERY && currentState == GS_LEVEL2)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					//CameraManager::StartCameraShake();
+					LevelManager::isCollected = true;
+					markedForDestruction.insert(entity2);
+				}
+
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::DELIVERYCOMPLETE && currentState == GS_LEVEL2)
+				{
+					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+					//CameraManager::StartCameraShake();
+					LevelManager::isCollectedCompleted = true;
+					markedForDestruction.insert(entity2);
+				}
 
 
 				// Player collide with boss

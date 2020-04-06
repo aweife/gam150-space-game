@@ -56,7 +56,7 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", 2));
 		
 		//No Hard Velocity Cap so player can move freely
-		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
+		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 300.0, 3.0f, 2.0f));
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER_MENU;
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		//Enable player to move and shoot in main menu
@@ -132,6 +132,42 @@ namespace Factory
 
 		return exit;
 	}
+
+	ENTITY SpawnLevel_DeliveryEnd(AEVec2 position)
+	{
+		ENTITY wormhole = CreateWormhole(position, 5.0f, 0.0f, 30.0f, 2);
+		Core::Get().AddComponent<cRigidBody>(wormhole, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(wormhole)->_tag = COLLISIONTAG::DELIVERYCOMPLETE;
+		Core::Get().AddComponent<cCollision>(wormhole, new cCollision);
+
+		return wormhole;
+	}
+
+
+	ENTITY SpawnDelivery(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size)
+	{
+		ENTITY delivery = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(delivery, new cTransform(position, startRotation, size));
+		Core::Get().AddComponent<cRigidBody>(delivery, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(delivery)->_tag = COLLISIONTAG::DELIVERY;
+
+		Core::Get().AddComponent<cSprite>(delivery, new cSprite(delivery, "Square Mesh", "Delivery", 2));
+
+		Core::Get().AddComponent<cAI>(delivery, new cAI{ delivery, DELIVERY });
+		Core::Get().GetComponent<cAI>(delivery)->_currentState.states.emplace<aiIdle>();
+
+		Core::Get().AddComponent<cTimeline>(delivery, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery), 5.0f, Core::Get().GetComponent<cTransform>(delivery)->_rotation + 2 * PI);
+
+		//Core::Get().AddComponent<cRigidBody>(delivery, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
+		//Core::Get().AddComponent<cCollision>(delivery, new cCollision);
+		//Core::Get().GetComponent<cRigidBody>(delivery)->_tag = COLLISIONTAG::DELIVERY; // testing collision
+		//Core::Get().GetComponent<cCollision>(delivery)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+		return delivery;
+	}
+
 
 	//Reused for main menu and level exit
 	ENTITY CreateWormhole(AEVec2 position, float rotSpeed, float rotStart, float uniformSize, int colorVariance)
@@ -239,28 +275,6 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "Square Mesh", "Tutorial_planet", layer));
 
 		return planet;
-	}
-
-	ENTITY SpawnDelivery(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size)
-	{
-		ENTITY delivery = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(delivery, new cTransform(position, startRotation, size));
-		
-		Core::Get().AddComponent<cSprite>(delivery, new cSprite(delivery, "Square Mesh", "Delivery", 2));
-
-		Core::Get().AddComponent<cAI>(delivery, new cAI{ delivery, DELIVERY });
-		Core::Get().GetComponent<cAI>(delivery)->_currentState.states.emplace<aiIdle>();
-
-		Core::Get().AddComponent<cTimeline>(delivery, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
-		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery));
-		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery), 5.0f, Core::Get().GetComponent<cTransform>(delivery)->_rotation + 2 * PI);
-
-		//Core::Get().AddComponent<cRigidBody>(delivery, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
-		//Core::Get().AddComponent<cCollision>(delivery, new cCollision);
-		//Core::Get().GetComponent<cRigidBody>(delivery)->_tag = COLLISIONTAG::DELIVERY; // testing collision
-		//Core::Get().GetComponent<cCollision>(delivery)->_bbShape = ColliderShape::RECTANGLE_OBB;
-
-		return delivery;
 	}
 
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
@@ -1256,6 +1270,31 @@ namespace Factory_UI
 	}
 
 
+	void CreateUI_GameWin()
+	{
+		ENTITY panel = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 730,400 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "GameWin_Menu", 0));
+		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::GAMEWIN, 0));
+		UIEventsManager::Subscribe(panel, &ToggleGameWinWindow);
+
+		ENTITY exit = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 0, -100 }, 0, { 218, 40 }));
+		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
+		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
+		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::GAMEWIN;
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex = 2;		//Toggle Transparency
+		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 2;	//Exit to main menu
+		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
+		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(exit, &ToggleGameOverWindow);
+		UIEventsManager::Subscribe(exit, &OnButtonClick_GameWinMenuUI);
+
+
+	}
+
 	void CreateUI_GameOver()
 	{
 		ENTITY panel = Core::Get().CreateEntity();
@@ -1265,15 +1304,15 @@ namespace Factory_UI
 		UIEventsManager::Subscribe(panel, &ToggleGameOverWindow);
 
 		ENTITY restart = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(restart, new cTransform({ 150, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cTransform>(restart, new cTransform({ -150, -100 }, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(restart, new cSprite(restart, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(restart, new cUIElement("Restart"));
 		Core::Get().GetComponent<cUIElement>(restart)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex = 2;
 		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex2 = 1;		//Restart Game
 		Core::Get().GetComponent<cUIElement>(restart)->_text._anchor = TEXT_ANCHOR::CENTER;
-		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		Core::Get().GetComponent<cUIElement>(restart)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(restart, &ToggleGameOverWindow);
 		UIEventsManager::Subscribe(restart, &OnButtonClick_GameOverMenuUI);
@@ -1281,13 +1320,13 @@ namespace Factory_UI
 		ENTITY exit = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 150, -100 }, 0, { 218, 40 }));
 		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
 		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex = 2;		//Toggle Transparency
 		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 2;	//Exit to main menu
 		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
-		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &ToggleGameOverWindow);
 		UIEventsManager::Subscribe(exit, &OnButtonClick_GameOverMenuUI);
@@ -1309,7 +1348,10 @@ namespace Factory_UI
 		Core::Get().AddComponent<cSprite>(settings, new cSprite(panel, "Square Mesh", "Settings_Icon", 0));
 		Core::Get().GetComponent<cSprite>(settings)->_colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(settings, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::PAUSE, 0));
+		Core::Get().GetComponent<cUIElement>(settings)->_roleIndex = 0;		//Toggle Text Transparency
+		Core::Get().GetComponent<cUIElement>(settings)->_roleIndex2 = 4;	//Settings page Game
 		UIEventsManager::Subscribe(settings, &TogglePauseWindow);
+		UIEventsManager::Subscribe(settings, &OnButtonClick_PauseMenuUI);
 
 		ENTITY resume = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(resume, new cTransform({-230, -100}, 0, { 160, 40 }));
@@ -1341,7 +1383,7 @@ namespace Factory_UI
 		UIEventsManager::Subscribe(restart, &OnButtonClick_PauseMenuUI);
 
 		ENTITY exit = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 210, -100 }, 0, { 218, 40 }));
+		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 230, -100 }, 0, { 218, 40 }));
 		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
 		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
@@ -1353,6 +1395,66 @@ namespace Factory_UI
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &TogglePauseWindow);
 		UIEventsManager::Subscribe(exit, &OnButtonClick_PauseMenuUI);
+	}
+
+	void  CreateUI_ExitConfirmation()
+	{
+		ENTITY panel = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 500,300 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Pause_Confirmation", 0));
+		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::QUIT, 0));
+		UIEventsManager::Subscribe(panel, &ToggleConfirmationWindow);
+
+		ENTITY yes = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(yes, new cTransform({ -100, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(yes, new cSprite(yes, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(yes)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(yes, new cUIElement("YES"));
+		Core::Get().GetComponent<cUIElement>(yes)->_role = UI_ROLE::QUIT;
+		Core::Get().GetComponent<cUIElement>(yes)->_roleIndex = 2;	//Toggle Text Transparency
+		Core::Get().GetComponent<cUIElement>(yes)->_roleIndex2 = 1;	//Exit Game
+											 
+		Core::Get().GetComponent<cUIElement>(yes)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(yes)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cUIElement>(yes)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(yes, &ToggleConfirmationWindow);
+		UIEventsManager::Subscribe(yes, &OnButtonClick_ConfirmationMenuUI);
+
+		ENTITY no = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(no, new cTransform({ 100, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(no, new cSprite(no, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(no)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(no, new cUIElement("NO"));
+		Core::Get().GetComponent<cUIElement>(no)->_role = UI_ROLE::QUIT;
+		Core::Get().GetComponent<cUIElement>(no)->_roleIndex = 2;
+		Core::Get().GetComponent<cUIElement>(no)->_roleIndex2 = 2;		//Resume Game
+		Core::Get().GetComponent<cUIElement>(no)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(no)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cUIElement>(no)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(no, &ToggleConfirmationWindow);
+		UIEventsManager::Subscribe(no, &OnButtonClick_ConfirmationMenuUI);
+	}
+
+	void Create_InGameOptions()
+	{
+		ENTITY panel = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 500,300 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 1.0f, 0.4f, 0.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INGAMEOPTIONS, 0));
+
+		ENTITY soundTB = CreateUI_Option_TickBox_Sound(-100, 30, 40.0f, 0);
+		Core::Get().GetComponent<cSprite>(soundTB)->_colorTint.a = 1.0f;
+		Factory_UI::CreateUI_Text(0, 30, "Mute All Audio");
+		ENTITY optionTB = CreateUI_Option_TickBox_Fullscreen(-100, -30, 40.0f, 0);
+		Core::Get().GetComponent<cSprite>(optionTB)->_colorTint.a = 1.0f;
+		Factory_UI::CreateUI_Text(0, -30, "Windowed Mode");
+		Core::Get().GetComponent<cSprite>(Core::Get().GetComponent<cUIElement>(soundTB)->_roleIndex)->_colorTint.a = g_isMute ? 1.0f : 0.0f;
+		Core::Get().GetComponent<cSprite>(Core::Get().GetComponent<cUIElement>(optionTB)->_roleIndex)->_colorTint.a = !g_isFullScreen ? 1.0f : 0.0f;
+
+		Core::Get().GetComponent<cUIElement>(soundTB)->_roleIndex;
+		Core::Get().GetComponent<cUIElement>(optionTB)->_roleIndex;
 	}
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text)
@@ -1441,6 +1543,8 @@ namespace Factory_UI
 		Core::Get().AddComponent<cSprite>(levelDisplay, new cSprite(levelDisplay, "Square Mesh", "UI_Mission3", 0));
 		return levelDisplay;
 	}
+
+
 }
 
 namespace Factory_SpashScreen

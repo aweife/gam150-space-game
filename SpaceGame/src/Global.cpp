@@ -19,6 +19,8 @@ bool		g_GamePause		= false;					// Is the game paused?
 bool		g_BBShowMode	= false;					// Display all outline of mesh rigidbody
 bool		g_isFullScreen	= false;					// Is the game in fullscreen
 bool		g_isMute		= false;					// Is the game audio muted
+bool		g_isSecondaryMenu = false;					// Is accessing secondary menu
+
 
 //Time Based
 float		g_dt			= 0.0f;						// Delta Time for game

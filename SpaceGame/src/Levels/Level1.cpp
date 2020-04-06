@@ -2,9 +2,10 @@
 * \file			Level1.cpp
 * \brief		Game State for Level 1
 * \author		Wei Feng,		Ang,		20% Code Contribution
-*				Jun Yi,			Chong,		60% Code Contribution
+*				Jun Yi,			Chong,		55% Code Contribution
 *				Jin Kiat,		Chong,		20% Code Contribution
-*
+*               Farzaana Binte, Roslan,     5%  Code Contribution
+* 
 *				Long Description
 *				- Initalise game objects into the level
 *				- Update - Render Loop
@@ -21,13 +22,15 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/AudioManager.h"
 #include "../Managers/LevelManager.h"
-#include "../Systems/RenderSystem.h"
 #include "../Systems/UISystem.h"
+#include "../Systems/RenderSystem.h"
 
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
 ENTITY enemy;
+ENTITY objectiveUI;
+ENTITY toggleObjectiveTickbox_state;
 const float bossSpawn = 1.0f;
 float bossSpawnTimer = 0.0f;
 bool spawnedBoss = false;
@@ -85,7 +88,8 @@ void Level1_Load()
 	Factory_Map::Generate_PlanetField();
 
 	Factory::CreateBackground();
-	Factory_UI::CreateUI_AddObjective(1, "Save 3 Stranded Allies");
+	objectiveUI = Factory_UI::CreateUI_AddObjective(1, "Save 3 Stranded Allies");
+	toggleObjectiveTickbox_state = Core::Get().GetComponent<cUIElement>(objectiveUI)->_roleIndex;
 	Factory_UI::Create_PlayerUserInterface(3, 3);
 	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
 
@@ -121,6 +125,18 @@ void Level1_Update()
 			}
 		}
 
+	}
+
+	if (PlayerManager::player)
+	{
+		AEVec2 playerPos = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position;
+		//Spawn Enemy around player
+		LevelManager::EnemySpawnManager::SpawnEnemyWavesTimer(playerPos, 5.0f);
+	}
+
+	if (LevelManager::objectiveComplete)
+	{
+		Core::Get().GetComponent<cSprite>(toggleObjectiveTickbox_state)->_colorTint.a = 1.0f;
 	}
 	//Editor_TrackVariable("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));

@@ -21,6 +21,7 @@ extern bool		g_GamePause;					// Is the game paused?
 extern bool		g_BBShowMode;					// Display all outline of mesh rigidbody
 extern bool		g_isFullScreen;					// Is the game in fullscreen
 extern bool		g_isMute;						// Is the game audio muted
+extern bool		g_isSecondaryMenu;				// Is accessing secondary menu
 
 //Time Based
 extern float		g_dt;						// Delta Time for game

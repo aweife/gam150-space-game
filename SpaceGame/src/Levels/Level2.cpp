@@ -21,11 +21,19 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/AudioManager.h"
 #include "../Managers/LevelManager.h"
+#include "../Systems/RenderSystem.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
 
+ENTITY reftoLevelDisplay = 0;
+int _count = 0;									//Animation Step
+float _currTimer = 0.0f;
 ENTITY package = 0;
+ENTITY deliveryPackageUI;
+ENTITY enemyDestroyedUI;
+ENTITY enemyDestroyedUITickbox_state;
+ENTITY deliveryPackageUIickbox_state;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -33,6 +41,9 @@ ENTITY package = 0;
 // ----------------------------------------------------------------------------
 void Level2_Load()
 {
+	// Create Level name 
+	reftoLevelDisplay = Factory_UI::CreateUI_Level2Display();
+
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);
 
@@ -75,10 +86,14 @@ void Level2_Load()
 
 	package = Factory::SpawnDelivery({0.0f, 200.0f}, 60.0f, 5.0f, { 50.0f,50.0f });
 
-	Factory::CreateBackground();
-	Factory_UI::CreateUI_AddObjective(1, "Deliver The Package");
-	Factory_UI::CreateUI_AddObjective(2, "Eliminate 10 enemies");
 
+	Factory::CreateBackground();
+	deliveryPackageUI = Factory_UI::CreateUI_AddObjective(1, "Deliver The Package");
+	deliveryPackageUIickbox_state = Core::Get().GetComponent<cUIElement>(deliveryPackageUI)->_roleIndex;
+
+	enemyDestroyedUI = Factory_UI::CreateUI_AddObjective(2, "Eliminate 10 enemies");
+	enemyDestroyedUITickbox_state = Core::Get().GetComponent<cUIElement>(enemyDestroyedUI)->_roleIndex;
+	
 	Factory_UI::Create_PlayerUserInterface();
 	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
 
@@ -103,16 +118,39 @@ void Level2_Init()
 // ----------------------------------------------------------------------------
 void Level2_Update()
 {
+	if (_currTimer <= 4.0f)
+	{
+		_currTimer += g_dt;
+		if (_currTimer >= 2.0f)
+		{
+			RenderingTricks::LightSpeedEffectOut(reftoLevelDisplay, _currTimer - 2.0f, _count++, 5.0f, 0.04f, -60.0f);
+			if (_currTimer > 4.0f)
+			{
+				Core::Get().EntityDestroyed(reftoLevelDisplay);
+			}
+		}
 
+	}
 	AudioManager::Update();
 	PlayerManager::Update();
 	if (PlayerManager::player)
 	{
 		AEVec2 playerPos = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position;
 		//Delivery Mission
-		LevelManager::Level2Update(playerPos, package, 5.0f);
+		LevelManager::Level2Update(playerPos, 5.0f);
 		//Spawn Enemy around player
 		LevelManager::EnemySpawnManager::SpawnEnemyWavesTimer(playerPos, 5.0f);
+	}
+
+	if (LevelManager::enemyObjectiveComplete)
+	{
+		Core::Get().GetComponent<cSprite>(enemyDestroyedUITickbox_state)->_colorTint.a = 1.0f;
+	}
+
+	if (LevelManager::isCollectedCompleted)
+	{
+		Core::Get().GetComponent<cSprite>(deliveryPackageUIickbox_state)->_colorTint.a = 1.0f;
+
 	}
 
 
@@ -137,6 +175,8 @@ void Level2_Draw()
 // ----------------------------------------------------------------------------
 void Level2_Free()
 {
+	_currTimer = 0.0f;
+	_count = 0;
 	//spawnedBoss = false;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();

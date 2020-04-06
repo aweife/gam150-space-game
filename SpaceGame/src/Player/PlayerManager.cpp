@@ -120,6 +120,9 @@ namespace PlayerManager
 		ResetPlayer();
 
 		Factory_UI::CreateUI_GameOver();
+
+		TogglePause();
+		AudioManager::TogglePause(g_GamePause);
 		LevelManager::ClearObjectiveAll();
 	}
 }

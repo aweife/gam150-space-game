@@ -32,6 +32,7 @@ namespace Factory
 	//ENTITY CreateEnemyObjective(ENTITY player, unsigned int layer, AEVec2 position);
 	ENTITY SpawnObjective_Comrade(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size, int index);
 	ENTITY SpawnLevel_End(AEVec2 position);
+	ENTITY SpawnLevel_DeliveryEnd(AEVec2 position);
 	ENTITY CreateWormhole(AEVec2 position, float rotSpeed = 5.0f, float rotStart = 0.0f, float uniformSize = 30.0f, int colorVariance = 0);
 	ENTITY CreateTutorialPlanet(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 
@@ -107,6 +108,10 @@ namespace Factory_UI
 
 	void CreateUI_GameOver();
 	void CreateUI_Pause();
+	void CreateUI_GameWin();
+	void  CreateUI_ExitConfirmation();
+	void Create_InGameOptions();
+
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue);

@@ -8,6 +8,7 @@
 #include "../Levels/UpgradeLevel.h"
 #include "../Managers/GameStateManager.h"
 #include "../Levels/Level3.h"
+#include <iostream>
 
 namespace LevelManager
 {
@@ -47,6 +48,10 @@ namespace LevelManager
 	float DeliveryEnemyTimer = 0.0f;
 	unsigned int eliminatedCount = 0;
 	unsigned int enemySpawned2 = 0;
+	int enemyObjectiveCount = 0;
+	bool enemyObjectiveComplete = false;
+	bool isCollectedCompleted = false;
+	bool endPortalSpawned = false;
 
 	// Escort for Level 3s
 	float escortEnemyTimer = 0.0f;
@@ -235,7 +240,7 @@ namespace LevelManager
 	}
 
 	// Start spawning enemies after delivery is collected
-	void Level2Update(AEVec2 playerPos, ENTITY package, float DeliveryEnemySpawnTimer)
+	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer)
 	{
 		if (isCollected)
 		{
@@ -267,6 +272,24 @@ namespace LevelManager
 				}
 				DeliveryEnemyTimer = 0.0f;
 			}
+
+			if (isCollectedCompleted && !endPortalSpawned)
+			{
+				spawnExit = true;
+				exitId = Factory::SpawnLevel_End({ 0.0f, 600.0f });
+				endPortalSpawned = true;
+			}
+
+		}
+	}
+
+	void CheckEnemyObjective()
+	{
+		++enemyObjectiveCount;
+		if (enemyObjectiveCount >= 10)
+		{
+			std::cout << "did it enemyobjectivecomplete" << std::endl;
+			enemyObjectiveComplete = true;
 		}
 	}
 
@@ -274,8 +297,8 @@ namespace LevelManager
 	{
 		isCollected = true;
 
-		spawnExit = true;
-		exitId = Factory::SpawnLevel_End({ -5000.0f, 0.0f });
+		exitId = Factory::SpawnLevel_DeliveryEnd({ 0.0f, 400.0f });
+
 	}
 
 	void ClearEnemy(ENTITY enemy)

@@ -2,8 +2,9 @@
 * \file			Level2.cpp
 * \brief		Game State for Level 1
 * \author		Wei Feng,		Ang,		20% Code Contribution
-*				Jun Yi,			Chong,		60% Code Contribution
+*				Jun Yi,			Chong,		55% Code Contribution
 *				Jin Kiat,		Chong,		20% Code Contribution
+*               Farzaana Binte, Roslan,     5%  Code Contribution
 *
 *				Long Description
 *				- Initalise game objects into the level
@@ -21,12 +22,17 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/AudioManager.h"
 #include "../Managers/LevelManager.h"
+#include "../Systems/RenderSystem.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
 
 ENTITY escort = 0;
 bool missionStatus;
+
+ENTITY _referencetoLevelDisplay = 0;
+int _counter = 0;									//Animation Step
+float _currentTimer = 0.0f;
 
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
@@ -35,6 +41,9 @@ bool missionStatus;
 // ----------------------------------------------------------------------------
 void Level3_Load()
 {
+	// Create Level name 
+	_referencetoLevelDisplay = Factory_UI::CreateUI_Level1Display();
+
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);
 
@@ -104,6 +113,19 @@ void Level3_Init()
 // ----------------------------------------------------------------------------
 void Level3_Update()
 {
+	if (_currentTimer <= 4.0f)
+	{
+		_currentTimer += g_dt;
+		if (_currentTimer >= 2.0f)
+		{
+			RenderingTricks::LightSpeedEffectOut(_referencetoLevelDisplay, _currentTimer - 2.0f, _counter++, 5.0f, 0.04f, -60.0f);
+			if (_currentTimer > 4.0f)
+			{
+				Core::Get().EntityDestroyed(_referencetoLevelDisplay);
+			}
+		}
+
+	}
 	AudioManager::Update();
 	PlayerManager::Update();
 	
@@ -134,6 +156,9 @@ void Level3_Draw()
 // ----------------------------------------------------------------------------
 void Level3_Free()
 {
+	_currentTimer = 0.0f;
+	_counter = 0;
+
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }
