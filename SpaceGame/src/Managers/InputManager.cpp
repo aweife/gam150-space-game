@@ -57,21 +57,21 @@ namespace InputManager
 				: UIEventsManager::Broadcast(new Events::TogglePause(false));
 			AudioManager::TogglePause(g_GamePause);
 		}
-		if (AEInputCheckTriggered(AEVK_ESCAPE))
-		{
-			if (currentState == GS_MAINMENU)
-			{
-				GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
-			}
-			else
-			{
-				GSM_ChangeState(GS_MAINMENU);
-			}
-		}
-		if (AEInputCheckTriggered(AEVK_R))
-		{
-			//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
-		}
+		//if (AEInputCheckTriggered(AEVK_ESCAPE))
+		//{
+		//	if (currentState == GS_MAINMENU)
+		//	{
+		//		GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+		//	}
+		//	else
+		//	{
+		//		GSM_ChangeState(GS_MAINMENU);
+		//	}
+		//}
+		//if (AEInputCheckTriggered(AEVK_R))
+		//{
+		//	//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+		//}
 
 		if (!g_GamePause)
 		{

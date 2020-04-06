@@ -155,6 +155,8 @@ void Level2_Draw()
 // ----------------------------------------------------------------------------
 void Level2_Free()
 {
+	_currTimer = 0.0f;
+	_count = 0;
 	//spawnedBoss = false;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();

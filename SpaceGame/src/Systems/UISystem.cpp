@@ -408,21 +408,70 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	{
 		if (uiComp->_text._colorBlend.a < 0.5f) return false;
 
-		TogglePause();
+		//TogglePause();
 		UIEventsManager::Broadcast(new Events::TogglePause(false));
 
 		if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 1)	//Resume game
 		{
-			 //UIEventsManager::Broadcast(new Events::TogglePause(false));
+			TogglePause();
+			//UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 2)	//Restart Level 
 		{
 			/*GSM_RestartLevel();*/
+			TogglePause();
 			GSM_LoadingTransition(GS_LEVEL1);
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 3)   // Exit to main menu
 		{
+			Factory_UI::CreateUI_ExitConfirmation();
+		}
+	}
+	return true;
+}
+
+bool OnButtonClick_ConfirmationMenuUI(ENTITY entity, Events::OnMouseClick* message)
+{
+	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+	// Bounds of Pause Menu Buttons
+	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
+	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
+	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
+	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
+
+	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
+		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
+	{
+		//printf("failed\n");
+		return false;
+	}
+
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (uiComp)
+	{
+		if (uiComp->_text._colorBlend.a < 0.5f) return false;
+
+		if (!g_GamePause)
+		{
+			TogglePause();
+			AudioManager::TogglePause(g_GamePause);
+		}
+		UIEventsManager::Broadcast(new Events::TogglePause(false));
+
+		if (uiComp->_role == UI_ROLE::QUIT && uiComp->_roleIndex2 == 1)	//Resume game
+		{
+			TogglePause();
 			GSM_ChangeState(GS_MAINMENU);
+			
+			//UIEventsManager::Broadcast(new Events::TogglePause(false));
+		}
+		else if (uiComp->_role == UI_ROLE::QUIT && uiComp->_roleIndex2 == 2)	//Restart Level 
+		{
+			UIEventsManager::Broadcast(new Events::TogglePause(true));
+			AudioManager::TogglePause(g_GamePause);
+
+			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+			uiSys->DeleteQuitComfirmWindow();
 		}
 	}
 	return true;
@@ -455,6 +504,35 @@ bool OnButtonClick_GameOverMenuUI(ENTITY entity, Events::OnMouseClick* message)
 			GSM_LoadingTransition(GS_LEVEL1);
 		}
 		else if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 3)   // Exit to main menu
+		{
+			GSM_ChangeState(GS_MAINMENU);
+		}
+	}
+	return true;
+}
+
+bool OnButtonClick_GameWinMenuUI(ENTITY entity, Events::OnMouseClick* message)
+{
+	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+	// Bounds of Pause Menu Buttons
+	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
+	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
+	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
+	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
+
+	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
+		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
+	{
+		//printf("failed\n");
+		return false;
+	}
+
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (uiComp)
+	{
+		if (uiComp->_text._colorBlend.a < 0.5f) return false;
+		UIEventsManager::Broadcast(new Events::TogglePause(false));
+		if (uiComp->_role == UI_ROLE::GAMEWIN && uiComp->_roleIndex2 == 1)	//Restart Level 
 		{
 			GSM_ChangeState(GS_MAINMENU);
 		}
@@ -605,7 +683,7 @@ bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message)
 	return true;
 }
 
-bool ToggleGameOverWindow(ENTITY entity, Events::TogglePause* message)
+bool ToggleConfirmationWindow(ENTITY entity, Events::ToggleConfirmation* message)
 {
 	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);			//Might be nullptr
 	cUIElement* ui = Core::Get().GetComponent <cUIElement>(entity);
@@ -649,6 +727,93 @@ bool ToggleGameOverWindow(ENTITY entity, Events::TogglePause* message)
 	return true;
 }
 
+bool ToggleGameOverWindow(ENTITY entity, Events::ToggleGameOver* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);			//Might be nullptr
+	cUIElement* ui = Core::Get().GetComponent <cUIElement>(entity);
+
+	if (message->_show)
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 1.0f;
+			ui->_text._colorTint.a = 1.0f;
+
+		}
+
+	}
+	else
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 0.0f;
+			ui->_text._colorTint.a = 0.0f;
+
+		}
+	}
+
+	return true;
+}
+
+bool ToggleGameWinWindow(ENTITY entity, Events::ToggleWin* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);			//Might be nullptr
+	cUIElement* ui = Core::Get().GetComponent <cUIElement>(entity);
+
+	if (message->_show)
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 1.0f;
+			ui->_text._colorTint.a = 1.0f;
+
+		}
+
+	}
+	else
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 0.0f;
+			ui->_text._colorTint.a = 0.0f;
+
+		}
+	}
+
+	return true;
+}
 
 void UISystem::Check_IndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 {
@@ -735,6 +900,15 @@ void UISystem::DeleteUpgradeWindow()
 	}
 }
 
+void UISystem::DeleteQuitComfirmWindow()
+{
+	while (quitComfirm_Set.size() > 0)
+	{
+		Core::Get().EntityDestroyed(*quitComfirm_Set.begin());
+	}
+}
+
+
 void UISystem::OnComponentAdd(ENTITY entity)
 {
 	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
@@ -764,6 +938,9 @@ void UISystem::OnComponentAdd(ENTITY entity)
 			break;
 		case UI_ROLE::OBJECTIVES:
 			objective_Set.insert(entity);
+			break;
+		case UI_ROLE::QUIT:
+			quitComfirm_Set.insert(entity);
 			break;
 	}
 }
@@ -797,6 +974,9 @@ void UISystem::OnComponentRemove(ENTITY entity)
 		break;
 	case UI_ROLE::OBJECTIVES:
 		objective_Set.erase(entity);
+		break;
+	case UI_ROLE::QUIT:
+		quitComfirm_Set.erase(entity);
 		break;
 	}
 }

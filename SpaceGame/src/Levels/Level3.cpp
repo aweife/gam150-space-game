@@ -155,6 +155,9 @@ void Level3_Draw()
 // ----------------------------------------------------------------------------
 void Level3_Free()
 {
+	_currentTimer = 0.0f;
+	_counter = 0;
+
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }

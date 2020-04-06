@@ -467,10 +467,7 @@ namespace LevelManager
 		SetObjectiveSpawnArea();
 		AEVec2 spawnPos;
 
-		AEVec2 position = randomItemPos.front();
-		randomItemPos.pop_front();
-		return position;
-	}
+		float randomSpawnArea = randomLevel;
 
 		switch (static_cast<int>(randomSpawnArea))
 		{

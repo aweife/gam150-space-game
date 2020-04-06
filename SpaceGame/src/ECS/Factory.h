@@ -107,6 +107,8 @@ namespace Factory_UI
 
 	void CreateUI_GameOver();
 	void CreateUI_Pause();
+	void CreateUI_GameWin();
+	void  CreateUI_ExitConfirmation();
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue);
