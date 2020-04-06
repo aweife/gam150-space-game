@@ -91,6 +91,8 @@ namespace Factory_UI
 	void CreateLowHealthInterface();
 	void CreateShieldsDownInterface();
 	void CreateBossIncomingInterface();
+	void CreateOutgunnedInterface();
+	void CreateDefeatBossInterface();
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i);
 	ENTITY Create_SingleShieldBar(AEVec2 position, int i);
 	ENTITY Create_ShieldBubble();
@@ -98,6 +100,8 @@ namespace Factory_UI
 	ENTITY Create_LowHealthUI(AEVec2 position);
 	ENTITY Create_ShieldsDownUI(AEVec2 position);
 	ENTITY Create_BossIncomingUI(AEVec2 position);
+	ENTITY Create_OutgunnedUI(AEVec2 position);
+	ENTITY Create_DefeatBossUI(AEVec2 position);
 	void Create_ChooseThree(AEVec2 centralPos, unsigned int reroll);
 	void Create_ChoosableUpgrade(ENTITY entity);
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);

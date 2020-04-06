@@ -578,6 +578,14 @@ namespace ResourceManager
 				case 39: 
 					if (textureLibrary.find("GameWin_Menu") != textureLibrary.end()) break;
 					textureLibrary.insert({ "GameWin_Menu", AEGfxTextureLoad("res/GameWin_Menu.png") });
+					break;
+				case 40: 
+					if (textureLibrary.find("UI_Outgunned") != textureLibrary.end()) break;
+					textureLibrary.insert({ "UI_Outgunned", AEGfxTextureLoad("res/UI_Outgunned.png") });
+					break;
+				case 41:
+					if (textureLibrary.find("UI_DefeatBoss") != textureLibrary.end()) break;
+					textureLibrary.insert({ "UI_DefeatBoss", AEGfxTextureLoad("res/UI_DefeatBoss.png") });
 					*progress = 100;
 					break;
 				

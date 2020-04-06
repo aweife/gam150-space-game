@@ -273,6 +273,38 @@ bool OnBossIncoming_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* messag
 	return true;
 }
 
+bool OnOutgunned_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* message)
+{
+	//cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
+
+	if (!uiComp) return false;
+	// For destroy
+	if (uiComp->_role == UI_ROLE::OUTGUNNED_UI && message->_state == false)
+	{
+		//UIEventsManager::UnSubscribe<Events::OnShieldDown>(entity);
+		Core::Get().EntityDestroyed(entity);
+	}
+
+	return true;
+}
+
+bool OnDefeatBoss_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* message)
+{
+	//cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
+	cUIElement* uiComp = Core::Get().GetComponent <cUIElement>(entity);
+
+	if (!uiComp) return false;
+	// For destroy
+	if (uiComp->_role == UI_ROLE::DEFEATBOSS_UI && message->_state == false)
+	{
+		//UIEventsManager::UnSubscribe<Events::OnShieldDown>(entity);
+		Core::Get().EntityDestroyed(entity);
+	}
+
+	return true;
+}
+
 
 bool OnShieldDown_ShieldIndicator(ENTITY entity, Events::OnShieldDown* message)
 {

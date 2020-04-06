@@ -934,6 +934,20 @@ namespace Factory_UI
 		Create_BossIncomingUI(spritePos);
 	}
 
+	void CreateOutgunnedInterface()
+	{
+		AEVec2 spritePos;
+		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		Create_OutgunnedUI(spritePos);
+	}
+
+	void CreateDefeatBossInterface()
+	{
+		AEVec2 spritePos;
+		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		Create_DefeatBossUI(spritePos);
+	}
+
 	ENTITY Create_SingleHealthBar(AEVec2 position, int i)
 	{
 		ENTITY hpBar = Core::Get().CreateEntity();
@@ -1040,6 +1054,46 @@ namespace Factory_UI
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.5f, 0.5f);
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.80f, 0.0f);
 		UIEventsManager::Subscribe(boss, &OnBossIncoming_EnemyIndicator); //Appear When boss comes
+
+		return boss;
+	}
+
+	ENTITY Create_OutgunnedUI(AEVec2 position)
+	{
+		ENTITY boss = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(boss, new cTransform(position, 0, { 380, 50 }));
+		Core::Get().AddComponent<cSprite>(boss, new cSprite(boss, "Square Mesh", "UI_Outgunned", 0));
+		Core::Get().GetComponent<cSprite>(boss)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(boss, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::OUTGUNNED_UI));
+		Core::Get().GetComponent<cUIElement>(boss)->_isActive = false;			//invisible
+
+		Core::Get().AddComponent<cTimeline>(boss, new cTimeline(g_appTime, g_appTime + 1.8f, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 0.0f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 0.5f, 1.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.5f, 0.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.80f, 0.0f);
+		UIEventsManager::Subscribe(boss, &OnOutgunned_EnemyIndicator); //Appear When boss comes
+
+		return boss;
+	}
+
+	ENTITY Create_DefeatBossUI(AEVec2 position)
+	{
+		ENTITY boss = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(boss, new cTransform(position, 0, { 380, 50 }));
+		Core::Get().AddComponent<cSprite>(boss, new cSprite(boss, "Square Mesh", "UI_DefeatBoss", 0));
+		Core::Get().GetComponent<cSprite>(boss)->_colorTint = { 1.0f,1.0f, 1.0f, 0.0f };			//invisible
+		Core::Get().AddComponent<cUIElement>(boss, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::DEFEATBOSS_UI));
+		Core::Get().GetComponent<cUIElement>(boss)->_isActive = false;			//invisible
+
+		Core::Get().AddComponent<cTimeline>(boss, new cTimeline(g_appTime, g_appTime + 1.8f, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss));
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 0.0f, 0.0f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 0.5f, 1.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.5f, 0.5f);
+		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(boss)->_colorTint.a, Core::Get().GetComponent<cTimeline>(boss), 1.80f, 0.0f);
+		UIEventsManager::Subscribe(boss, &OnDefeatBoss_EnemyIndicator); //Appear When boss comes
 
 		return boss;
 	}
