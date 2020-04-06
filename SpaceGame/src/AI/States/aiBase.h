@@ -15,6 +15,11 @@ enum STATE
 	STATE_PURSUIT,
 	STATE_RETREAT,
 
+	STATE_CHASEATTACK,
+	STATE_PURSUITATTACK,
+	STATE_RETREATATTACK,
+	STATE_IDLEWANDER,
+
 	SPECIAL_ENTER,
 };
 
@@ -31,6 +36,8 @@ protected:
 
 	INNER_STATE innerState;
 	STATE nextState;
+
+	float _minStay;
 
 	cTransform* trans;
 	cRigidBody* rb;

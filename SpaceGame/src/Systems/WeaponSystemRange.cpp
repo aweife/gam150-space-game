@@ -183,7 +183,7 @@ void HomingShoot(cTransform* transform, OWNERTAG tag, ENTITY target)
 	AEVec2Sub(&bulletDirection, &bulletDirection, &transform->_position);
 	AEVec2Normalize(&bulletDirection, &bulletDirection);
 	// Bullet velocity
-	AEVec2Scale(&bulletVelocity, &bulletDirection, 600.0f);
+	AEVec2Scale(&bulletVelocity, &bulletDirection, 300.0f);
 
 	Factory::CreateHomingMissile(transform->_position.x,
 		transform->_position.y, bulletVelocity, bulletDirection, atan2f(bulletDirection.y, bulletDirection.x) + PI / 2, OWNERTAG::AI, target);

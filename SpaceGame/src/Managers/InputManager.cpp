@@ -26,6 +26,7 @@
 #include "UIEventsManager.h"							//Testing events calling
 #include "../Player/PlayerManager.h"
 #include "LevelManager.h"
+#include "AudioManager.h"								// Testing audio
 
 #include "../ECS/Factory.h"
 #include "../ECS/Core.h"
@@ -53,6 +54,7 @@ namespace InputManager
 			TogglePause();
 			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 
 				: UIEventsManager::Broadcast(new Events::TogglePause(false));
+			AudioManager::ToggleMute(g_GamePause);
 		}
 		if (AEInputCheckTriggered(AEVK_ESCAPE))
 		{

@@ -22,6 +22,10 @@
 #include "States/aiRetreat.h"
 #include "States/aiPursuit.h"
 #include "States/aiIdle.h"
+#include "States/aiChaseAttack.h"
+#include "States/aiPursuitAttack.h"
+#include "States/aiRetreatAttack.h"
+#include "States/aiIdleWander.h"
 
 // Other states
 #include "States/objEnter.h"
@@ -37,7 +41,7 @@
 
 struct aiStateList
 {
-	std::variant< aiChase, aiPursuit, aiAttack, aiRetreat, aiIdle, objEnter > states;
+	std::variant< aiChase, aiChaseAttack, aiPursuit, aiPursuitAttack, aiAttack, aiRetreat, aiRetreatAttack, aiIdle, aiIdleWander, objEnter > states;
 };
 
 struct bossAttackList

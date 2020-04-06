@@ -13,7 +13,7 @@ void bossIdle::OnEnter(aiBlackBoard& bb)
 void bossIdle::OnUpdate(aiBlackBoard& bb)
 {
 	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange*2.0f))
-		ChangeAttack(BOSS_NORMAL);
+		ChangeAttack(BOSS_HOMING);
 }
 
 void bossIdle::OnExit(bossAttackList& var)

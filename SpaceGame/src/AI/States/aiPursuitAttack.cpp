@@ -6,11 +6,13 @@
 #include "../../Player/PlayerManager.h"
 
 
-void aiPursuit::OnEnter(aiBlackBoard& bb)
+void aiPursuitAttack::OnEnter(aiBlackBoard& bb)
 {
 	// Cache player
 	ptrans = Core::Get().GetComponent<cTransform>(PlayerManager::player);
 	prb = Core::Get().GetComponent<cRigidBody>(PlayerManager::player);
+	// Cache self components
+	rwp = Core::Get().GetComponent<cRangeWeapon>(bb.id);
 
 	_pursuitTimer = 0.0f;
 	_minStay = 3.0f + (AERandFloat() * 4.0f);
@@ -18,7 +20,7 @@ void aiPursuit::OnEnter(aiBlackBoard& bb)
 	aiBase::OnEnter(bb);
 }
 
-void aiPursuit::OnUpdate(aiBlackBoard& bb)
+void aiPursuitAttack::OnUpdate(aiBlackBoard& bb)
 {
 	_pursuitTimer += g_dt;
 	_positionPrediction = _pursuitTimer / 2.0f;
@@ -40,15 +42,21 @@ void aiPursuit::OnUpdate(aiBlackBoard& bb)
 	_distanceFromTarget = AEVec2Length(&_targetPosition);
 
 	// If close enough to attack
+	Attack();
 	if (_distanceFromTarget < bb.baseAttackRange)
 		ChangeState(STATE_ATTACK);
 
 	_minStay -= g_dt;
-	if(_minStay < 0.0f)
+	if (_minStay < 0.0f)
 		ChangeState(STATE_IDLE);
 }
 
-void aiPursuit::OnExit(aiStateList& var)
+void aiPursuitAttack::OnExit(aiStateList& var)
 {
 	aiBase::OnExit(var);
+}
+
+void aiPursuitAttack::Attack()
+{
+	rwp->_enemyIsShooting = true;
 }

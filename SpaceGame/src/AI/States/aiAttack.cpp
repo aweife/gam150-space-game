@@ -10,6 +10,7 @@ void aiAttack::OnEnter(aiBlackBoard& bb)
 	// Set distances for state transiton
 	_minDistance = bb.baseAttackRange / 2.0f;
 	_maxDistance = bb.baseAttackRange * 2.0f;
+	_minStay = 3.0f + (AERandFloat() * 2.0f);
 
 	// Cache self components
 	rwp = Core::Get().GetComponent<cRangeWeapon>(bb.id);
@@ -31,12 +32,14 @@ void aiAttack::OnUpdate(aiBlackBoard& bb)
 	{
 		Attack();
 
+		_minStay -= g_dt;
+
 		// If too close to player
-		if (Check::LessThanRange(bb.distanceFromPlayer, _minDistance))
-			ChangeState(STATE_RETREAT);
+		if (Check::LessThanRange(bb.distanceFromPlayer, _minDistance) || _minStay < 0.0f)
+			ChangeState((AERandFloat() > 0.5f) ? STATE_RETREAT : STATE_RETREATATTACK);
 	}
 	else
-		ChangeState(STATE_CHASE);
+		ChangeState((AERandFloat() > 0.5f) ? STATE_CHASE : STATE_CHASEATTACK);
 }
 
 void aiAttack::OnExit(aiStateList& var)

@@ -215,6 +215,18 @@ namespace LevelManager
 		exitId = Factory::SpawnLevel_End({ -3000.0f, 0.0f });
 	}
 
+	void StartBossSpawnSequence()
+	{
+		spawnExit = true;
+		exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+
+		// Init spawn sequence
+		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 300.0f, 5);
+		arrival1 = arrival2 = arrival3 = false;
+		bossTimer = bossArrivalTime / 3.0f;
+	}
+
+
 	void ClearEnemy(ENTITY enemy)
 	{
 		if (wavesEnemyList.find(enemy) != wavesEnemyList.end())
