@@ -11,11 +11,18 @@ void bossNormal::OnEnter(aiBlackBoard& bb)
 
 	// Cache self components
 	rwp = Core::Get().GetComponent<cRangeWeapon>(bb.id);
+
+	// Init state
+	_attackDuration = 3.0f + AERandFloat();
 }
 
 void bossNormal::OnUpdate(aiBlackBoard& bb)
 {
-	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange*2.0f))
+	_attackDuration -= g_dt;
+	if (_attackDuration < 0.0f)
+		ChangeAttack(BOSS_IDLE);
+
+	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange))
 		Attack(bb);
 }
 
