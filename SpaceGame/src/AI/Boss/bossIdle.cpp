@@ -25,6 +25,7 @@ void bossIdle::OnEnter(aiBlackBoard& bb)
 
 void bossIdle::OnUpdate(aiBlackBoard& bb)
 {
+	UNREFERENCED_PARAMETER(bb);
 	_idleTimer -= g_dt;
 	if(_idleTimer < 0.0f)
 		ChangeAttack(BOSS_MOVE);

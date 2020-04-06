@@ -110,7 +110,7 @@ namespace LevelManager
 	{
 		if (nextGameState == GS_MAINMENU)
 		{
-			//Factory_UI::CreateUI_GameOver();
+			Factory_UI::CreateUI_GameWin();
 			return;
 		}
 		loadingForNextLevel = nextGameState;
@@ -373,6 +373,7 @@ namespace LevelManager
 
 	void CheckEscort(AEVec2 escortPos, float checkPointX, float checkPointY)
 	{
+		UNREFERENCED_PARAMETER(checkPointY);
 		if (escortPos.x >= checkPointX && isEscorting)
 		{
 			// Do UI
