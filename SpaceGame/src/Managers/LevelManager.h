@@ -48,7 +48,7 @@ namespace LevelManager
 
 	// Level 2 Missions
 	void Level2_Setup();
-	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer = 5.0f);
+	void Level2Update(AEVec2 playerPos, ENTITY package, float DeliveryEnemySpawnTimer = 5.0f);
 	void SpawnEnemyOnCollect(AEVec2 playerPos);
 	void CheckDelivery();
 	void ClearEnemy(ENTITY enemy);

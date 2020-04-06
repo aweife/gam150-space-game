@@ -25,7 +25,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
 
-
+ENTITY package = 0;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -73,7 +73,7 @@ void Level2_Load()
 
 	Factory_Map::Generate_PlanetField();
 
-	Factory::SpawnDelivery({0.0f, 200.0f}, 60.0f, 5.0f, { 50.0f,50.0f });
+	package = Factory::SpawnDelivery({0.0f, 200.0f}, 60.0f, 5.0f, { 50.0f,50.0f });
 
 	Factory::CreateBackground();
 	Factory_UI::CreateUI_AddObjective(1, "Deliver The Package");
@@ -111,7 +111,7 @@ void Level2_Update()
 	{
 		AEVec2 playerPos = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position;
 		//Delivery Mission
-		LevelManager::Level2Update(playerPos, 5.0f);
+		LevelManager::Level2Update(playerPos, package, 5.0f);
 		//Spawn Enemy around player
 		LevelManager::EnemySpawnManager::SpawnEnemyWavesTimer(playerPos, 5.0f);
 	}

@@ -13,7 +13,7 @@
 #include "../Managers/UpgradeManager.h"
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/CameraManager.h"					//ScreenSpace Text UI
-
+#include "../Managers/AudioManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -369,7 +369,9 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	{
 		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound
 		{
-
+			Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a
+				= 1.0f - Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a;
+			AudioManager::ToggleMute(!g_isMute);
 		}
 		else if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 2)	//Toggle Full screen
 		{

@@ -14,7 +14,7 @@
 #include "AEEngine.h"
 #include "fmod_errors.h"
 #include <map>
-
+#include "../Global.h"
 namespace AudioManager
 {
 	static FMOD::System* _system;
@@ -35,7 +35,6 @@ namespace AudioManager
 
 		// Init system
 		ErrorCheck(_system->init(512, FMOD_INIT_NORMAL, nullptr));
-		isMuted = false;
 	}
 
 	void Update()
@@ -115,7 +114,7 @@ namespace AudioManager
 
 		ErrorCheck(_system->playSound(found->second, nullptr, true, &bgm));
 
-		if (isMuted)
+		if (g_isMute)
 			volume = 0.0f;
 
 		// Set volume
@@ -143,7 +142,7 @@ namespace AudioManager
 		FMOD::Channel* c;
 		ErrorCheck(_system->playSound(found->second, nullptr, true, &c));
 
-		if (isMuted)
+		if (g_isMute)
 			volume = 0.0f;
 
 		// Set volume
@@ -155,10 +154,14 @@ namespace AudioManager
 
 	void ToggleMute(bool mute)
 	{
-		isMuted = mute;
-
+		g_isMute = mute;
+		
 		// Set volume
-		ErrorCheck(bgm->setVolume(isMuted ? 0.0f : originalVolume));
+		if (bgm)
+		{
+			ErrorCheck(bgm->setVolume(g_isMute ? 0.0f : originalVolume));
+		}
+		
 	}
 
 	void TogglePause(bool pause)
