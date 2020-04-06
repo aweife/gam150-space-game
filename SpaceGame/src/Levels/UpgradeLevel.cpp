@@ -2,6 +2,7 @@
 #include "../ECS/Factory.h"
 #include "../Managers/GameStateManager.h"
 #include "../Managers/UIEventsManager.h"
+#include "../Managers/LevelManager.h"
 
 unsigned int loadingForNextLevel = GS_NULL;
 bool upgradeFinish;
@@ -9,8 +10,8 @@ bool upgradeFinish;
 void UpgradeLvl_Load()
 {
 	Factory::CreateMenuPlayer();
-	Factory_Map::Generate_StarField_Menu();
-	Factory_UI::Create_ChooseThree({ 0,0 });
+	Factory_Map::Generate_StarField();
+	Factory_UI::Create_ChooseThree({0, 0 }, 2);
 }
 
 void UpgradeLvl_Init()
@@ -24,7 +25,7 @@ void UpgradeLvl_Update()
 	Core::Get().Core_Update();
 	if (upgradeFinish && loadingForNextLevel != GS_NULL)
 	{
-		GSM_ChangeState(loadingForNextLevel);
+		GSM_LoadingTransition(loadingForNextLevel);
 	}
 }
 
@@ -37,10 +38,12 @@ void UpgradeLvl_Free()
 {
 	loadingForNextLevel = GS_NULL;
 	upgradeFinish = false;
+
 }
 
 void UpgradeLvl_Unload()
 {
+	LevelManager::Clear_StarField();
 	UIEventsManager::Cleanup();
 	Core::Get().DestroyAllEntity();
 }

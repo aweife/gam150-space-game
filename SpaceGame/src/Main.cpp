@@ -54,7 +54,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// -----------------------------------------------------------------------
 	// Initialization of Application Window
 	// -----------------------------------------------------------------------
-	AESysInit(hInstance, nCmdShow, 1280, 720, g_DebugEditor, 60, true, NULL);	// Using custom window procedure
+	Global_InitWindowSize(true);
+	AESysInit(hInstance, nCmdShow, g_WindowWidth, g_WindowHeight, g_DebugEditor, 60, true, NULL);	// Using custom window procedure
+	AEToogleFullScreen(true);
 	AESysSetWindowTitle("Master Branch");										// Changing the window title
 	AESysReset();																// reset the system modules
 	AEGfxSetBackgroundColor(0.07f, 0.04f, 0.22f);								// Set Dark Purple BG 
@@ -67,13 +69,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// -----------------------------------------------------------------------
 	// Initialization of Game 
 	// -----------------------------------------------------------------------
-	Global_Init();																// Init time, windowSize...
+	Global_UpdateWindowSize();													// Init windowSize...
 	Core::Get().Core_Init();													// Initalise Game Engine ECS
 	ResourceManager::Init();													// Load in Bare Minimum
 	UpgradeManager::Init_UpgradeDatabase();
 	AudioManager::Init();
 
-	GSM_Init(GS_MAINMENU);														// Initalise Game StateManager
+	GSM_Init(GS_SPLASHSCREEN);														// Initalise Game StateManager
 
 	// -----------------------------------------------------------------------
 	// GAME STATE LOOP
@@ -90,6 +92,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			nextState = previousState;											// Restart the level
 			currentState = previousState;
 		}
+		Global_UpdateWindowSize();
 		fpInit();																// INITALISE data for current game state
 		
 		// -----------------------------------------------------------------------
@@ -115,8 +118,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			AESysFrameEnd();							
 
 			// Get deltatime
-			g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-			g_appTime += g_dt;
+			if (!g_GamePause)										// Only update deltaTime if NOT PAUSED
+			{
+				g_dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+				g_appTime += g_dt;
+			}
 
 			// Check if forcing the application to quit
 			// See Input for Esc Key triggered to exit game

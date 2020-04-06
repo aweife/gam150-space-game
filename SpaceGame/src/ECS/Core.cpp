@@ -81,7 +81,4 @@ void Core::GenerateWorldState()
 	Console_Cout("---Generating World State---");
 	
 	Console_Newline();
-	
-	
 }
-

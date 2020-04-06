@@ -19,6 +19,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 extern bool		g_DebugEditor;					// Should the game show a console window
 extern bool		g_GamePause;					// Is the game paused?
 extern bool		g_BBShowMode;					// Display all outline of mesh rigidbody
+extern bool		g_isFullScreen;					// Is the game in fullscreen
+extern bool		g_isMute;						// Is the game audio muted
 
 //Time Based
 extern float		g_dt;						// Delta Time for game
@@ -36,7 +38,13 @@ extern long			g_WindowHeight;				// Height ^
 extern AEVec2 defaultAEVec2;
 extern float defaultFloat;
 
-void Global_Init();
+
+void Global_InitWindowSize(bool isFullScreen);
+
+
+void Global_ToggleWindowed();
+
+void Global_UpdateWindowSize();
 
 void TogglePause();
 

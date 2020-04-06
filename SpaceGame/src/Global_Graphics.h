@@ -44,6 +44,7 @@ struct TextInfo
 	ColorInfo _colorTint;
 	ColorInfo _colorBlend;
 	TEXT_ANCHOR _anchor = TEXT_ANCHOR::CENTERLEFT;
+	bool _usingScreenSpace;
 };
 
 

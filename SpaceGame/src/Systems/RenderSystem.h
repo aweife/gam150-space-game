@@ -30,3 +30,12 @@ public:
 	void OnComponentAdd(ENTITY entity);
 	void OnComponentRemove(ENTITY entity);
 };
+
+namespace RenderingTricks
+{
+	void LightSpeedEffectOut(ENTITY target, float elapsedTime, int counter,
+		float increment, float alphaDecrement, float degree);
+
+	void LightSpeedEffectIn(ENTITY target, float elapsedTime, float totalTime, float timeOffset, int counter,
+		float maxRangeX, float maxRangeY, float desiredX, float desiredY, float alphaIncrement, float degree);
+}

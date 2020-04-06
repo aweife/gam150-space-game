@@ -21,7 +21,7 @@ void aiIdleWander::OnUpdate(aiBlackBoard& bb)
 		Transform::RotateToTarget(trans->_rotation, trans->_position, _randomPosition, bb.rotationSpeed * g_dt);
 		rb->_velocity += bb.baseAcceleration;
 		if (rb->_velocity > bb.baseMaxSpeed / 2.0f)
-			rb->_velocity = bb.baseMaxSpeed / 2.0;
+			rb->_velocity = bb.baseMaxSpeed / 2.0f;
 
 		Steering::SeekTarget(
 			rb->_steeringVector,

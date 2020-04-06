@@ -35,6 +35,6 @@ namespace PlayerManager
 		cTransform* playerTransform, cRigidBody* playerRigidBody);
 
 	void CreatePlayerWeapon();
-	void ResetPlayer();	
+	void ResetPlayer(bool hardReset = false);	
 	void PlayerDeath();
 }

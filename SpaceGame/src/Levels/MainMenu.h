@@ -12,6 +12,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
 #pragma once
 
+enum class mmStates { MAIN, OPTIONS, CREDITS };
+
 void MainMenu_Load();
 void MainMenu_Init();
 void MainMenu_Update();
@@ -20,3 +22,5 @@ void MainMenu_Free();
 void MainMenu_Unload();
 
 void Create_MainMenuInterface();
+void Switch_MainMenuState(mmStates newState);
+

@@ -50,20 +50,16 @@ void PhysicsSystem::Update()
 		trans = Core::Get().GetComponent<cTransform>(entity);
 		rb = Core::Get().GetComponent<cRigidBody>(entity);
 
-		/*if (foranglecheck(rb->_currentVelocityDirection, rb->_velocityDirection))
-		{
-			rb->_velocity *= 0.995f;
-
-			if (rb->_velocity < 1.0f)
-				rb->_currentVelocityDirection = rb->_velocityDirection;
-		}*/
-
 		// Apply "air friction"
 		rb->_velocity *= rb->_airResistance;
 
 		// if the velocity hits the velocity cap
 		if (rb->_velocity > rb->_velocityCap)
 			rb->_velocity *= 0.985f;
+
+		//Normalised velocityDirection just in case 
+		if (fabs(AEVec2Length(&rb->_velocityDirection)) > FLT_EPSILON)
+		AEVec2Normalize(&rb->_velocityDirection, &rb->_velocityDirection);
 
 		// Calculate current velocity vector based on velocity and direction
 		AEVec2Scale(&rb->_velocityVector, &rb->_velocityDirection, rb->_velocity * g_dt);
@@ -78,7 +74,7 @@ void PhysicsSystem::Update()
 		AEVec2Scale(&rb->_collisionVector, &rb->_collisionVector, 0.9f);
 				
 		// Affect steering force by mass
-		//AEVec2Scale(&rb->_steeringVector, &rb->_steeringVector, 1.0f/rb->_mass);
+		AEVec2Scale(&rb->_steeringVector, &rb->_steeringVector, 1.0f/rb->_mass);
 
 		// Add player force into the velocity vector
 		AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_velocityChangeVector);
@@ -96,33 +92,6 @@ void PhysicsSystem::Update()
 		if (fabs(rb->_velocityVector.x + rb->_velocityVector.y) > FLT_EPSILON)
 			AEVec2Normalize(&rb->_velocityDirection, &rb->_velocityVector);
 
-		// -----------------------------------------------------------------------
-		// Non-essential Calculation, mainly for exposing values to check by AI or player
-		// -----------------------------------------------------------------------
-
-		// Calculate velocity magnitude
-		//rb->_velocity = AEVec2Length(&rb->_velocityVector);
-
-
-		///***************
-		//* AI
-		//****************/
-		//// Addition of forces to final calculation
-		//rb->_aiSteeringVector.x = rb->_aiSteeringVector.x / rb->_mass;
-		//rb->_aiSteeringVector.y = rb->_aiSteeringVector.y / rb->_mass;
-
-
-		//// add steering vector into the velocity vector
-		//AEVec2Add(&rb->_velocityVector, &rb->_velocityVector, &rb->_aiSteeringVector);
-
-		//// check if the collision is bigger than the other vectors
-		//if (rb->_collisionVector.x > rb->_velocityVector.x &&
-		//	rb->_collisionVector.y > rb->_velocityVector.y)
-		//{
-		//	// to set the current velocity vector to the collision vector, and decrement the collision vector 
-		//	--rb->_collisionVector.x;
-		//	--rb->_collisionVector.y;
-		//}
 	}
 }
 

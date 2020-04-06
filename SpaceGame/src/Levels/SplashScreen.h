@@ -18,3 +18,4 @@ void SplashScreen_Update();
 void SplashScreen_Draw();
 void SplashScreen_Free();
 void SplashScreen_Unload();
+void SpashScreenIntervals();

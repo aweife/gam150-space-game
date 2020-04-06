@@ -68,7 +68,6 @@ struct PlayerUpgrade_Base
 	inline virtual float Get_ShieldIncrease()		{ return 0.0f; };
 	inline virtual float Get_HealthIncrease()		{ return 0.0f; };
 	inline virtual int   Get_LifeIncrease()			{ return 0; };
-
 	//virtual ~PlayerUpgrade_Base() = 0 {};
 };
 

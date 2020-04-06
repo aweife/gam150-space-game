@@ -33,7 +33,7 @@ void Editor_Init()
 
 	//Reposition game window to top right corner
 	int xnew = desktopRect.right - (applicationRect.right - applicationRect.left);
-	int ynew = 60;//desktopRect.bottom - (applicationRect.bottom - applicationRect.top);	//Offset to see visual studio taskbar
+	int ynew = 0;// 60;//desktopRect.bottom - (applicationRect.bottom - applicationRect.top);	//Offset to see visual studio taskbar
 	SetWindowPos(gameWindow, HWND_NOTOPMOST, xnew, ynew, 0, 0, SWP_FRAMECHANGED | SWP_DRAWFRAME | SWP_NOSIZE);
 	
 }
@@ -87,4 +87,25 @@ void Editor_TrackVariable(const char* text, float value)
 void Editor_TrackVariable(const char* text, int value)
 {
 	Editor_TrackVariable(text, static_cast<float>(value));
+}
+
+
+/******************************************************************************/
+/*!
+  \brief	Resize the game window to user specifed size
+  \note		If monitor size has contraint, resize to maximum possible size
+*/
+/******************************************************************************/
+void Editor_SetSize(short x, short y)
+{
+	// Check if user defined size exceed laptop screen
+	RECT   desktopRect;
+	GetWindowRect(GetDesktopWindow(), &desktopRect);
+	const COORD maxSize = { static_cast<short>(desktopRect.right - desktopRect.left),  static_cast<short>(desktopRect.bottom - desktopRect.top)};
+	short yOffset = 2;
+	x = (x <= maxSize.X) ? x : maxSize.X;
+	y = (y <= maxSize.Y - yOffset) ? y : maxSize.Y - yOffset;
+
+	HWND gameWindow = AESysGetWindowHandle();
+	SetWindowPos(gameWindow, HWND_NOTOPMOST, 0, 0, x, y, SWP_FRAMECHANGED | SWP_DRAWFRAME );
 }

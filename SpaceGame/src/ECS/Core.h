@@ -43,6 +43,22 @@ public:
 	void EntityDestroyed(ENTITY entity);
 	void DestroyAllEntity();
 
+	template<unsigned int SIZE>
+	void SortEntity(ENTITY* (&array)[SIZE])
+	{
+		std::vector<ENTITY> sortingVector;
+		for (unsigned i = 0; i < SIZE; ++i)
+		{
+			sortingVector.push_back(*(array[i]));
+		}
+		std::sort(sortingVector.begin(), sortingVector.end());
+		for (unsigned i = 0; i < sortingVector.size(); ++i)
+		{
+			*(array[i]) = sortingVector.at(i);
+		}
+		
+	}
+
 	// COMPONENT
 	template<typename T>
 	void RegisterComponent()

@@ -12,7 +12,7 @@ public:
 	AEGfxTexture*	_texture;
 	unsigned int	_layer;				/*0 to 5...see render system*/
 	ColorInfo		_colorTint = {1.0f, 1.0f, 1.0f, 1.0f};				//tint or base color
-	ColorInfo		_colorBlend = { 0.0f, 0.0f, 0.0f, 0.0f };				//tint or base color
+	ColorInfo		_colorBlend = { 0.0f, 0.0f, 0.0f, 0.0f };			//tint or base color
 	SPRITE_RM		_mode;
 
 	//Additional modifiers

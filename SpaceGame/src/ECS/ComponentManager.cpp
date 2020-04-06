@@ -37,6 +37,7 @@ void ComponentManager::Init()
 	RegisterComponentCollection<cParticleEmitter>(ID_ParticleEmitterComponent);
 	RegisterComponentCollection<cTimeline>(ID_TimelineComponent);
 	RegisterComponentCollection<cWarping>(ID_WarpingComponent);
+	RegisterComponentCollection<cScanner>(ID_ScannerComponent);
 }
 
 template<typename T>

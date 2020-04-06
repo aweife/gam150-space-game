@@ -61,7 +61,7 @@ void BossSystem::CheckOutOfScreen(ENTITY id)
 		AEVec2Sub(&relativeDirection, &self->_position, &cameraPosition);
 		std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
 
-		//@TED later just change the last variable for different enemy type
-		uiSys->Check_AIIndicatorExist(id, relativeDirection, 0); //Under UI System
+		//TO DO: Change to Boss function
+		uiSys->Check_IndicatorExist(id, relativeDirection, 3); //Under UI System
 	}
 }

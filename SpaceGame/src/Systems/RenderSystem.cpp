@@ -26,6 +26,7 @@ void RenderSystem::Render()
 	AEGfxGetCamPosition(&cameraX, &cameraY);
 	float parallaxOffsetX = 0.0f;
 	float parallaxOffsetY = 0.0f;
+	ColorInfo farAwayTint = {0.0f,0.0f ,0.0f ,0.0f };
 
 	//Update particle system based on layers after finished 
 	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
@@ -36,6 +37,7 @@ void RenderSystem::Render()
 	// -----------------------------------------------------------------------
 	for (auto const& layer : allLayer)
 	{
+		farAwayTint = { 0.0f, 0.0f ,0.0f ,0.0f };
 		for (auto const& entity : *layer)
 		{
 			transform = Core::Get().GetComponent<cTransform>(entity);
@@ -64,12 +66,14 @@ void RenderSystem::Render()
 				//Render with parallax offset
 				parallaxOffsetX = cameraX * -0.001f * sprite->_layer;
 				parallaxOffsetY = cameraY * -0.001f * sprite->_layer;
+				farAwayTint = {0.4f, 0.4f, 0.4f, 0.0f};
 			}
 			else if (sprite->_layer >= 3 && sprite->_layer <= 4)			//BACKGROUND <--
 			{
 				//Render with parallax offset
 				parallaxOffsetX = cameraX * -0.05f * sprite->_layer;
 				parallaxOffsetY = cameraY * -0.05f * sprite->_layer;
+				farAwayTint = { 0.2f, 0.2f, 0.2f, 0.0f };
 			}
 			else if (sprite->_layer == 1)									//FOREGROUND -->
 			{
@@ -105,10 +109,11 @@ void RenderSystem::Render()
 
 				// Set blend mode to blend so we can render transparency
 				AEGfxSetBlendMode(sprite->_blend);
-				//Transparency
+				// Transparency
 				AEGfxSetTransparency(1.0f);
 				// No tint
-				AEGfxSetTintColor(sprite->_colorTint.r, sprite->_colorTint.g, sprite->_colorTint.b, sprite->_colorTint.a);
+				AEGfxSetTintColor(sprite->_colorTint.r - farAwayTint.r, sprite->_colorTint.g - farAwayTint.g
+					, sprite->_colorTint.b - farAwayTint.b, sprite->_colorTint.a);
 				AEGfxSetBlendColor(sprite->_colorBlend.r, sprite->_colorBlend.g, sprite->_colorBlend.b, sprite->_colorBlend.a);
 				// Render at _position
 				AEGfxSetTransform(transform->_transform.m);
@@ -121,7 +126,8 @@ void RenderSystem::Render()
 				AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 				AEGfxSetBlendMode(sprite->_blend);
 				AEGfxSetTransparency(1.0f);
-				AEGfxSetTintColor(sprite->_colorTint.r, sprite->_colorTint.g, sprite->_colorTint.b, sprite->_colorTint.a);
+				AEGfxSetTintColor(sprite->_colorTint.r - farAwayTint.r, sprite->_colorTint.g - farAwayTint.g
+					, sprite->_colorTint.b - farAwayTint.b, sprite->_colorTint.a);
 				AEGfxSetBlendColor(sprite->_colorBlend.r, sprite->_colorBlend.g, sprite->_colorBlend.b, sprite->_colorBlend.a);
 				AEGfxSetTransform(transform->_transform.m);
 				AEGfxMeshDraw(sprite->_mesh, AE_GFX_MDM_TRIANGLES);
@@ -129,6 +135,8 @@ void RenderSystem::Render()
 			
 		}
 		particleSystemInstance->RenderLayer(currentLayer, parallaxOffsetX, parallaxOffsetY);
+		// Will synchronise everyones version
+		if (currentLayer == 3)	particleSystemInstance->RenderLayer(21, parallaxOffsetX, parallaxOffsetY);
 		--currentLayer;
 	}
 }
@@ -216,4 +224,82 @@ void RenderSystem::OnComponentRemove(ENTITY entity)
 	entityLayer6.erase(entity);
 	entityLayer7.erase(entity); */
 
+}
+
+namespace RenderingTricks
+{
+	// Step based
+	void LightSpeedEffectOut(ENTITY target, float elapsedTime, int counter, 
+		float increment, float alphaDecrement, float degree)
+	{
+		cTransform* transform = Core::Get().GetComponent<cTransform>(target);
+		cSprite* sprite = Core::Get().GetComponent<cSprite>(target);
+		float angle = AEDegToRad(degree);
+		
+		//First frame
+		if (elapsedTime <= g_dt && counter == 0)
+		{
+			transform->_position.x -= AECos(angle) * increment;
+			transform->_position.y += AESin(angle) * increment;		//0, up
+			if(sprite) sprite->_colorTint.a -= alphaDecrement;
+		}
+		else
+		{
+			int step = counter % 2;		//0 or 1;
+			if (step)	// 1 or odd, down
+			{
+				transform->_position.x -= AECos(angle) * 2 * increment * ((counter / 2) + 1);
+				transform->_position.y -= AESin(angle) * 2 * increment * ((counter / 2) + 1);
+				if (sprite) sprite->_colorTint.a -= alphaDecrement;
+			}
+			else		// 0 or even, up
+			{
+				// Centralised first
+				transform->_position.x += AECos(angle) * increment * (counter / 2);
+				transform->_position.y += AESin(angle) * increment * (counter / 2);
+				transform->_position.x += AECos(angle) * increment * ((counter / 2) + 1);
+				transform->_position.y += AESin(angle) * increment * ((counter / 2) + 1);
+				if (sprite) sprite->_colorTint.a -= alphaDecrement;
+			}
+		}
+	}
+
+	//Timebased
+	void LightSpeedEffectIn(ENTITY target, float elapsedTime, float totalTime, float timeOffset,int counter,
+		float maxRangeX, float maxRangeY, float desiredX, float desiredY, float alphaIncrement, float degree)
+	{
+		cTransform* transform = Core::Get().GetComponent<cTransform>(target);
+		cSprite* sprite = Core::Get().GetComponent<cSprite>(target);
+		float angle = AEDegToRad(degree);
+
+		//First frame
+		if (elapsedTime <= g_dt && counter == 0)
+		{
+			//Up
+			transform->_position.x = desiredX + (AECos(angle) * maxRangeX);
+			transform->_position.y = desiredY + (AESin(angle) * maxRangeY);		//0, up
+			if (sprite) sprite->_colorTint.a += alphaIncrement;
+		}
+		else
+		{
+			int step = counter % 2;		//0 or 1;
+			// +g_dt*step to retrieve previous frame distance
+			//time offset used to achieve centralised position faster
+			float timePercentage = (totalTime - elapsedTime + (g_dt * step) - timeOffset)/totalTime;
+			timePercentage = (timePercentage < 0.0f ? 0.0f : timePercentage);
+			if (step)	// 1 or odd, down
+			{
+				transform->_position.x = desiredX - (AECos(angle) * (maxRangeX * timePercentage));
+				transform->_position.y = desiredY - (AESin(angle) * (maxRangeY * timePercentage));
+				if (sprite) sprite->_colorTint.a += alphaIncrement;
+			}
+			else		// 0 or even, up
+			{
+				// Centralised first
+				transform->_position.x = desiredX + (AECos(angle) * (maxRangeX * timePercentage));
+				transform->_position.y = desiredY + (AESin(angle) * (maxRangeY * timePercentage));
+				if (sprite) sprite->_colorTint.a += alphaIncrement;
+			}
+		}
+	}
 }

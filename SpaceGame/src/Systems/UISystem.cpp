@@ -12,6 +12,8 @@
 #include "../Player/PlayerManager.h"
 #include "../Managers/UpgradeManager.h"
 #include "../Managers/UIEventsManager.h"
+#include "../Managers/CameraManager.h"					//ScreenSpace Text UI
+#include "../Managers/AudioManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -101,18 +103,25 @@ void UISystem::Render()
 	cUIElement* uiComponent;
 	cTransform* uiTransform;
 
+	float cameraX = 0.0f, cameraY = 0.0f;
+	AEGfxGetCamPosition(&cameraX, &cameraY);
+
+
 	for (auto const& entity : entitiesList)
 	{
 		uiComponent = Core::Get().GetComponent<cUIElement>(entity);
 		uiTransform = Core::Get().GetComponent<cTransform>(entity);
-		
+
 		if (uiComponent->_type == UI_TYPE::TEXT)
 		{
 			AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 			AEGfxTextureSet(NULL, 0, 0);
 			AEGfxSetBlendMode(AE_GFX_BM_NONE);
-			AEGfxSetTransparency(uiComponent->_text._colorTint.a);
+			//AEGfxSetTransparency(uiComponent->_text._colorTint.a);		//not working for text
 
+			if (uiComponent->_text._colorTint.a < 0.1f) continue;
+
+			// Aligh the text itself
 			AEVec2 textPosition = { 0 };
 			if (uiComponent->_text._anchor == TEXT_ANCHOR::CENTERLEFT)
 			{
@@ -129,11 +138,18 @@ void UISystem::Render()
 					, uiTransform->_position.y - 8);
 			}
 
+			// UI Screenspace
+			if (uiComponent->_text._usingScreenSpace)
+			{
+				textPosition.x += cameraX;
+				textPosition.y += cameraY;
+			}
+
+
 			AEGfxPrint(ResourceManager::fontId, uiComponent->_text._textBuffer,
 				static_cast<int>(textPosition.x), static_cast<int>(textPosition.y),
 				uiComponent->_text._colorTint.r, uiComponent->_text._colorTint.g, uiComponent->_text._colorTint.b);
-		}
-		
+		}		
 	}
 }
 
@@ -257,6 +273,7 @@ bool OnBossIncoming_EnemyIndicator(ENTITY entity, Events::OnBossIncoming* messag
 	return true;
 }
 
+
 bool OnShieldDown_ShieldIndicator(ENTITY entity, Events::OnShieldDown* message)
 {
 	//cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);
@@ -336,23 +353,112 @@ bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* messag
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
-	
+	// Bounds of Main Menu Buttons
 	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
 	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
 
-	//printf("mouse %f %f \n", message->_xPos, message->_yPos);
-	//printf("orig %f %f \n", transform->_position.x, transform->_position.y);
-	//printf("min %f %f \n", buttomMinX, buttomMinY);
-	//printf("max %f %f \n", buttomMaxX, buttomMaxY);
 	if ((buttomMaxX > message->_xPos && buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos && buttomMinY < message->_yPos) == false)
 	{
 		//printf("failed\n");
 		return false;
 	}
-	GSM_LoadingTransition(GS_LEVEL1);
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (uiComp)
+	{
+		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound
+		{
+			Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a
+				= 1.0f - Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a;
+			AudioManager::ToggleMute(!g_isMute);
+		}
+		else if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 2)	//Toggle Full screen
+		{
+			Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a 
+				= 1.0f - Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a;
+			Global_ToggleWindowed();
+			GSM_RestartLevel();
+		}
+	}
+
+	//GSM_LoadingTransition(GS_LEVEL1);
+	return true;
+}
+
+bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
+{
+	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+	// Bounds of Pause Menu Buttons
+	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
+	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
+	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
+	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
+
+	if ((buttomMaxX > message->_xPos && buttomMinX < message->_xPos &&
+		buttomMaxY > message->_yPos && buttomMinY < message->_yPos) == false)
+	{
+		//printf("failed\n");
+		return false;
+	}
+	
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (uiComp)
+	{
+		if (uiComp->_text._colorBlend.a < 0.5f) return false;
+
+		TogglePause();
+		UIEventsManager::Broadcast(new Events::TogglePause(false));
+
+		if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 1)	//Resume game
+		{
+			 //UIEventsManager::Broadcast(new Events::TogglePause(false));
+		}
+		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 2)	//Restart Level 
+		{
+			/*GSM_RestartLevel();*/
+			GSM_LoadingTransition(GS_LEVEL1);
+		}
+		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 3)   // Exit to main menu
+		{
+			GSM_ChangeState(GS_MAINMENU);
+		}
+	}
+	return true;
+}
+
+bool OnButtonClick_GameOverMenuUI(ENTITY entity, Events::OnMouseClick* message)
+{
+	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+	// Bounds of Pause Menu Buttons
+	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
+	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
+	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
+	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
+
+	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
+		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
+	{
+		//printf("failed\n");
+		return false;
+	}
+
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (uiComp)
+	{
+		if (uiComp->_text._colorBlend.a < 0.5f) return false;
+		UIEventsManager::Broadcast(new Events::TogglePause(false));
+		if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 2)	//Restart Level 
+		{
+			/*GSM_RestartLevel();*/
+			GSM_LoadingTransition(GS_LEVEL1);
+		}
+		else if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 3)   // Exit to main menu
+		{
+			GSM_ChangeState(GS_MAINMENU);
+		}
+	}
 	return true;
 }
 
@@ -371,13 +477,58 @@ bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	cUIElement* upgrade = Core::Get().GetComponent<cUIElement>(entity);
+
 	if (upgrade && !upgradeFinish)
 	{
+		int resultingRerollCount = -1;
+		UIEventsManager::Broadcast(new Events::OnUpgradeReroll(resultingRerollCount));
 		UpgradeManager::ApplyUpgrade(upgrade->_roleIndex);
 		UpgradeManager::ClearAllUpgradeChoice();
-		upgradeFinish = true;
+		
+		if (resultingRerollCount == 0)
+		{
+			upgradeFinish = true;
+		}
+		
 	}
 
+	return true;
+}
+
+bool UpdateRerollCount(ENTITY entity, Events::OnUpgradeReroll* message)
+{
+	// There is only one reroll UI
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+
+	if (uiComp)
+	{
+		--uiComp->_roleIndex2;
+		char buffer[4];
+		_itoa_s(uiComp->_roleIndex2, buffer, 10);
+		EditText(entity, buffer);
+
+		message->_rerollInfo = uiComp->_roleIndex2;
+	}
+
+	return true;
+}
+
+bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message)
+{
+	if (message->_upgradeIndex == -1)
+	{
+		EditText(entity, "");
+	}
+	else
+	{
+		cUIElement* descptUIComp = Core::Get().GetComponent<cUIElement>(entity);
+		if (descptUIComp->_roleIndex == static_cast<unsigned int>(message->_slot))
+		{
+			EditText(entity, "Hello");
+			return true;
+		}
+		return false;
+	}
 	return true;
 }
 
@@ -389,35 +540,138 @@ bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message)
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
 	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
 	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
-	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+
+	float defaultSize = 100.0f;
+
 	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
 	{
-		if (sprite)
+		if (transform)
 		{
-			sprite->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+			transform->_scale = { defaultSize, defaultSize };
 		}
 		return false;
 	}
 
-	if(sprite)
+	if(transform)
 	{
-		sprite->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+		transform->_scale = { defaultSize * 1.2f, defaultSize * 1.2f };
 	}
 
 	return true;
 }
 
-void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
+bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);			//Might be nullptr
+	cUIElement* ui = Core::Get().GetComponent <cUIElement>(entity);			
+
+	if (message->_show)
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 1.0f;
+			ui->_text._colorTint.a = 1.0f;
+
+		}
+		
+	}
+	else 
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 0.0f;
+			ui->_text._colorTint.a = 0.0f;
+
+		}
+	}
+
+	return true;
+}
+
+bool ToggleGameOverWindow(ENTITY entity, Events::TogglePause* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);			//Might be nullptr
+	cUIElement* ui = Core::Get().GetComponent <cUIElement>(entity);
+
+	if (message->_show)
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 1.0f;
+			ui->_text._colorTint.a = 1.0f;
+
+		}
+
+	}
+	else
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 0.0f;
+			ui->_text._colorTint.a = 0.0f;
+
+		}
+	}
+
+	return true;
+}
+
+
+void UISystem::Check_IndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 {
 	cUIElement* uiComp = nullptr;
 	cTransform* uiTrans = nullptr;
+	float imageDistance = 0.9f;
+	bool foundBothIndicator = false;
 
 	for(ENTITY entity :aiIndicator_Set)
 	{
 		uiComp = Core::Get().GetComponent<cUIElement>(entity);
 		if (uiComp->_roleIndex == ai)			//the indicator already exists
 		{
+			foundBothIndicator = true;
+			if (uiComp->_roleIndex2 == 1)			//The arrow Component
+			{
+				imageDistance = 0.9f;
+			}
+			else if (uiComp->_roleIndex2 == 2)
+			{
+				imageDistance = 0.855f;
+			}
+
 			//Update the position
 			uiTrans = Core::Get().GetComponent<cTransform>(entity);
 			float screenGradiant = g_WorldMaxY / g_WorldMaxX;
@@ -426,26 +680,26 @@ void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 
 			if (aiDir.x < FLT_EPSILON && aiDir.x > -FLT_EPSILON) //Horizontal axis
 			{
-				aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
-				aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * imageDistance;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * imageDistance;
 			}
 			else if (aiDir.y < FLT_EPSILON && aiDir.y > -FLT_EPSILON) //Vertical axis
 			{
-				aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
-				aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+				aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * imageDistance;
+				aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * imageDistance;
 			}
 			else
 			{
 				float aiGradiant = aiDir.y / aiDir.x;
 				if (fabs(aiGradiant) < screenGradiant)		//Vertical Axis
 				{
-					aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
-					aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * 0.9f;
+					aiDir.x = aiDir_Normalise.x * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * imageDistance;
+					aiDir.y = aiDir_Normalise.y * (g_WorldMaxX / fabs(aiDir_Normalise.x)) * imageDistance;
 				}
 				else if (fabs(aiGradiant) > screenGradiant)	//Horizontal Axis
 				{
-					aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
-					aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * 0.9f;
+					aiDir.x = aiDir_Normalise.x * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * imageDistance;
+					aiDir.y = aiDir_Normalise.y * (g_WorldMaxY / fabs(aiDir_Normalise.y)) * imageDistance;
 				}
 			}
 			//Calculate angle
@@ -453,14 +707,25 @@ void UISystem::Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 
 			uiTrans->_position.x = aiDir.x;
 			uiTrans->_position.y = aiDir.y;
-			uiTrans->_rotation = angle;
+			uiTrans->_rotation = (uiComp->_roleIndex2 == 1 ? angle : 0.0f);
 			uiComp->_isActive = true;
-			return;
+					
 		}
 	}
-	Factory_UI::Create_AIIndicator(ai, aiDir, aiType);
+	if (!foundBothIndicator)
+	{
+		Factory_UI::Create_AIIndicator(ai, aiDir, aiType);
+	}
+
 }
 
+void CleanUpIndicator()
+{
+	std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+	uiSys->aiIndicator_Set.clear();
+}
+
+//Not used 
 void UISystem::DeleteUpgradeWindow()
 {
 	UpgradeManager::ClearAllUpgradeChoice();
@@ -497,6 +762,9 @@ void UISystem::OnComponentAdd(ENTITY entity)
 		case UI_ROLE::INDICATE_COLLECT:
 			collectIndicator_Set.insert(entity);
 			break;
+		case UI_ROLE::OBJECTIVES:
+			objective_Set.insert(entity);
+			break;
 	}
 }
 
@@ -527,6 +795,8 @@ void UISystem::OnComponentRemove(ENTITY entity)
 	case UI_ROLE::INDICATE_COLLECT:
 		collectIndicator_Set.erase(entity);
 		break;
-		
+	case UI_ROLE::OBJECTIVES:
+		objective_Set.erase(entity);
+		break;
 	}
 }

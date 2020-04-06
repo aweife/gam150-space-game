@@ -20,7 +20,8 @@ void WarpingSystem::Update()
 		warpingComp = Core::Get().GetComponent<cWarping>(entity);
 		transform = Core::Get().GetComponent<cTransform>(entity);
 
-		AEWrap(transform->_position.x, warpingComp->_warpX.x, warpingComp->_warpX.y);
-		AEWrap(transform->_position.y, warpingComp->_warpY.x, warpingComp->_warpY.y);
+		transform->_position.x = AEWrap(transform->_position.x, warpingComp->_warpX.x, warpingComp->_warpX.y);
+		transform->_position.y = AEWrap(transform->_position.y, warpingComp->_warpY.x, warpingComp->_warpY.y);
+
 	}
 }

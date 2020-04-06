@@ -55,5 +55,5 @@ void cParticle::LoadTexture(const char* textureName)
 
 cParticle::~cParticle()
 {
-	cParticleEmitter* myEmitter =  Core::Get().GetComponent<cParticleEmitter>(_emitterID);
+	//cParticleEmitter* myEmitter =  Core::Get().GetComponent<cParticleEmitter>(_emitterID);
 }

@@ -25,7 +25,6 @@ ENTITY EntityManager::CreateEntity(const char* name)
 {
 	UNREFERENCED_PARAMETER(name);
 	
-
 	if(_activeEntityCount > MAX_ENTITIES)
 	{
 		printf("TOO MANY ENTITY %ui", _activeEntityCount);
@@ -70,7 +69,7 @@ void EntityManager::SetSignature(ENTITY entity, SIGNATURE key)
 SIGNATURE EntityManager::GetSignature(ENTITY entity)
 {
 	// Assert if given entity is invalid
-	AE_ASSERT(entity < MAX_ENTITIES && "Entity is out of range.");
+	AE_ASSERT(entity <= MAX_ENTITIES && "Entity is out of range.");
 
 	return _signatures[entity];
 }

@@ -43,6 +43,15 @@ void objEnter::OnUpdate(aiBlackBoard& bb)
 			bb.markedForDestruction = true;
 
 			break;
+		case DELIVERY:
+			// Clear the objective
+			Factory::CreateParticleEmitter_UPONIMPACT(trans);
+			LevelManager::CheckDelivery();
+			ChangeState(STATE_IDLE);
+			bb.markedForDestruction = true;
+
+			break;
+
 		case LEVEL_END:
 
 			// Escape and transit to next level
