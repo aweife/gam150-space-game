@@ -1,3 +1,15 @@
+/**********************************************************************************
+* \file			Component.h
+* \brief		Component for entity that have health/shield and can die
+* \author		Jun Yi,   Chong,  50% Code Contribution
+*				Wei Feng,   Ang,  50% Code Contribution
+*
+*				Responsible for the components of the engine
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 #include "../Global_ECS.h"	//typedef allias

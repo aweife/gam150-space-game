@@ -1,11 +1,11 @@
 /*********************************************************************************
 * \file			Core.h
-* \brief		Middle man to the big 3 managers (ECS)
-* \author		Chong Jun Yi, 100% Code Contribution
+* \brief		Abstract class for a generic component storage
+* \author		Jun Yi, Chong, 50% Code Contribution
 *
-*				Provides an interface for us to communicate with the managers. 
+*				Provides an interface for us to communicate with the managers.
 *				This class is a singleton and can be accessed anywhere by anyone.
-*				Mostly used for easily adding and accessing components with an entity 
+*				Mostly used for easily adding and accessing components with an entity
 *				id, registering systems and signatures.
 *
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction

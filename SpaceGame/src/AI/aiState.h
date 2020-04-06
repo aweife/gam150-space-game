@@ -1,7 +1,7 @@
 /*********************************************************************************
 * \file			aiState.h
 * \brief		Stores all states and variants of our ai
-* \author		Ang Wei Feng, 100% Code Contribution
+* \author		Wei Feng,		Ang,		100% Code Contribution
 *
 *				Responsible for adding components to their component storages
 *				and provides a pointer to the component storage

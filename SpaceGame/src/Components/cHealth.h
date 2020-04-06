@@ -1,7 +1,8 @@
 /**********************************************************************************
 * \file			cHealth.h
 * \brief		Component for entity that have health/shield and can die
-* \author		Jin Kiat, Chong, 100% Code Contribution
+* \author		Jin Kiat, Chong,  80% Code Contribution
+*				Wei Feng,   Ang,  20% Code Contribution
 *
 *				Long Description
 *				- Data for 

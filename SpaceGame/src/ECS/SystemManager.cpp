@@ -1,8 +1,8 @@
 /*********************************************************************************
 * \file			SystemManager.cpp
 * \brief		Manager for all systems in the game
-* \author		Chong Jun Yi, 50% Code Contribution
-* \author		Ang Wei Feng, 50% Code Contribution
+* \author		Jun Yi, Chong, 50% Code Contribution
+*        		Wei Feng, Ang, 50% Code Contribution
 *
 *				Register all systems and set their signatures.
 *				The system manager is also responsible for updating the systems.

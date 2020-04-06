@@ -1,10 +1,10 @@
 /*********************************************************************************
 * \file			Factory.h
 * \brief		Factory for creating entities in the game
-* \author		Chong Jun Yi,			70% Code Contribution
-* \author		Ang Wei Feng,			10% Code Contribution
-* \author		Chong Jin Kiat,			10% Code Contribution
-* \author		Farzaana Binte Roslan,	10% Code Contribution
+* \author		Chong Jun Yi,			25% Code Contribution
+* \author		Ang Wei Feng,			25% Code Contribution
+* \author		Chong Jin Kiat,			25% Code Contribution
+* \author		Farzaana Binte Roslan,	25% Code Contribution
 *
 *				Provide definitions of entities in the game. Responsible for
 *				adding components to entities and initialising them.

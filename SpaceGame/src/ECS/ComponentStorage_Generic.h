@@ -1,7 +1,9 @@
 /*********************************************************************************
 * \file			ComponentStorage_Generic.h
 * \brief		Abstract class for a generic component storage
-* \author		Chong Jun Yi, 100% Code Contribution
+* \author		Jun Yi, Chong, 50% Code Contribution
+*				
+*				Component Storage
 *
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior

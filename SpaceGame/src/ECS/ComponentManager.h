@@ -1,8 +1,8 @@
 /*********************************************************************************
 * \file			ComponentManager.h
 * \brief		Manager for components and component storages in the game
-* \author		Chong Jun Yi, 50% Code Contribution
-* \author		Ang Wei Feng, 50% Code Contribution
+* \author		Jun Yi, Chong, 50% Code Contribution
+*        		Wei Feng, Ang, 50% Code Contribution
 *
 *				Responsible for adding components to their component storages
 *				and provides a pointer to the component storage

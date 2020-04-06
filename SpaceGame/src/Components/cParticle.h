@@ -1,3 +1,14 @@
+/**********************************************************************************
+* \file			cParticle.h
+* \brief		List of components for the engine
+* \author		Jun Yi,				Chong,  100% Code Contribution
+*
+*				List of Components of the engine
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 #include "Component.h"					//Base Class

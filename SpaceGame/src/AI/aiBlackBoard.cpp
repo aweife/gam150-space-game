@@ -1,3 +1,15 @@
+/**********************************************************************************
+* \file			aiBlackBoard.cpp
+* \brief		AI blackboard
+* \author		Wei Feng,		Ang,		100% Code Contribution
+*
+*				Long Description
+*				- Initalise blackboard of AI
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "aiBlackBoard.h"
 #include "../Player/PlayerManager.h"
 #include "../ECS/Core.h"						//Work with ECS
