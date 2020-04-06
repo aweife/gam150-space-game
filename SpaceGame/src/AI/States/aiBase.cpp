@@ -27,6 +27,7 @@ void aiBase::OnEnter(aiBlackBoard& bb)
 	innerState = INNER_STATE_ONUPDATE;
 }
 
+
 void aiBase::OnExit(aiStateList& var)
 {
 	switch (nextState)
@@ -45,6 +46,18 @@ void aiBase::OnExit(aiStateList& var)
 		break;
 	case STATE_IDLE:
 		var.states.emplace<aiIdle>();
+		break;
+	case STATE_CHASEATTACK:
+		var.states.emplace<aiChaseAttack>();
+		break;
+	case STATE_PURSUITATTACK:
+		var.states.emplace<aiPursuitAttack>();
+		break;
+	case STATE_RETREATATTACK:
+		var.states.emplace<aiRetreatAttack>();
+		break;
+	case STATE_IDLEWANDER:
+		var.states.emplace<aiIdleWander>();
 		break;
 	case SPECIAL_ENTER:
 		var.states.emplace<objEnter>();

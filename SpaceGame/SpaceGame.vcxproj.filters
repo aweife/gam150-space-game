@@ -97,6 +97,10 @@
     <ClCompile Include="src\Levels\UpgradeLevel.cpp" />
     <ClCompile Include="src\Levels\Level2.cpp" />
     <ClCompile Include="src\AI\States\objEnter.cpp" />
+    <ClCompile Include="src\AI\States\aiChaseAttack.cpp" />
+    <ClCompile Include="src\AI\States\aiPursuitAttack.cpp" />
+    <ClCompile Include="src\AI\States\aiRetreatAttack.cpp" />
+    <ClCompile Include="src\AI\States\aiIdleWander.cpp" />
     <ClCompile Include="src\Components\cScanner.cpp" />
     <ClCompile Include="src\Systems\ScannerSystem.cpp" />
     <ClCompile Include="src\Levels\Level3.cpp" />
@@ -219,6 +223,10 @@
     <ClInclude Include="src\Levels\UpgradeLevel.h" />
     <ClInclude Include="src\Levels\Level2.h" />
     <ClInclude Include="src\AI\States\objEnter.h" />
+    <ClInclude Include="src\AI\States\aiChaseAttack.h" />
+    <ClInclude Include="src\AI\States\aiPursuitAttack.h" />
+    <ClInclude Include="src\AI\States\aiRetreatAttack.h" />
+    <ClInclude Include="src\AI\States\aiIdleWander.h" />
     <ClInclude Include="src\Components\cScanner.h" />
     <ClInclude Include="src\Systems\ScannerSystem.h" />
     <ClInclude Include="src\Levels\Level3.h" />
@@ -248,5 +256,6 @@
     <Image Include="res\Exit_1.png" />
     <Image Include="res\Exit_2.png" />
     <Image Include="res\Exit_3.png" />
+    <Image Include="res\Weapon_Bullet2.png" />
   </ItemGroup>
 </Project>

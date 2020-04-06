@@ -13,7 +13,7 @@
 #include "../Managers/UpgradeManager.h"
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/CameraManager.h"					//ScreenSpace Text UI
-
+#include "../Managers/AudioManager.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -370,7 +370,9 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	{
 		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound
 		{
-
+			Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a
+				= 1.0f - Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a;
+			AudioManager::ToggleMute(!g_isMute);
 		}
 		else if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 2)	//Toggle Full screen
 		{
@@ -715,6 +717,12 @@ void UISystem::Check_IndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 		Factory_UI::Create_AIIndicator(ai, aiDir, aiType);
 	}
 
+}
+
+void CleanUpIndicator()
+{
+	std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+	uiSys->aiIndicator_Set.clear();
 }
 
 //Not used 

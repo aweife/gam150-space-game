@@ -39,23 +39,38 @@ namespace LevelManager
 	//Objectives for Level 1
 	bool objectiveComplete = false;
 	bool spawnExit = false;
+	unsigned int enemySpawned1 = 0;
 
 	// Delivery for Level 2
 	bool isCollected = false;
 	float DeliveryEnemyTimer = 0.0f;
 	unsigned int eliminatedCount = 0;
-	unsigned int enemySpawned = 0;
+	unsigned int enemySpawned2 = 0;
 
 	// Escort for Level 3s
 	float escortEnemyTimer = 0.0f;
 	bool isEscorting = true;
 	bool spawnBoss = false;
 	bool defeatBoss = false;
+	unsigned int enemySpawned3 = 0;
+
+
+	// Boss Spawn Sequence
+	bool arrival1, arrival2, arrival3 ;
+	float bossTimer = 0.0f;
+	const float bossArrivalTime = 5.0f;
 
 	// Shared Functions
 	void StartBossSpawnSequence()
 	{
-		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,-100.0f }, 100.0f, 10);
+		spawnExit = true;
+		exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+
+		// Init spawn sequence
+		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 300.0f, 5);
+		arrival1 = arrival2 = arrival3 = false;
+		bossTimer = bossArrivalTime / 3.0f;
+
 	}
 
 	// To Random a Range between positive Y and negative Y
@@ -103,7 +118,15 @@ namespace LevelManager
 		{
 			CheckOutOfScreen(*it);
 		}
-	
+		if (PlayerManager::player)
+		{
+			AEVec2 playerPos = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position;
+
+			if (enemySpawned1 > 3)
+			{
+				EnemySpawnManager::SpawnEnemyWavesTimer(playerPos);
+			}
+		}
 	}
 
 	void Level1_Setup()
@@ -118,6 +141,7 @@ namespace LevelManager
 		objectiveComplete = false;
 		spawnExit = false;
 		nextGameState = GS_LEVEL2;
+		enemySpawned1 = 0;
 	}
 
 	void ObjectiveCompleteUpdate()
@@ -125,6 +149,31 @@ namespace LevelManager
 		if (spawnExit)
 		{
 			CheckOutOfScreen(exitId);
+
+			// Boss spawn sequence
+			if (arrival1 && arrival2 && arrival3) return;
+			bossTimer -= g_dt;
+
+			if (bossTimer < 0.0f)
+			{
+				bossTimer = bossArrivalTime / 3.0f;
+
+				if (!arrival1)
+				{
+					arrival1 = true;
+					Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 250.0f, 10);
+				}
+				else if (!arrival2)
+				{
+					arrival2 = true;
+					Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 150.0f, 20);
+				}
+				else
+				{
+					arrival3 = true;
+					Factory_AI::CreateBoss(PlayerManager::player, 2);
+				}
+			}
 		}
 		else
 		{
@@ -134,6 +183,8 @@ namespace LevelManager
 			StartBossSpawnSequence();
 		}
 	}
+
+
 
 	void CheckOutOfScreen(ENTITY id)
 	{
@@ -171,24 +222,30 @@ namespace LevelManager
 	{
 		nextGameState = GS_LEVEL3;
 		eliminatedCount = 0;
-		enemySpawned = 0;
+		enemySpawned2 = 0;
 		wavesEnemyList.clear();
 		spawnExit = false;
 		isCollected = false;
 	}
 
 	// Start spawning enemies after delivery is collected
-	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer)
+	void Level2Update(AEVec2 playerPos, ENTITY package, float DeliveryEnemySpawnTimer)
 	{
 		if (isCollected)
 		{
+			if (objectiveComplete)
+			{
+				ObjectiveCompleteUpdate();
+			}
+
 			if (spawnExit)
 			{
 				CheckOutOfScreen(exitId);
 			}
 			
 
-			if (eliminatedCount >= 10 && !objectiveComplete)
+			//Straight away spawn boss upon collection
+			if (/*eliminatedCount >= 10 && */!objectiveComplete)
 			{
 				objectiveComplete = true;
 			}
@@ -198,7 +255,7 @@ namespace LevelManager
 			//Spawn enemy at fixed intervals
 			if (DeliveryEnemyTimer >= DeliveryEnemySpawnTimer)
 			{
-				if (enemySpawned < 15)
+				if (enemySpawned2 < 15)
 				{
 					SpawnEnemyOnCollect(playerPos);
 				}
@@ -212,7 +269,7 @@ namespace LevelManager
 		isCollected = true;
 
 		spawnExit = true;
-		exitId = Factory::SpawnLevel_End({ -3000.0f, 0.0f });
+		exitId = Factory::SpawnLevel_End({ -5000.0f, 0.0f });
 	}
 
 	void ClearEnemy(ENTITY enemy)
@@ -220,7 +277,18 @@ namespace LevelManager
 		if (wavesEnemyList.find(enemy) != wavesEnemyList.end())
 		{
 			++eliminatedCount;
-			--enemySpawned;
+			if (nextGameState == GS_LEVEL2)
+			{
+				--enemySpawned1;
+			}
+			else if (nextGameState == GS_LEVEL3)
+			{
+				--enemySpawned2;
+			}
+			else if (nextGameState == GS_MAINMENU)
+			{
+				--enemySpawned3;
+			}
 		}
 		wavesEnemyList.erase(enemy);
 	}
@@ -230,7 +298,9 @@ namespace LevelManager
 		nextGameState = GS_MAINMENU;
 		isEscorting = true;
 		spawnBoss = false;
+		wavesEnemyList.clear();
 		defeatBoss = false;
+		enemySpawned3 = 0;
 	}
 
 	void Level3Update(ENTITY escort, float escortEnemySpawnTimer)
@@ -244,7 +314,11 @@ namespace LevelManager
 
 			if (escortEnemyTimer >= escortEnemySpawnTimer)
 			{
-				SpawnEnemyOnEscort(escort, PlayerManager::player);
+				if (enemySpawned3 < 8)
+				{
+					SpawnEnemyOnEscort(escort, PlayerManager::player);
+				}
+				
 				escortEnemyTimer = 0.0f;
 			}
 		}
@@ -277,46 +351,48 @@ namespace LevelManager
 		AEVec2 spawnPos;
 
 		int numberOfDeliveryEnemies = static_cast<int>(floorf(AERandFloat() * 2.99f));
+		ENTITY enemy;
 
 		switch (numberOfDeliveryEnemies)
 		{
 		case 0:
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
-			++enemySpawned;
+			enemy = Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
+			wavesEnemyList.insert(enemy);
+			++enemySpawned2;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
 			Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
-			++enemySpawned;
+			++enemySpawned2;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
 			Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
-			++enemySpawned;
+			++enemySpawned2;
 			break;
 		case 1:
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
 			Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
-			++enemySpawned;
+			++enemySpawned2;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
 			Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
-			++enemySpawned;
+			++enemySpawned2;
 			break;
 		case 2:
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
 			Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
-			++enemySpawned;
+			++enemySpawned2;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
 			Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
-			++enemySpawned;
+			++enemySpawned2;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
 			Factory_AI::CreateEnemy2_3(PlayerManager::player, 2, spawnPos);
-			++enemySpawned;
+			++enemySpawned2;
 			break;
 		default:
 			break;
@@ -329,37 +405,55 @@ namespace LevelManager
 		AEVec2 playerPos = Core::Get().GetComponent<cTransform>(player)->_position;
 		int numberOfDeliveryEnemies = static_cast<int>(floorf(AERandFloat() * 2.99f));
 
+		ENTITY enemy;
+
 		switch (numberOfDeliveryEnemies)
 		{
 		case 0:
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			enemy = Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			++enemySpawned3;
+			wavesEnemyList.insert(enemy);
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			enemy = Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			wavesEnemyList.insert(enemy);
+			++enemySpawned3;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			enemy = Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			wavesEnemyList.insert(enemy);
+			++enemySpawned3;
 			break;
 		case 1:
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			enemy = Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			wavesEnemyList.insert(enemy);
+			++enemySpawned3;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			enemy = Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			wavesEnemyList.insert(enemy);
+			++enemySpawned3;
 			break;
 		case 2:
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			enemy = Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			wavesEnemyList.insert(enemy);
+			++enemySpawned3;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			enemy = Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			wavesEnemyList.insert(enemy);
+			++enemySpawned3;
 			spawnPos.x = playerPos.x + AERandFloat() * 300.0f + DELIVERY_ENEMY_MIN_SPAWN_X;
 			spawnPos.y = playerPos.y + AERandFloat() * 300.0f - DELIVERY_ENEMY_MIN_SPAWN_Y;
-			Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			enemy = Factory_AI::CreateEnemy2_3(escort, 2, spawnPos);
+			wavesEnemyList.insert(enemy);
+			++enemySpawned3;
 			break;
 		default:
 			break;
@@ -453,6 +547,7 @@ namespace LevelManager
 		float randomSpawnArea = randomLevel;
 		//float randomRotation = AERandFloat() * 360.0f;
 		float rotationSpeed = 5.0f;
+		collectableList.clear();
 
 		ENTITY collectable;
 		switch (static_cast<int>(randomSpawnArea))
@@ -716,6 +811,8 @@ namespace LevelManager
 			spawnPos.y = enemyTopRightSpawnArea.y + RandomPos();
 			wavesEnemies = Factory_AI::CreateEnemy1_2(PlayerManager::player, 2, spawnPos);
 			wavesEnemyList.insert(wavesEnemies);
+
+			enemySpawned1 += 3;
 			break;
 
 		case 1:
@@ -733,6 +830,8 @@ namespace LevelManager
 			spawnPos.y = enemyTopLeftSpawnArea.y + RandomPos();
 			wavesEnemies = Factory_AI::CreateEnemy2_2(PlayerManager::player, 2, spawnPos);
 			wavesEnemyList.insert(wavesEnemies);
+
+			enemySpawned1 += 3;
 			break;
 
 		case 2:
@@ -750,6 +849,8 @@ namespace LevelManager
 			spawnPos.y = enemyBottomLeftSpawnArea.y + RandomPos();
 			wavesEnemies = Factory_AI::CreateEnemy1_2(PlayerManager::player, 2, spawnPos);
 			wavesEnemyList.insert(wavesEnemies);
+
+			enemySpawned1 += 3;
 			break;
 
 		case 3:
@@ -767,6 +868,8 @@ namespace LevelManager
 			spawnPos.y = enemyBottomRightSpawnArea.y + RandomPos();
 			wavesEnemies = Factory_AI::CreateEnemy1_2(PlayerManager::player, 2, spawnPos);
 			wavesEnemyList.insert(wavesEnemies);
+
+			enemySpawned1 += 3;
 			break;
 
 		default:

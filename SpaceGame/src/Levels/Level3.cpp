@@ -103,7 +103,7 @@ void Level3_Load()
 void Level3_Init()
 {
 	//spawnedBoss = false;
-	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
+	AudioManager::PlayBGM("res/BGM/cinescifi.wav", 0.25f);
 }
 
 // ----------------------------------------------------------------------------
@@ -127,7 +127,7 @@ void Level3_Update()
 	}
 	AudioManager::Update();
 	PlayerManager::Update();
-	Core::Get().Core_Update();
+	
 
 	if (AEInputCheckTriggered(AEVK_L))
 	{
@@ -136,6 +136,8 @@ void Level3_Update()
 
 	// Level 3 Escort mission
 	LevelManager::Level3Update(escort, 5.0f);
+
+	Core::Get().Core_Update();
 }
 
 // ----------------------------------------------------------------------------

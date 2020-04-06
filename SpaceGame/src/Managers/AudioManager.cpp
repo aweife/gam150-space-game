@@ -14,13 +14,18 @@
 #include "AEEngine.h"
 #include "fmod_errors.h"
 #include <map>
-
+#include "../Global.h"
 namespace AudioManager
 {
 	static FMOD::System* _system;
 	static FMOD_RESULT _result;
 
 	std::map<std::string, FMOD::Sound*> _soundMap;
+
+	// For pausing and muting
+	bool isMuted;
+	float originalVolume;
+	FMOD::Channel *bgm;
 
 	void Init()
 	{
@@ -91,8 +96,40 @@ namespace AudioManager
 		_soundMap.clear();
 	}
 
+	void PlayBGM(const std::string& path, float volume)
+	{
+		// Clamp the volume of the one shot
+		if (volume < 0.0f || volume > 1.0f)
+			volume = 1.0f;
+
+		originalVolume = volume;
+
+		// If we DONT have it in our map, add to sound
+		auto found = _soundMap.find(path);
+		if (found == _soundMap.end())
+		{
+			LoadSound(path);
+			found = _soundMap.find(path);
+		}
+
+		ErrorCheck(_system->playSound(found->second, nullptr, true, &bgm));
+
+		if (g_isMute)
+			volume = 0.0f;
+
+		// Set volume
+		ErrorCheck(bgm->setVolume(volume));
+
+		// Unpause the track
+		ErrorCheck(bgm->setPaused(false));
+	}
+
 	void PlayOneShot(const std::string& path, float volume)
 	{
+		// Clamp the volume of the one shot
+		if (volume < 0.0f || volume > 1.0f)
+			volume = 1.0f;
+
 		// If we DONT have it in our map, add to sound
 		auto found = _soundMap.find(path);
 		if (found == _soundMap.end())
@@ -105,14 +142,30 @@ namespace AudioManager
 		FMOD::Channel* c;
 		ErrorCheck(_system->playSound(found->second, nullptr, true, &c));
 
-		// Clamp the volume of the one shot
-		if (volume < 0.0f || volume > 1.0f) 
-			volume = 1.0f;
+		if (g_isMute)
+			volume = 0.0f;
 
 		// Set volume
 		ErrorCheck(c->setVolume(volume));
 
 		// Unpause the track
 		ErrorCheck(c->setPaused(false));
+	}
+
+	void ToggleMute(bool mute)
+	{
+		g_isMute = mute;
+		
+		// Set volume
+		if (bgm)
+		{
+			ErrorCheck(bgm->setVolume(g_isMute ? 0.0f : originalVolume));
+		}
+		
+	}
+
+	void TogglePause(bool pause)
+	{
+		ErrorCheck(bgm->setPaused(pause));
 	}
 }

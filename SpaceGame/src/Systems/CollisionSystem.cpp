@@ -526,6 +526,12 @@ void CollisionSystem::Update()
 		float shortestDistance = 999.0f;
 		float rayCastToEdgeOfScreen = 0.0f;
 
+		AEVec2 cameraPos;
+		AEGfxGetCamPosition(&cameraPos.x, &cameraPos.y);
+		AEVec2 raycasterPos = transform->_position;
+		AEVec2 raycasterOffset;
+		AEVec2Sub(&raycasterOffset, &cameraPos, &raycasterPos);
+
 		if (collider->_bbShape == ColliderShape::RAYCAST)
 		{
 			float screenGradiant = g_WorldMaxY / g_WorldMaxX;
@@ -542,13 +548,12 @@ void CollisionSystem::Update()
 				float raycastGradiant = AETan(transform->_rotation);
 				if (fabs(raycastGradiant) < screenGradiant)			//Horizontal
 				{
-					rayCastToEdgeOfScreen = 0.96f * (g_WorldMaxX / fabs(AECos(transform->_rotation)));
+					rayCastToEdgeOfScreen = 0.96f * ((g_WorldMaxX + raycasterOffset.x) / fabs(AECos(transform->_rotation)));
 				}
-				else if (fabs(raycastGradiant) > screenGradiant)		//Verticla
+				else if (fabs(raycastGradiant) >= screenGradiant)		//Verticla
 				{
-					rayCastToEdgeOfScreen = 0.96f * (g_WorldMaxY / fabs(AESin(transform->_rotation)));
+					rayCastToEdgeOfScreen = 0.96f * ((g_WorldMaxY + raycasterOffset.y )/ fabs(AESin(transform->_rotation)));
 				}
-
 			}
 		}
 

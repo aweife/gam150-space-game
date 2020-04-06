@@ -1,10 +1,10 @@
 /**********************************************************************************
-* \file			aiChase.h
+* \file			aiIdle.h
 * \brief		??
 * \author		Wei Feng, Ang, 100% Code Contribution
 *
 *				Long Description
-*				- 
+*				-
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior
@@ -14,7 +14,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 #include "aiBase.h"
 
-class aiChase : public aiBase
+class aiIdleWander : public aiBase
 {
 private:
 	void OnEnter(aiBlackBoard&) override;
@@ -24,4 +24,9 @@ private:
 	// Extra components this state needs
 
 	// State variables
+	float _distance;
+	AEVec2 _randomPosition;
+
+	void FindRandomPosition();
+	float TurnToTarget(const float& self, const AEVec2& target);
 };

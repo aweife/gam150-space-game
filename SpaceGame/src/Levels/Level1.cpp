@@ -22,7 +22,9 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/AudioManager.h"
 #include "../Managers/LevelManager.h"
+#include "../Systems/UISystem.h"
 #include "../Systems/RenderSystem.h"
+
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -99,7 +101,7 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 void Level1_Init()
 {
-	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
+	AudioManager::PlayBGM("res/BGM/cinescifi.wav", 0.25f);
 }
 
 // ----------------------------------------------------------------------------
@@ -125,8 +127,9 @@ void Level1_Update()
 	Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	AudioManager::Update();
 	PlayerManager::Update();
-	Core::Get().Core_Update();
 	LevelManager::Level1_Update();
+	Core::Get().Core_Update();
+	
 
 
 	if (AEInputCheckTriggered(AEVK_L))
@@ -159,6 +162,7 @@ void Level1_Free()
 // ----------------------------------------------------------------------------
 void Level1_Unload()
 {
+	CleanUpIndicator();
 	UIEventsManager::Cleanup();
 	Factory::RemoveCamera();
 	Core::Get().DestroyAllEntity();

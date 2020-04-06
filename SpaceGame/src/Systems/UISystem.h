@@ -55,3 +55,5 @@ bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message);
 bool ToggleGameOverWindow(ENTITY entity, Events::TogglePause* message);
 bool UpdateRerollCount(ENTITY entity, Events::OnUpgradeReroll* message);
 bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message);
+
+void CleanUpIndicator();

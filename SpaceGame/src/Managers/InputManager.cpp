@@ -27,6 +27,7 @@
 #include "../Systems/UISystem.h"
 #include "../Player/PlayerManager.h"
 #include "LevelManager.h"
+#include "AudioManager.h"								// Testing audio
 
 #include "../ECS/Factory.h"
 #include "../ECS/Core.h"
@@ -54,42 +55,42 @@ namespace InputManager
 			TogglePause();
 			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 
 				: UIEventsManager::Broadcast(new Events::TogglePause(false));
-
+			AudioManager::TogglePause(g_GamePause);
 		}
-		//if (AEInputCheckTriggered(AEVK_ESCAPE))
-		//{
-		//	if (currentState == GS_MAINMENU)
-		//	{
-		//		GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
-		//	}
-		//	else
-		//	{
-		//		GSM_ChangeState(GS_MAINMENU);
-		//	}
-		//}
-		//if (AEInputCheckTriggered(AEVK_R))
-		//{
-		//	//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
-		//}
+		if (AEInputCheckTriggered(AEVK_ESCAPE))
+		{
+			if (currentState == GS_MAINMENU)
+			{
+				GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+			}
+			else
+			{
+				GSM_ChangeState(GS_MAINMENU);
+			}
+		}
+		if (AEInputCheckTriggered(AEVK_R))
+		{
+			//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+		}
 
 		if (!g_GamePause)
 		{
 			//Debug functionality
-			if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
-			{
-				ToggleShowBoundingBoxMode();
-			}
-			if (AEInputCheckTriggered(AEVK_9))
-			{
-				GSM_ChangeState(GS_UPGRADE);
-				//GSM_LoadingTransition(GS_UPGRADE);
-				//Factory_UI::Create_ChooseThree({ 0,0 });
-			}
-			/*if (AEInputCheckTriggered(AEVK_8))
-			{
-				std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
-				uiSys->DeleteUpgradeWindow();
-			}*/
+		//if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
+		//{
+		//	ToggleShowBoundingBoxMode(); 
+		//}
+		//if (AEInputCheckTriggered(AEVK_9))			
+		//{
+		//	GSM_ChangeState(GS_UPGRADE);
+		//	//GSM_LoadingTransition(GS_UPGRADE);
+		//	//Factory_UI::Create_ChooseThree({ 0,0 });
+		//}
+		/*if (AEInputCheckTriggered(AEVK_8))
+		{
+			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+			uiSys->DeleteUpgradeWindow();
+		}*/
 			if (AEInputCheckTriggered(AEVK_1))
 			{
 				if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon != WeaponType::laser)
@@ -138,14 +139,14 @@ namespace InputManager
 		{
 			if (AEInputCheckCurr(AEVK_LBUTTON))
 			{
-				mouseLTrigger = true;			//Auto Fire Bullets
+				if (!g_GamePause) mouseLTrigger = true;			//Auto Fire Bullets
 			}
 			else
 			{
-				mouseLTrigger = false;
+				if (!g_GamePause) mouseLTrigger = false;
 			}
 		}
-		if (!g_GamePause) mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
+		if(!g_GamePause) mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
 	
 	}
 }

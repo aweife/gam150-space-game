@@ -9,8 +9,8 @@ aiBlackBoard::aiBlackBoard(ENTITY entity, AI_TYPE type):
 
 	positionUpdateTimer{0.0f},
 
-	baseAttackRange{ 300.0f },
-	baseDetectRange{400.0f},
+	baseAttackRange{ 250.0f },
+	baseDetectRange{350.0f},
 	baseMaxSpeed{ 80.0f },
 	baseAcceleration{ 5.0f },
 	baseRotationSpeed{ 5.0f },
