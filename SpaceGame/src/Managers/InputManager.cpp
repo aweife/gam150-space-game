@@ -51,7 +51,7 @@ namespace InputManager
 		// -----------------------------------------------------------------------
 
 		if (AEInputCheckTriggered(AEVK_ESCAPE) && currentState != GS_SPLASHSCREEN && currentState != GS_MAINMENU
-			&& PlayerManager::player)
+			&& PlayerManager::player && !g_isSecondaryMenu)
 		{
 			TogglePause();
 			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 

@@ -1369,7 +1369,7 @@ namespace Factory_UI
 		UIEventsManager::Subscribe(restart, &OnButtonClick_PauseMenuUI);
 
 		ENTITY exit = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 210, -100 }, 0, { 218, 40 }));
+		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 230, -100 }, 0, { 218, 40 }));
 		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
 		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));

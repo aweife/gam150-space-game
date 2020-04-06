@@ -366,6 +366,7 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
 	if (uiComp)
 	{
 		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound
@@ -399,7 +400,6 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	if ((buttomMaxX > message->_xPos && buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos && buttomMinY < message->_yPos) == false)
 	{
-		//printf("failed\n");
 		return false;
 	}
 	
@@ -416,23 +416,28 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 			}
 		}
 
-		//TogglePause();
-		UIEventsManager::Broadcast(new Events::TogglePause(false));
-
 		if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 1)	//Resume game
 		{
 			TogglePause();
-			//UIEventsManager::Broadcast(new Events::TogglePause(false));
+			UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 2)	//Restart Level 
 		{
-			/*GSM_RestartLevel();*/
 			TogglePause();
+			UIEventsManager::Broadcast(new Events::TogglePause(false));
 			GSM_LoadingTransition(GS_LEVEL1);
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 3)   // Exit to main menu
 		{
+			g_isSecondaryMenu = true;
 			Factory_UI::CreateUI_ExitConfirmation();
+			UIEventsManager::Broadcast(new Events::TogglePause(false));
+		}
+		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 4)   // Settings
+		{
+			g_isSecondaryMenu = true;
+			Factory_UI::Create_InGameOptions();
+			UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
 	}
 	return true;
@@ -450,7 +455,6 @@ bool OnButtonClick_ConfirmationMenuUI(ENTITY entity, Events::OnMouseClick* messa
 	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
 		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
 	{
-		//printf("failed\n");
 		return false;
 	}
 
@@ -468,6 +472,7 @@ bool OnButtonClick_ConfirmationMenuUI(ENTITY entity, Events::OnMouseClick* messa
 
 		if (uiComp->_role == UI_ROLE::QUIT && uiComp->_roleIndex2 == 1)	//Resume game
 		{
+			g_isSecondaryMenu = false;
 			TogglePause();
 			GSM_ChangeState(GS_MAINMENU);
 			
@@ -475,16 +480,13 @@ bool OnButtonClick_ConfirmationMenuUI(ENTITY entity, Events::OnMouseClick* messa
 		}
 		else if (uiComp->_role == UI_ROLE::QUIT && uiComp->_roleIndex2 == 2)	//Restart Level 
 		{
-			UIEventsManager::Broadcast(new Events::TogglePause(true));
+			g_isSecondaryMenu = false;
+			TogglePause();
+			UIEventsManager::Broadcast(new Events::TogglePause(false));
 			AudioManager::TogglePause(g_GamePause);
 
 			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
 			uiSys->DeleteQuitComfirmWindow();
-		}
-		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 4)   //Settings
-		{
-
-			Factory_UI::Create_InGameOptions();
 		}
 	}
 	return true;
