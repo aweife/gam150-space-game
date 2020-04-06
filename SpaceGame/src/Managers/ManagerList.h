@@ -1,6 +1,6 @@
 /**********************************************************************************
 * \file			ManagerList.h
-* \brief		Manager List
+* \brief		Includes all headers for managers
 * \author		Chong Jun Yi, 25% Code Contribution
 * \author		Chong Jin Kiat, 25% Code Contribution
 * \author		Ang Wei Feng, 25% Code Contribution
