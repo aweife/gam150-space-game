@@ -155,5 +155,5 @@ namespace Factory_AI
 	ENTITY CreateEnemy2_2(ENTITY player, unsigned int layer, AEVec2 spawnPos); // Waves Enemies  tag: WAVE_ENEMIES
 	ENTITY CreateEnemy2_3(ENTITY player, unsigned int layer, AEVec2 spawnPos); // Delivery Mission Enemies
 	ENTITY CreateEscort(unsigned int layer, AEVec2 spawnPos);
-	ENTITY CreateBoss(AEVec2 pos, ENTITY player, unsigned int layer);
+	ENTITY CreateBoss(AEVec2 pos, ENTITY player, unsigned int layer, bool tanky = false);
 }

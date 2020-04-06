@@ -930,21 +930,21 @@ namespace Factory_UI
 	void CreateBossIncomingInterface()
 	{
 		AEVec2 spritePos;
-		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		spritePos = ScreenBasedCoords(0.0f, 300.0f, UI_ANCHOR::CENTER);
 		Create_BossIncomingUI(spritePos);
 	}
 
 	void CreateOutgunnedInterface()
 	{
 		AEVec2 spritePos;
-		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		spritePos = ScreenBasedCoords(0.0f, 300.0f, UI_ANCHOR::CENTER);
 		Create_OutgunnedUI(spritePos);
 	}
 
 	void CreateDefeatBossInterface()
 	{
 		AEVec2 spritePos;
-		spritePos = ScreenBasedCoords(0.0f, 230.0f, UI_ANCHOR::CENTER);
+		spritePos = ScreenBasedCoords(0.0f, 300.0f, UI_ANCHOR::CENTER);
 		Create_DefeatBossUI(spritePos);
 	}
 
@@ -1683,7 +1683,7 @@ namespace Factory_Map
 
 namespace Factory_AI
 {
-	ENTITY CreateBoss(AEVec2 pos, ENTITY player, unsigned int layer)
+	ENTITY CreateBoss(AEVec2 pos, ENTITY player, unsigned int layer, bool tanky)
 	{
 		UNREFERENCED_PARAMETER(player);
 
@@ -1709,6 +1709,9 @@ namespace Factory_AI
 		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		Core::Get().GetComponent<cBoss>(enemy)->_currentAttack.attacks.emplace<bossSpawn>();
 
+		if (tanky)
+			Core::Get().GetComponent<cHealth>(enemy)->_healthMax *= 10.0f;
+
 		// debug ai
 		if (g_BBShowMode)	Factory::DebugBoundingBox_Rigidbody(enemy);					//For Collision
 		cTransform* aiT = Core::Get().GetComponent<cTransform>(enemy);
@@ -1729,7 +1732,7 @@ namespace Factory_AI
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI{ enemy, ENEMY });
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 2));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 2.0f, 0.0f, 1));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 
@@ -1765,7 +1768,7 @@ namespace Factory_AI
 		Core::Get().AddComponent<cRigidBody>(enemy, new cRigidBody(30.0f, 50.0f, 100.0f, 2.0f));
 		Core::Get().AddComponent<cCollision>(enemy, new cCollision);
 		Core::Get().AddComponent<cAI>(enemy, new cAI{ enemy, ENEMY });
-		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 3.0f, 0.5f, 3));
+		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 4.0f, 0.25f, 2));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2.0f, 3.0f, 2.0f, 3.0f, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(0.0f, 30.0f, 0.0f, 30.0f, 4.0f, 1.0f));
 
@@ -1821,7 +1824,7 @@ namespace Factory_AI
 		ENTITY escort = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(escort, new cTransform({ spawnPos.x , spawnPos.y }, 0.0f, {75.0f, 50.0f}));
 		Core::Get().AddComponent<cSprite>(escort, new cSprite(escort, "Square Mesh", "Enemy_1", layer));
-		Core::Get().AddComponent<cRigidBody>(escort, new cRigidBody(30.0f, 75.0f, 1000.0f, 0.0f));
+		Core::Get().AddComponent<cRigidBody>(escort, new cRigidBody(30.0f, 40.0f, 1000.0f, 0.0f));
 		Core::Get().GetComponent<cRigidBody>(escort)->_velocityDirection = { 1.0f, 0.0f };
 		Core::Get().GetComponent<cRigidBody>(escort)->_tag = COLLISIONTAG::ESCORT; // testing collision
 		Core::Get().AddComponent<cCollision>(escort, new cCollision());

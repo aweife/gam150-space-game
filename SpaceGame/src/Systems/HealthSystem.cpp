@@ -87,7 +87,7 @@ void HealthSystem::Update()
 				UIEventsManager::Broadcast(new Events::OnShieldDown(false));
 			}
 			
-			if (health->_healthCurr <= 10.0f)
+			if (health->_healthCurr <= 15.0f)
 			{
 				if (UIEventsManager::Broadcast(new Events::OnLowHealth(true)) == false)
 				{
@@ -95,7 +95,7 @@ void HealthSystem::Update()
 				}
 
 			}
-			else if (health->_healthCurr > 10.0f)
+			else if (health->_healthCurr > 15.0f)
 			{
 				UIEventsManager::Broadcast(new Events::OnLowHealth(false));
 			}

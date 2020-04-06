@@ -7,6 +7,7 @@
 #include "../Tools/Editor.h"
 #include "../Levels/UpgradeLevel.h"
 #include "../Managers/GameStateManager.h"
+#include "../Managers/UIEventsManager.h"					//Broadcasting
 #include "../Levels/Level3.h"
 #include <iostream>
 
@@ -69,8 +70,11 @@ namespace LevelManager
 	// Shared Functions
 	void StartBossSpawnSequence()
 	{
-		if(currentState != GS_LEVEL3)
-			Factory_UI::CreateOutgunnedInterface();
+		if (UIEventsManager::Broadcast(new Events::OnBossIncoming(true)) == false)
+		{
+			Factory_UI::CreateBossIncomingInterface();
+		}
+
 		objectiveComplete = true;
 		if (currentState != GS_LEVEL3)
 		{
@@ -164,7 +168,7 @@ namespace LevelManager
 
 	void ObjectiveCompleteUpdate()
 	{
-		if(spawnExit)
+		if (spawnExit)
 			CheckOutOfScreen(exitId);
 
 		// Boss spawn sequence
@@ -183,12 +187,23 @@ namespace LevelManager
 			else if (!arrival2)
 			{
 				arrival2 = true;
-				Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 150.0f, 20, bossArrivalTime/ 3.0f);
+				Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 150.0f, 20, bossArrivalTime / 3.0f);
 			}
 			else
 			{
 				arrival3 = true;
-				Factory_AI::CreateBoss(bossSpawnPos, PlayerManager::player, 2);
+				UIEventsManager::Broadcast(new Events::OnBossIncoming(false));
+
+				if (currentState != GS_LEVEL3)
+				{
+					Factory_UI::CreateOutgunnedInterface();
+					Factory_AI::CreateBoss(bossSpawnPos, PlayerManager::player, 2, true);
+				}
+				else
+				{
+					Factory_UI::CreateDefeatBossInterface();
+					Factory_AI::CreateBoss(bossSpawnPos, PlayerManager::player, 2);
+				}
 			}
 		}
 	}
@@ -359,7 +374,7 @@ namespace LevelManager
 		{
 			escortEnemyTimer += g_dt;
 
-			CheckEscort(escortPos, 800.0f, 0.0f);
+			CheckEscort(escortPos, 1000.0f, 0.0f);
 
 			if (escortEnemyTimer >= escortEnemySpawnTimer)
 			{
