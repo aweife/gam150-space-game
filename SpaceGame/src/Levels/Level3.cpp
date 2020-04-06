@@ -42,7 +42,7 @@ float _currentTimer = 0.0f;
 void Level3_Load()
 {
 	// Create Level name 
-	_referencetoLevelDisplay = Factory_UI::CreateUI_Level1Display();
+	_referencetoLevelDisplay = Factory_UI::CreateUI_Level3Display();
 
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);

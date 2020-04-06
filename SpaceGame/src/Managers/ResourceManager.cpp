@@ -407,6 +407,10 @@ namespace ResourceManager
 		{
 			textureLibrary.insert({ "Credits_5", AEGfxTextureLoad("res/Credits_5.png") });
 		}
+		if (textureLibrary.find("Pause_Confirmation") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Pause_Confirmation", AEGfxTextureLoad("res/Pause_confirmation.png") });
+		}
 	}
 
 	void LoadTextureLibrary_1(unsigned int* stage, unsigned int * progress)

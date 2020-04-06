@@ -373,6 +373,7 @@ namespace LevelManager
 
 	void CheckEscort(AEVec2 escortPos, float checkPointX, float checkPointY)
 	{
+		UNREFERENCED_PARAMETER(checkPointY);
 		if (escortPos.x >= checkPointX && isEscorting)
 		{
 			// Do UI

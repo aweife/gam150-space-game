@@ -366,7 +366,7 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
-	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+	//cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
 	if (uiComp)
 	{
 		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound
@@ -474,7 +474,17 @@ bool OnButtonClick_ConfirmationMenuUI(ENTITY entity, Events::OnMouseClick* messa
 		{
 			g_isSecondaryMenu = false;
 			TogglePause();
-			GSM_ChangeState(GS_MAINMENU);
+			
+
+			if (currentState != GS_MAINMENU) 
+			{
+				GSM_ChangeState(GS_MAINMENU);
+			}
+			else
+			{
+				GSM_ChangeState(GS_QUIT);
+			}
+
 			
 			//UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
@@ -617,7 +627,7 @@ bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message)
 		cUIElement* descptUIComp = Core::Get().GetComponent<cUIElement>(entity);
 		if (descptUIComp->_roleIndex == static_cast<unsigned int>(message->_slot))
 		{
-			EditText(entity, "Hello");
+			EditText(entity, UpgradeManager::GetUpgradeDescript(descptUIComp->_roleIndex));
 			return true;
 		}
 		return false;

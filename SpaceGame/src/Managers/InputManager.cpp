@@ -58,6 +58,17 @@ namespace InputManager
 				: UIEventsManager::Broadcast(new Events::TogglePause(false));
 			AudioManager::TogglePause(g_GamePause);
 		}
+		else if (AEInputCheckTriggered(AEVK_ESCAPE) && currentState == GS_MAINMENU)
+		{
+			Factory_UI::CreateUI_ExitConfirmation();
+		}
+		else if (AEInputCheckTriggered(AEVK_ESCAPE) && currentState == GS_UPGRADE)
+		{
+			TogglePause();
+			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true))
+				: UIEventsManager::Broadcast(new Events::TogglePause(false));
+			AudioManager::TogglePause(g_GamePause);
+		}
 		//if (AEInputCheckTriggered(AEVK_ESCAPE))
 		//{
 		//	if (currentState == GS_MAINMENU)
@@ -81,12 +92,12 @@ namespace InputManager
 		//{
 		//	ToggleShowBoundingBoxMode(); 
 		//}
-		//if (AEInputCheckTriggered(AEVK_9))			
-		//{
-		//	GSM_ChangeState(GS_UPGRADE);
-		//	//GSM_LoadingTransition(GS_UPGRADE);
-		//	//Factory_UI::Create_ChooseThree({ 0,0 });
-		//}
+			if (AEInputCheckTriggered(AEVK_9))			
+			{
+				GSM_ChangeState(GS_UPGRADE);
+				//GSM_LoadingTransition(GS_UPGRADE);
+				//Factory_UI::Create_ChooseThree({ 0,0 });
+			}
 		/*if (AEInputCheckTriggered(AEVK_8))
 		{
 			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
