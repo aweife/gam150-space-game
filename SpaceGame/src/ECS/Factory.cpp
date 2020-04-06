@@ -75,7 +75,7 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
 		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 5.0f, 2.0f));
 		Core::Get().GetComponent<cRigidBody>(player)->_velocityHardCap = 250;
-		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::ENEMY;
+		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
 		
