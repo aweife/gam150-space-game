@@ -85,7 +85,7 @@ void Level2_Load()
 
 	Factory_Map::Generate_PlanetField();
 
-	package = Factory::SpawnDelivery({0.0f, 200.0f}, 60.0f, 5.0f, { 50.0f,50.0f });
+	package = Factory::SpawnDelivery({-500.0f, 0.0f}, 60.0f, 5.0f, { 50.0f,50.0f });
 
 
 	Factory::CreateBackground();

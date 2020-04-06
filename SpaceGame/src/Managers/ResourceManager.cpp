@@ -60,9 +60,9 @@ namespace ResourceManager
 			break;
 		case GS_LEVEL3:
 			//nothing to load
-			GenerateMeshLibrary_1();
-			LoadTextureLibrary_1(&loadingStage, &loadingProgress);
-			//loadingProgress = 100;
+			//GenerateMeshLibrary_1();
+			//LoadTextureLibrary_1(&loadingStage, &loadingProgress);
+			loadingProgress = 100;
 			break;
 		default:
 			break;
