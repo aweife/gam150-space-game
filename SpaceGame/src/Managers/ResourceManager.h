@@ -23,6 +23,7 @@ namespace ResourceManager
 	extern u32 fontId;
 	extern bool loadingCompleted;
 	extern unsigned int loadingProgress;
+	extern unsigned int loadingStage;
 
 	void Init();
 	void Update(unsigned int loadingCode);
@@ -32,6 +33,7 @@ namespace ResourceManager
 
 	void LoadTextureLibrary_Essential();
 	void LoadTextureLibrary_1(unsigned int* stage, unsigned int* progress);
+	void LoadTextureLibrary_2(unsigned int* stage, unsigned int* progress);
 
 	void Unload();
 

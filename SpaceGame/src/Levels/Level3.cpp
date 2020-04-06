@@ -14,7 +14,7 @@
 or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "Level2.h"									//Self Header
+#include "Level3.h"									//Self Header
 #include "../ECS/Core.h"							//Systems to Update
 #include "../ECS/Factory.h"							//Entity to create
 #include "../Player/PlayerManager.h"				//Control over the player
@@ -25,13 +25,14 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
 
+ENTITY escort = 0;
 
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
 // It loads assets like textures, meshes and music files etc…
 // ----------------------------------------------------------------------------
-void Level2_Load()
+void Level3_Load()
 {
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);
@@ -42,8 +43,8 @@ void Level2_Load()
 	// Create camera
 	Factory::CreateCamera(PlayerManager::player);
 
-	LevelManager::Level2_Setup();
 
+	LevelManager::Level3_Setup();
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
 	Factory::CreatePlanet2(3, 200.0f, 179.0f, 200.0f, 200.0f);
@@ -73,12 +74,11 @@ void Level2_Load()
 
 	Factory_Map::Generate_PlanetField();
 
-	Factory::SpawnDelivery({0.0f, 200.0f}, 60.0f, 5.0f, { 50.0f,50.0f });
+	escort = Factory_AI::CreateEscort(2, { 0.0f, 0.0f });
+
+	Factory_UI::CreateUI_AddObjective(1, "Escort The Ship Safely");
 
 	Factory::CreateBackground();
-	Factory_UI::CreateUI_AddObjective(1, "Deliver The Package");
-	Factory_UI::CreateUI_AddObjective(2, "Eliminate 10 enemies");
-
 	Factory_UI::Create_PlayerUserInterface();
 
 	// FOR NOW, audio
@@ -90,7 +90,7 @@ void Level2_Load()
 // It should be called once before the start of the level
 // It resets data like counters to inital values…
 // ----------------------------------------------------------------------------
-void Level2_Init()
+void Level3_Init()
 {
 	//spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
@@ -100,29 +100,26 @@ void Level2_Init()
 // This function updates the data within Level1
 // Update functions such as user input, time or gameplay logic
 // ----------------------------------------------------------------------------
-void Level2_Update()
+void Level3_Update()
 {
-
 	AudioManager::Update();
 	PlayerManager::Update();
 	Core::Get().Core_Update();
 
-	if (PlayerManager::player)
+	if (AEInputCheckTriggered(AEVK_L))
 	{
-		AEVec2 playerPos = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position;
-		//Delivery Mission
-		LevelManager::Level2Update(playerPos, 5.0f);
-		//Spawn Enemy around player
-		LevelManager::EnemySpawnManager::SpawnEnemyWavesTimer(playerPos, 5.0f);
+		Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");
 	}
-	
+
+	// Level 3 Escort mission
+	LevelManager::Level3Update(escort, 5.0f);
 }
 
 // ----------------------------------------------------------------------------
 // This function renders the graphics for each frame of Level1
 // Sends data to the graphics engine component
 // ----------------------------------------------------------------------------
-void Level2_Draw()
+void Level3_Draw()
 {
 	Core::Get().Core_Render();
 }
@@ -131,9 +128,8 @@ void Level2_Draw()
 // Make the state ready to be unloaded or initialized again
 // No data is dumped in this cycle function
 // ----------------------------------------------------------------------------
-void Level2_Free()
+void Level3_Free()
 {
-	//spawnedBoss = false;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }
@@ -141,7 +137,7 @@ void Level2_Free()
 // This function dumps all data loaded in Level 1
 // Is called when the state should be terminated
 // ----------------------------------------------------------------------------
-void Level2_Unload()
+void Level3_Unload()
 {
 	UIEventsManager::Cleanup();
 	Factory::RemoveCamera();

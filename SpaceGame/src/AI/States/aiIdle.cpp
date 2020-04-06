@@ -21,6 +21,7 @@ void aiIdle::OnUpdate(aiBlackBoard& bb)
 
 		break;
 	case OBJECTIVE:
+	case DELIVERY:
 	case LEVEL_END:
 
 		if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange/4.0f))

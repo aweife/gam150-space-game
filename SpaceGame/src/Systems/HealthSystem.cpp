@@ -122,9 +122,9 @@ void HealthSystem::Update()
 			cRigidBody* collision = Core::Get().GetComponent<cRigidBody>(entity);
 			if (collision)
 			{
-				if (collision->_tag == COLLISIONTAG::WAVEENEMY)
+				if (collision->_tag == COLLISIONTAG::WAVEENEMY || collision->_tag == COLLISIONTAG::ENEMY)
 				{
-					LevelManager::wavesEnemyList.erase(entity);
+					LevelManager::ClearEnemy(entity);
 				}
 			}
 			

@@ -30,9 +30,9 @@ void LoadingLvl_Load()
 
 void LoadingLvl_Init()
 {
-	//loadingForState = GS_LEVEL1;					//REMOVE IN FUTURE
 	ResourceManager::loadingProgress = 0;
 	ResourceManager::loadingCompleted = false;
+	ResourceManager::loadingStage = 0;
 }
 
 void LoadingLvl_Update()

@@ -55,6 +55,13 @@ namespace ResourceManager
 			//nothing to load
 			loadingProgress = 100;
 			break;
+		case GS_LEVEL2:
+			LoadTextureLibrary_2(&loadingStage, &loadingProgress);
+			break;
+		case GS_LEVEL3:
+			//nothing to load
+			loadingProgress = 100;
+			break;
 		default:
 			break;
 		}
@@ -498,10 +505,34 @@ namespace ResourceManager
 				case 31:
 					if (textureLibrary.find("Scanner") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Scanner", AEGfxTextureLoad("res/Player_Shield.png") });
+					*progress = 100;
+					break;
 			}
 			*progress < 100? *progress += static_cast<unsigned int>(100 / 32): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
+			AEGetTime(&currTime);
+		}
+	}
+
+	void LoadTextureLibrary_2(unsigned int* stage, unsigned int* progress)
+	{
+		f64 currTime, startTime;
+		AEGetTime(&currTime);
+		AEGetTime(&startTime);
+
+		while (currTime - startTime < 1.0f / 60.0f && *progress < 100)
+		{
+			switch (*stage)
+			{
+			case 0:
+				if (textureLibrary.find("Delivery") != textureLibrary.end()) break;
+				textureLibrary.insert({ "Delivery", AEGfxTextureLoad("res/Delivery.png") });
+				*progress = 100;
+				break;
+			}
+			*progress < 100 ? *progress += static_cast<unsigned int>(100 / 1) : *progress = 100;
+			++* stage;
 			AEGetTime(&currTime);
 		}
 	}

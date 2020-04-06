@@ -8,6 +8,7 @@ enum AI_TYPE
 	ENEMY = 0,
 	BOSS,
 	OBJECTIVE,
+	DELIVERY,
 	LEVEL_END,
 };
 

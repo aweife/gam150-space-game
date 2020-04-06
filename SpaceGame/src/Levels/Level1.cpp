@@ -24,7 +24,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
-ENTITY enemy, escort;
+
+//ENTITY enemy, escort;
 //const float bossSpawn = 1.0f;
 //float bossSpawnTimer = 0.0f;
 //bool spawnedBoss = false;
@@ -45,14 +46,8 @@ void Level1_Load()
 	// Create camera
 	Factory::CreateCamera(PlayerManager::player);
 
-	//Create Enemy
-	//enemy = Factory::CreateEnemy1(PlayerManager::player, 2);
-	//enemy = Factory::CreateEnemy2(PlayerManager::player, 2);
-	//enemy = Factory::CreateEnemy3(PlayerManager::player, 2);
-	//enemy = Factory::CreateEnemy4(PlayerManager::player, 2);
-	//enemy = Factory::CreateEnemy5(PlayerManager::player, 2);
+	LevelManager::Level1_Setup();
 
-	//LevelManager::Level1_Map();
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
 	Factory::CreatePlanet2(3, 200.0f, 179.0f, 200.0f, 200.0f);
@@ -80,17 +75,7 @@ void Level1_Load()
 	Factory::CreateAsteroid2(2, -900.0f, 300.0f, 80.0f, 80.0f);
 	Factory::CreateAsteroid2(2, 80.0f, -260.0f, 60.0f, 60.0f);
 
-	AEVec2 deliverySize, spawnPos;
-	AEVec2Set(&deliverySize, 50.0f, 50.0f);
-	AEVec2Set(&spawnPos, 0.0f, 0.0f);
-
-	Factory::SpawnDelivery(spawnPos, 60.0f, 5.0f, deliverySize, 0);
-
-	escort = Factory_AI::CreateEscort(2, { 0.0f, 0.0f });
-
 	Factory_Map::Generate_PlanetField();
-
-
 
 	Factory::CreateBackground();
 	Factory_UI::CreateUI_AddObjective(1, "Save 3 Stranded Allies");
@@ -120,11 +105,9 @@ void Level1_Update()
 	AudioManager::Update();
 	PlayerManager::Update();
 	Core::Get().Core_Update();
-	LevelManager::Level1Update();
+	LevelManager::Level1_Update();
 
-	// Level 3 Escort mission
-	cRigidBody* escortVel = Core::Get().GetComponent<cRigidBody>(escort);
-	escortVel->_acceleration += 50.0f;
+
 	if (AEInputCheckTriggered(AEVK_L))
 	{
 		Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");

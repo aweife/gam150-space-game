@@ -383,7 +383,7 @@ bool CollisionCheck(const Colliders& obj1, const ColliderShape shape1, const AEV
 			return false;
 		}
 	}
-	//for playtest
+	//for laser
 	else if (shape1 == ColliderShape::RAYCAST && shape2 == ColliderShape::RECTANGLE)
 	{
 		AEVec2 pointToRect1, pointToRect2;
@@ -471,6 +471,8 @@ void CollisionSystem::Update()
 		collider->_boundingBox.max.y = 0.4f * transform->_scale.y + transform->_position.y;
 		collider->_boundingBox.min.x = -0.4f * transform->_scale.x + transform->_position.x;
 		collider->_boundingBox.min.y = -0.4f * transform->_scale.y + transform->_position.y;
+
+		
 		//Playtest JY
 		if (collider->_bbShape == ColliderShape::RAYCAST)
 		{
@@ -501,6 +503,34 @@ void CollisionSystem::Update()
 
 		//for raycast
 		float shortestDistance = 999.0f;
+		float rayCastToEdgeOfScreen = 0.0f;
+
+		if (collider->_bbShape == ColliderShape::RAYCAST)
+		{
+			float screenGradiant = g_WorldMaxY / g_WorldMaxX;
+			if (fabs(transform->_rotation) < FLT_EPSILON || fabs(transform->_rotation - PI) < FLT_EPSILON)
+			{
+				rayCastToEdgeOfScreen = g_WorldMaxX;
+			}
+			else if(fabs(transform->_rotation - PI/2) < FLT_EPSILON || fabs(transform->_rotation - 2 * PI) < FLT_EPSILON)
+			{
+				rayCastToEdgeOfScreen = g_WorldMaxY;
+			}
+			else
+			{
+				float raycastGradiant = AETan(transform->_rotation);
+				if (fabs(raycastGradiant) < screenGradiant)			//Horizontal
+				{
+					rayCastToEdgeOfScreen = 0.96f * (g_WorldMaxX / fabs(AECos(transform->_rotation)));
+				}
+				else if (fabs(raycastGradiant) > screenGradiant)		//Verticla
+				{
+					rayCastToEdgeOfScreen = 0.96f * (g_WorldMaxY / fabs(AESin(transform->_rotation)));
+				}
+
+			}
+		}
+
 		ENTITY raycastEntity = 0;
 
 		for (auto const& entity2 : entitiesList)
@@ -523,19 +553,31 @@ void CollisionSystem::Update()
 				// if player and enemy collide with each other 
 				// player and enemy's health will decrease 
 				// angular velocity will apply
-				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	(rigidbody2->_tag == COLLISIONTAG::ENEMY || 
-																rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID))
+				if (rigidbody->_tag == COLLISIONTAG::PLAYER &&	(rigidbody2->_tag == COLLISIONTAG::ENEMY 
+					|| rigidbody2->_tag == COLLISIONTAG::WAVEENEMY || rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID))
 				{
 					//CameraManager::StartCameraShake();
-					//printf("Enemy health decrease lmao\n");
 
 					// when the player's velocity is more than the velocity cap
-					if (rigidbody->_velocity > (rigidbody->_velocityCap/2.0f))
+					if (rigidbody->_velocity > (rigidbody->_velocityHardCap/2.0f))
 					{
 						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 						//CameraManager::StartCameraShake();
 						markedForDestruction.insert(entity2);
 					}
+					else //Not enough speed
+					{
+						if (rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
+						{
+							markedForDestruction.insert(entity2);
+						}
+						else if (rigidbody2->_tag == COLLISIONTAG::ENEMY || rigidbody2->_tag == COLLISIONTAG::WAVEENEMY)
+						{
+							healthSys->TakeDamage(entity2);
+						}
+						healthSys->TakeDamage(entity1);
+					}
+					
 
 					// for player's bounce off
 					AEVec2Set(&rigidbody->_velocityDirection, -(rigidbody->_velocityVector.x), -(rigidbody->_velocityVector.y));
@@ -549,6 +591,17 @@ void CollisionSystem::Update()
 
 				}
 
+				if (rigidbody->_tag == COLLISIONTAG::ESCORT && (rigidbody2->_tag == COLLISIONTAG::ENEMY || rigidbody2->_tag == COLLISIONTAG::WAVEENEMY ||
+					rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID))
+				{
+					// for enemy's bounce off
+					AEVec2Set(&rigidbody2->_velocityDirection, -(rigidbody2->_velocityVector.x), -(rigidbody2->_velocityVector.y));
+					AEVec2Set(&rigidbody2->_collisionVector, -(rigidbody2->_velocityVector.x * 1.5f), -(rigidbody2->_velocityVector.y * 1.5f));
+					AEVec2Add(&rigidbody2->_collisionVector, &rigidbody2->_collisionVector, &rigidbody2->_velocityDirection);
+					
+					markedForDestruction.insert(entity2);
+				}
+
 				//if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::OBJECTIVE)
 				//{
 				//	Factory::CreateParticleEmitter_UPONIMPACT(transform2);
@@ -557,13 +610,13 @@ void CollisionSystem::Update()
 				//	LevelManager::ClearObjective(entity2);
 				//}
 
-				if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::DELIVERY)
-				{
-					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
-					//CameraManager::StartCameraShake();
-					LevelManager::isCollected = true;
-					markedForDestruction.insert(entity2);
-				}
+				//if (rigidbody->_tag == COLLISIONTAG::PLAYER && rigidbody2->_tag == COLLISIONTAG::DELIVERY)
+				//{
+				//	Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+				//	//CameraManager::StartCameraShake();
+				//	LevelManager::isCollected = true;
+				//	markedForDestruction.insert(entity2);
+				//}
 
 
 				// Player collide with boss
@@ -584,7 +637,7 @@ void CollisionSystem::Update()
 					if (projectile && projectile->_bulletType == bulletType::laser)
 					{
 						if (AEVec2Distance(&transform->_position, &transform2->_position) < shortestDistance && 
-							AEVec2Distance(&transform->_position, &transform2->_position) < 720.0f)
+							AEVec2Distance(&transform->_position, &transform2->_position) < rayCastToEdgeOfScreen)
 						{
 							shortestDistance = AEVec2Distance(&transform->_position, &transform2->_position);
 							raycastEntity = entity2;
@@ -604,7 +657,7 @@ void CollisionSystem::Update()
 
 
 				// if bullet collide with Player
-				if (rigidbody->_tag == COLLISIONTAG::BULLET && rigidbody2->_tag == COLLISIONTAG::PLAYER)
+				if (rigidbody->_tag == COLLISIONTAG::BULLET && (rigidbody2->_tag == COLLISIONTAG::PLAYER || rigidbody2->_tag == COLLISIONTAG::ESCORT))
 				{
 					
 					markedForDestruction.insert(entity1);
@@ -627,6 +680,20 @@ void CollisionSystem::Update()
 				if ((rigidbody->_tag == COLLISIONTAG::BULLET || rigidbody->_tag == COLLISIONTAG::BULLET_PLAYER) 
 					&& rigidbody2->_tag == COLLISIONTAG::PLANET_ASTEROID)
 				{
+					cProjectile* projectile = Core::Get().GetComponent<cProjectile>(entity1);
+					if (projectile && projectile->_bulletType == bulletType::laser)
+					{
+						if (AEVec2Distance(&transform->_position, &transform2->_position) < shortestDistance &&
+							AEVec2Distance(&transform->_position, &transform2->_position) < rayCastToEdgeOfScreen)
+						{
+							shortestDistance = AEVec2Distance(&transform->_position, &transform2->_position);
+							raycastEntity = entity2;
+						}
+						Factory::CreateParticleEmitter_UPONIMPACT(transform2);
+						markedForDestruction.insert(entity2);
+						continue;
+					}
+
 					Factory::CreateParticleEmitter_UPONIMPACT(transform2);
 					markedForDestruction.insert(entity1);
 					markedForDestruction.insert(entity2);
@@ -682,6 +749,7 @@ void CollisionSystem::Update()
 				rigidbody2 = Core::Get().GetComponent<cRigidBody>(raycastEntity);
 				transform2 = Core::Get().GetComponent<cTransform>(raycastEntity);
 				health2 = Core::Get().GetComponent<cHealth>(raycastEntity);
+
 				if (rigidbody->_tag == COLLISIONTAG::BULLET_PLAYER && rigidbody2->_tag == COLLISIONTAG::ENEMY)
 				{
 					float raycastLength = transform->_scale.x;
@@ -707,7 +775,7 @@ void CollisionSystem::Update()
 				if (sprite)
 				{
 					float raycastLength = transform->_scale.x;
-					sprite->_UVOffset.x = 0.5f - (720.0f / raycastLength) * 0.5f;
+					sprite->_UVOffset.x = 0.5f - (rayCastToEdgeOfScreen / raycastLength) * 0.5f;
 				}
 			}
 		}

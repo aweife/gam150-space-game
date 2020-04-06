@@ -17,59 +17,81 @@ namespace LevelManager
 {
 	//Storage Containers
 	extern std::set<ENTITY> starfield_Set;
-	
-	// Level 1 Missions
-	void Level1Update();
-	void CheckOutOfScreen(ENTITY id);
-	
-	void ClearLevel();
-	void SetObjectiveComplete();
-	void StartBossSpawnSequence();
-
 	extern std::set<ENTITY> wavesEnemyList;
 
-	float GetRandomPattern();
+	//Misson Variables
+	//Collectables
+	extern bool objectiveComplete;
+	extern bool spawnExit;
+	//Delivery
+	extern bool isCollected;
+	extern float DeliveryEnemyTimer;
+	//Escort
+	extern float escortEnemyTimer;
+	extern bool isEscorting;
 
+	// All 3 Levels Shared Functions
+	void StartBossSpawnSequence();
 	float RandomPos();
-	void SetObjectiveSpawnArea();
+	void ClearLevel();
 
-	void SetObjectiveSpawn(float randomLevel);
-	void SetEnemySpawn(float randomLevel);
-	void ClearSpawnArea();
-	void Level1_Map();
+	// Level 1 Missions
+	void Level1_Update();
+	void Level1_Setup();
+	void ObjectiveCompleteUpdate();
+	//Check if collectable is out of screen
+	void CheckOutOfScreen(ENTITY id);
+	//Objectives
 	void ClearObjective(ENTITY collectable);
 	void ClearObjectiveAll();
 
+
+	// Level 2 Missions
+	void Level2_Setup();
+	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer = 5.0f);
+	void SpawnEnemyOnCollect(AEVec2 playerPos);
+	void CheckDelivery();
+	void ClearEnemy(ENTITY enemy);
+
+	// Level 3 Missions
+	void Level3_Setup();
+	void Level3Update(ENTITY escort, float escortEnemySpawnTimer = 5.0f);
+	void SpawnEnemyOnEscort(ENTITY escort, ENTITY player);
+	void CheckEscort(AEVec2 escortPos, float checkPointX, float checkPointY);
+
+	//Level 1 Spawning Functions
+	void Level1_SetEnemySpawn(float randomLevel);
+	void SetObjectiveSpawnArea();
+	void SetObjectiveSpawn(float randomLevel);
+	void ClearSpawnArea();
+
+	//Manipulating StarField
 	void Clear_StarField();
 	void SpeedChange_StarField(float multiplier);
 	void Move_StarField(float posX, float posY);
-}
 
 	namespace EnemySpawnManager
 	{
-		extern int enemyDestroyCounter;
+		extern int enemyDestroyCounter;			// How many enemy DESTROYED
+		extern int spawnedEnemy;				// How many enemy SPAWNED
+
 		extern bool spawnEnemy;
-		extern int spawnedEnemy;
+		extern bool spawnBoss;					// Has boss BEEN Spawned
+
+		//Timers
 		extern float BossTimer;
 		extern float WaveTimer;
-		extern bool spawnBoss;
 
-		void SpawnBoss(ENTITY boss, float spawnTimer = 3.0f);
-		void SpawnEnemyWavesTimer(AEVec2 playerPos, float spawnTimer = 5.0f);
-		void SpawnEnemyWaves(AEVec2 playerPos);
+		// Runs the countdown for boss to spawn
+		void SpawnBoss(float spawnTimer = 3.0f);
+		// Define the spawning area for enemy, around the player
 		void EnemyWaveSpawnArea(AEVec2 spawnPos);
+		// Check if next wave of enemy can be spawned (after a few seconds after all enemy defeated)
+		void SpawnEnemyWavesTimer(AEVec2 playerPos, float spawnTimer = 5.0f);
+		// Spawn enemy waves
+		void SpawnEnemyWaves();
+
 	}
-
-	// Level 2 Missions
-	void Level2Update(AEVec2 playerPos, float DeliveryEnemySpawnTimer = 5.0f);
-	extern bool isCollected;
-	extern float DeliveryEnemyTimer;
-	void SpawnEnemyOnCollect(AEVec2 playerPos);
-
-	// Level 3 Missions
-	void Level3Update(AEVec2 escortPos, float escortEnemySpawnTimer = 5.0f);
-	extern float escortEnemyTimer;
-
 }
 
 struct objectSpawnArea
