@@ -404,25 +404,40 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	}
 	
 	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+
 	if (uiComp)
 	{
-		if (uiComp->_text._colorBlend.a < 0.5f) return false;
-
-		TogglePause();
-		UIEventsManager::Broadcast(new Events::TogglePause(false));
+		if (uiComp->_text._colorBlend.a < 0.5f)
+		{
+			if (sprite->_colorTint.a < 0.5f)
+			{
+				return false;
+			}
+		}
 
 		if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 1)	//Resume game
 		{
+			TogglePause();
+			UIEventsManager::Broadcast(new Events::TogglePause(false));
 			 //UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 2)	//Restart Level 
 		{
-			/*GSM_RestartLevel();*/
+			TogglePause();
+			UIEventsManager::Broadcast(new Events::TogglePause(false));
 			GSM_LoadingTransition(GS_LEVEL1);
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 3)   // Exit to main menu
 		{
+			TogglePause();
+			UIEventsManager::Broadcast(new Events::TogglePause(false));
 			GSM_ChangeState(GS_MAINMENU);
+		}
+		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 4)   //Settings
+		{
+
+			Factory_UI::Create_InGameOptions();
 		}
 	}
 	return true;
@@ -448,13 +463,13 @@ bool OnButtonClick_GameOverMenuUI(ENTITY entity, Events::OnMouseClick* message)
 	if (uiComp)
 	{
 		if (uiComp->_text._colorBlend.a < 0.5f) return false;
-		UIEventsManager::Broadcast(new Events::TogglePause(false));
-		if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 2)	//Restart Level 
+
+
+		if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 1)	//Restart Level 
 		{
-			/*GSM_RestartLevel();*/
-			GSM_LoadingTransition(GS_LEVEL1);
+			GSM_LoadingTransition(currentState);
 		}
-		else if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 3)   // Exit to main menu
+		else if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 2)   // Exit to main menu
 		{
 			GSM_ChangeState(GS_MAINMENU);
 		}
@@ -605,7 +620,7 @@ bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message)
 	return true;
 }
 
-bool ToggleGameOverWindow(ENTITY entity, Events::TogglePause* message)
+bool ToggleGameOverWindow(ENTITY entity, Events::ToggleGameOver* message)
 {
 	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);			//Might be nullptr
 	cUIElement* ui = Core::Get().GetComponent <cUIElement>(entity);
@@ -735,6 +750,14 @@ void UISystem::DeleteUpgradeWindow()
 	}
 }
 
+void UISystem::DeleteInGameOptionsWindow()
+{
+	while (ingameOptions_Set.size() > 0)
+	{
+		Core::Get().EntityDestroyed(*ingameOptions_Set.begin());
+	}
+}
+
 void UISystem::OnComponentAdd(ENTITY entity)
 {
 	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
@@ -764,6 +787,9 @@ void UISystem::OnComponentAdd(ENTITY entity)
 			break;
 		case UI_ROLE::OBJECTIVES:
 			objective_Set.insert(entity);
+			break;
+		case UI_ROLE::INGAMEOPTIONS:
+			ingameOptions_Set.insert(entity);
 			break;
 	}
 }
@@ -797,6 +823,9 @@ void UISystem::OnComponentRemove(ENTITY entity)
 		break;
 	case UI_ROLE::OBJECTIVES:
 		objective_Set.erase(entity);
+		break;
+	case UI_ROLE::INGAMEOPTIONS:
+		ingameOptions_Set.erase(entity);
 		break;
 	}
 }

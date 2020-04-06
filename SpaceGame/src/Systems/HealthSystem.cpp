@@ -46,14 +46,13 @@ void HealthSystem::Update()
 			//Solely to regen
 			if (health->_shieldRegenCooldown <= 0)
 			{
-				health->_shieldCurr +=  10.0f * g_dt;			
-				UIEventsManager::Broadcast(new Events::OnShieldChange(health->_shieldCurr));
-				
+				health->_shieldCurr +=  10.0f * g_dt;							
 			}
 			else
 			{
 				health->_shieldRegenCooldown -= g_dt;
 			}	
+			UIEventsManager::Broadcast(new Events::OnShieldChange(health->_shieldCurr));
 
 			// Change activation
 			if (health->_shieldRegenCooldown <= 0 && !health->_activateShield)
@@ -157,6 +156,10 @@ void HealthSystem::TakeDamage(ENTITY entity)
 		{			
 			health->_activateShield = false;//cannot use shield for awhile
 		}
+		if (entity == PlayerManager::player)
+		{
+			UIEventsManager::Broadcast(new Events::OnShieldChange(health->_shieldCurr));
+		}
 	}
 	else if (health->_healthCurr > 0)
 	{
@@ -169,7 +172,11 @@ void HealthSystem::TakeDamage(ENTITY entity)
 		health->_healthCurr -= 10.0f;
 		if (health->_healthCurr < 0.0f) health->_healthCurr = 0.0f;
 		if (entity == PlayerManager::player)
-		UIEventsManager::Broadcast(new Events::OnHealthChange(health->_healthCurr));
+		{
+			UIEventsManager::Broadcast(new Events::OnHealthChange(health->_healthCurr));
+
+		}
+
 		health->_invulnerabilityTime = health->_invulnerabilityWindow;
 		health->_isInvulnerable = true;
 	}

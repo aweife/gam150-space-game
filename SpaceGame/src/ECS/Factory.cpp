@@ -1265,15 +1265,15 @@ namespace Factory_UI
 		UIEventsManager::Subscribe(panel, &ToggleGameOverWindow);
 
 		ENTITY restart = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(restart, new cTransform({ 150, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cTransform>(restart, new cTransform({ -150, -100 }, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(restart, new cSprite(restart, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cSprite>(restart)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(restart, new cUIElement("Restart"));
 		Core::Get().GetComponent<cUIElement>(restart)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex = 2;
 		Core::Get().GetComponent<cUIElement>(restart)->_roleIndex2 = 1;		//Restart Game
 		Core::Get().GetComponent<cUIElement>(restart)->_text._anchor = TEXT_ANCHOR::CENTER;
-		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(restart)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		Core::Get().GetComponent<cUIElement>(restart)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(restart, &ToggleGameOverWindow);
 		UIEventsManager::Subscribe(restart, &OnButtonClick_GameOverMenuUI);
@@ -1281,13 +1281,13 @@ namespace Factory_UI
 		ENTITY exit = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(exit, new cTransform({ 150, -100 }, 0, { 218, 40 }));
 		Core::Get().AddComponent<cSprite>(exit, new cSprite(exit, "Square Mesh", "Texture_Default", 0));
-		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cSprite>(exit)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(exit, new cUIElement("Exit to Main Menu"));
 		Core::Get().GetComponent<cUIElement>(exit)->_role = UI_ROLE::GAMEOVER;
 		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex = 2;		//Toggle Transparency
 		Core::Get().GetComponent<cUIElement>(exit)->_roleIndex2 = 2;	//Exit to main menu
 		Core::Get().GetComponent<cUIElement>(exit)->_text._anchor = TEXT_ANCHOR::CENTERLEFT;
-		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
+		Core::Get().GetComponent<cUIElement>(exit)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &ToggleGameOverWindow);
 		UIEventsManager::Subscribe(exit, &OnButtonClick_GameOverMenuUI);
@@ -1309,7 +1309,10 @@ namespace Factory_UI
 		Core::Get().AddComponent<cSprite>(settings, new cSprite(panel, "Square Mesh", "Settings_Icon", 0));
 		Core::Get().GetComponent<cSprite>(settings)->_colorTint = { 1.0f, 1.0f, 1.0f, 0.0f };
 		Core::Get().AddComponent<cUIElement>(settings, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::PAUSE, 0));
+		Core::Get().GetComponent<cUIElement>(settings)->_roleIndex = 0;		//Toggle Text Transparency
+		Core::Get().GetComponent<cUIElement>(settings)->_roleIndex2 = 4;	//Settings page Game
 		UIEventsManager::Subscribe(settings, &TogglePauseWindow);
+		UIEventsManager::Subscribe(settings, &OnButtonClick_PauseMenuUI);
 
 		ENTITY resume = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(resume, new cTransform({-230, -100}, 0, { 160, 40 }));
@@ -1353,6 +1356,27 @@ namespace Factory_UI
 		Core::Get().GetComponent<cUIElement>(exit)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(exit, &TogglePauseWindow);
 		UIEventsManager::Subscribe(exit, &OnButtonClick_PauseMenuUI);
+	}
+
+	void Create_InGameOptions()
+	{
+		ENTITY panel = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(panel, new cTransform({ 0,0 }, 0, { 500,300 }));
+		Core::Get().AddComponent<cSprite>(panel, new cSprite(panel, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 1.0f, 0.4f, 0.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INGAMEOPTIONS, 0));
+
+		ENTITY soundTB = CreateUI_Option_TickBox_Sound(-100, 30, 40.0f, 0);
+		Core::Get().GetComponent<cSprite>(soundTB)->_colorTint.a = 1.0f;
+		Factory_UI::CreateUI_Text(0, 30, "Mute All Audio");
+		ENTITY optionTB = CreateUI_Option_TickBox_Fullscreen(-100, -30, 40.0f, 0);
+		Core::Get().GetComponent<cSprite>(optionTB)->_colorTint.a = 1.0f;
+		Factory_UI::CreateUI_Text(0, -30, "Windowed Mode");
+		Core::Get().GetComponent<cSprite>(Core::Get().GetComponent<cUIElement>(soundTB)->_roleIndex)->_colorTint.a = g_isMute ? 1.0f : 0.0f;
+		Core::Get().GetComponent<cSprite>(Core::Get().GetComponent<cUIElement>(optionTB)->_roleIndex)->_colorTint.a = !g_isFullScreen ? 1.0f : 0.0f;
+
+		Core::Get().GetComponent<cUIElement>(soundTB)->_roleIndex;
+		Core::Get().GetComponent<cUIElement>(optionTB)->_roleIndex;
 	}
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text)

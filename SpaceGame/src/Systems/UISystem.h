@@ -24,6 +24,8 @@ public:
 	std::set<ENTITY> floatingDamage_Set;
 	std::set<ENTITY> objective_Set;
 
+	std::set<ENTITY> ingameOptions_Set;
+
 	UISystem() = default;
 	~UISystem() = default;
 	void Init() override;
@@ -34,6 +36,8 @@ public:
 
 	void Check_IndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType);
 	void DeleteUpgradeWindow();
+
+	void DeleteInGameOptionsWindow();
 };
 void EditText(ENTITY target, const char* newText);
 void EditText(ENTITY target, const char* newText, int atBack);
@@ -52,7 +56,7 @@ bool OnButtonClick_GameOverMenuUI(ENTITY entity, Events::OnMouseClick* message);
 bool OnButtonClick_Upgrades(ENTITY entity, Events::OnMouseClick* message);
 bool OnButtonHover_Upgrades(ENTITY entity, Events::OnMouseHover* message);
 bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message);
-bool ToggleGameOverWindow(ENTITY entity, Events::TogglePause* message);
+bool ToggleGameOverWindow(ENTITY entity, Events::ToggleGameOver* message);
 bool UpdateRerollCount(ENTITY entity, Events::OnUpgradeReroll* message);
 bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message);
 

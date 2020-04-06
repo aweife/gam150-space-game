@@ -68,6 +68,12 @@ namespace Events
 		bool _show;
 	};
 
+	struct ToggleGameOver :public EventsBase
+	{
+		ToggleGameOver(bool show) :_show{ show } {};
+		bool _show;
+	};
+
 	// Selected 1 upgrade and decrementing reroll
 	struct OnUpgradeReroll :public EventsBase
 	{

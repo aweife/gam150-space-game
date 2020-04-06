@@ -50,7 +50,8 @@ namespace InputManager
 		// Non-Gameplay Keyboard Controls ... Pause, Exit
 		// -----------------------------------------------------------------------
 
-		if (AEInputCheckTriggered(AEVK_ESCAPE) && currentState != GS_SPLASHSCREEN && currentState != GS_MAINMENU)
+		if (AEInputCheckTriggered(AEVK_ESCAPE) && currentState != GS_SPLASHSCREEN && currentState != GS_MAINMENU
+			&& PlayerManager::player)
 		{
 			TogglePause();
 			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 
