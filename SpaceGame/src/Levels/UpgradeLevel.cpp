@@ -52,6 +52,7 @@ void UpgradeLvl_Draw()
 
 void UpgradeLvl_Free()
 {
+	AudioManager::UnLoadAllSounds();
 	loadingForNextLevel = GS_NULL;
 	upgradeFinish = false;
 
