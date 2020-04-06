@@ -25,13 +25,12 @@ ENTITY EntityManager::CreateEntity(const char* name)
 {
 	UNREFERENCED_PARAMETER(name);
 	
-
 	if(_activeEntityCount > MAX_ENTITIES)
 	{
 		printf("TOO MANY ENTITY %ui", _activeEntityCount);
 	}
 	// Assert if we reached the cap
-	AE_ASSERT(_activeEntityCount <= MAX_ENTITIES && "Too many entities created");
+	AE_ASSERT(_activeEntityCount < MAX_ENTITIES && "Too many entities created");
 	
 	// Take from the front of the queue
 	ENTITY entity = _availableEntities.front();

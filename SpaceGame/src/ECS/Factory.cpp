@@ -73,8 +73,8 @@ namespace Factory
 		ENTITY player = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(player, new cTransform({ 0,0 }, 0.0f, {50.0f, 50.0f}));
 		Core::Get().AddComponent<cSprite>(player, new cSprite(player, "Square Mesh", "Player_1", layer));
-		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 3.0f, 2.0f));
-		Core::Get().GetComponent<cRigidBody>(player)->_velocityHardCap = 200;
+		Core::Get().AddComponent<cRigidBody>(player, new cRigidBody(3.0f, 0.0f, 75.0, 5.0f, 2.0f));
+		Core::Get().GetComponent<cRigidBody>(player)->_velocityHardCap = 250;
 		Core::Get().GetComponent<cRigidBody>(player)->_tag = COLLISIONTAG::PLAYER;
 		Core::Get().AddComponent<cCollision>(player, new cCollision);
 		Core::Get().GetComponent<cCollision>(player)->_bbShape = ColliderShape::RECTANGLE;
@@ -239,6 +239,28 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "Square Mesh", "Tutorial_planet", layer));
 
 		return planet;
+	}
+
+	ENTITY SpawnDelivery(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size)
+	{
+		ENTITY delivery = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(delivery, new cTransform(position, startRotation, size));
+		
+		Core::Get().AddComponent<cSprite>(delivery, new cSprite(delivery, "Square Mesh", "Delivery", 2));
+
+		Core::Get().AddComponent<cAI>(delivery, new cAI{ delivery, DELIVERY });
+		Core::Get().GetComponent<cAI>(delivery)->_currentState.states.emplace<aiIdle>();
+
+		Core::Get().AddComponent<cTimeline>(delivery, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery), 5.0f, Core::Get().GetComponent<cTransform>(delivery)->_rotation + 2 * PI);
+
+		//Core::Get().AddComponent<cRigidBody>(delivery, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
+		//Core::Get().AddComponent<cCollision>(delivery, new cCollision);
+		//Core::Get().GetComponent<cRigidBody>(delivery)->_tag = COLLISIONTAG::DELIVERY; // testing collision
+		//Core::Get().GetComponent<cCollision>(delivery)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+		return delivery;
 	}
 
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)
@@ -722,6 +744,30 @@ namespace Factory
 	}
 }
 
+namespace Factory_ParticleFx
+{
+	ENTITY CreateParticleEmitter_FinaleMisson(AEVec2 position)
+	{
+		ENTITY emitter = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(emitter, new cTransform(position, 0.0f, { 1.0f,1.0f }));
+		Core::Get().AddComponent<cRigidBody>(emitter, new cRigidBody(0, 400.0f, 200.0f, 2.5f));
+		Core::Get().GetComponent<cRigidBody>(emitter)->_velocityDirection = { -1.0f, 0 };
+		Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f,0.0f }, 5.0f, 0.001f, 0.02f, 0.75f, 3));
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = 500;
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default",
+			{ 1.0f, 1.0f, 0.0f, 1.0f }, { 4.0f,4.0f }, 0.6f, { 0.0f,0.0f },
+			{ 1.0f, 0.0f }, 100.0f, 0.0f, 0);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignSpawnVariance({ 0 }, { 0 },
+			VARIANCETYPE::NONE, { 2.0f,2.0f }, { 6.0f, 6.0f }, VARIANCETYPE::RANDOM_UNIFORM);
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 0.0f, 1.0f, 1.0f, 1.0f });
+		Core::Get().GetComponent<cParticleEmitter>(emitter)->AddOverLifetime_Color({ 0.0f, 1.0f, 1.0f, 0.0f });
+
+
+		return emitter;
+	}
+
+}
+
 /******************************************************************************/
 /*!
   \brief	Template of various UI Entity to be used in game
@@ -849,8 +895,7 @@ namespace Factory_UI
 		Create_ThrusterUI(spritePos);
 
 		// Objectives UI
-		spritePos = ScreenBasedCoords(0.0f, 0.0f, UI_ANCHOR::TOPLEFT);
-		CreateUI_Text(spritePos.x, spritePos.y, "Objectives");
+		CreateUI_Objective_Base();
 	}
 
 	void CreateLowHealthInterface()
@@ -987,7 +1032,7 @@ namespace Factory_UI
 	void Create_ChooseThree(AEVec2 centralPos, unsigned int reroll)
 	{
 		ENTITY border = 0, fakeupgrade = 0;
-		float borderSize = 100, borderSpace = 10;
+		float borderSize = 100, borderSpace = 100;
 		AEVec2 startingPos;
 
 		// Title of Upgrade
@@ -1022,17 +1067,6 @@ namespace Factory_UI
 		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
 		UIEventsManager::Subscribe(text, &UpdateRerollCount);
 
-		// Item Description
-		AEVec2Set(&startingPos, centralPos.x, centralPos.y - 120);
-		text = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
-		Core::Get().AddComponent<cUIElement>(text, new cUIElement("Sample Item Description"));
-		Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
-		Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 2;
-		Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
-		Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
-		UIEventsManager::Subscribe(text, &UpdateDescriptionText);
-
 		// Three Roulette
 		AEVec2Set(&centralPos, centralPos.x - borderSize - borderSpace, centralPos.y);
 		for (int i = 0; i < 3; ++i)
@@ -1048,32 +1082,45 @@ namespace Factory_UI
 			fakeupgrade = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(fakeupgrade, new cTransform(startingPos, 0.0f, { borderSize * 0.9f, borderSize * 0.9f }));
 			Core::Get().AddComponent<cSprite>(fakeupgrade, new cSprite(fakeupgrade, "Square Mesh2", "Random_Upgrade", 0));
-			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
-			Core::Get().AddComponent<cUIElement>(fakeupgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FAKEUPGRADE));
+			Core::Get().GetComponent<cSprite>(fakeupgrade)->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+			Core::Get().AddComponent<cUIElement>(fakeupgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_FAKEUPGRADE, 2 + i));
 
 			Core::Get().AddComponent<cTimeline>(fakeupgrade, new cTimeline(g_appTime, g_appTime + 0.5f + (i * 0.5f), false));
 			AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade));
 			AddNewNode_Float(&Core::Get().GetComponent<cSprite>(fakeupgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.45f + (i * 0.5f), -1.5f * (i + 2));
 			AddNewTimeline_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade));
 			AddNewNode_Void(Create_ChoosableUpgrade, Core::Get().GetComponent<cTimeline>(fakeupgrade), 0.49f + (i * 0.5f), fakeupgrade);
+		
+			// Item Description
+			AEVec2Set(&startingPos, startingPos.x, centralPos.y - 100.0f);
+			text = Core::Get().CreateEntity();
+			Core::Get().AddComponent<cTransform>(text, new cTransform(startingPos, 0, { 1, 1 }));
+			Core::Get().AddComponent<cUIElement>(text, new cUIElement("NOT Ready"));
+			Core::Get().GetComponent<cUIElement>(text)->_role = UI_ROLE::C3_TEXT;
+			Core::Get().GetComponent<cUIElement>(text)->_roleIndex = 2 + i;
+			Core::Get().GetComponent<cUIElement>(text)->_text._anchor = TEXT_ANCHOR::CENTER;
+			Core::Get().GetComponent<cUIElement>(text)->_text._usingScreenSpace = true;
+			UIEventsManager::Subscribe(text, &UpdateDescriptionText);
 		}
 	}
 
 	void Create_ChoosableUpgrade(ENTITY entity)
 	{
 		AEVec2 position = Core::Get().GetComponent<cTransform>(entity)->_position;
+		unsigned int slot = Core::Get().GetComponent<cUIElement>(entity)->_roleIndex;
+
 		ENTITY realUpgrade = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(realUpgrade, new cTransform(position, 0.0f, { 100 * 0.9f, 100 * 0.9f }));
 		Core::Get().AddComponent<cUIElement>(realUpgrade, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::C3_UPGRADE));
 		Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex = UpgradeManager::RandomUpgrade();
 		unsigned int upgradeIndex = Core::Get().GetComponent<cUIElement>(realUpgrade)->_roleIndex;
+		UIEventsManager::Broadcast(new Events::OnUpgradeDescpChange(static_cast<int>(upgradeIndex), slot));
+
 		//Different sprite based on upgrade assigned
 		Core::Get().AddComponent<cSprite>(realUpgrade, new cSprite(realUpgrade, "Square Mesh2", UpgradeManager::GetUpgradeImage(upgradeIndex), 0));
-		Core::Get().GetComponent<cSprite>(realUpgrade)->_colorTint = { 0.0f, 0.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cSprite>(realUpgrade)->_colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-
-
-
+		//Continue spinning
 		Core::Get().AddComponent<cTimeline>(realUpgrade, new cTimeline(g_appTime, g_appTime + 0.5f, false));
 		AddNewTimeline_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade));
 		AddNewNode_Float(&Core::Get().GetComponent<cSprite>(realUpgrade)->_UVOffset.y, Core::Get().GetComponent<cTimeline>(realUpgrade), 0.45f, -0.5f);
@@ -1081,7 +1128,7 @@ namespace Factory_UI
 		UIEventsManager::Subscribe(realUpgrade, &OnButtonHover_Upgrades);
 	}
 
-	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType)
+	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int indicatorType)
 	{
 		AEVec2 aiPos = Core::Get().GetComponent<cTransform>(ai)->_position;
 		float screenGradiant = g_WorldMaxY / g_WorldMaxX;
@@ -1115,20 +1162,98 @@ namespace Factory_UI
 		//Calculate angle
 		float angle = atan2f(aiDir.y, aiDir.x);
 
+		//Arrow Image
 		ENTITY aiUI = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(aiUI, new cTransform(aiDir, angle, { 40.0,30.0 }));
 		Core::Get().AddComponent<cSprite>(aiUI, new cSprite(aiUI, "Square Mesh", "AI_Indicator", 0));
-		if (aiType == 0)
+		if (indicatorType == 0 || indicatorType == 1)
 		{
 		}
-		else if (aiType == 1)
+		else if (indicatorType == 3)
 		{
-			Core::Get().GetComponent<cSprite>(aiUI)->_colorTint.g = 0.0f;
-			Core::Get().GetComponent<cSprite>(aiUI)->_colorTint.b = 0.0f;
+			Core::Get().GetComponent<cSprite>(aiUI)->_colorTint = { 1.0f, 0.0f, 0.0f, 1.0f };
+		}
+		else if (indicatorType == 5)
+		{
+			Core::Get().GetComponent<cSprite>(aiUI)->_colorTint = { 0.0f, 1.0f, 0.0f, 1.0f };
 		}
 		Core::Get().AddComponent<cUIElement>(aiUI, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INDICATE_AI, ai));
+		Core::Get().GetComponent<cUIElement>(aiUI)->_roleIndex2 = 1;
+
+		//Type of indicator image
+		AEVec2Scale(&aiDir, &aiDir, 0.95f);
+		ENTITY aiUI2 = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(aiUI2, new cTransform(aiDir, 0.0f, { 30.0,30.0 }));
+		if (indicatorType == 3)	//Boss Icon
+		{
+			Core::Get().AddComponent<cSprite>(aiUI2, new cSprite(aiUI2, "Square Mesh", "Skull_Boss", 0));
+		}
+		else if(indicatorType == 0 || indicatorType == 1)  //Normal Enemy
+		{
+			Core::Get().AddComponent<cSprite>(aiUI2, new cSprite(aiUI2, "Square Mesh", "Skull_Normal", 0));
+		}
+		else if(indicatorType == 5)   //Objectives
+		{
+			Core::Get().GetComponent<cTransform>(aiUI2)->_scale.x = 15;
+			Core::Get().GetComponent<cTransform>(aiUI2)->_scale.y = 50;
+			Core::Get().AddComponent<cSprite>(aiUI2, new cSprite(aiUI2, "Square Mesh", "Objective_Symbol", 0));
+		}
+		Core::Get().AddComponent<cUIElement>(aiUI2, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INDICATE_AI, ai));
+		Core::Get().GetComponent<cUIElement>(aiUI2)->_roleIndex2 = 2;
+
 		return aiUI;
 	}
+	ENTITY CreateUI_Objective_Base()
+	{
+		AEVec2 textPos = ScreenBasedCoords(0.025f, -0.05f, UI_ANCHOR::TOPLEFT, true);
+
+		ENTITY objectiveTitle = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(objectiveTitle, new cTransform(textPos, 0, { 1,1 }));
+		Core::Get().AddComponent<cUIElement>(objectiveTitle, new cUIElement("Objectives"));
+		Core::Get().GetComponent<cUIElement>(objectiveTitle)->_role = UI_ROLE::OBJECTIVES;
+		Core::Get().GetComponent<cUIElement>(objectiveTitle)->_roleIndex = 0;
+		Core::Get().GetComponent<cUIElement>(objectiveTitle)->_text._usingScreenSpace = true;
+
+		return objectiveTitle;
+	}
+
+	ENTITY CreateUI_AddObjective(unsigned int index, const char* text)
+	{
+		AEVec2 textPos = ScreenBasedCoords(0.025f, -0.05f - (0.04f * index), UI_ANCHOR::TOPLEFT, true);
+
+		ENTITY objective = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(objective, new cTransform(textPos, 0, { 1,1 }));
+		Core::Get().AddComponent<cUIElement>(objective, new cUIElement(text));
+		Core::Get().GetComponent<cUIElement>(objective)->_role = UI_ROLE::OBJECTIVES;
+		Core::Get().GetComponent<cUIElement>(objective)->_roleIndex = index;
+		Core::Get().GetComponent<cUIElement>(objective)->_text._usingScreenSpace = true;
+
+		textPos = ScreenBasedCoords(0.015f, -0.05f - (0.04f * index), UI_ANCHOR::TOPLEFT, true);
+		ENTITY tickbox = CreateUI_TickBox(textPos.x, textPos.y, 20, 0);
+		return tickbox;
+	}
+
+	ENTITY CreateUI_AddObjective_Finale(unsigned int index, const char* text)
+	{
+		AEVec2 textPos = ScreenBasedCoords(0.025f, -0.05f - (0.04f * index), UI_ANCHOR::TOPLEFT, true);
+
+		ENTITY objective = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(objective, new cTransform(textPos, 0, { 1,1 }));
+		Core::Get().AddComponent<cUIElement>(objective, new cUIElement(text));
+		Core::Get().GetComponent<cUIElement>(objective)->_role = UI_ROLE::OBJECTIVES;
+		Core::Get().GetComponent<cUIElement>(objective)->_roleIndex = index;
+		Core::Get().GetComponent<cUIElement>(objective)->_text._usingScreenSpace = true;
+		Core::Get().GetComponent<cUIElement>(objective)->_text._colorTint = { 1.0f, 1.0f, 0.0f, 1.0f };
+
+		textPos = ScreenBasedCoords(0.016f, -0.05f - (0.04f * index), UI_ANCHOR::TOPLEFT, true);
+		ENTITY tickbox = CreateUI_TickBox(textPos.x, textPos.y, 20, 0);
+		Core::Get().GetComponent<cSprite>(tickbox)->_colorTint = { 1.0f, 1.0f, 0.0f, 1.0f };
+
+		textPos = ScreenBasedCoords(0.14f, -0.05f - (0.04f * index) - 0.02f, UI_ANCHOR::TOPLEFT, true);
+		Factory_ParticleFx::CreateParticleEmitter_FinaleMisson(textPos);
+		return tickbox;
+	}
+
 
 	void CreateUI_GameOver()
 	{
@@ -1505,5 +1630,47 @@ namespace Factory_AI
 		cRigidBody* rb = Core::Get().GetComponent<cRigidBody>(enemy);
 		Factory::CreateDebug_Arrow(aiT->_position, rb->_velocityVector, rb->_velocity);
 		return enemy;
+	}
+
+	ENTITY CreateEnemy1_2(ENTITY player, unsigned int layer, AEVec2 spawnPos)
+	{
+		ENTITY enemy = CreateEnemy1(player, layer, spawnPos);
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::WAVEENEMY;
+
+		return enemy;
+	}
+
+	ENTITY CreateEnemy2_2(ENTITY player, unsigned int layer, AEVec2 spawnPos)
+	{
+		ENTITY enemy = CreateEnemy2(player, layer, spawnPos);
+		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::WAVEENEMY;
+
+		return enemy;
+	}
+
+	ENTITY CreateEnemy2_3(ENTITY player, unsigned int layer, AEVec2 spawnPos)
+	{
+		ENTITY enemy = CreateEnemy2(player, layer, spawnPos);
+		Core::Get().GetComponent<cSprite>(enemy)->LoadTexture("Boss");
+
+		return enemy;
+	}
+
+	ENTITY CreateEscort(unsigned int layer, AEVec2 spawnPos)
+	{
+		ENTITY escort = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(escort, new cTransform({ spawnPos.x , spawnPos.y }, 0.0f, {75.0f, 50.0f}));
+		Core::Get().AddComponent<cSprite>(escort, new cSprite(escort, "Square Mesh", "Enemy_1", layer));
+		Core::Get().AddComponent<cRigidBody>(escort, new cRigidBody(30.0f, 75.0f, 1000.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(escort)->_velocityDirection = { 1.0f, 0.0f };
+		Core::Get().GetComponent<cRigidBody>(escort)->_tag = COLLISIONTAG::ESCORT; // testing collision
+		Core::Get().AddComponent<cCollision>(escort, new cCollision());
+
+		//Core::Get().AddComponent<cAI>(escort, new cAI);
+		//Core::Get().GetComponent<cAI>(escort)->_currentState.states.emplace<aiIdle>();
+
+		Core::Get().AddComponent<cHealth>(escort, new cHealth(0.0f, 100.0f, 0.0f, 100.0f, 0.0f, 1.0f));
+		
+		return escort;
 	}
 }

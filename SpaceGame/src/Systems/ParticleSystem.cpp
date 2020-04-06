@@ -148,6 +148,10 @@ void ParticleSystem::RenderLayer(unsigned int layer, float parallaxOffX, float p
 	auto endIterator	= entityLayer6.begin();
 	switch (layer)
 	{
+		case 7:
+			beginIterator	= entityLayer7.begin();
+			endIterator		= entityLayer7.end();
+			break;
 		case 6:
 			beginIterator	= entityLayer6.begin();
 			endIterator		= entityLayer6.end();

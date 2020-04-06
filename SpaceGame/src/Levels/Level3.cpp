@@ -1,5 +1,5 @@
 /**********************************************************************************
-* \file			Level1.cpp
+* \file			Level2.cpp
 * \brief		Game State for Level 1
 * \author		Wei Feng,		Ang,		20% Code Contribution
 *				Jun Yi,			Chong,		60% Code Contribution
@@ -14,34 +14,26 @@
 or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
-#include "Level1.h"									//Self Header
+#include "Level3.h"									//Self Header
 #include "../ECS/Core.h"							//Systems to Update
 #include "../ECS/Factory.h"							//Entity to create
 #include "../Player/PlayerManager.h"				//Control over the player
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/AudioManager.h"
 #include "../Managers/LevelManager.h"
-#include "../Systems/RenderSystem.h"
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
-ENTITY enemy;
-const float bossSpawn = 1.0f;
-float bossSpawnTimer = 0.0f;
-bool spawnedBoss = false;
-ENTITY referencetoLevelDisplay = 0;
-int count = 0;									//Animation Step
-float currTimer = 0.0f;
+
+ENTITY escort = 0;
+
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
-// It loads assets like textures, meshes and music files etcâ€¦
+// It loads assets like textures, meshes and music files etc…
 // ----------------------------------------------------------------------------
-void Level1_Load()
+void Level3_Load()
 {
-	// Create Level name 
-	referencetoLevelDisplay = Factory_UI::CreateUI_Level1Display();
-
 	//Create Player
 	PlayerManager::player = Factory::CreatePlayer(2);
 
@@ -51,8 +43,8 @@ void Level1_Load()
 	// Create camera
 	Factory::CreateCamera(PlayerManager::player);
 
-	LevelManager::Level1_Setup();
 
+	LevelManager::Level3_Setup();
 	// Planet to test for collision
 	Factory::CreatePlanet2(4, 100.0f, 150.0f, 100.0f, 100.0f);
 	Factory::CreatePlanet2(3, 200.0f, 179.0f, 200.0f, 200.0f);
@@ -82,10 +74,12 @@ void Level1_Load()
 
 	Factory_Map::Generate_PlanetField();
 
+	escort = Factory_AI::CreateEscort(2, { 0.0f, 0.0f });
+
+	Factory_UI::CreateUI_AddObjective(1, "Escort The Ship Safely");
+
 	Factory::CreateBackground();
-	Factory_UI::CreateUI_AddObjective(1, "Save 3 Stranded Allies");
-	Factory_UI::Create_PlayerUserInterface(3, 3);
-	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
+	Factory_UI::Create_PlayerUserInterface();
 
 	// FOR NOW, audio
 	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);
@@ -94,10 +88,11 @@ void Level1_Load()
 // ----------------------------------------------------------------------------
 // This function initalise all necessary data in Level1
 // It should be called once before the start of the level
-// It resets data like counters to inital valuesï¿½
+// It resets data like counters to inital values…
 // ----------------------------------------------------------------------------
-void Level1_Init()
+void Level3_Init()
 {
+	//spawnedBoss = false;
 	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
 }
 
@@ -105,40 +100,26 @@ void Level1_Init()
 // This function updates the data within Level1
 // Update functions such as user input, time or gameplay logic
 // ----------------------------------------------------------------------------
-void Level1_Update()
+void Level3_Update()
 {
-	if (currTimer <= 4.0f)
-	{
-		currTimer += g_dt;
-		if (currTimer >= 2.0f)
-		{
-			RenderingTricks::LightSpeedEffectOut(referencetoLevelDisplay, currTimer - 2.0f, count++, 5.0f, 0.04f, -60.0f);
-			if (currTimer > 4.0f)
-			{
-				Core::Get().EntityDestroyed(referencetoLevelDisplay);
-			}
-		}
-		
-	}
-	//Editor_TrackVariable("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
-	Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	AudioManager::Update();
 	PlayerManager::Update();
 	Core::Get().Core_Update();
-	LevelManager::Level1_Update();
-
 
 	if (AEInputCheckTriggered(AEVK_L))
 	{
 		Factory_UI::CreateUI_AddObjective_Finale(2, "Eliminate The Boss!");
 	}
+
+	// Level 3 Escort mission
+	LevelManager::Level3Update(escort, 5.0f);
 }
 
 // ----------------------------------------------------------------------------
 // This function renders the graphics for each frame of Level1
 // Sends data to the graphics engine component
 // ----------------------------------------------------------------------------
-void Level1_Draw()
+void Level3_Draw()
 {
 	Core::Get().Core_Render();
 }
@@ -147,7 +128,7 @@ void Level1_Draw()
 // Make the state ready to be unloaded or initialized again
 // No data is dumped in this cycle function
 // ----------------------------------------------------------------------------
-void Level1_Free()
+void Level3_Free()
 {
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
@@ -156,7 +137,7 @@ void Level1_Free()
 // This function dumps all data loaded in Level 1
 // Is called when the state should be terminated
 // ----------------------------------------------------------------------------
-void Level1_Unload()
+void Level3_Unload()
 {
 	UIEventsManager::Cleanup();
 	Factory::RemoveCamera();

@@ -55,6 +55,13 @@ namespace ResourceManager
 			//nothing to load
 			loadingProgress = 100;
 			break;
+		case GS_LEVEL2:
+			LoadTextureLibrary_2(&loadingStage, &loadingProgress);
+			break;
+		case GS_LEVEL3:
+			//nothing to load
+			loadingProgress = 100;
+			break;
 		default:
 			break;
 		}
@@ -523,8 +530,8 @@ namespace ResourceManager
 					textureLibrary.insert({ "Enemy_1_5", AEGfxTextureLoad("res/Enemy_1_5.png") });
 					break;
 				case 28:
-					if (textureLibrary.find("ObjectiveSymbol") != textureLibrary.end()) break;
-					textureLibrary.insert({ "ObjectiveSymbol", AEGfxTextureLoad("res/Objective_Symbol.png") });
+					if (textureLibrary.find("Objective_Symbol") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Objective_Symbol", AEGfxTextureLoad("res/Objective_Symbol.png") });
 					break;
 				case 29:
 					if (textureLibrary.find("Skull_Normal") != textureLibrary.end()) break;
@@ -533,6 +540,10 @@ namespace ResourceManager
 				case 30:
 					if (textureLibrary.find("Skull_Boss") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Skull_Boss", AEGfxTextureLoad("res/Skull_Boss.png") });
+					break;
+				case 31:
+					if (textureLibrary.find("Scanner") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Scanner", AEGfxTextureLoad("res/Player_Shield.png") });
 					break;
 				case 31:
 					if (textureLibrary.find("Pause_Menu") != textureLibrary.end()) break;
@@ -568,6 +579,28 @@ namespace ResourceManager
 			*progress < 100? *progress += static_cast<unsigned int>(100 / 38): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
+			AEGetTime(&currTime);
+		}
+	}
+
+	void LoadTextureLibrary_2(unsigned int* stage, unsigned int* progress)
+	{
+		f64 currTime, startTime;
+		AEGetTime(&currTime);
+		AEGetTime(&startTime);
+
+		while (currTime - startTime < 1.0f / 60.0f && *progress < 100)
+		{
+			switch (*stage)
+			{
+			case 0:
+				if (textureLibrary.find("Delivery") != textureLibrary.end()) break;
+				textureLibrary.insert({ "Delivery", AEGfxTextureLoad("res/Delivery.png") });
+				*progress = 100;
+				break;
+			}
+			*progress < 100 ? *progress += static_cast<unsigned int>(100 / 1) : *progress = 100;
+			++* stage;
 			AEGetTime(&currTime);
 		}
 	}

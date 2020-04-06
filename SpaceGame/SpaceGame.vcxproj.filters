@@ -95,7 +95,11 @@
     <ClCompile Include="src\AI\Boss\bossHoming.cpp" />
     <ClCompile Include="src\Managers\LevelManager.cpp" />
     <ClCompile Include="src\Levels\UpgradeLevel.cpp" />
+    <ClCompile Include="src\Levels\Level2.cpp" />
     <ClCompile Include="src\AI\States\objEnter.cpp" />
+    <ClCompile Include="src\Components\cScanner.cpp" />
+    <ClCompile Include="src\Systems\ScannerSystem.cpp" />
+    <ClCompile Include="src\Levels\Level3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiState.h" />
@@ -213,7 +217,11 @@
     <ClInclude Include="src\AI\Boss\bossHoming.h" />
     <ClInclude Include="src\Managers\LevelManager.h" />
     <ClInclude Include="src\Levels\UpgradeLevel.h" />
+    <ClInclude Include="src\Levels\Level2.h" />
     <ClInclude Include="src\AI\States\objEnter.h" />
+    <ClInclude Include="src\Components\cScanner.h" />
+    <ClInclude Include="src\Systems\ScannerSystem.h" />
+    <ClInclude Include="src\Levels\Level3.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

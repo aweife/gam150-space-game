@@ -7,7 +7,7 @@ enum class UI_TYPE
 	NONE,
 	TEXT,
 	BUTTON,
-	IMAGE,
+	IMAGE
 };
 
 enum class UI_ROLE
@@ -34,7 +34,8 @@ enum class UI_ROLE
 	SHIELD_DOWN_UI,
 	BOSS_INCOMING_UI,
 	TICKBOX,
-	TICK
+	TICK,
+	OBJECTIVES
 };
 
 class cUIElement :public Component

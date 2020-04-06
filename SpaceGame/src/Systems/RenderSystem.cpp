@@ -30,7 +30,7 @@ void RenderSystem::Render()
 
 	//Update particle system based on layers after finished 
 	std::shared_ptr<ParticleSystem> particleSystemInstance (std::static_pointer_cast<ParticleSystem>(Core::Get().GetSystem<ParticleSystem>()));
-	unsigned int currentLayer = 7;
+	unsigned int currentLayer = 8;
 
 	// -----------------------------------------------------------------------
 	// Update all entities that has the components we want

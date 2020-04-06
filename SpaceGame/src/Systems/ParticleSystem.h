@@ -6,6 +6,7 @@ class ParticleSystem :public System
 {
 public:
 	//Order here affects sequence of set
+	std::set<ENTITY> entityLayer7;	//Background
 	std::set<ENTITY> entityLayer6;	//Background
 	std::set<ENTITY> entityLayer5;	//Parallax3
 	std::set<ENTITY> entityLayer4;	//Parallax2

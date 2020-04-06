@@ -157,6 +157,8 @@ void StraightShoot(cTransform* transform, OWNERTAG tag)
 
 void TargetShoot(cTransform* transform, OWNERTAG tag, AEVec2& targetPos)
 {
+	UNREFERENCED_PARAMETER(tag);
+
 	AEVec2 bulletDirection;
 	AEVec2 bulletVelocity;
 
@@ -172,6 +174,8 @@ void TargetShoot(cTransform* transform, OWNERTAG tag, AEVec2& targetPos)
 
 void HomingShoot(cTransform* transform, OWNERTAG tag, ENTITY target)
 {
+	UNREFERENCED_PARAMETER(tag);
+
 	AEVec2 bulletDirection = Core::Get().GetComponent<cTransform>(target)->_position;
 	AEVec2 bulletVelocity;
 

@@ -22,6 +22,7 @@ public:
 	std::set<ENTITY> gameOver_Set;
 	std::set<ENTITY> shieldBubble_Set;
 	std::set<ENTITY> floatingDamage_Set;
+	std::set<ENTITY> objective_Set;
 
 	UISystem() = default;
 	~UISystem() = default;
@@ -31,7 +32,7 @@ public:
 	void OnComponentAdd(ENTITY);
 	void OnComponentRemove(ENTITY);
 
-	void Check_AIIndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType);
+	void Check_IndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType);
 	void DeleteUpgradeWindow();
 };
 void EditText(ENTITY target, const char* newText);

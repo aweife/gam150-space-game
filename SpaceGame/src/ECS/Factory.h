@@ -34,6 +34,8 @@ namespace Factory
 	ENTITY SpawnLevel_End(AEVec2 position);
 	ENTITY CreateWormhole(AEVec2 position, float rotSpeed = 5.0f, float rotStart = 0.0f, float uniformSize = 30.0f, int colorVariance = 0);
 	ENTITY CreateTutorialPlanet(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
+
+	ENTITY SpawnDelivery(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size);
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreatePlanet3(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
@@ -68,6 +70,12 @@ namespace Factory
 	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count);
 }
 
+namespace Factory_ParticleFx
+{
+	ENTITY CreateParticleEmitter_FinaleMisson(AEVec2 position);
+}
+
+
 namespace Factory_UI
 {
 	//Game user interface
@@ -93,9 +101,13 @@ namespace Factory_UI
 	void Create_ChoosableUpgrade(ENTITY entity);
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);
 
+	ENTITY CreateUI_Objective_Base();
+	ENTITY CreateUI_AddObjective(unsigned int index, const char* text);
+	ENTITY CreateUI_AddObjective_Finale(unsigned int index, const char* text);
 
 	void CreateUI_GameOver();
 	void CreateUI_Pause();
+
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);
 	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue);
 
@@ -129,5 +141,9 @@ namespace Factory_AI
 {
 	ENTITY CreateEnemy1(ENTITY player, unsigned int layer, AEVec2 spawnPos);
 	ENTITY CreateEnemy2(ENTITY player, unsigned int layer, AEVec2 spawnPos);
+	ENTITY CreateEnemy1_2(ENTITY player, unsigned int layer, AEVec2 spawnPos); // Waves Enemies, tag: WAVE_ENEMIES
+	ENTITY CreateEnemy2_2(ENTITY player, unsigned int layer, AEVec2 spawnPos); // Waves Enemies  tag: WAVE_ENEMIES
+	ENTITY CreateEnemy2_3(ENTITY player, unsigned int layer, AEVec2 spawnPos); // Delivery Mission Enemies
+	ENTITY CreateEscort(unsigned int layer, AEVec2 spawnPos);
 	ENTITY CreateBoss(ENTITY player, unsigned int layer);
 }

@@ -77,7 +77,8 @@ namespace Events
 
 	struct OnUpgradeDescpChange :public EventsBase
 	{
-		OnUpgradeDescpChange(int upgradeIndex) :_upgradeIndex{ upgradeIndex } {};
+		OnUpgradeDescpChange(int upgradeIndex, int slot) :_upgradeIndex{ upgradeIndex }, _slot{slot} {};
 		int _upgradeIndex;		//-1 is no desption
+		int _slot;				//Left to Right
 	};
 }

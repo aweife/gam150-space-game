@@ -20,3 +20,5 @@
 #include "ParticleEmitterSystem.h"
 #include "TimelineSystem.h"
 #include "WarpingSystem.h"
+#include "ScannerSystem.h"
+
