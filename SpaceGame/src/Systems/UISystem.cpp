@@ -366,7 +366,7 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
-	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+	//cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
 	if (uiComp)
 	{
 		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound

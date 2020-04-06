@@ -30,6 +30,7 @@ void bossSpawn::OnEnter(aiBlackBoard& bb)
 
 void bossSpawn::OnUpdate(aiBlackBoard& bb)
 {
+	UNREFERENCED_PARAMETER(bb);
 	if (trans->_scale.x < _maxSize.x && trans->_scale.y < _maxSize.y)
 	{
 		trans->_scale.x += g_dt * g_dt * _sizeRatioX * trans->_scale.x;
