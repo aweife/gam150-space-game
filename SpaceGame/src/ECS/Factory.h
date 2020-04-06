@@ -115,6 +115,7 @@ namespace Factory_UI
 	void CreateUI_GameWin();
 	void  CreateUI_ExitConfirmation();
 	void Create_InGameOptions();
+	void CreateOutgunnedInterface();
 
 
 	ENTITY CreateUI_Text(float posX, float posY, const char* text);

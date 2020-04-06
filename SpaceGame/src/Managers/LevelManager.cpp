@@ -69,6 +69,8 @@ namespace LevelManager
 	// Shared Functions
 	void StartBossSpawnSequence()
 	{
+		if(currentState != GS_LEVEL3)
+			Factory_UI::CreateOutgunnedInterface();
 		objectiveComplete = true;
 		if (currentState != GS_LEVEL3)
 		{
