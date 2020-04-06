@@ -36,6 +36,7 @@
 #include "Boss/bossNormal.h"
 #include "Boss/bossHoming.h"
 #include "Boss/bossMove.h"
+#include "Boss/bossRapid.h"
 
 // For commonly used ai functions
 #include "../Managers/AIBehaviors.h"
@@ -47,7 +48,7 @@ struct aiStateList
 
 struct bossAttackList
 {
-	std::variant< bossSpawn, bossIdle, bossNormal, bossHoming, bossMove > attacks;
+	std::variant< bossSpawn, bossIdle, bossNormal, bossHoming, bossMove, bossRapid > attacks;
 };
 
 #endif

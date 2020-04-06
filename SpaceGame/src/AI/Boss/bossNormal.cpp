@@ -12,8 +12,16 @@ void bossNormal::OnEnter(aiBlackBoard& bb)
 	// Cache self components
 	rwp = Core::Get().GetComponent<cRangeWeapon>(bb.id);
 
+	// Cache original values
+	_attackCooldown = rwp->_attackCooldown;
+	_delayBetweenAttacks = rwp->_delayBetweenAttacks;
+	_numberOfAttacks = rwp->_numberOfAttacks;
+
 	// Init state
-	_attackDuration = 3.0f + AERandFloat();
+	_attackDuration = 5.0f + AERandFloat() * 5.0f;
+	rwp->_attackCooldown = 1.0f;
+	rwp->_delayBetweenAttacks = 0.0f;
+	rwp->_numberOfAttacks = 1;
 }
 
 void bossNormal::OnUpdate(aiBlackBoard& bb)
@@ -28,6 +36,11 @@ void bossNormal::OnUpdate(aiBlackBoard& bb)
 
 void bossNormal::OnExit(bossAttackList& var)
 {
+	// Reset to original values
+	rwp->_attackCooldown = _attackCooldown;
+	rwp->_delayBetweenAttacks = _delayBetweenAttacks;
+	rwp->_numberOfAttacks = _numberOfAttacks;
+
 	bossBase::OnExit(var);
 }
 

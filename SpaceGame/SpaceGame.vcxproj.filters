@@ -101,6 +101,7 @@
     <ClCompile Include="src\AI\States\aiRetreatAttack.cpp" />
     <ClCompile Include="src\AI\States\aiIdleWander.cpp" />
     <ClCompile Include="src\AI\Boss\bossMove.cpp" />
+    <ClCompile Include="src\AI\Boss\bossRapid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AI\aiState.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="src\AI\States\aiRetreatAttack.h" />
     <ClInclude Include="src\AI\States\aiIdleWander.h" />
     <ClInclude Include="src\AI\Boss\bossMove.h" />
+    <ClInclude Include="src\AI\Boss\bossRapid.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BG_Background1.png" />

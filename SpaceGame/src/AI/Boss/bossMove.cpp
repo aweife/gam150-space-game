@@ -15,10 +15,14 @@ void bossMove::OnEnter(aiBlackBoard& bb)
 
 void bossMove::OnUpdate(aiBlackBoard& bb)
 {
+	rb->_velocity += rb->_acceleration;
+	if (rb->_velocity > rb->_velocityCap)
+		rb->_velocity = rb->_velocityCap;
+	Steering::SeekTarget(rb->_steeringVector, bb.directionToPlayerN, rb->_velocity * g_dt, rb->_velocityVector);
+
 	_moveDuration -= g_dt;
 	if (_moveDuration < 0.0f)
-		//ChangeAttack((AERandFloat() > 0.5f) ? (AERandFloat() > 0.5f ? BOSS_NORMAL : BOSS_HOMING) : BOSS_IDLE);
-		ChangeAttack((AERandFloat() > 0.5f) ? BOSS_NORMAL : BOSS_IDLE);
+		ChangeAttack((AERandFloat() > 0.5f) ? (AERandFloat() > 0.5f ? BOSS_NORMAL : BOSS_HOMING) : (AERandFloat() > 0.5f ? BOSS_NORMAL : BOSS_RAPID));
 }
 
 void bossMove::OnExit(bossAttackList& var)

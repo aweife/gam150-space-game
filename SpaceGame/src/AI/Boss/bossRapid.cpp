@@ -5,7 +5,7 @@
 #include "../../Tools/Console.h"
 
 
-void bossHoming::OnEnter(aiBlackBoard& bb)
+void bossRapid::OnEnter(aiBlackBoard& bb)
 {
 	bossBase::OnEnter(bb);
 
@@ -18,23 +18,23 @@ void bossHoming::OnEnter(aiBlackBoard& bb)
 	_numberOfAttacks = rwp->_numberOfAttacks;
 
 	// Init state
-	_attackDuration = 5.0f + AERandFloat() * 5.0f;
+	_attackDuration = 5.0f + AERandFloat()*5.0f;
 	rwp->_attackCooldown = 3.0f;
-	rwp->_delayBetweenAttacks = 0.5f;
-	rwp->_numberOfAttacks = 2;
+	rwp->_delayBetweenAttacks = 0.25f;
+	rwp->_numberOfAttacks = 5;
 }
 
-void bossHoming::OnUpdate(aiBlackBoard& bb)
+void bossRapid::OnUpdate(aiBlackBoard& bb)
 {
 	_attackDuration -= g_dt;
 	if (_attackDuration < 0.0f)
 		ChangeAttack(BOSS_IDLE);
 
-	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange * 3.0f))
+	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange))
 		Attack(bb);
 }
 
-void bossHoming::OnExit(bossAttackList& var)
+void bossRapid::OnExit(bossAttackList& var)
 {
 	// Reset to original values
 	rwp->_attackCooldown = _attackCooldown;
@@ -44,10 +44,10 @@ void bossHoming::OnExit(bossAttackList& var)
 	bossBase::OnExit(var);
 }
 
-void bossHoming::Attack(aiBlackBoard& bb)
+void bossRapid::Attack(aiBlackBoard& bb)
 {
 	rwp->_enemyIsShooting = true;
 	rwp->_bossIsShooting = true;
-	rwp->_homing = true;
+	rwp->_homing = false;
 	rwp->_targetPosition = bb.playerLastKnownPosition;
 }

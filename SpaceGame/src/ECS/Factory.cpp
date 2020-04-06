@@ -1041,6 +1041,7 @@ namespace Factory_AI
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityCap = 30.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::BOSS; // testing collision
 		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;
 		Core::Get().GetComponent<cBoss>(enemy)->_currentAttack.attacks.emplace<bossSpawn>();

@@ -3,7 +3,7 @@
 #include "bossBase.h"
 #include "../../Components/cWeapon.h"
 
-class bossHoming : public bossBase
+class bossRapid : public bossBase
 {
 private:
 	void OnEnter(aiBlackBoard&) override;

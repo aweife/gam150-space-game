@@ -41,7 +41,7 @@ void aiBlackBoard::UpdateBlackboard()
 
 	// Update player last known position
 	positionUpdateTimer += g_dt;
-	if (positionUpdateTimer > 0.8f)
+	if (positionUpdateTimer > 0.5f)
 	{
 		positionUpdateTimer = 0.0f;
 

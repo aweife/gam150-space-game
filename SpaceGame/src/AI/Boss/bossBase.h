@@ -13,6 +13,7 @@ enum ATTACK
 	BOSS_NORMAL,
 	BOSS_HOMING,
 	BOSS_MOVE,
+	BOSS_RAPID
 };
 
 class bossBase
