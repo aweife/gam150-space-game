@@ -67,7 +67,7 @@ namespace Factory
 	ENTITY CreateParticleEmitter_BOSSSPAWNSTATIC(cTransform* tar);
 	ENTITY CreateParticleEmitter_OTHERSTATIC(cTransform* tar);
 
-	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count);
+	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count, float lifeTime = 20.0f);
 }
 
 namespace Factory_ParticleFx

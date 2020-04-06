@@ -58,6 +58,7 @@ namespace LevelManager
 	void Level3Update(ENTITY escort, float escortEnemySpawnTimer = 5.0f);
 	void SpawnEnemyOnEscort(ENTITY escort, ENTITY player);
 	void CheckEscort(AEVec2 escortPos, float checkPointX, float checkPointY);
+	void DefeatBoss();
 
 	//Level 1 Spawning Functions
 	void Level1_SetEnemySpawn(float randomLevel);

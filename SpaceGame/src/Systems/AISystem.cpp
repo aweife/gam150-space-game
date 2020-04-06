@@ -40,7 +40,28 @@ void AISystem::Update()
 {
 	cAI* ai;
 
-	const ENTITY pid = (currentState == GS_LEVEL3) ? GetEscort() : PlayerManager::player;
+	ENTITY pid;
+	if (currentState == GS_LEVEL3)
+	{
+		// If level 3, main target is escort
+		pid = GetEscort();
+
+		// When escort dies
+		if (pid == 0)
+		{
+			// If mission pass, main target becomes player
+			if (EscortMissionSuccess())
+				pid = PlayerManager::player;
+			else // Else game ends
+				pid = 0;
+		}
+	}
+	else
+	{
+		pid = PlayerManager::player;
+	}
+
+	//NO ACTIVE PLAYER
 	if (pid == 0)	return;
 
 	// Update all entities that has the components we want

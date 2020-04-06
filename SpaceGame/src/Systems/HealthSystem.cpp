@@ -133,6 +133,11 @@ void HealthSystem::Update()
 					Factory::RemoveCamera();
 					EscortDeath();
 				}
+				else if (collision->_tag == COLLISIONTAG::BOSS)
+				{
+					// Boss has died
+					LevelManager::DefeatBoss();
+				}
 			}
 
 			

@@ -712,7 +712,7 @@ namespace Factory
 
 	}
 
-	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count)
+	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count, float lifeTime)
 	{
 		float rotation = 2.0f * PI / count;
 		unsigned int cap = 100 / count;
@@ -728,7 +728,7 @@ namespace Factory
 
 			ENTITY emitter = Core::Get().CreateEntity();
 			Core::Get().AddComponent<cTransform>(emitter, new cTransform(curPosition, 0.0f, { 1.0f,1.0f }));
-			Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f,0.0f }, 10.0f, 2.0f, 3.0f, 20.0f));
+			Core::Get().AddComponent<cParticleEmitter>(emitter, new cParticleEmitter({ 0.0f,0.0f }, 10.0f, 2.0f, 3.0f, lifeTime));
 			Core::Get().GetComponent<cParticleEmitter>(emitter)->_particleCap = cap;
 			Core::Get().GetComponent<cParticleEmitter>(emitter)->AssignParticleSpawnInfo("Square Mesh", "Particle_Default", 
 				{ 1.0f, 0.0f, 0.0f, 1.0f },

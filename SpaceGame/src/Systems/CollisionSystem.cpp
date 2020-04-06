@@ -657,7 +657,7 @@ void CollisionSystem::Update()
 				}
 				
 				// if bullet collide with object
-				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER &&	(rigidbody2->_tag == COLLISIONTAG::ENEMY || rigidbody2->_tag == COLLISIONTAG::WAVEENEMY))
+				if (rigidbody->_tag ==  COLLISIONTAG::BULLET_PLAYER &&	(rigidbody2->_tag == COLLISIONTAG::ENEMY || rigidbody2->_tag == COLLISIONTAG::WAVEENEMY || rigidbody2->_tag == COLLISIONTAG::BOSS))
 				{
 					cProjectile* projectile = Core::Get().GetComponent<cProjectile>(entity1);
 					if (projectile && projectile->_bulletType == bulletType::laser)
@@ -737,8 +737,8 @@ void CollisionSystem::Update()
 				{
 					if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_BEGIN)
 					{
-						//GSM_LoadingTransition(GS_LEVEL1);
-						GSM_LoadingTransition(GS_LEVEL3);
+						GSM_LoadingTransition(GS_LEVEL1);
+						//GSM_LoadingTransition(GS_LEVEL3);
 					}
 					else if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_OPTIONS)
 					{

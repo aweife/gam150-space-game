@@ -64,6 +64,7 @@ namespace LevelManager
 	// Shared Functions
 	void StartBossSpawnSequence()
 	{
+		objectiveComplete = true;
 		if (currentState != GS_LEVEL3)
 		{
 			spawnExit = true;
@@ -71,7 +72,7 @@ namespace LevelManager
 		}
 
 		// Init spawn sequence
-		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 300.0f, 5);
+		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 300.0f, 5, bossArrivalTime);
 		arrival1 = arrival2 = arrival3 = false;
 		bossTimer = bossArrivalTime / 3.0f;
 
@@ -102,6 +103,11 @@ namespace LevelManager
 
 	void ClearLevel()
 	{
+		if (nextGameState == GS_MAINMENU)
+		{
+			//Factory_UI::CreateUI_GameOver();
+			return;
+		}
 		loadingForNextLevel = nextGameState;
 		GSM_ChangeState(GS_UPGRADE);
 		exitId = 0;
@@ -165,12 +171,12 @@ namespace LevelManager
 			if (!arrival1)
 			{
 				arrival1 = true;
-				Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 250.0f, 10);
+				Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 250.0f, 10, bossArrivalTime / 2.0f);
 			}
 			else if (!arrival2)
 			{
 				arrival2 = true;
-				Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 150.0f, 20);
+				Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 150.0f, 20, bossArrivalTime/ 3.0f);
 			}
 			else
 			{
@@ -206,7 +212,9 @@ namespace LevelManager
 		collectableList.erase(collectable);
 
 		if (collectableList.size() == 0)
-			objectiveComplete = true;
+		{
+			StartBossSpawnSequence();
+		}
 	}
 
 	void ClearObjectiveAll()
@@ -326,7 +334,7 @@ namespace LevelManager
 		{
 			escortEnemyTimer += g_dt;
 
-			CheckEscort(escortPos, 2000.0f, 0.0f);
+			CheckEscort(escortPos, 200.0f, 0.0f);
 
 			if (escortEnemyTimer >= escortEnemySpawnTimer)
 			{
@@ -346,11 +354,15 @@ namespace LevelManager
 		{
 			// Do UI
 			isEscorting = false;
-			objectiveComplete = true;
 			SetMissionStatus(true);
 			EscortDeath(true);
 			StartBossSpawnSequence();
 		}
+	}
+
+	void DefeatBoss()
+	{
+		defeatBoss = true;
 	}
 
 	void SpawnEnemyOnCollect(AEVec2 playerPos)
