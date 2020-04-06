@@ -357,7 +357,7 @@ namespace LevelManager
 		{
 			escortEnemyTimer += g_dt;
 
-			CheckEscort(escortPos, 200.0f, 0.0f);
+			CheckEscort(escortPos, 800.0f, 0.0f);
 
 			if (escortEnemyTimer >= escortEnemySpawnTimer)
 			{
