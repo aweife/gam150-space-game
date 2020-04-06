@@ -3,7 +3,7 @@
 * \brief		Handles the particle component
 * \author		Jun Yi,				Chong,  100% Code Contribution
 *
-*				Handles the particle component 
+*				Handles the particle data 
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

@@ -1,3 +1,15 @@
+/**********************************************************************************
+* \file			ScannerSystem.cpp
+* \brief		Scan planet for narrative
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+*				Long Description
+*				- Scan for planets
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "ScannerSystem.h"
 #include "../ECS/Core.h"
 #include "../Components/cScanner.h"

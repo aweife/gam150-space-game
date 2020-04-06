@@ -1,5 +1,5 @@
 /**********************************************************************************
-* \file			cSpaceShip.h
+* \file			cSpaceShip.cpp
 * \brief		Component for interlligent entity that behave like spaceship
 * \author		Jin Kiat, Chong, 100% Code Contribution
 *

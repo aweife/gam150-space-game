@@ -3,7 +3,7 @@
 * \brief		List of components for the engine
 * \author		Jun Yi,				Chong,  100% Code Contribution
 *
-*				List of Components of the engine
+*				Contain data about the particle component
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

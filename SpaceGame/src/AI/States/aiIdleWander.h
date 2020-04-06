@@ -5,6 +5,7 @@
 *
 *				Long Description
 *				- Initalise idle wander of AI
+*				- Ai to wander aimlessly while idle
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

@@ -1,3 +1,14 @@
+/**********************************************************************************
+* \file			ProjectileSystem.cpp
+* \brief		Manages projectiles
+* \author		Wei Feng,				Ang,  100% Code Contribution
+*
+*				Manage the logic of each projectile
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "ProjectileSystem.h"
 #include "../ECS/Core.h"
 #include "../Global.h"							//delta time

@@ -1,3 +1,17 @@
+/**********************************************************************************
+* \file			SystemList.h
+* \brief		List of systems for the engine
+* \author		Jun Yi,				Chong,  25% Code Contribution
+*				Wei Feng,			  Ang,  25% Code Contribution
+*				Jin Kiat,			Chong,  25% Code Contribution
+*				Farzaana Binte,	   Roslan,  25% Code Contribution
+*
+*				List of systems of the engine
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 // Base System

@@ -1,7 +1,7 @@
 /*********************************************************************************
 * \file			Core.cpp
 * \brief		Abstract class for a generic component storage
-* \author		Jun Yi, Chong, 50% Code Contribution
+* \author		Jun Yi, Chong, 100% Code Contribution
 *
 *				Overall Manager for ECS
 *

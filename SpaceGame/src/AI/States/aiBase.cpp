@@ -1,3 +1,16 @@
+/**********************************************************************************
+* \file			aiBase.cpp
+* \brief		AI chase state
+* \author		Wei Feng,		Ang,		100% Code Contribution
+*
+*				Long Description
+*				- Contains the base class for all ai states to inherit from
+*				- Do state transition here
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "aiBase.h"
 #include "../aiState.h"
 

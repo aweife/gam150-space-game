@@ -5,6 +5,7 @@
 *
 *				Long Description
 *				- Initalise blackboard of AI
+*				- Contains common data used by many AI agents
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

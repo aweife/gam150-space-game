@@ -3,7 +3,7 @@
 * \brief		Paticle Emitter
 * \author		Jun Yi,				Chong,  100% Code Contribution
 *
-*				Handles the particle emitter component
+*				Handles the particle emitter data
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

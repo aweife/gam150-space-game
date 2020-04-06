@@ -1,3 +1,15 @@
+/*********************************************************************************
+* \file			BossSystem.cpp
+* \brief		Controls the behaviour for the boss (FSM)
+* \author		Ang Wei Feng, 100% Code Contribution
+*
+*				This system loops through all boss components in the game and calls
+*				their Run function, updating the state of every boss agent.
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "BossSystem.h"							//Self Header
 #include "../ECS/Core.h"						//Work with ECS
 #include "../Components/ComponentList.h"		//Get necessary component references

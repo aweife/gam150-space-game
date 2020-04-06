@@ -1,8 +1,10 @@
 /**********************************************************************************
 * \file			UIEventsManager.h
-* \brief		Stores all upgrade values for weapon
-* \author		Jun Yi,		Chong,		100% Code Contribution
+* \brief		Manage the ui events
+* \author		Jun Yi, Chong, 100% Code Contribution
 *
+*				Long Description
+*				- Cleanup each ui event in subscription
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

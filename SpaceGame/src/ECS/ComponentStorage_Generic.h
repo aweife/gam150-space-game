@@ -1,7 +1,7 @@
 /*********************************************************************************
 * \file			ComponentStorage_Generic.h
 * \brief		Abstract class for a generic component storage
-* \author		Jun Yi, Chong, 50% Code Contribution
+* \author		Jun Yi, Chong, 100% Code Contribution
 *				
 *				Component Storage
 *

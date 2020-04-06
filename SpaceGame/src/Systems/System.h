@@ -1,3 +1,15 @@
+/**********************************************************************************
+* \file			System.h
+* \brief		Base class for all system to inherit from
+* \author		Jun Yi,   Chong,  50% Code Contribution
+*				Wei Feng,   Ang,  50% Code Contribution
+*
+*				Responsible for the systems of the engine
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 #include <set>							//entitiesList

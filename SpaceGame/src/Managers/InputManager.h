@@ -1,5 +1,5 @@
 /*********************************************************************************
-* \file			Input.cpp
+* \file			InputManager.h
 * \author		Chong Jin Kiat
 * \version		2.0
 * \date			17/02/2020

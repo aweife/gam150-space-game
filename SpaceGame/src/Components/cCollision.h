@@ -3,7 +3,7 @@
 * \brief		Camera Component
 * \author		Farzaana Binte,		Roslan,		100% Code Contribution
 *
-*				Responsible for Collision component
+*				Responsible for Collision data
 *
 *
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction

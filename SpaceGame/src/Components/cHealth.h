@@ -5,8 +5,7 @@
 *				Wei Feng,   Ang,  20% Code Contribution
 *
 *				Long Description
-*				- Data for 
-and shield damaged amounts
+*				- Data for and shield damaged amounts
 *				- Data for whether shields is active if not fully damaged
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction

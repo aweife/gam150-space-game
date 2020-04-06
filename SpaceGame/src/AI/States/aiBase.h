@@ -1,10 +1,11 @@
 /**********************************************************************************
 * \file			aiBase.h
-* \brief		AI attack state
+* \brief		AI chase state
 * \author		Wei Feng,		Ang,		100% Code Contribution
 *
 *				Long Description
-*				- Initalise base state of AI
+*				- Contains the base class for all ai states to inherit from
+*				- Do state transition here
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

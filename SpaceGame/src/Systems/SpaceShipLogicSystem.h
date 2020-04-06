@@ -1,3 +1,18 @@
+/**********************************************************************************
+* \file			SpaceShipLogicSystem.h
+* \brief		Logic for spaceship
+* \author		Jin Kiat,		Chong,		90% Code Contribution
+*				Jun Yi,			Chong,		10% Code Contribution
+*
+*				Long Description
+*				- thrust logic
+*				- particles for player
+*				- ship movement
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 
 #include "System.h"					//Inheritance

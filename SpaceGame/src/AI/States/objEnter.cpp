@@ -5,6 +5,7 @@
 *
 *				Long Description
 *				- Initalise enter state of AI
+*				- Treat an objective like an inactive ai
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

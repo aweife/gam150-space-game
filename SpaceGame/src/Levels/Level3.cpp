@@ -1,6 +1,6 @@
 /**********************************************************************************
-* \file			Level2.cpp
-* \brief		Game State for Level 1
+* \file			Level3.cpp
+* \brief		Game State for Level 3
 * \author		Wei Feng,		Ang,		20% Code Contribution
 *				Jun Yi,			Chong,		55% Code Contribution
 *				Jin Kiat,		Chong,		20% Code Contribution

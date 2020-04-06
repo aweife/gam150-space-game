@@ -121,7 +121,6 @@ xcopy /y /d "$(SolutionDir)SpaceGame\res" "$(OutDir)res" /e /i /q</Command>
     <ClCompile Include="src\AI\States\aiRetreat.cpp" />
     <ClCompile Include="src\AI\States\aiChase.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
-    <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Components\cHealth.cpp" />
     <ClCompile Include="src\Components\cDebugTools.cpp" />
     <ClCompile Include="src\Components\cParticle.cpp" />

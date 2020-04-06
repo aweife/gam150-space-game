@@ -1,5 +1,5 @@
 /*********************************************************************************
-* \file			AIBehaviors.h
+* \file			AIBehaviors.cpp
 * \brief		Commonly used functions to calculate steering behaviors
 * \author		Ang Wei Feng, 100% Code Contribution
 *

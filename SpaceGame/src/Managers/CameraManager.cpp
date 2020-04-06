@@ -1,11 +1,21 @@
+/**********************************************************************************
+* \file			CameraManager.cpp
+* \brief		Manage the maths for the camera for the game
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+*				Long Description
+*				- Camera follow
+*				- Screen shake
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "CameraManager.h"						//Self Header
 #include "AEEngine.h"							//AE Camera
 #include "../ECS/Core.h"						//GetComponent
 #include "../Global.h"							//g_dt
 #include "../Math/Math.h"						//Smooth Damp
-
-
-
 
 namespace CameraManager
 {

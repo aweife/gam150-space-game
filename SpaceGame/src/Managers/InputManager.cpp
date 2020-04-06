@@ -1,5 +1,5 @@
 /*********************************************************************************
-* \file			Input.cpp
+* \file			InputManager.cpp
 * \author		Chong Jin Kiat (Main Author - Gameplay)
 * \author       Chong Jun Yi (Integrate UI and Debugging)
 * \version		2.0

@@ -1,6 +1,6 @@
 /**********************************************************************************
 * \file			Component.h
-* \brief		Component for entity that have health/shield and can die
+* \brief		Base class for all components to inherit from
 * \author		Jun Yi,   Chong,  50% Code Contribution
 *				Wei Feng,   Ang,  50% Code Contribution
 *

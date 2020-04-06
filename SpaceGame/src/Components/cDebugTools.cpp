@@ -3,7 +3,7 @@
 * \brief		Debug Tools Component
 * \author		Jun Yi,		Chong,		100% Code Contribution
 *
-*				Responsible for Debug Tools component
+*				Responsible for Debug Tools data
 *
 *
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction

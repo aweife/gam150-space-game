@@ -1,3 +1,16 @@
+/**********************************************************************************
+* \file			WarpingSystem.cpp
+* \brief		Handles wrapping on screen
+* \author		Jun Yi,			Chong,		100% Code Contribution
+*
+*				Long Description
+*				- Handles wrapping around screen coords
+*				- mostly for menu
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "WarpingSystem.h"
 #include "../ECS/Core.h"
 #include "../Components/cWarping.h"

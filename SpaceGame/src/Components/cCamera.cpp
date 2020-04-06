@@ -3,7 +3,7 @@
 * \brief		Camera Component
 * \author		Jun Yi,		Chong,		100% Code Contribution
 *
-*				Responsible for Camera component
+*				Responsible for Camera data
 *
 *
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction

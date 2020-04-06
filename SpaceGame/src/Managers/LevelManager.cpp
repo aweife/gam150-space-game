@@ -1,3 +1,18 @@
+/**********************************************************************************
+* \file			LevelManager.cpp
+* \brief		Generic level flow implementation
+* \author		Wei Feng,		Ang,		30% Code Contribution
+*				Jun Yi,			Chong,		30% Code Contribution
+*				Jin Kiat,		Chong,		30% Code Contribution
+*               Farzaana Binte, Roslan,     10% Code Contribution
+*
+*				Long Description
+*				- Controls the flow of each level
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #include "LevelManager.h"
 #include "../ECS/Factory.h"
 #include "../Player/PlayerManager.h"

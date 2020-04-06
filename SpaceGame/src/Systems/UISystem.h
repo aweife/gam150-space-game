@@ -1,3 +1,19 @@
+/**********************************************************************************
+* \file			UISystem.h
+* \brief		Handles rendering of UI elements
+* \author		Jun Yi,			Chong,		80% Code Contribution
+*				Farzaana Binte, Roslan,		20% Code Contribution
+*
+*				Long Description
+*				- Rendering of UI elements of almost everything in game
+*				- Calcuation based on screen coords
+*				- Show/hide UI
+*				- Pause and other TCRs
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 #include "System.h"
 #include "../Events/UIEvents.h"

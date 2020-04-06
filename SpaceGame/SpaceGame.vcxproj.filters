@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="src\Managers\AIBehaviors.cpp" />
     <ClCompile Include="src\Components\cCamera.cpp" />
-    <ClCompile Include="src\Components\cCollision.cpp" />
     <ClCompile Include="src\Components\cHealth.cpp" />
     <ClCompile Include="src\Components\cDebugTools.cpp" />
     <ClCompile Include="src\Components\cParticle.cpp" />
