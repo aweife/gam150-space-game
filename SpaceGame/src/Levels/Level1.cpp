@@ -120,7 +120,7 @@ void Level1_Update()
 				Core::Get().EntityDestroyed(referencetoLevelDisplay);
 			}
 		}
-		
+
 	}
 	//Editor_TrackVariable("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
 	Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
@@ -152,6 +152,8 @@ void Level1_Draw()
 // ----------------------------------------------------------------------------
 void Level1_Free()
 {
+	currTimer = 0.0f;
+	count = 0;
 	AudioManager::UnLoadAllSounds();
 	LevelManager::ClearObjectiveAll();
 }

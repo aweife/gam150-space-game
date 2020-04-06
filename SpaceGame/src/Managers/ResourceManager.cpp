@@ -545,38 +545,38 @@ namespace ResourceManager
 					if (textureLibrary.find("Scanner") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Scanner", AEGfxTextureLoad("res/Player_Shield.png") });
 					break;
-				case 31:
+				case 32:
 					if (textureLibrary.find("Pause_Menu") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Pause_Menu", AEGfxTextureLoad("res/Pause_Menu.png") });
 					break;
-				case 32:
+				case 33:
 					if (textureLibrary.find("Pause_Confirmation") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Pause_Confirmation", AEGfxTextureLoad("res/Pause_confirmation.png") });
 					break;
-				case 33:
+				case 34:
 					if (textureLibrary.find("UI_Mission1") != textureLibrary.end()) break;
 					textureLibrary.insert({ "UI_Mission1", AEGfxTextureLoad("res/UI_Mission1.png") });
 					break;
-				case 34:
+				case 35:
 					if (textureLibrary.find("UI_Mission2") != textureLibrary.end()) break;
 					textureLibrary.insert({ "UI_Mission2", AEGfxTextureLoad("res/UI_Mission2.png") });
 					break;
-				case 35:
+				case 36:
 					if (textureLibrary.find("UI_Mission3") != textureLibrary.end()) break;
 					textureLibrary.insert({ "UI_Mission3", AEGfxTextureLoad("res/UI_Mission3.png") });
 					break;
-				case 36:
+				case 37:
 					if (textureLibrary.find("Settings_Icon") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Settings_Icon", AEGfxTextureLoad("res/Settings_Icon.png") });
 					break;
-				case 37:
+				case 38:
 					if (textureLibrary.find("GameOver_Menu") != textureLibrary.end()) break;
 					textureLibrary.insert({ "GameOver_Menu", AEGfxTextureLoad("res/GameOver_Menu.png") });
 					*progress = 100;
 					break;
 				
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 38): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 39): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

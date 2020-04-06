@@ -80,6 +80,7 @@ void Level3_Load()
 
 	Factory::CreateBackground();
 	Factory_UI::Create_PlayerUserInterface();
+	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
 
 	// FOR NOW, audio
 	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);

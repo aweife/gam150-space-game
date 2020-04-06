@@ -80,6 +80,7 @@ void Level2_Load()
 	Factory_UI::CreateUI_AddObjective(2, "Eliminate 10 enemies");
 
 	Factory_UI::Create_PlayerUserInterface();
+	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
 
 	// FOR NOW, audio
 	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);

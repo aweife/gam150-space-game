@@ -56,7 +56,7 @@ namespace LevelManager
 
 
 	// Boss Spawn Sequence
-	bool arrival1, arrival2, arrival3 ;
+	bool arrival1, arrival2, arrival3;
 	float bossTimer = 0.0f;
 	const float bossArrivalTime = 5.0f;
 
@@ -242,7 +242,7 @@ namespace LevelManager
 			{
 				CheckOutOfScreen(exitId);
 			}
-			
+
 
 			//Straight away spawn boss upon collection
 			if (/*eliminatedCount >= 10 && */!objectiveComplete)
@@ -318,7 +318,7 @@ namespace LevelManager
 				{
 					SpawnEnemyOnEscort(escort, PlayerManager::player);
 				}
-				
+
 				escortEnemyTimer = 0.0f;
 			}
 		}
@@ -332,7 +332,7 @@ namespace LevelManager
 				exitId = Factory::SpawnLevel_End({ 0.0f, 0.0f });
 			}
 		}
-		
+
 	}
 
 	void CheckEscort(AEVec2 escortPos, float checkPointX, float checkPointY)
@@ -467,10 +467,7 @@ namespace LevelManager
 		SetObjectiveSpawnArea();
 		AEVec2 spawnPos;
 
-		AEVec2 position = randomItemPos.front();
-		randomItemPos.pop_front();
-		return position;
-	}
+		float randomSpawnArea = randomLevel;
 
 		switch (static_cast<int>(randomSpawnArea))
 		{
