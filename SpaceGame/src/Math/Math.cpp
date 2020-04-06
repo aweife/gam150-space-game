@@ -108,5 +108,5 @@ AEVec2 MBMath_getNormalizedVector(const AEVec2& vector)
 // Getting the normals of the Vector
 AEVec2 MBMath_getNormalofVector(const AEVec2& vector)
 {
-    return AEVec2{ -vector.x, vector.y };
+    return AEVec2{ -vector.y, vector.x };
 }

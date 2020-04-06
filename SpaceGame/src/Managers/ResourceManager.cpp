@@ -95,6 +95,25 @@ namespace ResourceManager
 		meshLibrary.insert({ "Square Mesh", mesh });
 
 		// -----------------------------------------------------------------------
+		// Circle Mesh
+		// -----------------------------------------------------------------------
+		AEGfxMeshStart();
+
+		//Creating the ball shape
+		int Parts = 12;
+		for (float i = 0; i < Parts; ++i)
+		{
+			AEGfxTriAdd(
+				0.0f, 0.0f, 0xFFFFFF00, 0.0f, 0.0f,
+				cosf(i * 2 * PI / Parts) * 1.0f, sinf(i * 2 * PI / Parts) * 1.0f, 0xFFFFFF00, 0.0f, 0.0f,
+				cosf((i + 1) * 2 * PI / Parts) * 1.0f, sinf((i + 1) * 2 * PI / Parts) * 1.0f, 0xFFFFFF00, 0.0f, 0.0f);
+		}
+		// Saving the mesh (list of triangles) in mesh
+		mesh = AEGfxMeshEnd();
+		AE_ASSERT_MESG(mesh, "Failed to create mesh!");
+		meshLibrary.insert({ "Circle Mesh", mesh });
+
+		// -----------------------------------------------------------------------
 		// Octagon Mesh
 		// -----------------------------------------------------------------------
 		AEGfxMeshStart();
@@ -366,6 +385,26 @@ namespace ResourceManager
 		{
 			textureLibrary.insert({ "Tutorial_planet", AEGfxTextureLoad("res/Tutorial_planet.png") });
 		}
+		if (textureLibrary.find("Credits_1") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_1", AEGfxTextureLoad("res/Credits_1.png") });
+		}
+		if (textureLibrary.find("Credits_2") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_2", AEGfxTextureLoad("res/Credits_2.png") });
+		}
+		if (textureLibrary.find("Credits_3") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_3", AEGfxTextureLoad("res/Credits_3.png") });
+		}
+		if (textureLibrary.find("Credits_4") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_4", AEGfxTextureLoad("res/Credits_4.png") });
+		}
+		if (textureLibrary.find("Credits_5") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_5", AEGfxTextureLoad("res/Credits_5.png") });
+		}
 	}
 
 	void LoadTextureLibrary_1(unsigned int* stage, unsigned int * progress)
@@ -505,10 +544,39 @@ namespace ResourceManager
 				case 31:
 					if (textureLibrary.find("Scanner") != textureLibrary.end()) break;
 					textureLibrary.insert({ "Scanner", AEGfxTextureLoad("res/Player_Shield.png") });
+					break;
+				case 31:
+					if (textureLibrary.find("Pause_Menu") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Pause_Menu", AEGfxTextureLoad("res/Pause_Menu.png") });
+					break;
+				case 32:
+					if (textureLibrary.find("Pause_Confirmation") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Pause_Confirmation", AEGfxTextureLoad("res/Pause_confirmation.png") });
+					break;
+				case 33:
+					if (textureLibrary.find("UI_Mission1") != textureLibrary.end()) break;
+					textureLibrary.insert({ "UI_Mission1", AEGfxTextureLoad("res/UI_Mission1.png") });
+					break;
+				case 34:
+					if (textureLibrary.find("UI_Mission2") != textureLibrary.end()) break;
+					textureLibrary.insert({ "UI_Mission2", AEGfxTextureLoad("res/UI_Mission2.png") });
+					break;
+				case 35:
+					if (textureLibrary.find("UI_Mission3") != textureLibrary.end()) break;
+					textureLibrary.insert({ "UI_Mission3", AEGfxTextureLoad("res/UI_Mission3.png") });
+					break;
+				case 36:
+					if (textureLibrary.find("Settings_Icon") != textureLibrary.end()) break;
+					textureLibrary.insert({ "Settings_Icon", AEGfxTextureLoad("res/Settings_Icon.png") });
+					break;
+				case 37:
+					if (textureLibrary.find("GameOver_Menu") != textureLibrary.end()) break;
+					textureLibrary.insert({ "GameOver_Menu", AEGfxTextureLoad("res/GameOver_Menu.png") });
 					*progress = 100;
 					break;
+				
 			}
-			*progress < 100? *progress += static_cast<unsigned int>(100 / 32): *progress = 100;
+			*progress < 100? *progress += static_cast<unsigned int>(100 / 38): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));
 			++*stage;
 			AEGetTime(&currTime);

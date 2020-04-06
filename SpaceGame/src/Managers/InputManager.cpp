@@ -24,6 +24,7 @@
 
 #include "../Managers/CameraManager.h"					//Testing....remove once screenshake is done
 #include "UIEventsManager.h"							//Testing events calling
+#include "../Systems/UISystem.h"
 #include "../Player/PlayerManager.h"
 #include "LevelManager.h"
 #include "AudioManager.h"								// Testing audio
@@ -49,47 +50,47 @@ namespace InputManager
 		// Non-Gameplay Keyboard Controls ... Pause, Exit
 		// -----------------------------------------------------------------------
 
-		if (AEInputCheckTriggered(AEVK_P) && currentState != GS_SPLASHSCREEN && currentState != GS_MAINMENU)
+		if (AEInputCheckTriggered(AEVK_ESCAPE) && currentState != GS_SPLASHSCREEN && currentState != GS_MAINMENU)
 		{
 			TogglePause();
 			g_GamePause ? UIEventsManager::Broadcast(new Events::TogglePause(true)) 
 				: UIEventsManager::Broadcast(new Events::TogglePause(false));
 			AudioManager::TogglePause(g_GamePause);
 		}
-		if (AEInputCheckTriggered(AEVK_ESCAPE))
-		{
-			if (currentState == GS_MAINMENU)
-			{
-				GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
-			}
-			else
-			{
-				GSM_ChangeState(GS_MAINMENU);
-			}
-		}
-		if (AEInputCheckTriggered(AEVK_R))
-		{
-			//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
-		}
+		//if (AEInputCheckTriggered(AEVK_ESCAPE))
+		//{
+		//	if (currentState == GS_MAINMENU)
+		//	{
+		//		GSM_QuitGame();							//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+		//	}
+		//	else
+		//	{
+		//		GSM_ChangeState(GS_MAINMENU);
+		//	}
+		//}
+		//if (AEInputCheckTriggered(AEVK_R))
+		//{
+		//	//GSM_RestartLevel();					//NEXT TIME PUT IN A UI HERE TO COMFIRM ACTION!
+		//}
 
 		if (!g_GamePause)
 		{
 			//Debug functionality
-		//if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
-		//{
-		//	ToggleShowBoundingBoxMode(); 
-		//}
-		//if (AEInputCheckTriggered(AEVK_9))			
-		//{
-		//	GSM_ChangeState(GS_UPGRADE);
-		//	//GSM_LoadingTransition(GS_UPGRADE);
-		//	//Factory_UI::Create_ChooseThree({ 0,0 });
-		//}
-		/*if (AEInputCheckTriggered(AEVK_8))
-		{
-			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
-			uiSys->DeleteUpgradeWindow();
-		}*/
+			if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
+			{
+				ToggleShowBoundingBoxMode();
+			}
+			if (AEInputCheckTriggered(AEVK_9))
+			{
+				GSM_ChangeState(GS_UPGRADE);
+				//GSM_LoadingTransition(GS_UPGRADE);
+				//Factory_UI::Create_ChooseThree({ 0,0 });
+			}
+			/*if (AEInputCheckTriggered(AEVK_8))
+			{
+				std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+				uiSys->DeleteUpgradeWindow();
+			}*/
 			if (AEInputCheckTriggered(AEVK_1))
 			{
 				if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon != WeaponType::laser)
@@ -124,10 +125,10 @@ namespace InputManager
 
 		Editor_TrackVariable("mouse Screen X", mousePosX);
 		Editor_TrackVariable("mouse Screen Y", mousePosY);
-
+		
 		float yOffset = 20.0f * static_cast<int>(!g_isFullScreen);
 
-		if (!g_GamePause) UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY + yOffset)));
+		if(!g_GamePause) UIEventsManager::Broadcast(new Events::OnMouseHover(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY + yOffset)));
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
 		{
 			if (!UIEventsManager::Broadcast(new Events::OnMouseClick(mousePosX - g_WorldMaxX, -1 * (mousePosY - g_WorldMaxY + yOffset))))
@@ -139,7 +140,7 @@ namespace InputManager
 				if (!g_GamePause) mouseLTrigger = false;
 			}
 		}
-		else
+		else if(!g_GamePause)
 		{
 			if (AEInputCheckCurr(AEVK_LBUTTON))
 			{
@@ -150,7 +151,7 @@ namespace InputManager
 				if (!g_GamePause) mouseLTrigger = false;
 			}
 		}
-		if(!g_GamePause) mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
+		if (!g_GamePause) mouseRTrigger = AEInputCheckCurr(AEVK_RBUTTON);					//JY: Check if selecting UI.. otherwise go to player
 	
 	}
 }

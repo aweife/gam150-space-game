@@ -44,6 +44,7 @@ namespace Factory
 	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreateAsteroid2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	void CreateBackground();
+	void Create_Credits();
 
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
 	ENTITY CreateBullet_LaserBeam(float posX, float posY, float rotation, OWNERTAG tag);
@@ -58,10 +59,14 @@ namespace Factory
 	ENTITY DebugVector_Velocity(ENTITY target);
 	ENTITY DebugBoundingBox_Rigidbody(ENTITY target);
 
+	// Particle systems
 	ENTITY CreateParticleEmitter_MYFIRST();
 	ENTITY CreateParticleEmitter_UPONIMPACT(cTransform* target);
 	ENTITY CreateParticleEmitter_TRAIL(cTransform* tar);
 	ENTITY CreateParticleEmitter_TRAILSTATIC(cTransform* tar);
+	ENTITY CreateParticleEmitter_BOSSSPAWNSTATIC(cTransform* tar);
+	ENTITY CreateParticleEmitter_OTHERSTATIC(cTransform* tar);
+
 	ENTITY CreateParticleEmitter_DIVERGENCE(AEVec2 position, float radius, unsigned int count);
 }
 
@@ -111,6 +116,11 @@ namespace Factory_UI
 	ENTITY CreateUI_Option_TickBox_Fullscreen(float posX, float posY, float size, unsigned int layer = 0);
 
 	ENTITY CreateBackground_Load();
+
+	// Level display
+	ENTITY CreateUI_Level1Display();
+	ENTITY CreateUI_Level2Display();
+	ENTITY CreateUI_Level3Display();
 
 }
 

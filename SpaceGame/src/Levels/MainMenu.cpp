@@ -136,6 +136,7 @@ void Create_MainMenuInterface()
 	mmAnchor = ScreenBasedCoords(0.0f, -0.75f, UI_ANCHOR::CENTER, true);
 	AEVec2Set(&mmAnchor, mmAnchor.x + 5000, mmAnchor.y + 5000);
 	Factory_UI::Create_MM_BackToMain(mmAnchor);
+	Factory::Create_Credits();
 }
 
 void Switch_MainMenuState(mmStates newState)
@@ -170,6 +171,7 @@ void Switch_MainMenuState(mmStates newState)
 				Core::Get().GetComponent<cWarping>(PlayerManager::player)->_warpX.y += -5000;
 				Core::Get().GetComponent<cWarping>(PlayerManager::player)->_warpY.x += -5000;
 				Core::Get().GetComponent<cWarping>(PlayerManager::player)->_warpY.y += -5000;
+				Core::Get().GetComponent<cSprite>(currentGroup.gameLogo)->_colorTint.a = 1.0f;
 			}
 			break;
 		case mmStates::OPTIONS:		//Can only access from main menu
@@ -197,6 +199,7 @@ void Switch_MainMenuState(mmStates newState)
 			Core::Get().GetComponent<cWarping>(PlayerManager::player)->_warpX.y += 5000;
 			Core::Get().GetComponent<cWarping>(PlayerManager::player)->_warpY.x += 5000;
 			Core::Get().GetComponent<cWarping>(PlayerManager::player)->_warpY.y += 5000;
+			Core::Get().GetComponent<cSprite>(currentGroup.gameLogo)->_colorTint.a = 0.0f;
 			break;
 	}
 	currState = newState;
