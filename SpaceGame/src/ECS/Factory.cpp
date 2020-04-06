@@ -133,6 +133,42 @@ namespace Factory
 		return exit;
 	}
 
+	ENTITY SpawnLevel_DeliveryEnd(AEVec2 position)
+	{
+		ENTITY wormhole = CreateWormhole(position, 5.0f, 0.0f, 30.0f, 2);
+		Core::Get().AddComponent<cRigidBody>(wormhole, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(wormhole)->_tag = COLLISIONTAG::DELIVERYCOMPLETE;
+		Core::Get().AddComponent<cCollision>(wormhole, new cCollision);
+
+		return wormhole;
+	}
+
+
+	ENTITY SpawnDelivery(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size)
+	{
+		ENTITY delivery = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(delivery, new cTransform(position, startRotation, size));
+		Core::Get().AddComponent<cRigidBody>(delivery, new cRigidBody(100.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+		Core::Get().GetComponent<cRigidBody>(delivery)->_tag = COLLISIONTAG::DELIVERY;
+
+		Core::Get().AddComponent<cSprite>(delivery, new cSprite(delivery, "Square Mesh", "Delivery", 2));
+
+		Core::Get().AddComponent<cAI>(delivery, new cAI{ delivery, DELIVERY });
+		Core::Get().GetComponent<cAI>(delivery)->_currentState.states.emplace<aiIdle>();
+
+		Core::Get().AddComponent<cTimeline>(delivery, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
+		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery));
+		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery), 5.0f, Core::Get().GetComponent<cTransform>(delivery)->_rotation + 2 * PI);
+
+		//Core::Get().AddComponent<cRigidBody>(delivery, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
+		//Core::Get().AddComponent<cCollision>(delivery, new cCollision);
+		//Core::Get().GetComponent<cRigidBody>(delivery)->_tag = COLLISIONTAG::DELIVERY; // testing collision
+		//Core::Get().GetComponent<cCollision>(delivery)->_bbShape = ColliderShape::RECTANGLE_OBB;
+
+		return delivery;
+	}
+
+
 	//Reused for main menu and level exit
 	ENTITY CreateWormhole(AEVec2 position, float rotSpeed, float rotStart, float uniformSize, int colorVariance)
 	{
@@ -239,28 +275,6 @@ namespace Factory
 		Core::Get().AddComponent<cSprite>(planet, new cSprite(planet, "Square Mesh", "Tutorial_planet", layer));
 
 		return planet;
-	}
-
-	ENTITY SpawnDelivery(AEVec2 position, float startRotation, float rotationSpeed, AEVec2 size)
-	{
-		ENTITY delivery = Core::Get().CreateEntity();
-		Core::Get().AddComponent<cTransform>(delivery, new cTransform(position, startRotation, size));
-		
-		Core::Get().AddComponent<cSprite>(delivery, new cSprite(delivery, "Square Mesh", "Delivery", 2));
-
-		Core::Get().AddComponent<cAI>(delivery, new cAI{ delivery, DELIVERY });
-		Core::Get().GetComponent<cAI>(delivery)->_currentState.states.emplace<aiIdle>();
-
-		Core::Get().AddComponent<cTimeline>(delivery, new cTimeline(g_appTime, g_appTime + rotationSpeed, true));
-		AddNewTimeline_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery));
-		AddNewNode_Float(&Core::Get().GetComponent<cTransform>(delivery)->_rotation, Core::Get().GetComponent<cTimeline>(delivery), 5.0f, Core::Get().GetComponent<cTransform>(delivery)->_rotation + 2 * PI);
-
-		//Core::Get().AddComponent<cRigidBody>(delivery, new cRigidBody(30.0f, 0.0f, 0.0f, 0.0f));
-		//Core::Get().AddComponent<cCollision>(delivery, new cCollision);
-		//Core::Get().GetComponent<cRigidBody>(delivery)->_tag = COLLISIONTAG::DELIVERY; // testing collision
-		//Core::Get().GetComponent<cCollision>(delivery)->_bbShape = ColliderShape::RECTANGLE_OBB;
-
-		return delivery;
 	}
 
 	ENTITY CreatePlanet1(unsigned int layer, float posX, float posY, float scaleX, float scaleY)

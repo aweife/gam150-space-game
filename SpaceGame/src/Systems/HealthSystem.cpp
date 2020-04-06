@@ -124,6 +124,7 @@ void HealthSystem::Update()
 			{
 				if (collision->_tag == COLLISIONTAG::WAVEENEMY || collision->_tag == COLLISIONTAG::ENEMY)
 				{
+					LevelManager::CheckEnemyObjective();
 					LevelManager::ClearEnemy(entity);
 				}
 			}

@@ -26,6 +26,10 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Tools/Editor.h"
 
 ENTITY package = 0;
+ENTITY deliveryPackageUI;
+ENTITY enemyDestroyedUI;
+ENTITY enemyDestroyedUITickbox_state;
+ENTITY deliveryPackageUIickbox_state;
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
 // It should be called once before the start of the level
@@ -75,10 +79,14 @@ void Level2_Load()
 
 	package = Factory::SpawnDelivery({0.0f, 200.0f}, 60.0f, 5.0f, { 50.0f,50.0f });
 
-	Factory::CreateBackground();
-	Factory_UI::CreateUI_AddObjective(1, "Deliver The Package");
-	Factory_UI::CreateUI_AddObjective(2, "Eliminate 10 enemies");
 
+	Factory::CreateBackground();
+	deliveryPackageUI = Factory_UI::CreateUI_AddObjective(1, "Deliver The Package");
+	deliveryPackageUIickbox_state = Core::Get().GetComponent<cUIElement>(deliveryPackageUI)->_roleIndex;
+
+	enemyDestroyedUI = Factory_UI::CreateUI_AddObjective(2, "Eliminate 10 enemies");
+	enemyDestroyedUITickbox_state = Core::Get().GetComponent<cUIElement>(enemyDestroyedUI)->_roleIndex;
+	
 	Factory_UI::Create_PlayerUserInterface();
 	Factory_UI::CreateUI_Pause();				//Create a Pause UI but make it invisible
 
@@ -110,9 +118,20 @@ void Level2_Update()
 	{
 		AEVec2 playerPos = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position;
 		//Delivery Mission
-		LevelManager::Level2Update(playerPos, package, 5.0f);
+		LevelManager::Level2Update(playerPos, 5.0f);
 		//Spawn Enemy around player
 		LevelManager::EnemySpawnManager::SpawnEnemyWavesTimer(playerPos, 5.0f);
+	}
+
+	if (LevelManager::enemyObjectiveComplete)
+	{
+		Core::Get().GetComponent<cSprite>(enemyDestroyedUITickbox_state)->_colorTint.a = 1.0f;
+	}
+
+	if (LevelManager::isCollectedCompleted)
+	{
+		Core::Get().GetComponent<cSprite>(deliveryPackageUIickbox_state)->_colorTint.a = 1.0f;
+
 	}
 
 
