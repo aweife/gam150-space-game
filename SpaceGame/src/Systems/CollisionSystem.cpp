@@ -761,6 +761,7 @@ void CollisionSystem::Update()
 					}
 					else if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_QUIT)
 					{
+						Factory_UI::CreateUI_ExitConfirmation();
 					}
 					else if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_BACK)
 					{

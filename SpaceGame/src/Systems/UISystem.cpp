@@ -474,7 +474,17 @@ bool OnButtonClick_ConfirmationMenuUI(ENTITY entity, Events::OnMouseClick* messa
 		{
 			g_isSecondaryMenu = false;
 			TogglePause();
-			GSM_ChangeState(GS_MAINMENU);
+			
+
+			if (currentState != GS_MAINMENU) 
+			{
+				GSM_ChangeState(GS_MAINMENU);
+			}
+			else
+			{
+				GSM_ChangeState(GS_QUIT);
+			}
+
 			
 			//UIEventsManager::Broadcast(new Events::TogglePause(false));
 		}
@@ -617,7 +627,7 @@ bool UpdateDescriptionText(ENTITY entity, Events::OnUpgradeDescpChange* message)
 		cUIElement* descptUIComp = Core::Get().GetComponent<cUIElement>(entity);
 		if (descptUIComp->_roleIndex == static_cast<unsigned int>(message->_slot))
 		{
-			EditText(entity, "Hello");
+			EditText(entity, UpgradeManager::GetUpgradeDescript(descptUIComp->_roleIndex));
 			return true;
 		}
 		return false;
