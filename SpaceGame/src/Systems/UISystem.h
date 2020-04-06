@@ -1,3 +1,17 @@
+/*********************************************************************************
+* \file			UISystem.h
+* \brief		Creating UI for different parts of the game
+* \author		Chong Jun Yi, 50% Code Contribution
+* \author		Farzaana Binte Roslan, 50% Code Contribution
+*
+*				Creating UI for ingame usage such as health, shield, damaged,
+*				upgrades and Main Menu click.
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+
 #pragma once
 #include "System.h"
 #include "../Events/UIEvents.h"

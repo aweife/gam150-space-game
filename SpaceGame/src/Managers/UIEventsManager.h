@@ -1,13 +1,14 @@
 /**********************************************************************************
 * \file			UIEventsManager.h
-* \brief		Stores all upgrade values for weapon
-* \author		Jun Yi,		Chong,		100% Code Contribution
+* \brief		Manages the UI for Events 
+* \author		Chong Jun Yi, 100% Code Contribution
 *
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
+
 #pragma once
 #include <unordered_map>
 #include <list>

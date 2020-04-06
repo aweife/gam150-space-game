@@ -1,8 +1,8 @@
 /**********************************************************************************
 * \file			PlayerManager.h
 * \brief		Logic for player features from input
-* \author		Jin Kiat,		Chong,		90% Code Contribution
-*				Jun Yi,			Chong,		10% Code Contribution
+* \author		Chong Jin Kiat, 90% Code Contribution
+*				Chong Jun Yi, 10% Code Contribution
 *
 *				Long Description
 *				- facing direction
@@ -12,6 +12,7 @@
 or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
+
 #pragma once
 #include "../Global_ECS.h"				// Entity reference
 #include "../Components/cRigidBody.h"	// Slowly rotate to face mouse

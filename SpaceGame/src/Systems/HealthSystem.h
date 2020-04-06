@@ -1,9 +1,8 @@
 /**********************************************************************************
 * \file			HealthSystem.h
-* \brief		Game State for Splash Screen
-* \author		Jin Kiat,		Chong,		70% Code Contribution
-*				Jun Yi,			Chong,		30% Code Contribution
-*				
+* \brief		Tracking of both enemy and player health
+* \author		Chong Jin Kiat,	80% Code Contribution
+* \author		Chong Jun Yi, 20% Code Contribution
 *				Long Description
 *				- Health and Shield
 *
@@ -11,6 +10,7 @@
 or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
+
 #pragma once
 #include "System.h"
 #include <set>

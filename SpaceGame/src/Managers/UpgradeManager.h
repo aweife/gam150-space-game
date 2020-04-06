@@ -1,13 +1,14 @@
 /**********************************************************************************
 * \file			UpgradeManager.h
 * \brief		Stores all upgrade values for weapon
-* \author		Jin Kiat,		Chong,		100% Code Contribution
+* \author		Chong Jin Kiat, 100% Code Contribution
 *
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
+
 #pragma once
 //Hopefully wont have any dependency error here
 #include "../Components/cWeapon.h"

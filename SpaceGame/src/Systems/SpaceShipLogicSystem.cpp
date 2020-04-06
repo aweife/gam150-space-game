@@ -1,3 +1,16 @@
+/*********************************************************************************
+* \file			SpaceShipLogicSystem.h
+* \brief		Logic Systems for all Spaceships
+* \author		Chong Jin Kiat, 90% Code Contribution
+* \author		Ang Wei Feng, 10% Code Contribution
+*
+*				Logic System for Spaceship that has thrusting capabilities.
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+
 #include "SpaceShipLogicSystem.h"
 #include "../ECS/Core.h"
 #include "../Global.h"

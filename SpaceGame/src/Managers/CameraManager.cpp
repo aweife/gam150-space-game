@@ -1,3 +1,13 @@
+/**********************************************************************************
+* \file			CameraManager.cpp
+* \brief		Manage the Camera to follow the player.
+* \author		Chong Jun Yi, 100% Code Contribution
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+
 #include "CameraManager.h"						//Self Header
 #include "AEEngine.h"							//AE Camera
 #include "../ECS/Core.h"						//GetComponent

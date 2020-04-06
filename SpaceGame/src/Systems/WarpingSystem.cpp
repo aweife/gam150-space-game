@@ -1,3 +1,15 @@
+/*********************************************************************************
+* \file			WarpingSystem.cpp
+* \brief		Wrapping UI and game entity in the game.
+* \author		Chong Jun Yi, 100% Code Contribution
+*
+*				Wrapping User Interface, Game Entities in the game
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+
 #include "WarpingSystem.h"
 #include "../ECS/Core.h"
 #include "../Components/cWarping.h"

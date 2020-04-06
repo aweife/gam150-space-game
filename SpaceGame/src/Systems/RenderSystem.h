@@ -1,3 +1,15 @@
+/*********************************************************************************
+* \file			ScannerSystem.h
+* \brief		Render various meshes that is used in the game.
+* \author		Chong Jun Yi, 100% Code Contribution
+*
+*				Render various meshes that is used in the game.
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+
 #pragma once
 
 #include "System.h"

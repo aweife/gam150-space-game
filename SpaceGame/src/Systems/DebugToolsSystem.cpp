@@ -1,3 +1,15 @@
+/*********************************************************************************
+* \file			DebugToolsSystem.cpp
+* \brief		Debugging tool to assist in debug
+* \author		Chong Jun Yi, 100% Code Contribution
+*
+*				Debugging tool to assist in debug
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+
 #include "DebugToolsSystem.h"
 #include "../ECS/Core.h"
 #include "../Components/cDebugTools.h"

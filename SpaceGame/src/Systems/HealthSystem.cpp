@@ -1,10 +1,9 @@
 /**********************************************************************************
 * \file			HealthSystem.cpp
-* \brief		Game State for Splash Screen
-* \author		Jin Kiat,		Chong,		60% Code Contribution
-*				Jun Yi,			Chong,		30% Code Contribution
-*				Farzaana Binte, Roslan,     10% Code Contribution
-*
+* \brief		Tracking of both enemy and player health
+* \author		Chong Jin Kiat,	70% Code Contribution
+* \author		Chong Jun Yi, 20% Code Contribution
+* \author		Farzaana Binte, Roslan, 10% Code Contribution
 *				Long Description
 *				- Health and Shield
 *
@@ -12,6 +11,7 @@
 or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 **********************************************************************************/
+
 #include "HealthSystem.h"
 #include "SpaceShipLogicSystem.h"
 #include "../ECS/Core.h"

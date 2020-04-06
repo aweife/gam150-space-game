@@ -1,13 +1,10 @@
 /*********************************************************************************
 * \file			PhysicsSystem.h
-* \author		Farzaana Binte Roslan
-* \version		1.0
-* \date			10/02/2020
-* \par			Systems
-* \note			Course: GAM150
 * \brief		Physics system to control various physics interaction by entity
-				- 
-
+* \author		Farzaana Binte Roslan, 100% Code Contribution
+*
+*				Physics system to control various physics interaction by entity
+*
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.

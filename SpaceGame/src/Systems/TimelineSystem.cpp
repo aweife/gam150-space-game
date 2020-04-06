@@ -1,3 +1,16 @@
+/*********************************************************************************
+* \file			TimelineSystem.h
+* \brief		Creating UI for different parts of the game
+* \author		Chong Jun Yi, 100% Code Contribution
+*
+*				Timeline system for manipulating values function over a period of time.
+*				and has looping capabilities.
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
+
 #include "TimelineSystem.h"
 #include "../ECS/Core.h"
 #include "../Global.h"
