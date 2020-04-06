@@ -2,9 +2,10 @@
 * \file			Level2.h
 * \brief		Game State for Level 1
 * \author		Wei Feng,		Ang,		20% Code Contribution
-*				Jun Yi,			Chong,		60% Code Contribution
+*				Jun Yi,			Chong,		55% Code Contribution
 *				Jin Kiat,		Chong,		20% Code Contribution
-*
+*               Farzaana Binte, Roslan,     5%  Code Contribution
+*               
 *				Long Description
 *				- Initalise game objects into the level
 *				- Update - Render Loop
