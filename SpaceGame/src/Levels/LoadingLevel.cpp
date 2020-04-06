@@ -18,6 +18,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/GameStateManager.h"
 #include "../Systems/UISystem.h"							//edit text
+#include "../Managers/AudioManager.h"
 
 unsigned int loadingForState = GS_NULL;
 ENTITY loadingText = 0;
@@ -26,10 +27,12 @@ void LoadingLvl_Load()
 {
 	loadingText = Factory_UI::CreateUI_Text(0, -150, "Loading Level...");
 	Factory_UI::CreateBackground_Load();
+
 }
 
 void LoadingLvl_Init()
 {
+
 	ResourceManager::loadingProgress = 0;
 	ResourceManager::loadingCompleted = false;
 	ResourceManager::loadingStage = 0;

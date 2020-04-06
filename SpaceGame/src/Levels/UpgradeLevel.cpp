@@ -3,7 +3,7 @@
 #include "../Managers/GameStateManager.h"
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/LevelManager.h"
-
+#include "../Managers/AudioManager.h"
 unsigned int loadingForNextLevel = GS_NULL;
 bool upgradeFinish;
 
@@ -12,10 +12,14 @@ void UpgradeLvl_Load()
 	Factory::CreateMenuPlayer();
 	Factory_Map::Generate_StarField();
 	Factory_UI::Create_ChooseThree({0, 0 }, 2);
+	AudioManager::LoadSound("res/BGM/cinescifi.wav", true);
+
 }
 
 void UpgradeLvl_Init()
 {
+	AudioManager::PlayBGM("res/BGM/cinescifi.wav", 0.25f);
+
 	AEGfxSetCamPosition(0, 0);
 	upgradeFinish = false;
 }
