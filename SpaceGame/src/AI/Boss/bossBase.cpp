@@ -40,6 +40,12 @@ void bossBase::OnExit(bossAttackList& var)
 	case BOSS_HOMING:
 		var.attacks.emplace<bossHoming>();
 		break;
+	case BOSS_MOVE:
+		var.attacks.emplace<bossMove>();
+		break;
+	case BOSS_RAPID:
+		var.attacks.emplace<bossRapid>();
+		break;
 	default:
 		var.attacks.emplace<bossIdle>();
 		break;

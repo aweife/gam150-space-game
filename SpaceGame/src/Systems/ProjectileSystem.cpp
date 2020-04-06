@@ -65,24 +65,24 @@ void ProjectileSystem::Update()
 void ProjectileSystem::HomingTarget(AEVec2& targetPos, AEVec2& selfPos, AEVec2& velCurr, AEVec2& steering, float& dirCurr)
 {
 	AEVec2 towardsTarget;
-	AEVec2Sub(&towardsTarget, &targetPos, &selfPos); //Vector towards target
+	AEVec2Sub(&towardsTarget, &targetPos, &selfPos);				//Vector towards target
 	AEVec2Normalize(&towardsTarget, &towardsTarget);
 
-	AEVec2 currDirection;
-	AEVec2Normalize(&currDirection, &velCurr);       //Normalised bullet current direction
-	AEVec2Lerp(&velCurr, &towardsTarget, &currDirection, g_dt); //Slowly lerp towards target direction
+	//AEVec2 currDirection;
+	//AEVec2Normalize(&currDirection, &velCurr);					//Normalised bullet current direction
+	//AEVec2Lerp(&velCurr, &towardsTarget, &currDirection, g_dt);	//Slowly lerp towards target direction
 
 
-	//This portion is for the bullet orientation
-	AEVec2 forwardVect;
-	AEVec2Set(&forwardVect, 1, 0);
-	//Facing Direction for homing bullet
-	dirCurr = AEACos(AEVec2DotProduct(&velCurr, &forwardVect));
-	towardsTarget.y < 0 ? dirCurr *= -1 : dirCurr;
-	//New Velocity
-	AEVec2Scale(&velCurr, &velCurr, 10.0f);
+	////This portion is for the bullet orientation
+	//AEVec2 forwardVect;
+	//AEVec2Set(&forwardVect, 1, 0);
+	////Facing Direction for homing bullet
+	//dirCurr = AEACos(AEVec2DotProduct(&velCurr, &forwardVect));
+	//towardsTarget.y < 0 ? dirCurr *= -1 : dirCurr;
+	////New Velocity
+	//AEVec2Scale(&velCurr, &velCurr, 10.0f);
 
-	//dirCurr = atan2f(towardsTarget.y, towardsTarget.x);
-	//dirCurr += PI / 2.0f;
-	//Steering::SeekTarget(steering, towardsTarget, 10.0, velCurr);
+	dirCurr = atan2f(towardsTarget.y, towardsTarget.x);
+	dirCurr += PI / 2.0f;
+	Steering::SeekTarget(steering, towardsTarget, 60.0f, velCurr);
 }

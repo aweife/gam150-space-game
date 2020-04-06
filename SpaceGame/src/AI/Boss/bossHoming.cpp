@@ -18,10 +18,10 @@ void bossHoming::OnEnter(aiBlackBoard& bb)
 	_numberOfAttacks = rwp->_numberOfAttacks;
 
 	// Init state
-	_attackDuration = 5.0f + AERandFloat() * 5.0f;
-	rwp->_attackCooldown = 3.0f;
-	rwp->_delayBetweenAttacks = 0.5f;
-	rwp->_numberOfAttacks = 2;
+	_attackDuration = 10.0f + AERandFloat() * 5.0f;
+	rwp->_attackCooldown = 2.0f;
+	rwp->_delayBetweenAttacks = 0.0f;
+	rwp->_numberOfAttacks = 1;
 }
 
 void bossHoming::OnUpdate(aiBlackBoard& bb)

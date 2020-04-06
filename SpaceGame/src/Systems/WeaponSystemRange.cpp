@@ -79,9 +79,15 @@ void WeaponSystemRange::Update()
 						if (rangeweapon->_bossIsShooting)
 						{
 							if (rangeweapon->_homing)
+							{
 								HomingShoot(transform, rangeweapon->_tag, PlayerManager::player);
+								--rangeweapon->_attacksLeft;
+							}
 							else
+							{
 								TargetShoot(transform, rangeweapon->_tag, rangeweapon->_targetPosition);
+								--rangeweapon->_attacksLeft;
+							}
 						}
 						else
 						{
@@ -183,7 +189,7 @@ void HomingShoot(cTransform* transform, OWNERTAG tag, ENTITY target)
 	AEVec2Sub(&bulletDirection, &bulletDirection, &transform->_position);
 	AEVec2Normalize(&bulletDirection, &bulletDirection);
 	// Bullet velocity
-	AEVec2Scale(&bulletVelocity, &bulletDirection, 300.0f);
+	AEVec2Scale(&bulletVelocity, &bulletDirection, 90.0f);
 
 	Factory::CreateHomingMissile(transform->_position.x,
 		transform->_position.y, bulletVelocity, bulletDirection, atan2f(bulletDirection.y, bulletDirection.x) + PI / 2, OWNERTAG::AI, target);

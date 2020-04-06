@@ -19,9 +19,8 @@ void aiIdle::OnUpdate(aiBlackBoard& bb)
 	case ENEMY:
 
 		_idleTimer -= g_dt;
-
 		if (_idleTimer < 0.0f)
-			ChangeState(STATE_IDLEWANDER);
+			ChangeState((AERandFloat() > 0.5f) ? STATE_CHASE : STATE_IDLEWANDER);
 
 		if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange))
 			ChangeState((AERandFloat() > 0.5f) ? STATE_CHASE: STATE_CHASEATTACK);

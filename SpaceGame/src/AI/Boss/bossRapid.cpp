@@ -20,8 +20,8 @@ void bossRapid::OnEnter(aiBlackBoard& bb)
 	// Init state
 	_attackDuration = 5.0f + AERandFloat()*5.0f;
 	rwp->_attackCooldown = 3.0f;
-	rwp->_delayBetweenAttacks = 0.25f;
-	rwp->_numberOfAttacks = 5;
+	rwp->_delayBetweenAttacks = 0.1f;
+	rwp->_numberOfAttacks = 10;
 }
 
 void bossRapid::OnUpdate(aiBlackBoard& bb)
@@ -30,7 +30,7 @@ void bossRapid::OnUpdate(aiBlackBoard& bb)
 	if (_attackDuration < 0.0f)
 		ChangeAttack(BOSS_IDLE);
 
-	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange))
+	if (Check::LessThanRange(bb.distanceFromPlayer, bb.baseDetectRange * 2.0f))
 		Attack(bb);
 }
 

@@ -19,5 +19,5 @@ private:
 	float _attackDuration;
 	float _attackCooldown;
 	float _delayBetweenAttacks;
-	float _numberOfAttacks;
+	int _numberOfAttacks;
 };
