@@ -42,6 +42,7 @@ namespace Factory
 	ENTITY CreateAsteroid1(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	ENTITY CreateAsteroid2(unsigned int layer, float posX, float posY, float scaleX, float scaleY);
 	void CreateBackground();
+	void Create_Credits();
 
 	ENTITY CreateBullet(float posX, float posY, AEVec2 velocityVector, AEVec2 dir, float rotation, OWNERTAG tag);
 	ENTITY CreateBullet_LaserBeam(float posX, float posY, float rotation, OWNERTAG tag);
@@ -91,6 +92,7 @@ namespace Factory_UI
 	void Create_ChooseThree(AEVec2 centralPos, unsigned int reroll);
 	void Create_ChoosableUpgrade(ENTITY entity);
 	ENTITY Create_AIIndicator(ENTITY ai, AEVec2 aiDir, int aiType);
+
 
 	void CreateUI_GameOver();
 	void CreateUI_Pause();

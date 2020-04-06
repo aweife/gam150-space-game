@@ -378,6 +378,26 @@ namespace ResourceManager
 		{
 			textureLibrary.insert({ "Tutorial_planet", AEGfxTextureLoad("res/Tutorial_planet.png") });
 		}
+		if (textureLibrary.find("Credits_1") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_1", AEGfxTextureLoad("res/Credits_1.png") });
+		}
+		if (textureLibrary.find("Credits_2") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_2", AEGfxTextureLoad("res/Credits_2.png") });
+		}
+		if (textureLibrary.find("Credits_3") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_3", AEGfxTextureLoad("res/Credits_3.png") });
+		}
+		if (textureLibrary.find("Credits_4") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_4", AEGfxTextureLoad("res/Credits_4.png") });
+		}
+		if (textureLibrary.find("Credits_5") == textureLibrary.end())
+		{
+			textureLibrary.insert({ "Credits_5", AEGfxTextureLoad("res/Credits_5.png") });
+		}
 	}
 
 	void LoadTextureLibrary_1(unsigned int* stage, unsigned int * progress)
@@ -543,6 +563,7 @@ namespace ResourceManager
 					textureLibrary.insert({ "GameOver_Menu", AEGfxTextureLoad("res/GameOver_Menu.png") });
 					*progress = 100;
 					break;
+				
 			}
 			*progress < 100? *progress += static_cast<unsigned int>(100 / 38): *progress = 100;
 			Console_Cout("Loading process", static_cast<int>(*progress));

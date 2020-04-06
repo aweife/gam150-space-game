@@ -74,9 +74,6 @@ namespace InputManager
 
 		if (!g_GamePause)
 		{
-
-
-
 			//Debug functionality
 			if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
 			{

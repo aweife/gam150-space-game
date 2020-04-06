@@ -413,9 +413,44 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 2)	//Restart Level 
 		{
-			GSM_RestartLevel();
+			/*GSM_RestartLevel();*/
+			GSM_LoadingTransition(GS_LEVEL1);
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 3)   // Exit to main menu
+		{
+			GSM_ChangeState(GS_MAINMENU);
+		}
+	}
+	return true;
+}
+
+bool OnButtonClick_GameOverMenuUI(ENTITY entity, Events::OnMouseClick* message)
+{
+	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+	// Bounds of Pause Menu Buttons
+	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
+	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
+	float buttomMinX = transform->_position.x - transform->_scale.x / 2;
+	float buttomMinY = transform->_position.y - transform->_scale.y / 2;
+
+	if ((buttomMaxX > message->_xPos&& buttomMinX < message->_xPos &&
+		buttomMaxY > message->_yPos&& buttomMinY < message->_yPos) == false)
+	{
+		//printf("failed\n");
+		return false;
+	}
+
+	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
+	if (uiComp)
+	{
+		if (uiComp->_text._colorBlend.a < 0.5f) return false;
+		UIEventsManager::Broadcast(new Events::TogglePause(false));
+		if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 2)	//Restart Level 
+		{
+			/*GSM_RestartLevel();*/
+			GSM_LoadingTransition(GS_LEVEL1);
+		}
+		else if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 3)   // Exit to main menu
 		{
 			GSM_ChangeState(GS_MAINMENU);
 		}
@@ -533,6 +568,12 @@ bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message)
 		{
 			ui->_text._colorTint.a = 1.0f;
 		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 1.0f;
+			ui->_text._colorTint.a = 1.0f;
+
+		}
 		
 	}
 	else 
@@ -544,6 +585,56 @@ bool TogglePauseWindow(ENTITY entity, Events::TogglePause* message)
 		else if (ui->_roleIndex == 1)	//text
 		{
 			ui->_text._colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 0.0f;
+			ui->_text._colorTint.a = 0.0f;
+
+		}
+	}
+
+	return true;
+}
+
+bool ToggleGameOverWindow(ENTITY entity, Events::TogglePause* message)
+{
+	cSprite* sprite = Core::Get().GetComponent <cSprite>(entity);			//Might be nullptr
+	cUIElement* ui = Core::Get().GetComponent <cUIElement>(entity);
+
+	if (message->_show)
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 1.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 1.0f;
+			ui->_text._colorTint.a = 1.0f;
+
+		}
+
+	}
+	else
+	{
+		if (ui->_roleIndex == 0)
+		{
+			sprite->_colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 1)	//text
+		{
+			ui->_text._colorTint.a = 0.0f;
+		}
+		else if (ui->_roleIndex == 2)
+		{
+			sprite->_colorTint.a = 0.0f;
+			ui->_text._colorTint.a = 0.0f;
+
 		}
 	}
 
