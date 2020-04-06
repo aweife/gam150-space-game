@@ -1,9 +1,9 @@
 /**********************************************************************************
 * \file			cParticle.h
-* \brief		List of components for the engine
+* \brief		Handles the particle component
 * \author		Jun Yi,				Chong,  100% Code Contribution
 *
-*				List of Components of the engine
+*				Handles the particle component 
 *
 * \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 or disclosure of this file or its contents without the prior

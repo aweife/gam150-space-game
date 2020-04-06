@@ -1,3 +1,14 @@
+/**********************************************************************************
+* \file			cUIElement.h
+* \brief		UI
+* \author		Jun Yi,		Chong,  100% Code Contribution
+*
+*				Handles the UI component
+*
+* \copyright Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 #include "Component.h"
 #include "../Global_Graphics.h"
@@ -36,7 +47,8 @@ enum class UI_ROLE
 	TICKBOX,
 	TICK,
 	OBJECTIVES,
-	QUIT
+	QUIT, 
+	GAMEWIN
 };
 
 class cUIElement :public Component

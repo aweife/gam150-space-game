@@ -1,7 +1,7 @@
 /*********************************************************************************
 * \file			cBoss.h
 * \brief		AI Component
-* \author		Ang Wei Feng, 100% Code Contribution
+* \author		Wei Feng,		Ang,		100% Code Contribution
 *
 *				Responsible for Boss component
 *
