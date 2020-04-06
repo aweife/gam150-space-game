@@ -7,6 +7,7 @@
 #include "../Tools/Editor.h"
 #include "../Levels/UpgradeLevel.h"
 #include "../Managers/GameStateManager.h"
+#include "../Levels/Level3.h"
 
 namespace LevelManager
 {
@@ -50,7 +51,6 @@ namespace LevelManager
 	// Escort for Level 3s
 	float escortEnemyTimer = 0.0f;
 	bool isEscorting = true;
-	bool spawnBoss = false;
 	bool defeatBoss = false;
 	unsigned int enemySpawned3 = 0;
 
@@ -59,12 +59,16 @@ namespace LevelManager
 	bool arrival1, arrival2, arrival3;
 	float bossTimer = 0.0f;
 	const float bossArrivalTime = 5.0f;
+	AEVec2 bossSpawnPos;
 
 	// Shared Functions
 	void StartBossSpawnSequence()
 	{
-		spawnExit = true;
-		exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+		if (currentState != GS_LEVEL3)
+		{
+			spawnExit = true;
+			exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+		}
 
 		// Init spawn sequence
 		Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 300.0f, 5);
@@ -142,45 +146,37 @@ namespace LevelManager
 		spawnExit = false;
 		nextGameState = GS_LEVEL2;
 		enemySpawned1 = 0;
+		bossSpawnPos = { 0.0f,0.0f };
 	}
 
 	void ObjectiveCompleteUpdate()
 	{
-		if (spawnExit)
-		{
+		if(spawnExit)
 			CheckOutOfScreen(exitId);
 
-			// Boss spawn sequence
-			if (arrival1 && arrival2 && arrival3) return;
-			bossTimer -= g_dt;
+		// Boss spawn sequence
+		if (arrival1 && arrival2 && arrival3) return;
+		bossTimer -= g_dt;
 
-			if (bossTimer < 0.0f)
-			{
-				bossTimer = bossArrivalTime / 3.0f;
-
-				if (!arrival1)
-				{
-					arrival1 = true;
-					Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 250.0f, 10);
-				}
-				else if (!arrival2)
-				{
-					arrival2 = true;
-					Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 150.0f, 20);
-				}
-				else
-				{
-					arrival3 = true;
-					Factory_AI::CreateBoss(PlayerManager::player, 2);
-				}
-			}
-		}
-		else
+		if (bossTimer < 0.0f)
 		{
-			spawnExit = true;
-			exitId = Factory::SpawnLevel_End({ 0.0f, -1000.0f });
+			bossTimer = bossArrivalTime / 3.0f;
 
-			StartBossSpawnSequence();
+			if (!arrival1)
+			{
+				arrival1 = true;
+				Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 250.0f, 10);
+			}
+			else if (!arrival2)
+			{
+				arrival2 = true;
+				Factory::CreateParticleEmitter_DIVERGENCE({ 0.0f,0.0f }, 150.0f, 20);
+			}
+			else
+			{
+				arrival3 = true;
+				Factory_AI::CreateBoss(bossSpawnPos, PlayerManager::player, 2);
+			}
 		}
 	}
 
@@ -226,6 +222,8 @@ namespace LevelManager
 		wavesEnemyList.clear();
 		spawnExit = false;
 		isCollected = false;
+
+		bossSpawnPos = { 0.0f,0.0f };
 	}
 
 	// Start spawning enemies after delivery is collected
@@ -297,15 +295,33 @@ namespace LevelManager
 	{
 		nextGameState = GS_MAINMENU;
 		isEscorting = true;
-		spawnBoss = false;
 		wavesEnemyList.clear();
 		defeatBoss = false;
 		enemySpawned3 = 0;
+
+		bossSpawnPos = { 200.0f,0.0f };
 	}
 
 	void Level3Update(ENTITY escort, float escortEnemySpawnTimer)
 	{
+		if (objectiveComplete)
+		{
+			ObjectiveCompleteUpdate();
+
+			if (defeatBoss)
+			{
+				if (!spawnExit)
+				{
+					spawnExit = true;
+					exitId = Factory::SpawnLevel_End({ 0.0f, 0.0f });
+				}
+			}
+		}
+
+		if (escort == 0) return;
+
 		AEVec2 escortPos = Core::Get().GetComponent<cTransform>(escort)->_position;
+
 		if (isEscorting)
 		{
 			escortEnemyTimer += g_dt;
@@ -322,17 +338,6 @@ namespace LevelManager
 				escortEnemyTimer = 0.0f;
 			}
 		}
-		if (spawnBoss)
-		{
-			if (defeatBoss)
-			{
-				spawnBoss = false;
-
-				spawnExit = true;
-				exitId = Factory::SpawnLevel_End({ 0.0f, 0.0f });
-			}
-		}
-
 	}
 
 	void CheckEscort(AEVec2 escortPos, float checkPointX, float checkPointY)
@@ -341,7 +346,9 @@ namespace LevelManager
 		{
 			// Do UI
 			isEscorting = false;
-
+			objectiveComplete = true;
+			SetMissionStatus(true);
+			EscortDeath(true);
 			StartBossSpawnSequence();
 		}
 	}

@@ -18,6 +18,8 @@
 #include "../ECS/Factory.h"
 #include "UISystem.h"							//Spawn Ai Indicators
 #include "../Player/PlayerManager.h"			// Update ai on player
+#include "../Levels/Level3.h"					// For level 3 escort mission
+#include "../Managers/GameStateManager.h"
 /******************************************************************************/
 /*!
   \brief	Sets the system signature for this system based on components required
@@ -38,8 +40,8 @@ void AISystem::Update()
 {
 	cAI* ai;
 
-	const ENTITY pid = PlayerManager::player;
-	if (pid == 0)	return;				//NO ACTIVE PLAYER
+	const ENTITY pid = (currentState == GS_LEVEL3) ? GetEscort() : PlayerManager::player;
+	if (pid == 0)	return;
 
 	// Update all entities that has the components we want
 	for (auto const& entity : entitiesList)

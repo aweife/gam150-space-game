@@ -2,6 +2,8 @@
 #include "../Player/PlayerManager.h"
 #include "../ECS/Core.h"						//Work with ECS
 #include "../Global.h"
+#include "../Levels/Level3.h"					// For level 3 escort mission
+#include "../Managers/GameStateManager.h"
 
 aiBlackBoard::aiBlackBoard(ENTITY entity, AI_TYPE type):
 	id {entity},
@@ -21,8 +23,28 @@ aiBlackBoard::aiBlackBoard(ENTITY entity, AI_TYPE type):
 
 void aiBlackBoard::UpdateBlackboard()
 {
+	ENTITY pid;
+	if(currentState == GS_LEVEL3) 
+	{
+		// If level 3, main target is escort
+		pid = GetEscort();
+
+		// When escort dies
+		if (pid == 0)
+		{
+			// If mission pass, main target becomes player
+			if(EscortMissionSuccess())
+				pid = PlayerManager::player;
+			else // Else game ends
+				pid = 0;
+		}
+	}
+	else
+	{
+		pid = PlayerManager::player;
+	}
+
 	//NO ACTIVE PLAYER
-	const ENTITY pid = PlayerManager::player;
 	if (pid == 0)	return;				
 
 	// Get components

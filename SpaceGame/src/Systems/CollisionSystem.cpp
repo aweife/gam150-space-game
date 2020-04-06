@@ -737,7 +737,8 @@ void CollisionSystem::Update()
 				{
 					if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_BEGIN)
 					{
-						GSM_LoadingTransition(GS_LEVEL1);
+						//GSM_LoadingTransition(GS_LEVEL1);
+						GSM_LoadingTransition(GS_LEVEL3);
 					}
 					else if (rigidbody->_tag == COLLISIONTAG::PLAYER_MENU && rigidbody2->_tag == COLLISIONTAG::MENU_OPTIONS)
 					{

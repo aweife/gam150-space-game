@@ -1525,7 +1525,7 @@ namespace Factory_Map
 
 namespace Factory_AI
 {
-	ENTITY CreateBoss(ENTITY player, unsigned int layer)
+	ENTITY CreateBoss(AEVec2 pos, ENTITY player, unsigned int layer)
 	{
 		UNREFERENCED_PARAMETER(player);
 
@@ -1538,14 +1538,14 @@ namespace Factory_AI
 		Core::Get().AddComponent<cRangeWeapon>(enemy, new cRangeWeapon(OWNERTAG::AI, WeaponType::pistol, 5.0f, 0.3f, 5));
 		//Core::Get().AddComponent<cHealth>(enemy, new cHealth(2, 3, 5.0f, 2.0f));
 		Core::Get().AddComponent<cHealth>(enemy, new cHealth(100.0f, 3000.0f, 0.0f, 30.0f, 4.0f, 1.0f));
-		Core::Get().GetComponent<cTransform>(enemy)->_position.x = 0.0f;
-		Core::Get().GetComponent<cTransform>(enemy)->_position.y = 0.0f;
+		Core::Get().GetComponent<cTransform>(enemy)->_position = pos;
 		Core::Get().GetComponent<cTransform>(enemy)->_rotation = 0.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.x = 250.0f;
 		Core::Get().GetComponent<cTransform>(enemy)->_scale.y = 150.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocity = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.x = 0.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityVector.y = 0.0f;
+		Core::Get().GetComponent<cRigidBody>(enemy)->_acceleration = 5.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_velocityCap = 30.0f;
 		Core::Get().GetComponent<cRigidBody>(enemy)->_tag = COLLISIONTAG::BOSS; // testing collision
 		Core::Get().GetComponent<cCollision>(enemy)->_bbShape = ColliderShape::RECTANGLE_OBB;

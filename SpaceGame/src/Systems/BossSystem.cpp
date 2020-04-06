@@ -50,6 +50,7 @@ void BossSystem::OnComponentRemove(ENTITY) {};
 void BossSystem::CheckOutOfScreen(ENTITY id)
 {
 	cTransform* self = Core::Get().GetComponent<cTransform>(id);
+	printf("x: %f, y: %f", self->_position.x, self->_position.y);
 
 	AEVec2 cameraPosition = { 0 };
 	AEGfxGetCamPosition(&cameraPosition.x, &cameraPosition.y);

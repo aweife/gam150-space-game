@@ -26,6 +26,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Tools/Editor.h"
 
 ENTITY escort = 0;
+bool missionStatus;
 
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
@@ -147,3 +148,17 @@ void Level3_Unload()
 	Core::Get().DestroyAllEntity();
 }
 
+ENTITY GetEscort() { return escort; }
+
+void EscortDeath(bool success)
+{
+	escort = 0;
+	SetMissionStatus(success);
+	// If mission success, we only destroy escort without spawning gameover
+	if (success) return;
+
+	Factory_UI::CreateUI_GameOver();
+	LevelManager::ClearObjectiveAll();
+}
+void SetMissionStatus(bool success) { missionStatus = success; }
+bool EscortMissionSuccess() { return missionStatus; }

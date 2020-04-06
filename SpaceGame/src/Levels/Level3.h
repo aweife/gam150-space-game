@@ -17,6 +17,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #pragma once
 #ifndef LEVEL3_H
 #define LEVEL3_H
+#include "../Global_ECS.h"
 
 // ----------------------------------------------------------------------------
 // This function loads all necessary assets in Level1
@@ -56,5 +57,10 @@ void Level3_Free();
 // Is called when the state should be terminated
 // ----------------------------------------------------------------------------
 void Level3_Unload();
+
+ENTITY GetEscort();
+void EscortDeath(bool success = false);
+bool EscortMissionSuccess();
+void SetMissionStatus(bool success);
 
 #endif

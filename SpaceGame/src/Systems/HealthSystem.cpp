@@ -22,6 +22,7 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../ECS/Factory.h"
 #include "../Tools/Console.h"
 #include "../Managers/LevelManager.h"
+#include "../Levels/Level3.h"
 
 void HealthSystem::Init()
 {
@@ -126,7 +127,14 @@ void HealthSystem::Update()
 				{
 					LevelManager::ClearEnemy(entity);
 				}
+				else if (collision->_tag == COLLISIONTAG::ESCORT)
+				{
+					//escort has died
+					Factory::RemoveCamera();
+					EscortDeath();
+				}
 			}
+
 			
 			Core::Get().EntityDestroyed(entity);
 		}
