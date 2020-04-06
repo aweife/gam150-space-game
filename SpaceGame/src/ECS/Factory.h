@@ -118,7 +118,7 @@ namespace Factory_UI
 	void CreateOutgunnedInterface();
 
 
-	ENTITY CreateUI_Text(float posX, float posY, const char* text);
+	ENTITY CreateUI_Text(float posX, float posY, const char* text, UI_ROLE role = UI_ROLE::NONE);
 	ENTITY CreateUI_FloatingDamage(ENTITY target, int startHealth, int damageValue);
 
 	ENTITY CreateUI_TickBox(float posX, float posY, float size, unsigned int layer = 0);

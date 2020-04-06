@@ -186,6 +186,7 @@ namespace UpgradeManager
 
 	bool CheckUnique(int randomUpgrade)
 	{
+		UNREFERENCED_PARAMETER(randomUpgrade);
 		//Too Few to randomise
 		//if (upgrade1 == randomUpgrade /*|| upgrade2 == randomUpgrade
 		//	|| upgrade3 == randomUpgrade*/)

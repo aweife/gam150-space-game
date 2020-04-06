@@ -1464,8 +1464,7 @@ namespace Factory_UI
 		Core::Get().AddComponent<cTransform>(yes, new cTransform({ -100, -100 }, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(yes, new cSprite(yes, "Square Mesh", "Texture_Default", 0));
 		Core::Get().GetComponent<cSprite>(yes)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
-		Core::Get().AddComponent<cUIElement>(yes, new cUIElement("YES"));
-		Core::Get().GetComponent<cUIElement>(yes)->_role = UI_ROLE::QUIT;
+		Core::Get().AddComponent<cUIElement>(yes, new cUIElement("YES", UI_ROLE::QUIT));
 		Core::Get().GetComponent<cUIElement>(yes)->_roleIndex = 2;	//Toggle Text Transparency
 		Core::Get().GetComponent<cUIElement>(yes)->_roleIndex2 = 1;	//Exit Game
 											 
@@ -1479,8 +1478,7 @@ namespace Factory_UI
 		Core::Get().AddComponent<cTransform>(no, new cTransform({ 100, -100 }, 0, { 160, 40 }));
 		Core::Get().AddComponent<cSprite>(no, new cSprite(no, "Square Mesh", "Texture_Default", 0));
 		Core::Get().GetComponent<cSprite>(no)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
-		Core::Get().AddComponent<cUIElement>(no, new cUIElement("NO"));
-		Core::Get().GetComponent<cUIElement>(no)->_role = UI_ROLE::QUIT;
+		Core::Get().AddComponent<cUIElement>(no, new cUIElement("NO", UI_ROLE::QUIT));
 		Core::Get().GetComponent<cUIElement>(no)->_roleIndex = 2;
 		Core::Get().GetComponent<cUIElement>(no)->_roleIndex2 = 2;		//Resume Game
 		Core::Get().GetComponent<cUIElement>(no)->_text._anchor = TEXT_ANCHOR::CENTER;
@@ -1498,27 +1496,44 @@ namespace Factory_UI
 		Core::Get().GetComponent<cSprite>(panel)->_colorTint = { 1.0f, 0.4f, 0.0f, 1.0f };
 		Core::Get().AddComponent<cUIElement>(panel, new cUIElement(UI_TYPE::IMAGE, UI_ROLE::INGAMEOPTIONS, 0));
 
+		std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+
 		ENTITY soundTB = CreateUI_Option_TickBox_Sound(-100, 30, 40.0f, 0);
+		uiSys->ingameOptions_Set.insert(soundTB);						//Manual Insertion
 		Core::Get().GetComponent<cSprite>(soundTB)->_colorTint.a = 1.0f;
-		Factory_UI::CreateUI_Text(0, 30, "Mute All Audio");
+		ENTITY text = Factory_UI::CreateUI_Text(0, 30, "Mute All Audio", UI_ROLE::INGAMEOPTIONS);
 		ENTITY optionTB = CreateUI_Option_TickBox_Fullscreen(-100, -30, 40.0f, 0);
+		uiSys->ingameOptions_Set.insert(optionTB);						//Manual Insertion
 		Core::Get().GetComponent<cSprite>(optionTB)->_colorTint.a = 1.0f;
-		Factory_UI::CreateUI_Text(0, -30, "Windowed Mode");
+		text = Factory_UI::CreateUI_Text(0, -30, "Windowed Mode", UI_ROLE::INGAMEOPTIONS);
 		Core::Get().GetComponent<cSprite>(Core::Get().GetComponent<cUIElement>(soundTB)->_roleIndex)->_colorTint.a = g_isMute ? 1.0f : 0.0f;
 		Core::Get().GetComponent<cSprite>(Core::Get().GetComponent<cUIElement>(optionTB)->_roleIndex)->_colorTint.a = !g_isFullScreen ? 1.0f : 0.0f;
 
-		Core::Get().GetComponent<cUIElement>(soundTB)->_roleIndex;
-		Core::Get().GetComponent<cUIElement>(optionTB)->_roleIndex;
+		//Core::Get().GetComponent<cUIElement>(soundTB)->_roleIndex;
+		//Core::Get().GetComponent<cUIElement>(optionTB)->_roleIndex;
+
+		ENTITY close = Core::Get().CreateEntity();
+		Core::Get().AddComponent<cTransform>(close, new cTransform({ 0, -100 }, 0, { 160, 40 }));
+		Core::Get().AddComponent<cSprite>(close, new cSprite(close, "Square Mesh", "Texture_Default", 0));
+		Core::Get().GetComponent<cSprite>(close)->_colorTint = { 0.0f, 0.55f, 1.0f, 1.0f };
+		Core::Get().AddComponent<cUIElement>(close, new cUIElement("Close", UI_ROLE::INGAMEOPTIONS));
+		Core::Get().GetComponent<cUIElement>(close)->_roleIndex = 2;
+		Core::Get().GetComponent<cUIElement>(close)->_roleIndex2 = 3;		//Close
+		Core::Get().GetComponent<cUIElement>(close)->_text._anchor = TEXT_ANCHOR::CENTER;
+		Core::Get().GetComponent<cUIElement>(close)->_text._colorTint = { 1.0f, 1.0f, 1.0f, 1.0f };
+		Core::Get().GetComponent<cUIElement>(close)->_text._usingScreenSpace = true;
+		UIEventsManager::Subscribe(close, &OnButtonClick_MainMenuUI);
+
 	}
 
-	ENTITY CreateUI_Text(float posX, float posY, const char* text)
+	ENTITY CreateUI_Text(float posX, float posY, const char* text, UI_ROLE role)
 	{
 		AEVec2 newPostion;
 		AEVec2Set(&newPostion, posX, posY);
 
 		ENTITY uiEntity = Core::Get().CreateEntity();
 		Core::Get().AddComponent<cTransform>(uiEntity, new cTransform(newPostion, 0, { 1,1 }));
-		Core::Get().AddComponent<cUIElement>(uiEntity, new cUIElement(text));
+		Core::Get().AddComponent<cUIElement>(uiEntity, new cUIElement(text, role));
 		return uiEntity;
 	}
 

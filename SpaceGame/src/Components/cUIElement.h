@@ -77,7 +77,7 @@ public:
 	// Constructor with parameter
 	cUIElement() = delete;
 	cUIElement(UI_TYPE type, UI_ROLE role, unsigned int roleIndex = 0);
-	cUIElement(const char* text, ColorInfo tint = {1,1,1,1}, ColorInfo blend = {1,1,1,1}, TEXT_ANCHOR anchor = TEXT_ANCHOR::CENTERLEFT);
+	cUIElement(const char* text, UI_ROLE role = UI_ROLE::NONE, ColorInfo tint = {1,1,1,1}, ColorInfo blend = {1,1,1,1}, TEXT_ANCHOR anchor = TEXT_ANCHOR::CENTERLEFT);
 	~cUIElement();										// Virtual Destructor
 
 };

@@ -401,6 +401,7 @@ bool OnThrusterChange_ThrusterUI(ENTITY entity, Events::OnThrusterChange* messag
 bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+	if (!transform) return false;
 	// Bounds of Main Menu Buttons
 	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
@@ -414,9 +415,11 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 		return false;
 	}
 	cUIElement* uiComp = Core::Get().GetComponent<cUIElement>(entity);
-	//cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
+	cSprite* sprite = Core::Get().GetComponent<cSprite>(entity);
 	if (uiComp)
 	{
+		if (sprite->_colorTint.a < 0.5f)	return false;
+
 		if (uiComp->_role == UI_ROLE::TICKBOX && uiComp->_roleIndex2 == 1)	//Toggle Sound
 		{
 			Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a
@@ -429,6 +432,13 @@ bool OnButtonClick_MainMenuUI(ENTITY entity, Events::OnMouseClick* message)
 				= 1.0f - Core::Get().GetComponent<cSprite>(uiComp->_roleIndex)->_colorTint.a;
 			Global_ToggleWindowed();
 			GSM_RestartLevel();
+		}
+		else if (uiComp->_role == UI_ROLE::INGAMEOPTIONS && uiComp->_roleIndex2 == 3)	//Close In Game Options
+		{
+			g_isSecondaryMenu = false;
+			UIEventsManager::Broadcast(new Events::TogglePause(true));
+			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+			uiSys->DeleteInGameOptionsWindow();
 		}
 	}
 
@@ -456,7 +466,7 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 
 	if (uiComp)
 	{
-		if (uiComp->_text._colorBlend.a < 0.5f)
+		if (uiComp->_text._colorTint.a < 0.5f)
 		{
 			if (sprite->_colorTint.a < 0.5f)
 			{
@@ -471,9 +481,9 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 2)	//Restart Level 
 		{
-			TogglePause();
+			if(g_GamePause) TogglePause();
 			UIEventsManager::Broadcast(new Events::TogglePause(false));
-			GSM_LoadingTransition(GS_LEVEL1);
+			GSM_LoadingTransition(currentState);
 		}
 		else if (uiComp->_role == UI_ROLE::PAUSE && uiComp->_roleIndex2 == 3)   // Exit to main menu
 		{
@@ -494,6 +504,7 @@ bool OnButtonClick_PauseMenuUI(ENTITY entity, Events::OnMouseClick* message)
 bool OnButtonClick_ConfirmationMenuUI(ENTITY entity, Events::OnMouseClick* message)
 {
 	cTransform* transform = Core::Get().GetComponent<cTransform>(entity);
+	if (!transform)	return false;
 	// Bounds of Pause Menu Buttons
 	float buttomMaxX = transform->_position.x + transform->_scale.x / 2;
 	float buttomMaxY = transform->_position.y + transform->_scale.y / 2;
@@ -574,10 +585,12 @@ bool OnButtonClick_GameOverMenuUI(ENTITY entity, Events::OnMouseClick* message)
 
 		if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 1)	//Restart Level 
 		{
+			TogglePause();
 			GSM_LoadingTransition(currentState);
 		}
 		else if (uiComp->_role == UI_ROLE::GAMEOVER && uiComp->_roleIndex2 == 2)   // Exit to main menu
 		{
+			TogglePause();
 			GSM_ChangeState(GS_MAINMENU);
 		}
 	}
@@ -1064,6 +1077,10 @@ void UISystem::OnComponentRemove(ENTITY entity)
 		break;
 	case UI_ROLE::INGAMEOPTIONS:
 		ingameOptions_Set.erase(entity);
+		break;
+	case UI_ROLE::TICKBOX:
+	case UI_ROLE::TICK:
+		ingameOptions_Set.erase(entity);		//Special Handling, will be manually inserted into set 
 		break;
 	}
 }

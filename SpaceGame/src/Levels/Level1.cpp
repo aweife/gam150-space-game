@@ -138,8 +138,7 @@ void Level1_Update()
 	{
 		Core::Get().GetComponent<cSprite>(toggleObjectiveTickbox_state)->_colorTint.a = 1.0f;
 	}
-	//Editor_TrackVariable("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
-	Console_Cout("ACTIVE ENTITY COUNT", static_cast<int>(Core::Get().GetEntityCount()));
+
 	AudioManager::Update();
 	PlayerManager::Update();
 	LevelManager::Level1_Update();

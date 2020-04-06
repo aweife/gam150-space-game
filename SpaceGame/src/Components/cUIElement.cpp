@@ -19,8 +19,8 @@ cUIElement::cUIElement(UI_TYPE type, UI_ROLE role, unsigned int roleIndex)
 
 }
 
-cUIElement::cUIElement(const char* text, ColorInfo tint, ColorInfo blend, TEXT_ANCHOR anchor)
-	: _type{ UI_TYPE::TEXT }, _isHovered{ false }, _isClicked{ false }, _isSelectable{ false }, _updateFP{nullptr}
+cUIElement::cUIElement(const char* text, UI_ROLE role, ColorInfo tint, ColorInfo blend, TEXT_ANCHOR anchor)
+	: _type{ UI_TYPE::TEXT }, _role{role}, _isHovered{ false }, _isClicked{ false }, _isSelectable{ false }, _updateFP{ nullptr }
 {
 	sprintf_s(_text._textBuffer, text);
 	_text._colorTint = tint;
