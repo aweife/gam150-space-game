@@ -587,6 +587,12 @@ void UISystem::Check_IndicatorExist(ENTITY ai, AEVec2 aiDir, int aiType)
 
 }
 
+void CleanUpIndicator()
+{
+	std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+	uiSys->aiIndicator_Set.clear();
+}
+
 //Not used 
 void UISystem::DeleteUpgradeWindow()
 {

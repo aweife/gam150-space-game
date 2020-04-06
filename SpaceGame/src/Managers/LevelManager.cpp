@@ -544,6 +544,7 @@ namespace LevelManager
 		float randomSpawnArea = randomLevel;
 		//float randomRotation = AERandFloat() * 360.0f;
 		float rotationSpeed = 5.0f;
+		collectableList.clear();
 
 		ENTITY collectable;
 		switch (static_cast<int>(randomSpawnArea))

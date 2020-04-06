@@ -21,6 +21,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 #include "../Managers/UIEventsManager.h"
 #include "../Managers/AudioManager.h"
 #include "../Managers/LevelManager.h"
+#include "../Systems/UISystem.h"
+
 
 #include "../Tools/Console.h"
 #include "../Tools/Editor.h"
@@ -104,8 +106,9 @@ void Level1_Update()
 {
 	AudioManager::Update();
 	PlayerManager::Update();
-	Core::Get().Core_Update();
 	LevelManager::Level1_Update();
+	Core::Get().Core_Update();
+	
 
 
 	if (AEInputCheckTriggered(AEVK_L))
@@ -138,6 +141,7 @@ void Level1_Free()
 // ----------------------------------------------------------------------------
 void Level1_Unload()
 {
+	CleanUpIndicator();
 	UIEventsManager::Cleanup();
 	Factory::RemoveCamera();
 	Core::Get().DestroyAllEntity();

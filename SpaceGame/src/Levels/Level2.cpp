@@ -93,7 +93,7 @@ void Level2_Load()
 void Level2_Init()
 {
 	//spawnedBoss = false;
-	AudioManager::PlayOneShot("res/BGM/cinescifi.wav", 0.25f);
+	AudioManager::PlayBGM("res/BGM/cinescifi.wav", 0.25f);
 }
 
 // ----------------------------------------------------------------------------
@@ -105,8 +105,6 @@ void Level2_Update()
 
 	AudioManager::Update();
 	PlayerManager::Update();
-	Core::Get().Core_Update();
-
 	if (PlayerManager::player)
 	{
 		AEVec2 playerPos = Core::Get().GetComponent<cTransform>(PlayerManager::player)->_position;
@@ -115,6 +113,11 @@ void Level2_Update()
 		//Spawn Enemy around player
 		LevelManager::EnemySpawnManager::SpawnEnemyWavesTimer(playerPos, 5.0f);
 	}
+
+
+	Core::Get().Core_Update();
+
+	
 	
 }
 
