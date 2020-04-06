@@ -1,10 +1,10 @@
 /**********************************************************************************
 * \file			Level1.cpp
 * \brief		Game State for Level 1
-* \author		Wei Feng,		Ang,		20% Code Contribution
-*				Jun Yi,			Chong,		55% Code Contribution
-*				Jin Kiat,		Chong,		20% Code Contribution
-*               Farzaana Binte, Roslan,     5%  Code Contribution
+* \author		Wei Feng,		Ang,		25% Code Contribution
+*				Jun Yi,			Chong,		25% Code Contribution
+*				Jin Kiat,		Chong,		25% Code Contribution
+*               Farzaana Binte, Roslan,     25%  Code Contribution
 * 
 *				Long Description
 *				- Initalise game objects into the level

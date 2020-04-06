@@ -1,3 +1,15 @@
+/*********************************************************************************
+* \file			Events.h
+* \brief		Manager for all events in the game
+* \author		Jun Yi, Chong, 100% Code Contribution
+*
+*				Register all events and set their signatures.
+*
+*
+* \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
+				or disclosure of this file or its contents without the prior
+				written consent of DigiPen Institute of Technology is prohibited.
+**********************************************************************************/
 #pragma once
 #include "../Global_ECS.h"
 

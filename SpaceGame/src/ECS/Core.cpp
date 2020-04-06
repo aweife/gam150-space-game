@@ -1,15 +1,10 @@
 /*********************************************************************************
 * \file			Core.cpp
-* \author		Chong Jun Yi
-* \version		1.0
-* \date			30/01/2019
-* \par			Engine Code
-* \note			Course: GAM150
-* \brief		The overall manager for 3 main managers in ECS architecture
-				- Initalise all system and managers
-				- Control ???
-				- Clean up all system and manager
-
+* \brief		Abstract class for a generic component storage
+* \author		Jun Yi, Chong, 50% Code Contribution
+*
+*				Overall Manager for ECS
+*
 * \copyright	Copyright (c) 2020 DigiPen Institute of Technology. Reproduction
 				or disclosure of this file or its contents without the prior
 				written consent of DigiPen Institute of Technology is prohibited.

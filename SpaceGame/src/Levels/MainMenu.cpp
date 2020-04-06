@@ -1,7 +1,8 @@
 /**********************************************************************************
-* \file			MainMenu.h
+* \file			MainMenu.cpp
 * \brief		Game State for Main Menu
-* \author		Jun Yi,			Chong,		100% Code Contribution
+* \author		Jun Yi,			Chong,		50% Code Contribution
+*       		Farzaana Binte,Roslan,		50% Code Contribution
 *
 *				Long Description
 *				- Play, Options, Credits, Exit

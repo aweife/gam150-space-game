@@ -1,8 +1,8 @@
 /*********************************************************************************
 * \file			ComponentStorage.h
 * \brief		A tightly compact storage for a single component (templated)
-* \author		Chong Jun Yi, 50% Code Contribution
-* \author		Ang Wei Feng, 50% Code Contribution
+* \author		Jun Yi, Chong, 50% Code Contribution
+*        		Wei Feng, Ang, 50% Code Contribution
 *
 *				This component storage uses an array to densely pack components
 *				together, allowing for linear access using index. To do this,
