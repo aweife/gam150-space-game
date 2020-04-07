@@ -88,21 +88,24 @@ namespace InputManager
 		if (!g_GamePause)
 		{
 			//Debug functionality
-		//if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
-		//{
-		//	ToggleShowBoundingBoxMode(); 
-		//}
-			if (AEInputCheckTriggered(AEVK_9))			
+			//if (AEInputCheckTriggered(AEVK_0))			//Show all mesh outline
+			//{
+			//	ToggleShowBoundingBoxMode(); 
+			//}
+
+			//if (AEInputCheckTriggered(AEVK_9))			
+			//{
+			//	GSM_ChangeState(GS_UPGRADE);
+			//	//GSM_LoadingTransition(GS_UPGRADE);
+			//	//Factory_UI::Create_ChooseThree({ 0,0 });
+			//}
+
+			/*if (AEInputCheckTriggered(AEVK_8))
 			{
-				GSM_ChangeState(GS_UPGRADE);
-				//GSM_LoadingTransition(GS_UPGRADE);
-				//Factory_UI::Create_ChooseThree({ 0,0 });
-			}
-		/*if (AEInputCheckTriggered(AEVK_8))
-		{
-			std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
-			uiSys->DeleteUpgradeWindow();
-		}*/
+				std::shared_ptr<UISystem> uiSys(std::static_pointer_cast<UISystem>(Core::Get().GetSystem<UISystem>()));
+				uiSys->DeleteUpgradeWindow();
+			}*/
+
 			/*if (AEInputCheckTriggered(AEVK_1))
 			{
 				if (Core::Get().GetComponent<cRangeWeapon>(PlayerManager::player)->_currWeapon != WeaponType::laser)
